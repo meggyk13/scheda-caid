@@ -953,7 +953,7 @@ function renderGrid(cls,filterDate){
       sl.forEach(c=>{const{tc,th}=cfl(c);const k=(tc&&th)?'cb':th?'ch':tc?'ct':'';const du=Number(c.duration)||60;
         h+='<div class="gc '+k+'" title="'+c.title+' \u2014 '+c.teacher+' ('+du+'min)'+(tc?' topic overlap':'')+(th?' double-booked':'')+'">'
           +'<strong>'+c.title.slice(0,26)+(c.title.length>26?'\u2026':'')+'</strong><br>'
-          +c.teacher.split(' ').slice(-1)[0]+(du!==60?' ('+du+'m)':'')+'</div>';});
+          +c.teacher+(du!==60?' ('+du+'m)':'')+'</div>';});
       h+='</td>';
     });
     h+='</tr>';
