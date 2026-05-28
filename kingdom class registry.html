@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kingdom Class Registry &#x2014; Caid</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--accent:#3C3489;--accent-light:#EEEDFE;--accent-mid:#7F77DD;--gold:#BA7517;--gold-light:#FAEEDA;--bg:#fff;--bg2:#f7f6f3;--text:#1a1a18;--text2:#5f5e5a;--border:rgba(0,0,0,.12);--border2:rgba(0,0,0,.22);--radius:8px;--radius-lg:12px;--green-bg:#EAF3DE;--green-text:#3B6D11;--green-border:#C0DD97;--red-bg:#FAECE7;--red-text:#993C1D;--red-border:#F0997B}
+body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-height:100vh}
+.app{max-width:960px;margin:0 auto;background:var(--bg);min-height:100vh}
+.topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:1rem 1.5rem;border-bottom:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:38px;height:38px;border-radius:var(--radius);background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:20px}
+.brand-name{font-size:16px;font-weight:600;font-family:Georgia,serif}
+.brand-sub{font-size:12px;color:var(--text2);font-family:sans-serif}
+.nav{display:flex;gap:4px;flex-wrap:wrap}
+.nav-btn{padding:6px 14px;border-radius:var(--radius);border:1px solid transparent;font-size:13px;cursor:pointer;background:transparent;color:var(--text2);font-family:sans-serif;transition:all .15s;display:flex;align-items:center;gap:5px}
+.nav-btn:hover{background:var(--bg2);color:var(--text)}
+.nav-btn.active{background:var(--accent-light);color:var(--accent);border-color:#AFA9EC;font-weight:600}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;font-size:11px;font-weight:600;background:var(--gold-light);color:var(--gold)}
+.main{padding:1.5rem}
+.panel{display:none}.panel.active{display:block}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem}
+.search-input,.filter-select{padding:7px 11px;border:1px solid var(--border2);border-radius:var(--radius);font-size:13px;background:var(--bg);color:var(--text);font-family:sans-serif}
+.search-input{flex:1;min-width:180px}
+.class-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.class-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.1rem;transition:border-color .15s}
+.class-card:hover{border-color:var(--border2)}.class-card.registered{border-left:3px solid var(--accent-mid)}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.card-title{font-size:14px;font-weight:600;line-height:1.35;font-family:Georgia,serif}
+.tag{font-size:11px;padding:2px 8px;border-radius:10px;white-space:nowrap;font-family:sans-serif;background:var(--accent-light);color:var(--accent);font-weight:600;flex-shrink:0}
+.tag.zoom{background:#E6F1FB;color:#185FA5}.tag.in-person{background:var(--green-bg);color:var(--green-text)}
+.card-meta{font-size:12px;color:var(--text2);margin-bottom:7px;font-family:sans-serif;display:flex;flex-direction:column;gap:3px}
+.card-meta span{display:flex;align-items:center;gap:5px}
+.card-desc{font-size:13px;color:var(--text2);line-height:1.55;margin-bottom:8px;font-family:sans-serif}
+.card-logistics{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.logistics-pill{font-size:11px;font-family:sans-serif;padding:3px 9px;border-radius:10px;border:1px solid var(--border2);color:var(--text2);display:flex;align-items:center;gap:4px}
+.logistics-pill.fee{background:var(--gold-light);color:var(--gold);border-color:#FAC775;font-weight:600}
+.logistics-pill.free{background:var(--green-bg);color:var(--green-text);border-color:var(--green-border)}
+.card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.enroll-btn{font-size:12px;padding:5px 13px;border-radius:var(--radius);border:1px solid var(--border2);cursor:pointer;background:var(--bg);color:var(--text);font-family:sans-serif;transition:all .15s;white-space:nowrap}
+.enroll-btn:hover{background:var(--bg2)}.enroll-btn.enrolled{background:var(--accent-light);color:var(--accent);border-color:#AFA9EC;font-weight:600}
+.enroll-btn.waitlist-btn{background:var(--gold-light);color:var(--gold);border-color:#FAC775}
+.enroll-btn.waitlisted{background:var(--gold-light);color:var(--gold);border-color:#FAC775;font-weight:600}
+.enroll-btn:disabled,.submit-action:disabled{opacity:.5;cursor:not-allowed}
+.spots{font-size:12px;color:var(--text2);font-family:sans-serif;white-space:nowrap}
+.spots.low{color:var(--red-text);font-weight:600}.spots.full{color:var(--gold);font-weight:600}
+.roster-toggle{font-size:11px;color:var(--accent);cursor:pointer;font-family:sans-serif;background:none;border:none;padding:0;display:flex;align-items:center;gap:3px;margin-top:8px}
+.roster-toggle:hover{text-decoration:underline}
+.roster-list{margin-top:6px;padding:8px 10px;background:var(--bg2);border-radius:var(--radius);font-size:12px;font-family:sans-serif;color:var(--text2);display:none}
+.roster-list.open{display:block}.roster-list ul{list-style:none}
+.roster-list li{padding:2px 0;border-bottom:1px solid var(--border)}.roster-list li:last-child{border-bottom:none}
+.roster-wl-title{margin-top:8px;font-weight:700;color:var(--gold);font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:var(--bg);border-radius:var(--radius-lg);padding:1.5rem;max-width:480px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.18);max-height:90vh;overflow-y:auto}
+.modal-title{font-size:16px;font-weight:600;font-family:Georgia,serif;margin-bottom:4px}
+.modal-sub{font-size:13px;color:var(--text2);font-family:sans-serif;margin-bottom:1rem}
+.modal-field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.modal-label{font-size:12px;color:var(--text2);font-family:sans-serif;font-weight:600}
+.modal-input,.modal-select{padding:7px 10px;border:1px solid var(--border2);border-radius:var(--radius);font-size:13px;font-family:sans-serif;background:var(--bg);color:var(--text);width:100%}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.modal-note{font-size:12px;font-family:sans-serif;margin-bottom:1rem;padding:8px 10px;border-radius:var(--radius)}
+.mn-wl,.mn-fee{background:var(--gold-light);color:var(--gold)}.mn-ov{background:var(--red-bg);color:var(--red-text)}.mn-info{background:var(--accent-light);color:var(--accent)}
+.modal-section{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);font-family:sans-serif;margin:1rem 0 8px;border-top:1px solid var(--border);padding-top:10px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:4px;flex-wrap:wrap}
+.modal-cancel{padding:7px 16px;border-radius:var(--radius);border:1px solid var(--border2);background:transparent;font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2)}
+.modal-confirm{padding:7px 18px;border-radius:var(--radius);background:var(--accent);color:#fff;border:none;font-size:13px;cursor:pointer;font-weight:600;font-family:sans-serif}
+.modal-confirm:hover{background:#534AB7}.modal-confirm:disabled{opacity:.5;cursor:not-allowed}
+.mc-gold{background:var(--gold)}.mc-green{background:var(--green-text)}
+.cb-row{display:flex;align-items:center;gap:8px;font-size:13px;font-family:sans-serif;color:var(--text2);margin-bottom:12px;cursor:pointer}
+.cb-row input{width:16px;height:16px;cursor:pointer}
+.schedule-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.sched-title-h{font-size:16px;font-weight:600;font-family:Georgia,serif}
+.print-btn{display:flex;align-items:center;gap:6px;font-size:13px;padding:6px 14px;border-radius:var(--radius);border:1px solid var(--border2);cursor:pointer;background:var(--bg);color:var(--text);font-family:sans-serif}
+.empty-sched{text-align:center;padding:3rem 1rem;color:var(--text2);font-size:14px;font-family:sans-serif}
+.sched-item{display:grid;grid-template-columns:110px 1fr auto;gap:12px;align-items:start;padding:12px 1rem;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px}
+.sched-time{font-size:12px;font-weight:600;color:var(--text2);font-family:sans-serif;line-height:1.6}
+.sched-name{font-size:14px;font-weight:600;font-family:Georgia,serif}
+.sched-detail,.sched-bring,.wl-notice{font-size:12px;color:var(--text2);margin-top:2px;font-family:sans-serif}
+.sched-bring{color:var(--accent)}.wl-notice{color:var(--gold);font-weight:600}
+.remove-btn{font-size:12px;padding:4px 10px;border-radius:var(--radius);border:1px solid var(--border);cursor:pointer;background:transparent;color:var(--text2);font-family:sans-serif}
+.remove-btn:hover{color:var(--red-text);border-color:var(--red-border);background:var(--red-bg)}
+.submit-form{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;max-width:660px}
+.ev-banner{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--accent-light);border-radius:var(--radius);margin-bottom:1rem;font-size:13px;font-family:sans-serif;color:var(--accent);font-weight:600}
+.form-section-title{font-size:16px;font-weight:600;font-family:Georgia,serif;margin-bottom:4px}
+.form-section-sub{font-size:13px;color:var(--text2);margin-bottom:1.25rem;font-family:sans-serif}
+.form-divider{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);font-family:sans-serif;margin:1.25rem 0 10px;border-top:1px solid var(--border);padding-top:12px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.form-col{display:flex;flex-direction:column;gap:4px}
+.form-full{margin-bottom:12px;display:flex;flex-direction:column;gap:4px}
+.form-label{font-size:12px;color:var(--text2);font-family:sans-serif;font-weight:600}
+.form-hint{font-size:11px;color:var(--text2);font-family:sans-serif;margin-top:2px;font-style:italic}
+.form-input,.form-select,.form-textarea{padding:7px 10px;border:1px solid var(--border2);border-radius:var(--radius);font-size:13px;font-family:sans-serif;background:var(--bg);color:var(--text);width:100%}
+.form-input:disabled{background:var(--bg2);color:var(--text2);cursor:not-allowed}
+.form-textarea{min-height:90px;resize:vertical}
+.submit-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px;flex-wrap:wrap;gap:8px}
+.submit-note{font-size:12px;color:var(--text2);font-family:sans-serif;display:flex;align-items:center;gap:5px}
+.submit-action{padding:8px 20px;border-radius:var(--radius);background:var(--accent);color:#fff;border:none;font-size:13px;cursor:pointer;font-weight:600;font-family:sans-serif}
+.submit-action:hover{background:#534AB7}
+.success-msg{display:none;padding:10px 14px;border-radius:var(--radius);background:var(--green-bg);color:var(--green-text);font-size:13px;margin-top:12px;font-family:sans-serif}
+.admin-section-title{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;margin:1.25rem 0 10px;font-family:sans-serif;display:flex;align-items:center;gap:6px}
+.pending-card{background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:var(--radius-lg);padding:1rem 1.1rem;margin-bottom:10px}
+.pending-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:5px}
+.pending-title{font-size:14px;font-weight:600;font-family:Georgia,serif}
+.pending-teacher{font-size:12px;color:var(--text2);margin-bottom:6px;font-family:sans-serif}
+.pending-desc{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;font-family:sans-serif}
+.pending-meta{font-size:12px;color:var(--text2);margin-bottom:8px;display:flex;flex-wrap:wrap;gap:8px;font-family:sans-serif}
+.pending-meta span{display:flex;align-items:center;gap:4px}
+.pending-pref{font-size:12px;font-family:sans-serif;padding:6px 10px;background:var(--accent-light);color:var(--accent);border-radius:var(--radius);margin-bottom:8px}
+.admin-actions{display:flex;gap:8px;flex-wrap:wrap}
+.approve-btn{padding:5px 14px;border-radius:var(--radius);font-size:12px;cursor:pointer;background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);font-weight:600;font-family:sans-serif}
+.approve-btn:hover{background:var(--green-border)}
+.reject-btn{padding:5px 14px;border-radius:var(--radius);font-size:12px;cursor:pointer;background:var(--red-bg);color:var(--red-text);border:1px solid var(--red-border);font-family:sans-serif}
+.reject-btn:hover{background:var(--red-border)}
+.approved-row{display:grid;grid-template-columns:1fr auto auto auto;gap:12px;align-items:center;padding:10px 1rem;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px}
+.approved-name{font-size:14px;font-weight:600;font-family:Georgia,serif}
+.approved-sub{font-size:12px;color:var(--text2);font-family:sans-serif}
+.reg-count{font-size:13px;color:var(--text2);white-space:nowrap;font-family:sans-serif}
+.wl-detail{font-size:12px;color:var(--gold);font-family:sans-serif;margin-top:2px;display:flex;align-items:center;gap:4px}
+.a-roster-btn,.a-remove-btn{font-size:12px;padding:4px 10px;border-radius:var(--radius);border:1px solid var(--border);cursor:pointer;background:transparent;font-family:sans-serif}
+.a-roster-btn{color:var(--accent)}.a-remove-btn{color:var(--text2)}.a-remove-btn:hover{color:var(--red-text);border-color:var(--red-border);background:var(--red-bg)}
+.admin-lock{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;text-align:center;max-width:380px;margin:0 auto}
+.admin-lock p{font-size:14px;color:var(--text2);margin-bottom:1rem;font-family:sans-serif}
+.lock-row{display:flex;gap:8px;justify-content:center}
+.lock-input{padding:7px 12px;border:1px solid var(--border2);border-radius:var(--radius);font-size:14px;background:var(--bg);color:var(--text);font-family:sans-serif;width:180px}
+.lock-btn{padding:7px 16px;border-radius:var(--radius);background:var(--accent);color:#fff;border:none;font-size:13px;cursor:pointer;font-weight:600;font-family:sans-serif}
+.lock-err{font-size:12px;color:var(--red-text);margin-top:8px;display:none;font-family:sans-serif}
+.no-items{font-size:13px;color:var(--text2);padding:1rem 0;font-family:sans-serif}
+.link-gen{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem;margin-bottom:1.25rem}
+.link-gen-title{font-size:13px;font-weight:600;font-family:sans-serif;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.lg-row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
+.lg-input{padding:7px 10px;border:1px solid var(--border2);border-radius:var(--radius);font-size:13px;font-family:sans-serif;background:var(--bg);color:var(--text);flex:1;min-width:140px}
+.lg-btn{padding:7px 14px;border-radius:var(--radius);background:var(--accent);color:#fff;border:none;font-size:13px;cursor:pointer;font-family:sans-serif;white-space:nowrap}
+.lg-result{margin-top:8px;font-size:12px;font-family:sans-serif;color:var(--text2);word-break:break-all}
+.lg-result a{color:var(--accent)}
+.copy-btn{font-size:11px;padding:2px 8px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg);cursor:pointer;font-family:sans-serif;margin-left:6px}
+.grid-wrap{overflow-x:auto;margin-top:1rem}
+.sg{border-collapse:collapse;font-family:sans-serif;font-size:12px;min-width:700px;width:100%}
+.sg th{background:var(--bg2);padding:6px 8px;border:1px solid var(--border2);text-align:left;font-weight:600;color:var(--text2);white-space:nowrap}
+.sg td{padding:4px 6px;border:1px solid var(--border);vertical-align:top;min-width:120px}
+.sg .sgtime{font-weight:600;color:var(--text2);white-space:nowrap;background:var(--bg2)}
+.gc{border-radius:4px;padding:3px 6px;font-size:11px;margin-bottom:3px;line-height:1.4;background:var(--accent-light);color:var(--accent)}
+.gc.ct{border-left:3px solid var(--gold)}.gc.ch{border-left:3px solid var(--red-text)}.gc.cb{border-left:3px solid var(--red-text);background:var(--red-bg);color:var(--red-text)}
+.grid-legend{display:flex;gap:12px;font-size:11px;font-family:sans-serif;color:var(--text2);margin-bottom:8px;flex-wrap:wrap}
+.grid-legend span{display:flex;align-items:center;gap:4px}
+.ld{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.api-banner{padding:8px 14px;border-radius:var(--radius);font-size:13px;font-family:sans-serif;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.api-banner.demo{background:var(--gold-light);color:var(--gold)}.api-banner.err{background:var(--red-bg);color:var(--red-text)}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media print{.topbar .nav,.filters,.enroll-btn,.remove-btn,.print-btn,.roster-toggle,.roster-list{display:none!important}.panel{display:none!important}#panel-schedule{display:block!important}body{background:#fff}}
+@media(max-width:600px){.topbar{flex-direction:column}.form-grid,.modal-grid{grid-template-columns:1fr}.sched-item{grid-template-columns:1fr auto}.sched-time{display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-icon">&#x269C;</div>
+      <div><div class="brand-name">Kingdom Class Registry</div><div class="brand-sub" id="topbar-sub">Kingdom of Caid</div></div>
+    </div>
+    <nav class="nav">
+      <button class="nav-btn active" onclick="showPanel('catalog',this)"><i class="ti ti-menu-2"></i> Catalog</button>
+      <button class="nav-btn" onclick="showPanel('schedule',this)"><i class="ti ti-calendar"></i> My Schedule <span class="badge" id="sched-count">0</span></button>
+      <button class="nav-btn" onclick="showPanel('submit',this)"><i class="ti ti-plus"></i> Teach a Class</button>
+      <button class="nav-btn" onclick="showPanel('admin',this)"><i class="ti ti-settings"></i> Admin</button>
+    </nav>
+  </div>
+  <div class="main">
+    <div id="panel-catalog" class="panel active">
+      <div id="api-banner" class="api-banner demo" style="display:none"></div>
+      <div class="filters">
+        <input class="search-input" type="text" placeholder="Search classes, teachers&#x2026;" oninput="rC()" id="si">
+        <select class="filter-select" onchange="rC()" id="ff"><option value="">All formats</option><option value="zoom">Online / Zoom</option><option value="in-person">In person</option></select>
+        <select class="filter-select" onchange="rC()" id="ft"><option value="">All topics</option></select>
+        <select class="filter-select" onchange="rC()" id="fe"><option value="">All events</option></select>
+      </div>
+      <div class="class-grid" id="cg"></div>
+    </div>
+    <div id="panel-schedule" class="panel">
+      <div class="schedule-header"><div class="sched-title-h">My Schedule</div><button class="print-btn" onclick="window.print()"><i class="ti ti-printer"></i> Print</button></div>
+      <div id="sl"></div>
+    </div>
+    <div id="panel-submit" class="panel">
+      <div class="submit-form">
+        <div id="ev-banner" class="ev-banner" style="display:none"><i class="ti ti-lock"></i> <span id="ev-banner-txt"></span></div>
+        <div class="form-section-title">Submit a class</div>
+        <div class="form-section-sub">Submissions go to admin review before appearing in the catalog.</div>
+        <div class="form-divider">About the class</div>
+        <div class="form-grid">
+          <div class="form-col"><label class="form-label">Class title *</label><input class="form-input" id="fc-t" type="text" placeholder="e.g. Intro to tablet weaving"></div>
+          <div class="form-col"><label class="form-label">Your SCA name *</label><input class="form-input" id="fc-tc" type="text"></div>
+        </div>
+        <div class="form-grid">
+          <div class="form-col"><label class="form-label">Your email (admin contact only)</label><input class="form-input" id="fc-em" type="email" placeholder="not shown publicly"></div>
+          <div class="form-col"><label class="form-label">Topic</label>
+            <select class="form-select" id="fc-tp"><option>Fiber Arts</option><option>Costuming</option><option>Dance</option><option>History</option><option>Society Skills</option><option>Bardic Arts</option><option>Scribal Arts</option><option>Cooking &amp; Brewing</option><option>Combat</option><option>Archery</option><option>Heraldry</option><option>Crafts</option><option>Other</option></select>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-col"><label class="form-label">Format</label><select class="form-select" id="fc-fm" onchange="tzf()"><option value="in-person">In person</option><option value="zoom">Zoom / Online</option></select></div>
+          <div class="form-col"><label class="form-label">Max attendees (blank = unlimited)</label><input class="form-input" id="fc-mx" type="number" min="1"></div>
+        </div>
+        <div class="form-full" id="zf" style="display:none"><label class="form-label">Zoom link</label><input class="form-input" id="fc-zl" type="url" placeholder="https://zoom.us/j/..."><span class="form-hint">Shown to registered attendees only.</span></div>
+        <div class="form-full"><label class="form-label">Class description</label><textarea class="form-textarea" id="fc-d" placeholder="What will attendees learn? What level?"></textarea></div>
+        <div class="form-full"><label class="form-label">Prerequisites</label><input class="form-input" id="fc-pr" type="text" placeholder="Leave blank if none"></div>
+        <div class="form-divider">Logistics</div>
+        <div class="form-grid">
+          <div class="form-col"><label class="form-label">Class fee</label><input class="form-input" id="fc-fe" type="text" placeholder="e.g. $5 materials &#x2014; blank if free"><span class="form-hint">Leave blank if free.</span></div>
+          <div class="form-col"><label class="form-label">Duration</label><select class="form-select" id="fc-du"><option value="30">30 min</option><option value="60" selected>1 hour</option><option value="90">90 min</option><option value="120">2 hours</option><option value="180">3 hours</option></select></div>
+        </div>
+        <div class="form-full"><label class="form-label">What should students bring?</label><input class="form-input" id="fc-br" type="text" placeholder="Leave blank if nothing needed"></div>
+        <div class="form-divider" id="sched-lbl">Scheduling</div>
+        <div id="sched-dt">
+          <div class="form-grid">
+            <div class="form-col"><label class="form-label">Date *</label><input class="form-input" id="fc-da" type="date"></div>
+            <div class="form-col"><label class="form-label">Time *</label><input class="form-input" id="fc-ti" type="time"></div>
+          </div>
+          <div class="form-full"><label class="form-label">Event / context (optional)</label><input class="form-input" id="fc-ev" type="text" placeholder="e.g. weeknight Zoom, standalone workshop"></div>
+        </div>
+        <div id="sched-pf" style="display:none">
+          <div class="form-grid"><div class="form-col"><label class="form-label">How many times?</label><select class="form-select" id="fc-rp"><option value="once">Once</option><option value="twice">Twice</option><option value="three+">3+</option></select></div></div>
+          <div class="form-full"><label class="form-label">Time preferences</label><textarea class="form-textarea" id="fc-tpref" style="min-height:60px" placeholder="e.g. Friday afternoon preferred, avoid Saturday evening"></textarea><span class="form-hint">Organizer assigns the final slot.</span></div>
+        </div>
+        <div class="form-full"><label class="form-label">Anything else the admin should know?</label><textarea class="form-textarea" id="fc-no" style="min-height:60px" placeholder="Special requirements, equipment, scheduling notes, etc."></textarea></div>
+        <div class="submit-row">
+          <div class="submit-note"><i class="ti ti-info"></i> Goes to admin review before publishing</div>
+          <button class="submit-action" id="submit-btn" onclick="doSubmit()">Submit for review</button>
+        </div>
+        <div class="success-msg" id="submit-ok"><i class="ti ti-check"></i> Submitted! The admin will review it shortly.</div>
+      </div>
+    </div>
+    <div id="panel-admin" class="panel">
+      <div class="admin-lock" id="admin-lock">
+        <p>Enter the admin password to manage submissions and approvals.</p>
+        <div class="lock-row"><input class="lock-input" type="password" id="admin-pw" placeholder="Password" onkeydown="if(event.key==='Enter')doAdminLogin()"><button class="lock-btn" onclick="doAdminLogin()">Unlock</button></div>
+        <div class="lock-err" id="lock-err">Incorrect password.</div>
+      </div>
+      <div id="admin-content" style="display:none">
+        <div class="link-gen">
+          <div class="link-gen-title"><i class="ti ti-link"></i> Create event &amp; generate submission link</div>
+          <div class="lg-row">
+            <div style="display:flex;flex-direction:column;gap:4px;flex:1"><label class="form-label">Event name</label><input class="lg-input" type="text" id="lg-name" placeholder="e.g. Gyldenholt Anniversary 2026"></div>
+            <div style="display:flex;flex-direction:column;gap:4px"><label class="form-label">Date</label><input class="lg-input" type="date" id="lg-date" style="max-width:160px"></div>
+            <button class="lg-btn" onclick="createEvent()">Create &amp; get link</button>
+          </div>
+          <div class="lg-result" id="lg-result" style="display:none"></div>
+        </div>
+        <div class="admin-section-title">Pending review <span class="badge" id="pending-count">0</span></div>
+        <div id="pending-list"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:1.5rem 0 10px">
+          <div class="admin-section-title" style="margin:0">Approved classes</div>
+          <div style="display:flex;align-items:center;gap:8px"><label class="form-label">Schedule grid for:</label><select class="filter-select" id="grid-ev" onchange="loadGrid()" style="font-size:12px;padding:5px 8px"><option value="">&#x2014; pick event &#x2014;</option></select></div>
+        </div>
+        <div id="grid-view" style="display:none">
+          <div class="grid-legend">
+            <span><div class="ld" style="background:var(--accent-light);border-left:3px solid var(--gold)"></div> Same topic overlap</span>
+            <span><div class="ld" style="background:var(--red-bg);border-left:3px solid var(--red-text)"></div> Same teacher double-booked</span>
+          </div>
+          <div class="grid-wrap"><table class="sg" id="grid-table"></table></div>
+        </div>
+        <div id="approved-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-bg" id="reg-modal">
+  <div class="modal">
+    <div class="modal-title" id="rm-title">Register</div>
+    <div class="modal-sub" id="rm-sub"></div>
+    <div id="rm-ov" class="modal-note mn-ov" style="display:none"></div>
+    <div id="rm-wl" class="modal-note mn-wl" style="display:none"><i class="ti ti-clock"></i> This class is full &#x2014; you will be added to the waitlist.</div>
+    <div id="rm-fee" class="modal-note mn-fee" style="display:none"><i class="ti ti-info"></i> <span id="rm-fee-txt"></span></div>
+    <div class="modal-field"><label class="modal-label">Your SCA name *</label><input class="modal-input" id="rm-sca" type="text"></div>
+    <div class="modal-field"><label class="modal-label">Email address *</label><input class="modal-input" id="rm-email" type="email" placeholder="for organizer contact only, never shown publicly"></div>
+    <label class="cb-row"><input type="checkbox" id="rm-hide"> Hide my name in the public class roster</label>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('reg-modal')">Cancel</button>
+      <button id="rm-override" class="modal-confirm mc-gold" style="display:none" onclick="doRegister(true)">Register anyway</button>
+      <button id="rm-confirm" class="modal-confirm" onclick="doRegister(false)">Register</button>
+    </div>
+  </div>
+</div>
+<div class="modal-bg" id="approve-modal">
+  <div class="modal">
+    <div class="modal-title">Approve class</div>
+    <div class="modal-sub" id="am-sub"></div>
+    <div id="am-pref" class="modal-note mn-info" style="display:none"></div>
+    <div class="modal-section">Assign date, time &amp; room</div>
+    <div class="modal-grid">
+      <div class="modal-field" style="margin-bottom:0"><label class="modal-label">Date *</label><input class="modal-input" id="am-date" type="date"></div>
+      <div class="modal-field" style="margin-bottom:0"><label class="modal-label">Time *</label><input class="modal-input" id="am-time" type="time"></div>
+    </div>
+    <div class="modal-field" style="margin-top:10px"><label class="modal-label">Room / location</label><input class="modal-input" id="am-room" type="text" placeholder="e.g. Main A&amp;S tent, Room B"></div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('approve-modal')">Cancel</button>
+      <button class="modal-confirm mc-green" id="am-confirm" onclick="confirmApprove()"><i class="ti ti-check"></i> Approve &amp; publish</button>
+    </div>
+  </div>
+</div>
+<div class="modal-bg" id="roster-modal">
+  <div class="modal">
+    <div class="modal-title" id="roM-title">Roster</div>
+    <div id="roM-body" style="font-family:sans-serif;font-size:13px"></div>
+    <div class="modal-actions"><button class="modal-cancel" onclick="closeModal('roster-modal')">Close</button></div>
+  </div>
+</div>
+<script>
+const SEED_CLASSES = [
+  {id:'1',title:`Arrow Making Workshop`,teacher:`THLord Merlin Wynn`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Archery',event:'Collegium 2026',room:`Archery`,desc:`In this workshop you will learn to prepare shafts and fully assemble arrows for use in the Target Archery Open Handbow Division within the SCA.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'2',title:`Field Heraldry for Demos`,teacher:`Maistreas Brig inghean Uatéìr`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Heraldry',event:'Collegium 2026',room:`Grab Bag rm 1`,desc:`In addition to basic field heraldry, this class will focus on tips for heralding at a demo. Heralds make great chatelaines.`,bring:`A voice and a curious mind`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'3',title:`A Medieval Broderer in London`,teacher:`HL Jerusha a'Laon`,date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'History',event:'Collegium 2026',room:`History Rm 2`,desc:`Embroidery was not just an idle pastime for noble ladies.  It was an industry, with rules, regulations.  This lecture style class goes over the known information about the profession of Embroiderer, focusing on London.`,bring:`Paper & Pencil for notes`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'4',title:`How to Wrap Your Head`,teacher:`HL Jerusha a'Laon`,date:'2026-08-16',time:'14:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Grab Bag Rm 3`,desc:`This class goes over different methods of wrapping your head using scarves and kerchiefs. Instructor will demonstrate various techniques and will have additional supplies for students to practice with.`,bring:`Paper & Pencil for notes`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'5',title:`Havamal introduction and discussion`,teacher:`Hallr brjost Starsson`,date:'2026-08-16',time:'15:00',duration:60,format:'in-person',topic:'Bardic Arts',event:'Collegium 2026',room:`Grab Bag Rm 3`,desc:`We'll discuss the [collection of] poem(s) that are a collection of Old Norse maxims or words of advice.`,bring:`A willingness to participate in discussion`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'6',title:`Territorial Seneschal Class`,teacher:`Dame Kale' Hrafnsdottir`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 1`,desc:`Come and learn most everything you need in order to become a territorial seneschal. You'll learn the rules and regs as well as helping hints to help you manage your position successfully.`,bring:`notebook, pen or pencil`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'7',title:`Werewolves in the Middle Ages and Renaissance`,teacher:`Maestra Maria Theresa Ipenarrieta`,date:'2026-08-16',time:'14:00',duration:60,format:'in-person',topic:'History',event:'Collegium 2026',room:`History Rm 2`,desc:`We like to think that werewolves are a product of the modern imagination. However, that thinking is WRONG! Come learn about how werewolves have been imagined throughout history, from Herodotus to a French serial killer who blamed it on the wolves.   Please note, there will be some discussion of murder and other adult topics, so this class is not suitable for children.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'8',title:`Beginning MetalThread Embroidery/Making a Change Purse`,teacher:`Comptesse Albra Katrine Marie Isabel Bautiste`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,desc:`Students will learn 3 basic metal thread embroidery stitches; difference between 'laid' and 'passing' metal threads; general tips for handling metal threads,  while creating a little change purse`,bring:`Students should bring a 6" round embroidery hoop for class;  small scissors for clipping metal threads *only*;needlethreader`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'9',title:`Persona Development for the Beginner`,teacher:`Kyr Yaroslav the Persistent`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 2`,desc:`How to take the first steps in developing your SCA persona`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'10',title:`Creating Your SCA YouTube Channel`,teacher:`Kyr Yaroslav the Persistent`,date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 2`,desc:`Explaining the why and how of creating a YouTube Channel to document and share your SCA journey.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'11',title:`Norse Inspired Apron forepanel`,teacher:`Staeina Halfdanardottir`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`History Rm 2`,desc:`In this class, I will discuss information about the decorative forepanels that many wear. I will also discuss the way in which I make or design my pieces. Handout provided with basic information.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'12',title:`Dirty Talk: Unmentionables, Laundry and Who Did the Washing`,teacher:`THL Hunith Wen`,date:'2026-08-16',time:'16:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Grab Bag Rm 3`,desc:`Ever wonder secrets are called "dirty laundry?" Domestic work may not sound interesting, but this topic might surprise you.`,bring:`Curiosity and interest`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'13',title:`Braiding for beginners`,teacher:`Folkvi Skytja`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`A basic overview of different styles of braids, with hair provided for students to practice with. We will also go over a few historical styles and how to create them.`,bring:`A brush and comb, if possible`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'14',title:`Advanced hairstyling`,teacher:`Folkvi Skytja`,date:'2026-08-16',time:'14:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Cooking/Costuming`,desc:`A further look into braids and how to use them to create period styles. Hair will be provided for practicing.`,bring:`A brush and comb if possible`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'15',title:`Navigating Chronic Curiosity`,teacher:`Lady Áine of Phoenix Glade`,date:'2026-08-16',time:'14:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Archery`,desc:`How do we go from "man, that painting looks cool" or "this sounds like coolest person, I want to know more" to a completed project in the SCA? Come join to find out! This process is not exclusive to paintings or people, it can be applied in all aspects of our Society.`,bring:`Feel free to bring a subject in mind if you are stuck, perhaps we can make progress together!`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'16',title:`Curing Bacon 101`,teacher:`Master Guy Rand Gallandon`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Collegium 2026',room:`Cooking/Costuming`,desc:`Learn how to cure, flavor, and make your own bacon`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'17',title:`1500s Printing`,teacher:`Fadi AlQahiri`,date:'2026-08-16',time:'14:00',duration:60,format:'in-person',topic:'History',event:'Collegium 2026',room:`Arts/History Rm 1`,desc:`Learn how to print a picture using 1500 techniques from a metal plate using ink and a rolling press.`,bring:`Interest in learning`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'18',title:`Army of Caid Structure and Use`,teacher:`Methius le Vaux`,date:'2026-08-16',time:'14:00',duration:60,format:'in-person',topic:'Combat',event:'Collegium 2026',room:`Field - Martial Class, all types`,desc:`This class is designed for members of the Caid Armored Melee community to learn the structure and use of commands and the abilities of the Army of Caid.`,bring:`Armor if wanting to participate in fighting.`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'19',title:`How Manuscripts Were Made`,teacher:`Bruce Draconarius of Mistholme`,date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Grab Bag rm 1`,desc:`What were the steps medieval scribes took, to turn the parchment into a book?  A brief overview of the history of manuscripts, how the process changed to suit its customer base, and maybe even discovering why most modern books are taller than they are wide.`,bring:`Note-taking materials as desired`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'20',title:`Calligraphy 101`,teacher:`Bruce Draconarius`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Grab Bag rm 1`,desc:`An introduction to basic medieval calligraphy.  Students will learn pen strokes and the ductus for two of the more popular medieval hands (possibly more as time permits).`,bring:`Paper; pencil; see-through ruler.  Students are encouraged to bring their own calligraphic pen/ink.`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'21',title:`Weave a Napkin (or Towel)`,teacher:`Magistra Astra Christiana Benedict & Duchess Bridget Lucia MacKenzie`,date:'2026-08-16',time:'15:00',duration:60,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Outdoor Shade`,desc:`Experience the joy of creating fabric by weaving your own napkin or towel in this one-on-one class.  One hour slots are available throughout the day, sign up here:https://tinyurl.com/2u3ud75p`,bring:`none`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'22',title:`English Country Dance for the Masque`,teacher:`Coune Brocc of Alderden`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Dance',event:'Collegium 2026',room:`Dance`,desc:`Beginning and intermediate English Country dances that will be done at the Masque on August 29 will be taught.  The class will be tailored to the skill level of the attendees.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'23',title:`Beginning Using a Sewing Machine You Can’t Break`,teacher:`Alia la rousse`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Grab Bag Rm 3`,desc:`This class is for people who know nothing about how to work a sewing machine. The instruction will be very basic, and everyone will get to try out using the unbreakable sewing machine.`,bring:`Clean hands & no food/beverages.`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'24',title:`Painted on fabric designs. It’s period! It’s fun!`,teacher:`Alia la rousse`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:``,desc:`I’ll be briefly discussing the extant examples we have of clothing with designs painted on them, then everyone will get a chance to learn how to stencil the design of their choice in multiple ways onto fabric (either pouches people have available from my earlier sewing class, or just fabric from my stash they can practice on.`,bring:`Wet wipes, in case our classroom does not have a sink or if they spill something.`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'25',title:`Processional Dance: Pavane and Almaine`,teacher:`Magistra Adelaide de Beaumont`,date:'2026-08-16',time:'14:00',duration:60,format:'in-person',topic:'Dance',event:'Collegium 2026',room:`Dance`,desc:`Let's walk with attitude!  Some dances were all about looking and being looked at, and these dances are simple, and mostly low-impact and sweat-free!`,bring:`comfy shoes`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'26',title:`Spruce Up your Social Media: Intro to Canva and other online tools`,teacher:`Sherlin Goldhammer`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:``,desc:`Do you see great graphics, videos, photos, announcements that draw your attention? Do you want to learn how to create this on your own?  Let me walk you through a live demonstration of how you can create graphics, videos, or add eye catching text in order to create hype for your territory.   I know, I know. It isn’t a period art. But we ARE trying to promote The Knowne World in a Modern World wher`,bring:`Phone or Laptop`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'27',title:`Bardic 101`,teacher:`Master True Thomas Whitehart`,date:'2026-08-16',time:'14:00',duration:60,format:'in-person',topic:'Bardic Arts',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`This class will give an overview of the various types of bardic/performance arts in the SCA, including major performance opportunities, basic etiquette for both performers and audience and resources for newer performers.`,bring:`notebook and writing implement for notes, ears to listen, mouths to speak, sing, laugh, etc :)`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'28',title:`The Beauty of Parsi: A Brief Cultural Introduction to the Persian Language`,teacher:`Noble Azar Parsa`,date:'2026-08-16',time:'12:00',duration:60,format:'in-person',topic:'History',event:'Collegium 2026',room:`History Rm 2`,desc:`Brief Introduction to Parsi through poetry`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'29',title:`Serving on Court 101`,teacher:`THL Kutaiba al-Azrak`,date:'2026-08-16',time:'14:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 2`,desc:`An introduction to duties and expectations once you've joined a court.`,bring:`Note taking supplies`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'30',title:`Persian Court Dance`,teacher:`Faizeh al Zarqa`,date:'2026-08-16',time:'15:00',duration:60,format:'in-person',topic:'Dance',event:'Collegium 2026',room:`Dance`,desc:`In this class we will explore how to perform period Persian court dance.`,bring:`Water, note taking implements`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'31',title:`Developing a Persona-based Performance`,teacher:`Mary Dedwydd verch Gwallter`,date:'2026-08-16',time:'16:00',duration:60,format:'in-person',topic:'Bardic Arts',event:'Collegium 2026',room:`Outdoor Shade`,desc:`A seldom explored option for a bardic performance set is to perform _as_ your period self, even (perhaps especially) if your persona is not a bard or other typical performance type.  This class introduces the idea of persona-based performance. It will cover useful brainspaces and approaches to creating a unique historically informed performance.`,bring:`ideas & a willingness to play a bit`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'32',title:`Big Project Management`,teacher:`Dame Richenda Elizabeth Coffin`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Arts & Sciences Competition Preparation',event:'Collegium 2026',room:`Arts/History Rm 1`,desc:`Ever wonder why your huge projects never actually get done?  Come discuss strategies and tips for actually getting that dream across the finish line.`,bring:`note taking materials, ideas for big projects`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'33',title:`Tips and tricks for doing well in competitions`,teacher:`Dame RIchenda Elizabeth Coffin`,date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'Arts & Sciences Competition Preparation',event:'Collegium 2026',room:`Arts/History Rm 1`,desc:`Come learn from a Pentathlon and inter-kingdom competition winner how to make the rules and rubrics work for you, not against you.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'34',title:`The Care and Maintenance of Blades/Swords`,teacher:`THL Paul Stoddard`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Crafts',event:'Collegium 2026',room:`Metal/Leather rm`,desc:`This is an introductory course on how to maintain and clean swords and blades.  It is a hybrid course of lecture and hands on learning.  So you have hit vendor's row and purchased a sword and/or dagger.  The question is now how to keep that blade looking good over time.  This class will help answer that question.`,bring:`Please bring the sword and/or blade that you wish to have cleaned.`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'35',title:`Caid Choir Rehearsal`,teacher:`Lady Sadhbh inghean Duinn`,date:'2026-08-16',time:'15:00',duration:60,format:'in-person',topic:'Bardic Arts',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`Come sing with us! We'll look through a few potential pieces for future performances.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'36',title:`Exchequer 101`,teacher:`Baron Tomaso da Barbiano`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 1`,desc:`An introduction to the exchequer's office. This class is for those looking to assume the office or anyone wanting to know more about it.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'37',title:`Block Printed Napkins: Experimenting with Different Materials`,teacher:`THLady Rosie Black Rune`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,desc:`In this glass with will be Block Printing on linen napkins with three different types of blocks - wooden, linoleum, & 3D printed. The goal of this class it to experiment how the different composite block, affects the print on the linen napkin.`,bring:`If you wish to bring your own item you wish to experiment on, feel free to bring it in!`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'38',title:`History of Textile Printing Across the World`,teacher:`THLady Rosie Black Rune`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'History',event:'Collegium 2026',room:`Arts/History Rm 1`,desc:`Come with me on a journey across the world to explore the different types of Textile Printing that existed at some point 1650 and before - with some examples of how certain places are still printing fabrics in these methods to this day.`,bring:`Your favorite notebook`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'39',title:`Leather Mask Making Technique`,teacher:`Todde mac Donnell`,date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'Crafts',event:'Collegium 2026',room:`Grab Bag Rm 3`,desc:`A quick demonstration on how to shape and mold leather masks, plus a bit of history on theatrical and carneval masks`,bring:`Heavy scissors would be helpful`,fee:'$3 materials',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'40',title:`Late period welted shoes - design`,teacher:`Todde mac Donnell`,date:'2026-08-16',time:'14:00',duration:60,format:'in-person',topic:'Crafts',event:'Collegium 2026',room:`Metal/Leather rm`,desc:`This will be a demonstration of patterning and last-making for welted latchet shoes that were common from 1570 to 1620.  Welted shoes are double-soled, double-seamed shoes built right side out on the last.`,bring:`Measuring tape will be helpful`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'41',title:`Late period welted shoes - Construction`,teacher:`Todde mac Donnell`,date:'2026-08-16',time:'16:00',duration:60,format:'in-person',topic:'Crafts',event:'Collegium 2026',room:`Metal/Leather rm`,desc:`A demonstration of building the upper, lasting, and seaming a double-soled latchet shoe.  This will be done "cooking show" style to demonstrate the key steps.  Students will practice sewing seams, but not build their own shoes.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'42',title:`Dances of the Medieval Ottomans`,teacher:`The Faizeh`,date:'2026-08-16',time:'16:00',duration:60,format:'in-person',topic:'Dance',event:'Collegium 2026',room:`Dance`,desc:`An overview lecture of various dances from religious to entertainment used during the medieval Ottoman era`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'43',title:`Dining Etiquette in the Ottoman Empire`,teacher:`Maestra Elisheva bat Yisrael`,date:'2026-08-16',time:'16:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`In preparation for PPF: Ottoman, we are reviewing expected dining etiquette generally in the Muslim world in our period, and specifically in the Ottoman Empire, with particular attention to in-period commentary on the Turks.`,bring:`Personal note-taking materials if desired`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'44',title:`Movement for hip & lower body flexibility`,teacher:`Maestra Elisheva bat Yisrael`,date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'Dance',event:'Collegium 2026',room:`Field - Martial Class, all types`,desc:`A yoga-like routine focusing on flexibility for the hip and lower body, enabling easier sitting on the floor, getting up and down, supporting lunge movements, and generally preventing injury.`,bring:`yoga mat or towel/blanket large enough to lay on`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'45',title:`Italian Dance for Beginners`,teacher:`Baroness Delphine de Montallieu`,date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'Dance',event:'Collegium 2026',room:`Dance`,desc:`Come learn some 15th and 16th century Italian dances - either in preparation for the ball at Muse's Masque, or just to have fun!  No experience required.`,bring:`Comfortable shoes, water to drink`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'46',title:`Bransles:  Easy 16th century French Dance`,teacher:`Baroness Delphine de Montallieu`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Dance',event:'Collegium 2026',room:``,desc:`Can you step back and forth?  You can do a Bransle!  This class will cover the four Bransles that will be on the dance set for the ball at Muse's Masque.`,bring:`Comfortable shoes and water to drink`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'47',title:`Sari Not Sari`,teacher:`THL Lucia Traveler`,date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Cooking/Costuming`,desc:`This class will explore the use of saris as a base for garb from a variety of historical periods.`,bring:`nothing`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'48',title:`Musicology of Western Chant`,teacher:`Frida Hrosskætilsdottir`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Bardic Arts',event:'Collegium 2026',room:`History Rm 2`,desc:`Recent studies of medieval music treatises have found new information on how chant was sung. Class will introduce relevant topics in music theory, explore what the treatises say about style and ornaments, and discuss the history of how our modern view of medieval chant evolved.`,bring:`Note taking`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'49',title:`Closing The Distance`,teacher:`Galien Crow`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Combat',event:'Collegium 2026',room:`Field - Martial Class, all types`,desc:`A hands on, practical lesson on ways to enter your opponent's range and strike them without dying while getting the most out of your lunges.`,bring:`Rapier gear such as swords, masks, armor, and gorget`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'50',title:`When Good Gentles Falter: Practicing Grace in Our Society`,teacher:`Lady Ren Shu`,date:'2026-08-16',time:'12:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 2`,desc:`This roundtable invites participants to reflect on how offering grace to ourselves and others can help sustain strong relationships when emotions run high or mistakes occur. Through open discussion, we’ll explore ways to respond to conflict and miscommunication with patience, empathy, and understanding. Attendees will gain practical tools for encouraging healthier communication and nurturing a mor`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'51',title:`How to Run Lists for Tournaments`,teacher:`Mestresse Tezar of Aeolis`,date:'2026-08-16',time:'15:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 1`,desc:`A discussion of what it means to be a list person, your contribution to the martial forms, and how to run different types of tournaments.`,bring:`Notetaking materials`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'52',title:`Arrow Dynamics: how does an arrow shot work anyways?`,teacher:`Gideon the Genuine`,date:'2026-08-16',time:'15:00',duration:60,format:'in-person',topic:'Archery',event:'Collegium 2026',room:`Archery`,desc:`This class covers the dynamics of what happens when an arrow is shot from a bow.  How it is released, how it bends, and how it flies.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'53',title:`History and making of a rope sling`,teacher:`Gideon the Genuine`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Archery',event:'Collegium 2026',room:`Archery`,desc:`Learn about the history of rope slings, their development, impact, and make one to take home.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'54',title:`Weave a Pouch`,teacher:`Kathryn de Beziers`,date:'2026-08-16',time:'16:00',duration:60,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Cooking/Costuming`,desc:`Learn to weave a small seamless bag on a cardboard loom. Students will start the project in class and be provided with resources to complete the project on their own.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'55',title:`Ottoman Garb Basics`,teacher:`Rayhana bint Estafanos al-Ábbas`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Cooking/Costuming`,desc:`This class walks through the basics of period-appropriate mid-16th century Ottoman clothing, with practical guidance on layers, silhouettes, and accessible starting points for creating garb suitable for the Perfectly Period Ottoman Feast in August.`,bring:`N/a`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'56',title:`Thread Woven Buttons`,teacher:`Rayhana bint Estafanos al-Ábbas`,date:'2026-08-16',time:'16:00',duration:60,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,desc:`Learn to create thread-covered wooden buttons common in 16th-century tailoring. Students will practice wrapping and stitching techniques on wooden bead cores. Includes a kit to complete a full set.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'57',title:`Simple Iron Gall Ink`,teacher:`Fiachra an Doire`,date:'2026-08-16',time:'12:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`Learn to make an easy, simple, and effective iron gall ink based on a late 14th or early 15th century English recipe.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'58',title:`Brewers' exploration of microbes`,teacher:`Duena Tsura Romani`,date:'2026-08-16',time:'12:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Collegium 2026',room:`Metal/Leather rm`,desc:`Explore the differences in safely fermentable microbiomes in a tasty adventure`,bring:`List of ingredients for any shareable items.`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'59',title:`Massage technique`,teacher:`Duena Tsura Romani`,date:'2026-08-16',time:'16:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 2`,desc:`Beginners introduction to western massage`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'60',title:`Creating cross stitch patterns`,teacher:`THL Tracy the Gray and Baroness Lynnette de Sandoval del Valle de los Unicornios`,date:'2026-08-16',time:'14:00',duration:60,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,desc:`Learn to turn SCA devices and other simple designs in to cross stitch patterns using nothing but a pencil and graph paper. Examples and instructions will be given.`,bring:`Nothing`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'61',title:`SCA Photography Basics`,teacher:`THLord Suleiman ibn Rawh`,date:'2026-08-16',time:'14:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 1`,desc:`Basic concepts and tips of how to capture moments in a historical reenactment group and how to use your camera.`,bring:`If you can, bring your camera (or phone) with you. Whichever type.`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'62',title:`Female-Identifying Fighters Forum`,teacher:`THL Livith filia Organae`,date:'2026-08-16',time:'15:00',duration:60,format:'in-person',topic:'Combat',event:'Collegium 2026',room:`Society Skills Rm 2`,desc:`A safe space for female-identifying fighters to come and discuss common challenges, as well as as brainstorm potential solutions to benefit our community`,bring:`A willingness to discuss difficult and/or taboo topics with a resolution-oriented mindset`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'63',title:`The World of the Scythians`,teacher:`Mistress Sibylla de Haze`,date:'2026-08-16',time:'16:00',duration:60,format:'in-person',topic:'History',event:'Collegium 2026',room:`Arts/History Rm 1`,desc:`A deep dive into the material world of the Scythians, their lives, and culture.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'64',title:`Learn beginning leather tooling (Make a leather valet/catch-all tray)`,teacher:`Baroness Amabel Radleigh`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Crafts',event:'Collegium 2026',room:`Metal/Leather rm`,desc:`Students will transfer and tool a Celtic knot onto a piece of leather, finish edges and sew corners up to create a usable, take home valet/catch-all tray. $10 class material fee.`,bring:``,fee:'$10 materials',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'65',title:`Armory 101, or How to create armory for use in the SCA.`,teacher:`Lord Séamus mac Néill Uí Chonchobhair`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Heraldry',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`Have Their Majesties commanded you to "consult with their heralds to determine suitable arms", but the process sounds daunting? Learn the basic rules for SCA armory (and how to break them if you want), and where to find period examples of armory for comparison.`,bring:`Ideas!`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'66',title:`How to Survive a CoH Garden Meeting, including the basics of OSCAR commentary`,teacher:`Lord Séamus mac Néill Uí Chonchobhair`,date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'Heraldry',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`This will help you understand the basics of what happens in the Caid College of Heralds monthly meeting so you can feel comfortable participating. We'll talk about basic blazons, conflict checking, and how OSCAR commentary helps make the meeting smoother.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'67',title:`12th Century Herbal Hair Powder`,teacher:`Alienor Strongbow de Clare`,date:'2026-08-16',time:'15:00',duration:60,format:'in-person',topic:'History',event:'Collegium 2026',room:`History Rm 2`,desc:`This class explores the recipe for making a powder to perfume the hair from the 12th century found in the Trotula manuscript.`,bring:`Notebook`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'68',title:`Electronic Payment (PayPal) Authorized User Training`,teacher:`Mistress Cara Michelle duValier`,date:'2026-08-16',time:'16:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Grab Bag rm 1`,desc:`This training will allow students to volunteer to accept electronic payments at Caidan SCA events.`,bring:`Note taking materials.`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'69',title:`Exchequer - How to prepare for and run gate at events.`,teacher:`Mistress Cara Michelle DuValier`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Grab Bag Rm 3`,desc:`In this class we will go through all of the steps to prepare to manage the gate table at events.`,bring:`Note taking materials.`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'70',title:`Hand Finishing Hems`,teacher:`Mary Dedwydd verch Gwallter`,date:'2026-08-16',time:'15:00',duration:60,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Cooking/Costuming`,desc:`Learn two simple hand hem stitches for finishing napkins for PPF (or any other hem, honestly). Supplies will be provided.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'71',title:`Winter Weekend 101`,teacher:`Sir Robear Du Bois`,date:'2026-08-16',time:'12:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 1`,desc:`A brief history of the yearly event known as Winter Weekend, how it began and how it has evolved.  Where and when the event takes place, and what facilities the camp provides.  What we do at Winter Weekend, and what activities are available when the camp has snow.  What you need to bring to the event, and what you might enjoy having with you during the weekend.  How we share the cooking, the clean`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'72',title:`Phoenix Players practice`,teacher:`Mistress Finella Harper`,date:'2026-08-16',time:'16:00',duration:60,format:'in-person',topic:'Bardic Arts',event:'Collegium 2026',room:`Field - Martial Class, all types`,desc:`Do you play an instrument that plays well with others? Do you read music? Do you waant to play some renaissance dance music? Join us to play through some tunes that will be danced at Muse's Masque August 29. Bring an instrument and a stnad if you have one.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]}
+];
+const APPS_SCRIPT_URL='YOUR_APPS_SCRIPT_URL_HERE';
+const IS_DEMO=APPS_SCRIPT_URL==='YOUR_APPS_SCRIPT_URL_HERE';
+const lockedEvent=new URLSearchParams(window.location.search).get('event');
+const dC=SEED_CLASSES.map(c=>({...c}));
+const dP=[],dEv=[{name:'Collegium 2026',date:'2026-08-16',active:true}];
+const dRegs={},dWL={};
+let dPid=1000,allClasses=[],myRegs=JSON.parse(localStorage.getItem('mR')||'{}');
+let adminToken=sessionStorage.getItem('aT')||null,pendingClasses=[],availEvents=[];
+let curModalId=null,curModalWL=false,curApprovingId=null;
+
+if(lockedEvent)document.getElementById('topbar-sub').textContent='Kingdom of Caid · '+lockedEvent;
+if(window.location.hash==='#submit')setTimeout(()=>showPanel('submit',document.querySelector('.nav-btn:nth-child(3)')),50);
+loadClasses();
+
+async function api(p){
+  if(IS_DEMO)return apiD(p);
+  const u=new URL(APPS_SCRIPT_URL);
+  Object.entries(p).forEach(([k,v])=>u.searchParams.set(k,v));
+  return(await fetch(u.toString())).json();
+}
+function apiD(p){
+  const{action}=p;
+  if(action==='getClasses'){
+    const ef=p.event||'';
+    return{ok:true,classes:dC.filter(c=>!ef||c.event===ef).map(c=>{
+      const r=dRegs[c.id]||[],w=dWL[c.id]||[];
+      return{...c,registrationCount:r.length,waitlistCount:w.length,
+        roster:r.map(x=>x.hidden?'Anonymous attendee':x.scaName),
+        waitlistRoster:w.map((x,i)=>({pos:i+1,name:x.hidden?'Anonymous attendee':x.scaName}))};
+    })};
+  }
+  if(action==='getEvents')return{ok:true,events:dEv};
+  if(action==='submitClass'){const id='d'+(dPid++);dP.push({...p,id,status:'pending'});return{ok:true,id};}
+  if(action==='register'){
+    const{classId,scaName,email,hideFromRoster,override}=p;
+    const cls=dC.find(c=>String(c.id)===String(classId));
+    if(!cls)return{ok:false,error:'Class not found'};
+    if(override!=='true'){
+      const myC=dC.filter(c=>(dRegs[c.id]||[]).some(r=>r.email===email));
+      const s=t2m(cls.time),e=s+(cls.duration||60);
+      const ov=myC.filter(c=>{if(c.date!==cls.date)return false;const cs=t2m(c.time),ce=cs+(c.duration||60);return s<ce&&e>cs;});
+      if(ov.length)return{ok:false,overlap:true,overlapWith:ov.map(c=>c.title)};
+    }
+    if(!dRegs[classId])dRegs[classId]=[];
+    if(!dWL[classId])dWL[classId]=[];
+    const full=cls.max&&dRegs[classId].length>=cls.max;
+    const entry={scaName,email,hidden:hideFromRoster==='true'};
+    if(full){dWL[classId].push(entry);return{ok:true,waitlisted:true};}
+    dRegs[classId].push(entry);return{ok:true,waitlisted:false};
+  }
+  if(action==='unregister'){const{classId,email}=p;if(dRegs[classId])dRegs[classId]=dRegs[classId].filter(r=>r.email!==email);return{ok:true};}
+  if(action==='leaveWaitlist'){const{classId,email}=p;if(dWL[classId])dWL[classId]=dWL[classId].filter(r=>r.email!==email);return{ok:true};}
+  if(action==='adminLogin')return p.password==='caid2026'?{ok:true,token:'demo'}:{ok:false,error:'Wrong password'};
+  if(action==='adminGetPending')return{ok:true,pending:dP.filter(c=>c.status==='pending')};
+  if(action==='adminApprove'){
+    const i=dP.findIndex(c=>String(c.id)===String(p.id));
+    if(i<0)return{ok:false,error:'Not found'};
+    const cls={...dP[i],status:'approved',date:p.date||dP[i].date,time:p.time||dP[i].time,room:p.room||'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]};
+    dP.splice(i,1);dC.push(cls);return{ok:true};
+  }
+  if(action==='adminReject'){const i=dP.findIndex(c=>String(c.id)===String(p.id));if(i>=0)dP.splice(i,1);return{ok:true};}
+  if(action==='adminRemove'){const i=dC.findIndex(c=>String(c.id)===String(p.id));if(i>=0)dC.splice(i,1);return{ok:true};}
+  if(action==='adminCreateEvent'){if(!p.name)return{ok:false,error:'Name required'};dEv.push({name:p.name,date:p.date||'',active:true});return{ok:true};}
+  if(action==='adminGetRoster'){
+    const r=(dRegs[p.classId]||[]).map(x=>({scaName:x.scaName,email:x.email,hidden:x.hidden}));
+    const w=(dWL[p.classId]||[]).map((x,i)=>({pos:i+1,scaName:x.scaName,email:x.email,hidden:x.hidden}));
+    return{ok:true,roster:r,waitlist:w};
+  }
+  if(action==='adminGetGrid')return{ok:true,approved:dC.filter(c=>!p.event||c.event===p.event),pending:dP.filter(c=>!p.event||c.event===p.event)};
+  return{ok:false,error:'Unknown action'};
+}
+
+function t2m(t){if(!t)return 0;const p=String(t).split(':');return parseInt(p[0])*60+parseInt(p[1]||0);}
+function fD(d){if(!d)return'';const[y,m,dy]=String(d).split('-');return new Date(y,m-1,dy).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+function fT(t){if(!t)return'';const p=String(t).split(':');const h=parseInt(p[0]);return(h>12?h-12:h||12)+':'+(p[1]||'00')+' '+(h>=12?'PM':'AM');}
+function isReg(c){return!!myRegs[c.id]&&!myRegs[c.id].waitlisted;}
+function isWL(c){return!!myRegs[c.id]&&myRegs[c.id].waitlisted;}
+function isFull(c){return c.max&&c.registrationCount>=c.max;}
+function wlPos(c){if(!isWL(c))return 0;const w=c.waitlistRoster||[];const n=myRegs[c.id]?.scaName;return(w.find(x=>x.name===n)||{pos:w.length}).pos;}
+
+function showPanel(name,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(name==='schedule')renderSchedule();
+  if(name==='catalog')rC();
+  if(name==='admin')initAdmin();
+  if(name==='submit')initSubmit();
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+async function loadClasses(){
+  const b=document.getElementById('api-banner');
+  if(IS_DEMO){b.style.display='flex';b.innerHTML='<i class="ti ti-info"></i> Demo mode — data resets on refresh. Set APPS_SCRIPT_URL to go live.';}
+  try{
+    const res=await api({action:'getClasses'});
+    if(res.ok){allClasses=res.classes;await loadEvFilter();populateTopics();rC();}
+  }catch(e){b.style.display='flex';b.className='api-banner err';b.innerHTML='<i class="ti ti-alert-circle"></i> Could not load classes.';}
+}
+async function loadEvFilter(){
+  try{
+    const res=await api({action:'getEvents'});
+    if(!res.ok)return;
+    availEvents=res.events;
+    ['fe','grid-ev'].forEach(sid=>{
+      const s=document.getElementById(sid);
+      res.events.forEach(e=>{const o=document.createElement('option');o.value=e.name;o.textContent=e.name;s.appendChild(o);});
+    });
+  }catch(e){}
+}
+function populateTopics(){
+  const s=document.getElementById('ft');
+  [...new Set(allClasses.map(c=>c.topic).filter(Boolean))].sort().forEach(t=>{
+    const o=document.createElement('option');o.value=t;o.textContent=t;s.appendChild(o);
+  });
+}
+function rC(){
+  const q=(document.getElementById('si').value||'').toLowerCase();
+  const fm=document.getElementById('ff').value,tp=document.getElementById('ft').value,ev=document.getElementById('fe').value;
+  const fl=allClasses.filter(c=>{
+    if(fm&&c.format!==fm)return false;
+    if(tp&&c.topic!==tp)return false;
+    if(ev&&c.event!==ev)return false;
+    if(q&&!c.title.toLowerCase().includes(q)&&!c.teacher.toLowerCase().includes(q)&&!c.desc.toLowerCase().includes(q))return false;
+    return true;
+  });
+  const g=document.getElementById('cg');
+  if(!fl.length){g.innerHTML='<div style="grid-column:1/-1;padding:2rem;text-align:center;color:#888;font-size:14px;font-family:sans-serif;">No classes match your filters.</div>';return;}
+  g.innerHTML=fl.map(c=>{
+    const reg=isReg(c),wl=isWL(c),full=isFull(c);
+    const sl=c.max!=null?c.max-c.registrationCount:null,low=sl!=null&&sl<=3&&sl>0;
+    let bc='enroll-btn',bt='Register';
+    if(reg){bc+=' enrolled';bt='✓ Registered';}
+    else if(wl){bc+=' waitlisted';bt='Waitlist #'+wlPos(c);}
+    else if(full){bc+=' waitlist-btn';bt='Join waitlist';}
+    const sp=c.max==null?'<span class="spots">Open enrollment</span>':full?'<span class="spots full">Full · '+c.waitlistCount+' waiting</span>':low?'<span class="spots low">'+sl+' spot'+(sl===1?'':'s')+' left!</span>':'<span class="spots">'+c.registrationCount+' / '+c.max+'</span>';
+    const fp=c.fee?'<span class="logistics-pill fee"><i class="ti ti-coin"></i> '+c.fee+'</span>':'<span class="logistics-pill free"><i class="ti ti-check"></i> Free</span>';
+    const bp=c.bring?'<span class="logistics-pill"><i class="ti ti-backpack"></i> Bring: '+c.bring+'</span>':'';
+    const ro=c.roster&&c.roster.length?'<button class="roster-toggle" onclick="toggleR('ro-'+c.id+'')"><i class="ti ti-users" style="font-size:12px"></i> See who's registered ('+c.registrationCount+')</button><div class="roster-list" id="ro-'+c.id+'"><ul>'+c.roster.map(n=>'<li>'+n+'</li>').join('')+'</ul>'+(c.waitlistRoster&&c.waitlistRoster.length?'<div class="roster-wl-title">Waitlist</div><ul>'+c.waitlistRoster.map(w=>'<li>#'+w.pos+' '+w.name+'</li>').join('')+'</ul>':'')+'</div>':'';
+    const du=c.duration&&c.duration!==60?' ('+Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h)':'';
+    return '<div class="class-card'+(reg?' registered':'')+'"><div class="card-top"><div class="card-title">'+c.title+'</div><span class="tag '+c.format+'">'+(c.format==='zoom'?'Online':'In person')+'</span></div>'
+      +'<div class="card-meta"><span><i class="ti ti-user"></i> '+c.teacher+'</span>'
+      +(c.date?'<span><i class="ti ti-calendar"></i> '+fD(c.date)+' · '+fT(c.time)+du+'</span>':'')
+      +((c.event||c.room)?'<span><i class="ti ti-location"></i> '+(c.event||'')+(c.event&&c.room?' · ':'')+c.room+'</span>':'')
+      +(c.topic?'<span><i class="ti ti-tag"></i> '+c.topic+'</span>':'')
+      +'</div>'+(c.prereqs?'<div style="font-size:11px;color:var(--accent);font-family:sans-serif;margin-bottom:6px"><i class="ti ti-info"></i> Prereq: '+c.prereqs+'</div>':'')
+      +'<div class="card-desc">'+c.desc+'</div><div class="card-logistics">'+fp+bp+'</div>'
+      +(c.zoomLink&&reg?'<div style="font-size:12px;font-family:sans-serif;margin-bottom:8px"><i class="ti ti-video"></i> <a href="'+c.zoomLink+'" target="_blank">Join Zoom</a></div>':'')
+      +'<div class="card-footer"><button class="'+bc+'" onclick="handleEnroll(''+c.id+'')">'+bt+'</button>'+sp+'</div>'+ro+'</div>';
+  }).join('');
+}
+function toggleR(id){const e=document.getElementById(id);if(e)e.classList.toggle('open');}
+
+function handleEnroll(id){
+  const c=allClasses.find(x=>String(x.id)===String(id));
+  if(!c)return;
+  if(isReg(c)){doUnreg(id);return;}
+  if(isWL(c)){doLeaveWL(id);return;}
+  openReg(id,isFull(c),false,[]);
+}
+function openReg(id,wl,hasOv,ovWith){
+  const c=allClasses.find(x=>String(x.id)===String(id));
+  curModalId=id;curModalWL=wl;
+  document.getElementById('rm-title').textContent=wl?'Join waitlist':'Register for class';
+  document.getElementById('rm-sub').textContent=c.title;
+  document.getElementById('rm-wl').style.display=wl?'block':'none';
+  const ovEl=document.getElementById('rm-ov'),ovBtn=document.getElementById('rm-override'),cnBtn=document.getElementById('rm-confirm');
+  if(hasOv){
+    ovEl.style.display='block';
+    ovEl.innerHTML='<i class="ti ti-alert-circle"></i> <strong>Schedule conflict:</strong> overlaps with <em>'+ovWith.join(', ')+'</em>. You can still register if you wish.';
+    ovBtn.style.display='inline-flex';cnBtn.style.display='none';
+  }else{ovEl.style.display='none';ovBtn.style.display='none';cnBtn.style.display='inline-flex';}
+  const feEl=document.getElementById('rm-fee');
+  if(c.fee){feEl.style.display='block';document.getElementById('rm-fee-txt').textContent='Fee: '+c.fee+' — pay teacher at class.';}
+  else feEl.style.display='none';
+  const st=JSON.parse(localStorage.getItem('uI')||'{}');
+  document.getElementById('rm-sca').value=st.sca||'';
+  document.getElementById('rm-email').value=st.email||'';
+  document.getElementById('rm-hide').checked=false;
+  cnBtn.textContent=wl?'Join waitlist':'Register';
+  cnBtn.className='modal-confirm'+(wl?' mc-gold':'');
+  document.getElementById('reg-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('rm-sca').focus(),50);
+}
+async function doRegister(override){
+  const sca=document.getElementById('rm-sca').value.trim(),email=document.getElementById('rm-email').value.trim(),hide=document.getElementById('rm-hide').checked;
+  if(!sca||!email){alert('SCA name and email are required.');return;}
+  if(!email.includes('@')){alert('Please enter a valid email address.');return;}
+  localStorage.setItem('uI',JSON.stringify({sca,email}));
+  const btn=override?document.getElementById('rm-override'):document.getElementById('rm-confirm');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
+  const res=await api({action:'register',classId:String(curModalId),scaName:sca,email,hideFromRoster:String(hide),override:String(override)});
+  btn.disabled=false;btn.textContent=curModalWL?'Join waitlist':'Register';
+  if(!res.ok&&res.overlap){openReg(curModalId,isFull(allClasses.find(c=>String(c.id)===String(curModalId))),true,res.overlapWith);return;}
+  if(!res.ok){alert(res.error||'Registration failed.');return;}
+  myRegs[curModalId]={scaName:sca,email,waitlisted:res.waitlisted};
+  localStorage.setItem('mR',JSON.stringify(myRegs));
+  const c=allClasses.find(x=>String(x.id)===String(curModalId));
+  if(c){if(res.waitlisted)c.waitlistCount++;else{c.registrationCount++;c.roster.push(hide?'Anonymous attendee':sca);}}
+  closeModal('reg-modal');updSC();rC();
+}
+async function doUnreg(id){
+  const i=myRegs[id];if(!i)return;
+  await api({action:'unregister',classId:String(id),email:i.email});
+  const c=allClasses.find(x=>String(x.id)===String(id));
+  if(c){c.registrationCount=Math.max(0,c.registrationCount-1);c.roster=c.roster.filter(n=>n!==i.scaName&&n!=='Anonymous attendee');}
+  delete myRegs[id];localStorage.setItem('mR',JSON.stringify(myRegs));updSC();rC();
+}
+async function doLeaveWL(id){
+  const i=myRegs[id];if(!i)return;
+  await api({action:'leaveWaitlist',classId:String(id),email:i.email});
+  const c=allClasses.find(x=>String(x.id)===String(id));
+  if(c)c.waitlistCount=Math.max(0,c.waitlistCount-1);
+  delete myRegs[id];localStorage.setItem('mR',JSON.stringify(myRegs));updSC();rC();
+}
+function updSC(){document.getElementById('sched-count').textContent=Object.values(myRegs).filter(r=>!r.waitlisted).length;}
+
+function renderSchedule(){
+  const mc=allClasses.filter(c=>myRegs[c.id]);
+  const l=document.getElementById('sl');
+  if(!mc.length){l.innerHTML='<div class="empty-sched"><i class="ti ti-calendar" style="font-size:36px;display:block;margin:0 auto 10px;opacity:.25"></i>No classes registered yet.<br>Browse the catalog to build your schedule.</div>';return;}
+  const s=[...mc].sort((a,b)=>(String(a.date)+String(a.time)).localeCompare(String(b.date)+String(b.time)));
+  l.innerHTML=s.map(c=>{
+    const wl=isWL(c),wp=wl?wlPos(c):0;
+    const fs=c.fee?' · Fee: '+c.fee:' · Free';
+    const bs=c.bring?'<div class="sched-bring"><i class="ti ti-backpack"></i> Bring: '+c.bring+'</div>':'';
+    const zs=(c.zoomLink&&!wl)?'<div class="sched-detail"><i class="ti ti-video"></i> <a href="'+c.zoomLink+'" target="_blank">Zoom link</a></div>':'';
+    return '<div class="sched-item"><div class="sched-time">'+fD(c.date)+'<br>'+fT(c.time)+'</div>'
+      +'<div><div class="sched-name">'+c.title+'</div>'
+      +'<div class="sched-detail">'+c.teacher+' · '+(c.format==='zoom'?'Online':'In person')+(c.event?' · '+c.event:'')+(c.room?' · '+c.room:'')+fs+'</div>'
+      +bs+zs+(wl?'<div class="wl-notice"><i class="ti ti-clock"></i> Waitlist position #'+wp+'</div>':'')
+      +'</div><button class="remove-btn" onclick="'+(wl?'doLeaveWL':'doUnreg')+'(''+c.id+'');setTimeout(renderSchedule,100)"><i class="ti ti-x"></i></button></div>';
+  }).join('');
+}
+
+function initSubmit(){
+  const b=document.getElementById('ev-banner'),ei=document.getElementById('fc-ev');
+  const dt=document.getElementById('sched-dt'),pf=document.getElementById('sched-pf'),sl=document.getElementById('sched-lbl');
+  if(lockedEvent){
+    b.style.display='flex';document.getElementById('ev-banner-txt').textContent='Submitting for: '+lockedEvent;
+    ei.value=lockedEvent;ei.disabled=true;dt.style.display='none';pf.style.display='block';sl.textContent='Scheduling preferences';
+  }else{b.style.display='none';ei.disabled=false;dt.style.display='block';pf.style.display='none';sl.textContent='Scheduling';}
+}
+function tzf(){document.getElementById('zf').style.display=document.getElementById('fc-fm').value==='zoom'?'flex':'none';}
+async function doSubmit(){
+  const t=document.getElementById('fc-t').value.trim(),tc=document.getElementById('fc-tc').value.trim();
+  const il=!!lockedEvent,d=document.getElementById('fc-da').value,ti=document.getElementById('fc-ti').value;
+  if(!t||!tc){alert('Title and your SCA name are required.');return;}
+  if(!il&&(!d||!ti)){alert('Date and time are required.');return;}
+  const btn=document.getElementById('submit-btn');btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Submitting…';
+  const res=await api({action:'submitClass',title:t,teacher:tc,teacherEmail:document.getElementById('fc-em').value.trim(),
+    date:il?'':d,time:il?'':ti,duration:document.getElementById('fc-du').value,
+    format:document.getElementById('fc-fm').value,topic:document.getElementById('fc-tp').value,
+    event:document.getElementById('fc-ev').value.trim(),desc:document.getElementById('fc-d').value.trim(),
+    bring:document.getElementById('fc-br').value.trim(),fee:document.getElementById('fc-fe').value.trim(),
+    zoomLink:document.getElementById('fc-zl').value.trim(),max:document.getElementById('fc-mx').value,
+    prereqs:document.getElementById('fc-pr').value.trim(),
+    timepref:il?document.getElementById('fc-tpref').value.trim():'',
+    repeat:il?document.getElementById('fc-rp').value:'',
+    notes:document.getElementById('fc-no').value.trim(),isEventLocked:String(il)});
+  btn.disabled=false;btn.textContent='Submit for review';
+  if(!res.ok){alert(res.error||'Submission failed.');return;}
+  document.getElementById('submit-ok').style.display='block';
+  ['fc-t','fc-tc','fc-em','fc-da','fc-ti','fc-d','fc-br','fc-fe','fc-zl','fc-mx','fc-pr','fc-tpref','fc-no','fc-ev'].forEach(id=>{const e=document.getElementById(id);if(e&&!e.disabled)e.value='';});
+  setTimeout(()=>document.getElementById('submit-ok').style.display='none',5000);
+}
+
+async function doAdminLogin(){
+  const pw=document.getElementById('admin-pw').value;
+  const btn=document.querySelector('.lock-btn');btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
+  const res=await api({action:'adminLogin',password:pw});
+  btn.disabled=false;btn.textContent='Unlock';
+  if(!res.ok){document.getElementById('lock-err').style.display='block';return;}
+  adminToken=res.token;sessionStorage.setItem('aT',adminToken);
+  document.getElementById('admin-lock').style.display='none';
+  document.getElementById('admin-content').style.display='block';
+  loadAdmin();
+}
+async function initAdmin(){
+  if(!adminToken)return;
+  document.getElementById('admin-lock').style.display='none';
+  document.getElementById('admin-content').style.display='block';
+  loadAdmin();
+}
+async function loadAdmin(){
+  const res=await api({action:'adminGetPending',token:adminToken});
+  if(!res.ok){adminToken=null;sessionStorage.removeItem('aT');document.getElementById('admin-lock').style.display='block';document.getElementById('admin-content').style.display='none';return;}
+  pendingClasses=res.pending;
+  document.getElementById('pending-count').textContent=res.pending.length;
+  renderPending(res.pending);renderApproved();
+}
+function renderPending(pd){
+  const el=document.getElementById('pending-list');
+  if(!pd.length){el.innerHTML='<div class="no-items">No classes pending review.</div>';return;}
+  el.innerHTML=pd.map(c=>{
+    const il=c.isEventLocked==='true';
+    return '<div class="pending-card"><div class="pending-header"><div class="pending-title">'+c.title+'</div><span class="tag '+(c.format||'in-person')+'">'+(c.format==='zoom'?'Online':'In person')+'</span></div>'
+      +'<div class="pending-teacher"><i class="ti ti-user"></i> '+c.teacher+(c.teacherEmail?' · '+c.teacherEmail:'')+'</div>'
+      +'<div class="pending-meta">'
+      +(c.date?'<span><i class="ti ti-calendar"></i> '+fD(c.date)+' · '+fT(c.time)+'</span>':'<span><i class="ti ti-calendar"></i> Time TBD</span>')
+      +(c.duration?'<span><i class="ti ti-clock"></i> '+c.duration+' min</span>':'')
+      +(c.topic?'<span><i class="ti ti-tag"></i> '+c.topic+'</span>':'')
+      +(c.event?'<span><i class="ti ti-location"></i> '+c.event+'</span>':'')
+      +(c.fee?'<span><i class="ti ti-coin"></i> '+c.fee+'</span>':'<span>Free</span>')
+      +'</div>'
+      +(c.timepref?'<div class="pending-pref"><i class="ti ti-clock"></i> Time pref: '+c.timepref+(c.repeat&&c.repeat!=='once'?', '+c.repeat:'')+'</div>':'')
+      +'<div class="pending-desc">'+c.desc+'</div>'
+      +(c.bring?'<div class="pending-desc" style="margin-top:-4px"><i class="ti ti-backpack"></i> Students bring: '+c.bring+'</div>':'')
+      +(c.notes?'<div class="pending-desc" style="color:var(--green-text);background:var(--green-bg);padding:6px 8px;border-radius:6px;margin-top:-4px"><i class="ti ti-pencil"></i> '+c.notes+'</div>':'')
+      +'<div class="admin-actions"><button class="approve-btn" onclick="openApprove(''+c.id+'')"><i class="ti ti-check"></i> '+(il?'Set time &amp; approve':'Approve')+'</button>'
+      +'<button class="reject-btn" onclick="doReject(''+c.id+'')"><i class="ti ti-x"></i> Reject</button></div></div>';
+  }).join('');
+}
+function renderApproved(){
+  document.getElementById('approved-list').innerHTML=allClasses.map(c=>
+    '<div class="approved-row"><div><div class="approved-name">'+c.title+'</div>'
+    +'<div class="approved-sub">'+c.teacher+' · '+fD(c.date)+' · '+fT(c.time)+(c.event?' · '+c.event:'')+(c.room?' · '+c.room:'')+'</div>'
+    +(c.waitlistCount?'<div class="wl-detail"><i class="ti ti-clock"></i> '+c.waitlistCount+' on waitlist</div>':'')+'</div>'
+    +'<div class="reg-count">'+c.registrationCount+(c.max?' / '+c.max:'')+' reg</div>'
+    +'<button class="a-roster-btn" onclick="showRoster(''+c.id+'')"><i class="ti ti-users"></i></button>'
+    +'<button class="a-remove-btn" onclick="doRemove(''+c.id+'')"><i class="ti ti-trash"></i></button></div>'
+  ).join('');
+}
+function openApprove(id){
+  curApprovingId=id;
+  const c=IS_DEMO?dP.find(x=>String(x.id)===String(id)):pendingClasses.find(x=>String(x.id)===String(id));
+  document.getElementById('am-sub').textContent=(c||{title:id}).title;
+  const pn=document.getElementById('am-pref');
+  if(c&&c.timepref){pn.style.display='block';pn.innerHTML='<i class="ti ti-clock"></i> Teacher preference: '+c.timepref;}
+  else pn.style.display='none';
+  document.getElementById('am-date').value='';document.getElementById('am-time').value='';document.getElementById('am-room').value='';
+  document.getElementById('approve-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('am-date').focus(),50);
+}
+async function confirmApprove(){
+  const d=document.getElementById('am-date').value,t=document.getElementById('am-time').value,r=document.getElementById('am-room').value.trim();
+  if(!d||!t){alert('Date and time are required.');return;}
+  const btn=document.getElementById('am-confirm');btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
+  const res=await api({action:'adminApprove',token:adminToken,id:String(curApprovingId),date:d,time:t,room:r});
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-check"></i> Approve &amp; publish';
+  if(!res.ok){alert(res.error||'Failed.');return;}
+  closeModal('approve-modal');await loadClasses();loadAdmin();
+}
+async function doReject(id){
+  if(!confirm('Reject and delete this submission?'))return;
+  await api({action:'adminReject',token:adminToken,id:String(id)});loadAdmin();
+}
+async function doRemove(id){
+  if(!confirm('Remove this class from the catalog?'))return;
+  await api({action:'adminRemove',token:adminToken,id:String(id)});
+  const i=allClasses.findIndex(c=>String(c.id)===String(id));if(i>=0)allClasses.splice(i,1);
+  rC();renderApproved();
+}
+async function showRoster(classId){
+  const res=await api({action:'adminGetRoster',token:adminToken,classId:String(classId)});
+  if(!res.ok){alert('Could not load roster.');return;}
+  const cls=allClasses.find(c=>String(c.id)===String(classId));
+  document.getElementById('roM-title').textContent='Roster: '+(cls?cls.title:classId);
+  const rg=res.roster||[],wl=res.waitlist||[];
+  let h='';
+  if(!rg.length)h+='<p style="color:var(--text2);margin-bottom:8px">No registrations yet.</p>';
+  else h+='<table style="width:100%;border-collapse:collapse;margin-bottom:12px"><tr style="background:var(--bg2)"><th style="text-align:left;padding:5px 8px;font-size:12px;border-bottom:1px solid var(--border2)">SCA Name</th><th style="text-align:left;padding:5px 8px;font-size:12px;border-bottom:1px solid var(--border2)">Email</th><th style="padding:5px 8px;font-size:12px;border-bottom:1px solid var(--border2)">Hidden</th></tr>'
+    +rg.map(x=>'<tr><td style="padding:5px 8px;font-size:13px;border-bottom:1px solid var(--border)">'+x.scaName+'</td><td style="padding:5px 8px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border)">'+x.email+'</td><td style="text-align:center;padding:5px 8px;border-bottom:1px solid var(--border)">'+(x.hidden?'(hidden)':'')+'</td></tr>').join('')+'</table>';
+  if(wl.length)h+='<div style="font-weight:700;font-size:11px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Waitlist</div>'
+    +'<table style="width:100%;border-collapse:collapse"><tr style="background:var(--bg2)"><th style="text-align:left;padding:5px 8px;font-size:12px">#</th><th style="text-align:left;padding:5px 8px;font-size:12px">SCA Name</th><th style="text-align:left;padding:5px 8px;font-size:12px">Email</th></tr>'
+    +wl.map(x=>'<tr><td style="padding:5px 8px;font-size:12px;color:var(--gold)">#'+x.pos+'</td><td style="padding:5px 8px;font-size:13px">'+x.scaName+'</td><td style="padding:5px 8px;font-size:12px;color:var(--text2)">'+x.email+'</td></tr>').join('')+'</table>';
+  document.getElementById('roM-body').innerHTML=h;
+  document.getElementById('roster-modal').classList.add('open');
+}
+async function createEvent(){
+  const name=document.getElementById('lg-name').value.trim(),date=document.getElementById('lg-date').value;
+  if(!name)return;
+  const res=await api({action:'adminCreateEvent',token:adminToken,name,date});
+  if(!res.ok){alert(res.error||'Failed.');return;}
+  const url=window.location.origin+window.location.pathname+'?event='+encodeURIComponent(name)+'#submit';
+  const el=document.getElementById('lg-result');el.style.display='block';
+  el.innerHTML='<strong>Event created.</strong> Submission link:<br><a href="'+url+'" target="_blank">'+url+'</a><button class="copy-btn" onclick="cpL(event,''+url+'')"><i class="ti ti-copy"></i> Copy</button>';
+  ['fe','grid-ev'].forEach(sid=>{const s=document.getElementById(sid);const o=document.createElement('option');o.value=name;o.textContent=name;s.appendChild(o);});
+  availEvents.push({name,date,active:true});
+}
+function cpL(ev,u){navigator.clipboard.writeText(u).then(()=>{const b=ev.target.closest('button');b.textContent='✓ Copied';setTimeout(()=>b.innerHTML='<i class="ti ti-copy"></i> Copy',2000);});}
+
+async function loadGrid(){
+  const ev=document.getElementById('grid-ev').value,wrap=document.getElementById('grid-view');
+  if(!ev){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  const res=await api({action:'adminGetGrid',token:adminToken,event:ev});
+  if(!res.ok)return;
+  renderGrid(res.approved||[]);
+}
+function renderGrid(cls){
+  const times=['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00'];
+  const rooms=[...new Set(cls.map(c=>c.room||'Unassigned').filter(Boolean))].sort();
+  const tbl=document.getElementById('grid-table');
+  if(!rooms.length){tbl.innerHTML='<tr><td style="padding:1rem;font-family:sans-serif;color:var(--text2)">No approved classes with rooms assigned yet.</td></tr>';return;}
+  function cfl(c){
+    const s=t2m(c.time),e=s+(Number(c.duration)||60);
+    const sm=cls.filter(x=>x.id!==c.id&&x.date===c.date);
+    const tc=sm.some(x=>{const xs=t2m(x.time),xe=xs+(Number(x.duration)||60);return s<xe&&e>xs&&x.topic===c.topic;});
+    const th=sm.some(x=>{const xs=t2m(x.time),xe=xs+(Number(x.duration)||60);return s<xe&&e>xs&&x.teacher===c.teacher;});
+    return{tc,th};
+  }
+  let h='<tr><th>Time</th>'+rooms.map(r=>'<th>'+r+'</th>').join('')+'</tr>';
+  times.forEach(t=>{
+    h+='<tr><td class="sgtime">'+fT(t)+'</td>';
+    rooms.forEach(r=>{
+      const sl=cls.filter(c=>(c.room||'Unassigned')===r&&String(c.time).slice(0,5)===t);
+      h+='<td>';
+      sl.forEach(c=>{const{tc,th}=cfl(c);const k=(tc&&th)?'cb':th?'ch':tc?'ct':'';const du=Number(c.duration)||60;
+        h+='<div class="gc '+k+'" title="'+c.title+' — '+c.teacher+' ('+du+'min)'+(tc?' topic overlap':'')+(th?' double-booked':'')+'">'
+          +'<strong>'+c.title.slice(0,26)+(c.title.length>26?'…':'')+'</strong><br>'
+          +c.teacher.split(' ').slice(-1)[0]+(du!==60?' ('+du+'m)':'')+'</div>';});
+      h+='</td>';
+    });
+    h+='</tr>';
+  });
+  tbl.innerHTML=h;
+}
+['reg-modal','approve-modal','roster-modal'].forEach(id=>document.getElementById(id).addEventListener('click',function(e){if(e.target===this)closeModal(id);}));
+
+</script>
+</body>
+</html>
