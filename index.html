@@ -8,22 +8,22 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --accent:#5C3D8F;--accent-light:#EDE8F7;--accent-mid:#8B6DBF;
-  --gold:#8B5E1A;--gold-light:#F5E6C8;--gold-mid:#C8921E;
-  --bg:#FAF7F2;--bg2:#F0EBE0;--bg3:#E8DFD0;
-  --text:#2C1F0E;--text2:#6B5744;
-  --border:rgba(90,60,20,.15);--border2:rgba(90,60,20,.28);
+  --accent:#1A3F7A;--accent-light:#E6EDF8;--accent-mid:#3D6DB5;
+  --gold:#2A5FAD;--gold-light:#D6E4F5;--gold-mid:#4A7EC7;
+  --bg:#F7F9FC;--bg2:#EDF2FA;--bg3:#D9E5F5;
+  --text:#0D1F3C;--text2:#3A5278;
+  --border:rgba(26,63,122,.13);--border2:rgba(26,63,122,.26);
   --radius:6px;--radius-lg:10px;
-  --green-bg:#E8F0DC;--green-text:#3A5E18;--green-border:#AECB80;
+  --green-bg:#E0F0F0;--green-text:#1A5F5F;--green-border:#6ABABA;
   --red-bg:#F5E8E4;--red-text:#8B2E18;--red-border:#D9917A;
-  --shadow:0 2px 8px rgba(60,30,0,.10);
-  --shadow-lg:0 6px 24px rgba(60,30,0,.14);
+  --shadow:0 2px 8px rgba(10,30,80,.10);
+  --shadow-lg:0 6px 24px rgba(10,30,80,.14);
 }
 body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-height:100vh}
 .app{max-width:980px;margin:0 auto;background:var(--bg);min-height:100vh;box-shadow:var(--shadow-lg)}
 
 /* ── Topbar ── */
-.topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:1rem 1.5rem;background:var(--accent);border-bottom:3px solid var(--gold-mid)}
+.topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:1rem 1.5rem;background:var(--accent);border-bottom:3px solid #fff}
 .brand{display:flex;align-items:center;gap:12px}
 .brand-icon{width:40px;height:40px;border-radius:var(--radius);background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;border:1px solid rgba(255,255,255,.25)}
 .brand-name{font-size:17px;font-weight:600;font-family:Georgia,serif;color:#fff;letter-spacing:.01em}
@@ -31,8 +31,8 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .nav{display:flex;gap:4px;flex-wrap:wrap}
 .nav-btn{padding:7px 15px;border-radius:var(--radius);border:1px solid rgba(255,255,255,.2);font-size:13px;cursor:pointer;background:transparent;color:rgba(255,255,255,.8);font-family:sans-serif;transition:all .15s;display:flex;align-items:center;gap:6px}
 .nav-btn:hover{background:rgba(255,255,255,.15);color:#fff}
-.nav-btn.active{background:var(--gold-light);color:var(--gold);border-color:var(--gold-mid);font-weight:600}
-.badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;font-size:11px;font-weight:700;background:var(--gold-mid);color:#fff}
+.nav-btn.active{background:#fff;color:var(--accent);border-color:#fff;font-weight:600}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;font-size:11px;font-weight:700;background:var(--accent-mid);color:#fff}
 
 /* ── Main ── */
 .main{padding:1.75rem}
@@ -47,7 +47,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 /* ── Class cards ── */
 .class-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
 .class-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.2rem 1.3rem;transition:border-color .15s,box-shadow .15s;box-shadow:var(--shadow)}
-.class-card:hover{border-color:var(--border2);box-shadow:0 4px 14px rgba(60,30,0,.13)}
+.class-card:hover{border-color:var(--border2);box-shadow:0 4px 14px rgba(10,30,80,.13)}
 .class-card.registered{border-left:4px solid var(--accent-mid);padding-left:calc(1.3rem - 3px)}
 .card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}
 .card-title{font-size:15px;font-weight:600;line-height:1.4;font-family:Georgia,serif;color:var(--text)}
@@ -58,23 +58,23 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .card-desc{font-size:13.5px;color:var(--text2);line-height:1.6;margin-bottom:10px;font-family:sans-serif}
 .card-logistics{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .logistics-pill{font-size:11.5px;font-family:sans-serif;padding:4px 10px;border-radius:10px;border:1px solid var(--border2);color:var(--text2);display:flex;align-items:center;gap:5px}
-.logistics-pill.fee{background:var(--gold-light);color:var(--gold);border-color:#D4A84B;font-weight:600}
+.logistics-pill.fee{background:var(--gold-light);color:var(--accent);border-color:var(--gold-mid);font-weight:600}
 .logistics-pill.free{background:var(--green-bg);color:var(--green-text);border-color:var(--green-border)}
 .card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--border)}
 .enroll-btn{font-size:12.5px;padding:6px 15px;border-radius:var(--radius);border:1px solid var(--border2);cursor:pointer;background:var(--bg2);color:var(--text);font-family:sans-serif;transition:all .15s;white-space:nowrap;font-weight:500}
 .enroll-btn:hover{background:var(--bg3)}
 .enroll-btn.enrolled{background:var(--accent-light);color:var(--accent);border-color:var(--accent-mid);font-weight:600}
-.enroll-btn.waitlist-btn{background:var(--gold-light);color:var(--gold);border-color:#D4A84B}
-.enroll-btn.waitlisted{background:var(--gold-light);color:var(--gold);border-color:#D4A84B;font-weight:600}
+.enroll-btn.waitlist-btn{background:var(--gold-light);color:var(--accent-mid);border-color:var(--gold-mid)}
+.enroll-btn.waitlisted{background:var(--gold-light);color:var(--accent-mid);border-color:var(--gold-mid);font-weight:600}
 .enroll-btn:disabled,.submit-action:disabled{opacity:.5;cursor:not-allowed}
 .spots{font-size:12px;color:var(--text2);font-family:sans-serif;white-space:nowrap}
-.spots.low{color:var(--red-text);font-weight:600}.spots.full{color:var(--gold);font-weight:600}
+.spots.low{color:var(--red-text);font-weight:600}.spots.full{color:var(--accent-mid);font-weight:600}
 .roster-toggle{font-size:11.5px;color:var(--accent);cursor:pointer;font-family:sans-serif;background:none;border:none;padding:0;display:flex;align-items:center;gap:4px;margin-top:10px}
 .roster-toggle:hover{text-decoration:underline}
 .roster-list{margin-top:7px;padding:9px 11px;background:var(--bg2);border-radius:var(--radius);font-size:12px;font-family:sans-serif;color:var(--text2);display:none;border:1px solid var(--border)}
 .roster-list.open{display:block}.roster-list ul{list-style:none}
 .roster-list li{padding:3px 0;border-bottom:1px solid var(--border)}.roster-list li:last-child{border-bottom:none}
-.roster-wl-title{margin-top:8px;font-weight:700;color:var(--gold);font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+.roster-wl-title{margin-top:8px;font-weight:700;color:var(--accent-mid);font-size:11px;text-transform:uppercase;letter-spacing:.05em}
 
 /* ── Modals ── */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(20,10,0,.45);z-index:100;align-items:center;justify-content:center}
@@ -87,13 +87,13 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .modal-input,.modal-select{padding:8px 11px;border:1px solid var(--border2);border-radius:var(--radius);font-size:13px;font-family:sans-serif;background:var(--bg);color:var(--text);width:100%}
 .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px}
 .modal-note{font-size:12px;font-family:sans-serif;margin-bottom:1rem;padding:9px 11px;border-radius:var(--radius)}
-.mn-wl,.mn-fee{background:var(--gold-light);color:var(--gold)}.mn-ov{background:var(--red-bg);color:var(--red-text)}.mn-info{background:var(--accent-light);color:var(--accent)}
+.mn-wl,.mn-fee{background:var(--gold-light);color:var(--accent)}.mn-ov{background:var(--red-bg);color:var(--red-text)}.mn-info{background:var(--accent-light);color:var(--accent)}
 .modal-section{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);font-family:sans-serif;margin:1rem 0 8px;border-top:1px solid var(--border);padding-top:10px}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:6px;flex-wrap:wrap}
 .modal-cancel{padding:7px 16px;border-radius:var(--radius);border:1px solid var(--border2);background:transparent;font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2)}
 .modal-confirm{padding:7px 18px;border-radius:var(--radius);background:var(--accent);color:#fff;border:none;font-size:13px;cursor:pointer;font-weight:600;font-family:sans-serif}
 .modal-confirm:hover{background:#4A2E78}.modal-confirm:disabled{opacity:.5;cursor:not-allowed}
-.mc-gold{background:var(--gold-mid)}.mc-green{background:var(--green-text)}
+.mc-gold{background:var(--accent-mid)}.mc-green{background:var(--green-text)}
 .cb-row{display:flex;align-items:center;gap:8px;font-size:13px;font-family:sans-serif;color:var(--text2);margin-bottom:13px;cursor:pointer}
 
 /* ── Schedule ── */
@@ -103,15 +103,15 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .print-btn:hover{background:var(--bg3)}
 .empty-sched{text-align:center;padding:3rem 1rem;color:var(--text2);font-family:sans-serif;font-size:14px;line-height:1.8}
 .sched-item{display:grid;grid-template-columns:90px 1fr auto;gap:12px;align-items:start;padding:1rem 1.1rem;border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:10px;background:var(--bg);box-shadow:var(--shadow)}
-.sched-time{font-size:13px;color:var(--gold);font-family:sans-serif;font-weight:600;padding-top:2px}
+.sched-time{font-size:13px;color:var(--accent-mid);font-family:sans-serif;font-weight:600;padding-top:2px}
 .sched-title{font-size:14px;font-weight:600;font-family:Georgia,serif;margin-bottom:3px}
 .sched-meta{font-size:12px;color:var(--text2);font-family:sans-serif}
-.sched-wl{font-size:12px;color:var(--gold);font-family:sans-serif;margin-top:2px;font-weight:600}
+.sched-wl{font-size:12px;color:var(--accent-mid);font-family:sans-serif;margin-top:2px;font-weight:600}
 .remove-btn{font-size:11px;padding:4px 10px;border-radius:var(--radius);border:1px solid var(--border);cursor:pointer;background:transparent;color:var(--text2);font-family:sans-serif;white-space:nowrap}
 .remove-btn:hover{color:var(--red-text);border-color:var(--red-border);background:var(--red-bg)}
 
 /* ── Teach form ── */
-.ev-banner{padding:9px 13px;border-radius:var(--radius);background:var(--accent-light);color:var(--accent);font-size:13px;font-family:sans-serif;margin-bottom:1.1rem;display:flex;align-items:center;gap:7px;border:1px solid #C4B5E8}
+.ev-banner{padding:9px 13px;border-radius:var(--radius);background:var(--accent-light);color:var(--accent);font-size:13px;font-family:sans-serif;margin-bottom:1.1rem;display:flex;align-items:center;gap:7px;border:1px solid var(--border2)}
 .submit-form{max-width:640px}
 .form-section-title{font-size:19px;font-weight:600;font-family:Georgia,serif;margin-bottom:4px}
 .form-section-sub{font-size:13px;color:var(--text2);margin-bottom:1.25rem;font-family:sans-serif}
@@ -133,14 +133,14 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 
 /* ── Admin ── */
 .admin-section-title{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;margin:1.25rem 0 10px;font-family:sans-serif;display:flex;align-items:center;gap:6px}
-.pending-card{background:var(--bg);border:1px solid var(--border);border-left:4px solid var(--gold-mid);border-radius:var(--radius-lg);padding:1.1rem 1.2rem;margin-bottom:12px;box-shadow:var(--shadow)}
+.pending-card{background:var(--bg);border:1px solid var(--border);border-left:4px solid var(--accent-mid);border-radius:var(--radius-lg);padding:1.1rem 1.2rem;margin-bottom:12px;box-shadow:var(--shadow)}
 .pending-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:5px}
 .pending-title{font-size:14px;font-weight:600;font-family:Georgia,serif}
 .pending-teacher{font-size:12px;color:var(--text2);margin-bottom:6px;font-family:sans-serif}
 .pending-desc{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;font-family:sans-serif}
 .pending-meta{font-size:12px;color:var(--text2);margin-bottom:8px;display:flex;flex-wrap:wrap;gap:8px;font-family:sans-serif}
 .pending-meta span{display:flex;align-items:center;gap:4px}
-.pending-pref{font-size:12px;font-family:sans-serif;padding:7px 11px;background:var(--accent-light);color:var(--accent);border-radius:var(--radius);margin-bottom:8px;border:1px solid #C4B5E8}
+.pending-pref{font-size:12px;font-family:sans-serif;padding:7px 11px;background:var(--accent-light);color:var(--accent);border-radius:var(--radius);margin-bottom:8px;border:1px solid var(--border2)}
 .admin-actions{display:flex;gap:8px;flex-wrap:wrap}
 .approve-btn{padding:5px 14px;border-radius:var(--radius);font-size:12px;cursor:pointer;background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);font-weight:600;font-family:sans-serif}
 .approve-btn:hover{background:var(--green-border)}
@@ -150,7 +150,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .approved-name{font-size:14px;font-weight:600;font-family:Georgia,serif}
 .approved-sub{font-size:12px;color:var(--text2);font-family:sans-serif}
 .reg-count{font-size:13px;color:var(--text2);white-space:nowrap;font-family:sans-serif}
-.wl-detail{font-size:12px;color:var(--gold);font-family:sans-serif;margin-top:2px;display:flex;align-items:center;gap:4px}
+.wl-detail{font-size:12px;color:var(--accent-mid);font-family:sans-serif;margin-top:2px;display:flex;align-items:center;gap:4px}
 .a-roster-btn,.a-remove-btn{font-size:12px;padding:4px 10px;border-radius:var(--radius);border:1px solid var(--border);cursor:pointer;background:transparent;font-family:sans-serif}
 .a-roster-btn{color:var(--accent)}.a-remove-btn{color:var(--text2)}.a-remove-btn:hover{color:var(--red-text);border-color:var(--red-border);background:var(--red-bg)}
 .admin-lock{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:2.5rem;text-align:center;max-width:380px;margin:2rem auto;box-shadow:var(--shadow)}
@@ -175,12 +175,12 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .sg td{padding:4px 6px;border:1px solid var(--border);vertical-align:top;min-width:120px}
 .sg .sgtime{font-weight:600;color:var(--text2);white-space:nowrap;background:var(--bg2)}
 .gc{border-radius:4px;padding:4px 7px;font-size:11px;margin-bottom:3px;line-height:1.4;background:var(--accent-light);color:var(--accent)}
-.gc.ct{border-left:3px solid var(--gold-mid)}.gc.ch{border-left:3px solid var(--red-text)}.gc.cb{border-left:3px solid var(--red-text);background:var(--red-bg);color:var(--red-text)}
+.gc.ct{border-left:3px solid #C8820A}.gc.ch{border-left:3px solid var(--red-text)}.gc.cb{border-left:3px solid var(--red-text);background:var(--red-bg);color:var(--red-text)}
 .grid-legend{display:flex;gap:12px;font-size:11px;font-family:sans-serif;color:var(--text2);margin-bottom:8px;flex-wrap:wrap}
 .grid-legend span{display:flex;align-items:center;gap:4px}
 .ld{width:10px;height:10px;border-radius:2px;flex-shrink:0}
 .api-banner{padding:9px 14px;border-radius:var(--radius);font-size:13px;font-family:sans-serif;margin-bottom:1.1rem;display:flex;align-items:center;gap:8px}
-.api-banner.demo{background:var(--gold-light);color:var(--gold);border:1px solid #D4A84B}.api-banner.err{background:var(--red-bg);color:var(--red-text);border:1px solid var(--red-border)}
+.api-banner.demo{background:var(--gold-light);color:var(--accent);border:1px solid var(--gold-mid)}.api-banner.err{background:var(--red-bg);color:var(--red-text);border:1px solid var(--red-border)}
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -301,16 +301,27 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         <div class="link-gen">
           <div class="link-gen-title"><i class="ti ti-link"></i> Create event &amp; submission link</div>
           <div class="lg-row">
-            <input class="lg-input" id="lg-name" type="text" placeholder="Event name, e.g. Spring Collegium">
-            <input class="lg-input" id="lg-date" type="date" style="max-width:160px">
+            <input class="lg-input" id="lg-name" type="text" placeholder="Event name, e.g. Great Western War">
+            <input class="lg-input" id="lg-start" type="date" style="max-width:150px" title="Start date">
+            <span style="font-size:12px;font-family:sans-serif;color:var(--text2);white-space:nowrap;align-self:center">to</span>
+            <input class="lg-input" id="lg-end" type="date" style="max-width:150px" title="End date (same as start for single-day)">
+            <input class="lg-input" id="lg-rooms" type="number" min="1" max="50" style="max-width:80px" placeholder="# rooms" title="Number of classrooms">
             <button class="lg-btn" onclick="createEvent()"><i class="ti ti-plus"></i> Create</button>
           </div>
           <div class="lg-result" id="lg-result" style="display:none"></div>
         </div>
-        <div class="admin-section-title"><i class="ti ti-clock"></i> Pending submissions <span class="badge" id="pending-count" style="background:var(--gold-mid)">0</span></div>
+        <div class="admin-section-title"><i class="ti ti-clock"></i> Pending submissions <span class="badge" id="pending-count" style="background:var(--accent-mid)">0</span></div>
         <div id="pending-list"></div>
         <div class="admin-section-title"><i class="ti ti-check"></i> Published classes</div>
         <div id="approved-list"></div>
+        <div class="admin-section-title"><i class="ti ti-door"></i> Manage rooms</div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+          <select class="filter-select" id="rooms-ev" onchange="loadRoomEditor()"><option value="">Select event&hellip;</option></select>
+        </div>
+        <div id="room-editor" style="display:none">
+          <div id="room-list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px"></div>
+          <button class="approve-btn" onclick="addRoom()" style="font-size:12px"><i class="ti ti-plus"></i> Add room</button>
+        </div>
         <div class="admin-section-title"><i class="ti ti-layout-grid"></i> Schedule grid</div>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
           <select class="filter-select" id="grid-ev" onchange="loadGrid()"><option value="">Select event&hellip;</option></select>
@@ -318,7 +329,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         <div id="grid-view" style="display:none">
           <div class="grid-legend">
             <span><span class="ld" style="background:var(--accent-light);border:1px solid var(--accent-mid)"></span>Normal</span>
-            <span><span class="ld" style="background:var(--gold-light);border-left:3px solid var(--gold-mid)"></span>Topic overlap</span>
+            <span><span class="ld" style="background:var(--gold-light);border-left:3px solid #C8820A"></span>Topic overlap</span>
             <span><span class="ld" style="background:var(--red-bg);border-left:3px solid var(--red-text)"></span>Double-booked teacher</span>
           </div>
           <div class="grid-wrap"><table class="sg" id="grid-table"></table></div>
@@ -357,10 +368,38 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
       <div class="modal-field"><label class="modal-label">Date *</label><input class="modal-input" id="am-date" type="date"></div>
       <div class="modal-field"><label class="modal-label">Time *</label><input class="modal-input" id="am-time" type="time"></div>
     </div>
-    <div class="modal-field"><label class="modal-label">Room / location</label><input class="modal-input" id="am-room" type="text" placeholder="e.g. Room 3, Main Hall"></div>
+    <div class="modal-field"><label class="modal-label">Room / location</label>
+      <select class="modal-select" id="am-room-sel" onchange="amRoomSelChange()"><option value="">— select room —</option></select>
+      <input class="modal-input" id="am-room" type="text" placeholder="Type room name" style="margin-top:6px;display:none">
+    </div>
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeModal('approve-modal')">Cancel</button>
       <button class="modal-confirm mc-green" id="am-confirm" onclick="confirmApprove()"><i class="ti ti-check"></i> Approve &amp; publish</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit class modal -->
+<div class="modal-bg" id="edit-modal">
+  <div class="modal">
+    <div class="modal-title">Edit class</div>
+    <div class="modal-sub" id="em-sub"></div>
+    <div class="modal-field"><label class="modal-label">Title</label><input class="modal-input" id="em-title" type="text"></div>
+    <div class="modal-grid">
+      <div class="modal-field"><label class="modal-label">Date</label><input class="modal-input" id="em-date" type="date"></div>
+      <div class="modal-field"><label class="modal-label">Time</label><input class="modal-input" id="em-time" type="time"></div>
+    </div>
+    <div class="modal-field"><label class="modal-label">Room / location</label>
+      <select class="modal-select" id="em-room-sel" onchange="emRoomSelChange()"><option value="">— select room —</option></select>
+      <input class="modal-input" id="em-room" type="text" placeholder="Type room name" style="margin-top:6px;display:none">
+    </div>
+    <div class="modal-field"><label class="modal-label">Max attendees (blank = unlimited)</label><input class="modal-input" id="em-max" type="number" min="1"></div>
+    <div class="modal-field"><label class="modal-label">Fee (blank if free)</label><input class="modal-input" id="em-fee" type="text"></div>
+    <div class="modal-field"><label class="modal-label">What to bring</label><input class="modal-input" id="em-bring" type="text"></div>
+    <div class="modal-field"><label class="modal-label">Description</label><textarea class="modal-input" id="em-desc" style="min-height:80px;resize:vertical"></textarea></div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('edit-modal')">Cancel</button>
+      <button class="modal-confirm mc-gold" id="em-confirm" onclick="confirmEditClass()"><i class="ti ti-device-floppy"></i> Save changes</button>
     </div>
   </div>
 </div>
@@ -391,7 +430,7 @@ const APPS_SCRIPT_URL='YOUR_APPS_SCRIPT_URL_HERE';
 const IS_DEMO=APPS_SCRIPT_URL==='YOUR_APPS_SCRIPT_URL_HERE';
 const lockedEvent=new URLSearchParams(window.location.search).get('event');
 const dC=SEED_CLASSES.map(c=>({...c}));
-const dP=[],dEv=[{name:'Collegium 2026',date:'2026-08-16',active:true}];
+const dP=[],dEv=[{name:'Collegium 2026',startDate:'2026-08-16',endDate:'2026-08-16',rooms:['Arts/History Rm 1','Fiber Arts','Cooking/Costuming','Grab Bag Rm 2','Grab Bag Rm 3','Field','Archery'],active:true}];
 const dRegs={},dWL={};
 let dPid=1000,allClasses=[],myRegs=JSON.parse(localStorage.getItem('mR')||'{}');
 let adminToken=sessionStorage.getItem('aT')||null,pendingClasses=[],availEvents=[];
@@ -458,7 +497,21 @@ function apiD(p){
   }
   if(action==='adminReject'){const i=dP.findIndex(c=>String(c.id)===String(p.id));if(i>=0)dP.splice(i,1);return{ok:true};}
   if(action==='adminRemove'){const i=dC.findIndex(c=>String(c.id)===String(p.id));if(i>=0)dC.splice(i,1);return{ok:true};}
-  if(action==='adminCreateEvent'){if(!p.name)return{ok:false,error:'Name required'};dEv.push({name:p.name,date:p.date||'',active:true});return{ok:true};}
+  if(action==='adminEditClass'){
+    const c=dC.find(x=>String(x.id)===String(p.id));
+    if(!c)return{ok:false,error:'Not found'};
+    if(p.title)c.title=p.title;if(p.date)c.date=p.date;if(p.time)c.time=p.time;
+    c.room=p.room||c.room;c.fee=p.fee!==undefined?p.fee:c.fee;
+    c.bring=p.bring!==undefined?p.bring:c.bring;c.desc=p.desc||c.desc;
+    c.max=p.max?Number(p.max):null;
+    return{ok:true};
+  }
+  if(action==='adminCancelClass'){
+    const c=dC.find(x=>String(x.id)===String(p.id));
+    if(!c)return{ok:false,error:'Not found'};
+    c.cancelled=true;return{ok:true};
+  }
+  if(action==='adminCreateEvent'){if(!p.name)return{ok:false,error:'Name required'};const rooms=p.rooms?p.rooms.split(',').map(r=>r.trim()).filter(Boolean):[];dEv.push({name:p.name,startDate:p.startDate||'',endDate:p.endDate||p.startDate||'',rooms,active:true});return{ok:true};}
   if(action==='adminGetRoster'){
     const r=(dRegs[p.classId]||[]).map(x=>({scaName:x.scaName,email:x.email,hidden:x.hidden}));
     const w=(dWL[p.classId]||[]).map((x,i)=>({pos:i+1,scaName:x.scaName,email:x.email,hidden:x.hidden}));
@@ -524,12 +577,14 @@ function rC(){
   const g=document.getElementById('cg');
   if(!fl.length){g.innerHTML='<div style="grid-column:1/-1;padding:2rem;text-align:center;color:var(--text2);font-size:14px;font-family:sans-serif;">No classes match your filters.</div>';return;}
   g.innerHTML=fl.map(c=>{
-    const reg=isReg(c),wl=isWL(c),full=isFull(c);
+    const reg=isReg(c),wl=isWL(c),full=isFull(c),cancelled=!!c.cancelled;
     const sl=c.max!=null?c.max-c.registrationCount:null,low=sl!=null&&sl<=3&&sl>0;
     let bc='enroll-btn',bt='Register';
-    if(reg){bc+=' enrolled';bt='\u2713 Registered';}
+    if(cancelled){bc+=' enroll-btn';bt='Cancelled';}
+    else if(reg){bc+=' enrolled';bt='\u2713 Registered';}
     else if(wl){bc+=' waitlisted';bt='Waitlist #'+wlPos(c);}
     else if(full){bc+=' waitlist-btn';bt='Join waitlist';}
+    const cancelledBanner=cancelled?'<div style="font-size:12px;font-family:sans-serif;padding:5px 10px;background:var(--red-bg);color:var(--red-text);border-radius:var(--radius);margin-bottom:8px;font-weight:600;border:1px solid var(--red-border)"><i class="ti ti-ban"></i> This class has been cancelled</div>':'';
     const sp=c.max==null?'<span class="spots">Open enrollment</span>':full?'<span class="spots full">Full \u00b7 '+c.waitlistCount+' waiting</span>':low?'<span class="spots low">'+sl+' spot'+(sl===1?'':'s')+' left!</span>':'<span class="spots">'+c.registrationCount+' / '+c.max+'</span>';
     const fp=c.fee?'<span class="logistics-pill fee"><i class="ti ti-coin"></i> '+c.fee+'</span>':'<span class="logistics-pill free"><i class="ti ti-check"></i> Free</span>';
     const bp=c.bring?'<span class="logistics-pill"><i class="ti ti-backpack"></i> Bring: '+c.bring+'</span>':'';
@@ -542,9 +597,9 @@ function rC(){
       +((c.event||c.room)?'<span><i class="ti ti-location"></i> '+(c.event||'')+(c.event&&c.room?' \u00b7 ':'')+c.room+'</span>':'')
       +(c.topic?'<span><i class="ti ti-tag"></i> '+c.topic+'</span>':'')
       +'</div>'+(c.prereqs?'<div style="font-size:11px;color:var(--accent);font-family:sans-serif;margin-bottom:6px"><i class="ti ti-info"></i> Prereq: '+c.prereqs+'</div>':'')
-      +'<div class="card-desc">'+c.desc+'</div><div class="card-logistics">'+fp+bp+'</div>'
+      +'<div class="card-desc">'+c.desc+'</div>'+cancelledBanner+'<div class="card-logistics">'+fp+bp+'</div>'
       +(c.zoomLink&&reg?'<div style="font-size:12px;font-family:sans-serif;margin-bottom:8px"><i class="ti ti-video"></i> <a href="'+c.zoomLink+'" target="_blank">Join Zoom</a></div>':'')
-      +'<div class="card-footer"><button class="'+bc+'" onclick="handleEnroll(\''+c.id+'\')">'+bt+'</button>'+sp+'</div>'+ro+'</div>';
+      +'<div class="card-footer"><button class="'+bc+'" onclick="'+(cancelled?'':'handleEnroll(\''+c.id+'\')')+'" '+(cancelled?'disabled style="opacity:.5;cursor:not-allowed"':'')+'>'+bt+'</button>'+sp+'</div>'+ro+'</div>';
   }).join('');
 }
 function toggleR(id){const e=document.getElementById(id);if(e)e.classList.toggle('open');}
@@ -625,8 +680,10 @@ function renderSchedule(){
       +'<div class="sched-time">'+(c.date?fD(c.date)+'<br>':'')+(c.time?fT(c.time):'TBD')+'</div>'
       +'<div><div class="sched-title">'+c.title+'</div>'
       +'<div class="sched-meta">'+c.teacher+(c.event?' \u00b7 '+c.event:'')+(c.room?' \u00b7 '+c.room:'')+du+'</div>'
+      +(c.cancelled?'<div style="font-size:12px;font-family:sans-serif;color:var(--red-text);font-weight:700;margin-top:3px"><i class="ti ti-ban"></i> CANCELLED</div>':'')
       +(wl?'<div class="sched-wl"><i class="ti ti-clock"></i> Waitlist #'+pos+'</div>':'')
-      +(c.fee?'<div class="sched-meta" style="color:var(--gold);margin-top:2px"><i class="ti ti-coin"></i> '+c.fee+'</div>':'')
+      +(c.fee?'<div class="sched-meta" style="color:var(--accent-mid);margin-top:2px"><i class="ti ti-coin"></i> '+c.fee+'</div>':'')
+      +(c.bring?'<div class="sched-meta" style="margin-top:2px"><i class="ti ti-backpack"></i> Bring: '+c.bring+'</div>':'')
       +(c.zoomLink?'<div class="sched-meta" style="margin-top:3px"><i class="ti ti-video"></i> <a href="'+c.zoomLink+'" target="_blank">Join Zoom</a></div>':'')
       +'</div>'
       +'<button class="remove-btn" onclick="'+(wl?'doLeaveWL':'doUnreg')+'(\''+c.id+'\')"><i class="ti ti-x"></i> '+(wl?'Leave list':'Remove')+'</button>'
@@ -693,9 +750,11 @@ async function loadAdmin(){
   pendingClasses=res.pending||[];
   document.getElementById('pending-count').textContent=pendingClasses.length;
   renderPending();renderApproved();
-  const gs=document.getElementById('grid-ev');
-  gs.innerHTML='<option value="">Select event\u2026</option>';
-  availEvents.forEach(ev=>{const o=document.createElement('option');o.value=ev.name;o.textContent=ev.name;gs.appendChild(o);});
+  ['grid-ev','rooms-ev'].forEach(sid=>{
+    const gs=document.getElementById(sid);if(!gs)return;
+    gs.innerHTML='<option value="">Select event\u2026</option>';
+    availEvents.forEach(ev=>{const o=document.createElement('option');o.value=ev.name;o.textContent=ev.name;gs.appendChild(o);});
+  });
 }
 function renderPending(){
   const l=document.getElementById('pending-list');
@@ -731,6 +790,8 @@ function renderApproved(){
     +(c.waitlistCount?'<div class="wl-detail"><i class="ti ti-clock"></i> '+c.waitlistCount+' on waitlist</div>':'')+'</div>'
     +'<div class="reg-count">'+c.registrationCount+(c.max?' / '+c.max:'')+' reg</div>'
     +'<button class="a-roster-btn" onclick="showRoster(\''+c.id+'\')"><i class="ti ti-users"></i></button>'
+    +'<button class="a-roster-btn" style="color:var(--accent-mid)" onclick="openEditClass(\''+c.id+'\')"><i class="ti ti-pencil"></i></button>'
+    +(c.cancelled?'<span style="font-size:11px;color:var(--red-text);font-weight:700;font-family:sans-serif;padding:4px 8px">Cancelled</span>':'<button class="a-roster-btn" style="color:var(--red-text)" onclick="doCancelClass(\''+c.id+'\')"><i class="ti ti-ban"></i></button>')
     +'<button class="a-remove-btn" onclick="doRemove(\''+c.id+'\')"><i class="ti ti-trash"></i></button></div>'
   ).join('');
 }
@@ -741,12 +802,24 @@ function openApprove(id){
   const pn=document.getElementById('am-pref');
   if(c&&c.timepref){pn.style.display='block';pn.innerHTML='<i class="ti ti-clock"></i> Teacher preference: '+c.timepref;}
   else pn.style.display='none';
-  document.getElementById('am-date').value='';document.getElementById('am-time').value='';document.getElementById('am-room').value='';
+  // Constrain date to event range if known
+  const dateEl=document.getElementById('am-date');
+  dateEl.removeAttribute('min');dateEl.removeAttribute('max');
+  const ev=c&&c.event?availEvents.find(e=>e.name===c.event):null;
+  if(ev){
+    if(ev.startDate)dateEl.setAttribute('min',ev.startDate);
+    if(ev.endDate)dateEl.setAttribute('max',ev.endDate);
+    if(ev.startDate&&ev.startDate===ev.endDate)dateEl.value=ev.startDate;
+    else dateEl.value=c.date||'';
+  } else dateEl.value=c&&c.date?c.date:'';
+  // Populate room dropdown
+  populateRoomDropdown('am-room-sel',c&&c.event?c.event:'','');
+  document.getElementById('am-time').value='';
   document.getElementById('approve-modal').classList.add('open');
-  setTimeout(()=>document.getElementById('am-date').focus(),50);
+  setTimeout(()=>(dateEl.value?document.getElementById('am-time'):dateEl).focus(),50);
 }
 async function confirmApprove(){
-  const d=document.getElementById('am-date').value,t=document.getElementById('am-time').value,r=document.getElementById('am-room').value.trim();
+  const d=document.getElementById('am-date').value,t=document.getElementById('am-time').value,r=getAmRoom();
   if(!d||!t){alert('Date and time are required.');return;}
   const btn=document.getElementById('am-confirm');btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
   const res=await api({action:'adminApprove',token:adminToken,id:String(curApprovingId),date:d,time:t,room:r});
@@ -774,41 +847,99 @@ async function showRoster(classId){
   if(!rg.length)h+='<p style="color:var(--text2);margin-bottom:8px">No registrations yet.</p>';
   else h+='<table style="width:100%;border-collapse:collapse;margin-bottom:12px"><tr style="background:var(--bg2)"><th style="text-align:left;padding:5px 8px;font-size:12px;border-bottom:1px solid var(--border2)">SCA Name</th><th style="text-align:left;padding:5px 8px;font-size:12px;border-bottom:1px solid var(--border2)">Email</th><th style="padding:5px 8px;font-size:12px;border-bottom:1px solid var(--border2)">Hidden</th></tr>'
     +rg.map(x=>'<tr><td style="padding:5px 8px;font-size:13px;border-bottom:1px solid var(--border)">'+x.scaName+'</td><td style="padding:5px 8px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border)">'+x.email+'</td><td style="text-align:center;padding:5px 8px;border-bottom:1px solid var(--border)">'+(x.hidden?'(hidden)':'')+'</td></tr>').join('')+'</table>';
-  if(wl.length)h+='<div style="font-weight:700;font-size:11px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Waitlist</div>'
+  if(wl.length)h+='<div style="font-weight:700;font-size:11px;text-transform:uppercase;color:var(--accent-mid);margin-bottom:6px">Waitlist</div>'
     +'<table style="width:100%;border-collapse:collapse"><tr style="background:var(--bg2)"><th style="text-align:left;padding:5px 8px;font-size:12px">#</th><th style="text-align:left;padding:5px 8px;font-size:12px">SCA Name</th><th style="text-align:left;padding:5px 8px;font-size:12px">Email</th></tr>'
-    +wl.map(x=>'<tr><td style="padding:5px 8px;font-size:12px;color:var(--gold)">#'+x.pos+'</td><td style="padding:5px 8px;font-size:13px">'+x.scaName+'</td><td style="padding:5px 8px;font-size:12px;color:var(--text2)">'+x.email+'</td></tr>').join('')+'</table>';
+    +wl.map(x=>'<tr><td style="padding:5px 8px;font-size:12px;color:var(--accent-mid)">#'+x.pos+'</td><td style="padding:5px 8px;font-size:13px">'+x.scaName+'</td><td style="padding:5px 8px;font-size:12px;color:var(--text2)">'+x.email+'</td></tr>').join('')+'</table>';
   document.getElementById('roM-body').innerHTML=h;
   document.getElementById('roster-modal').classList.add('open');
 }
 async function createEvent(){
-  const name=document.getElementById('lg-name').value.trim(),date=document.getElementById('lg-date').value;
+  const name=document.getElementById('lg-name').value.trim();
+  const startDate=document.getElementById('lg-start').value;
+  const endDate=document.getElementById('lg-end').value||startDate;
+  const roomCount=parseInt(document.getElementById('lg-rooms').value)||0;
   if(!name)return;
-  const res=await api({action:'adminCreateEvent',token:adminToken,name,date});
+  if(startDate&&endDate&&endDate<startDate){alert('End date cannot be before start date.');return;}
+  const rooms=roomCount>0?Array.from({length:roomCount},(_,i)=>'Room '+(i+1)):[];
+  const res=await api({action:'adminCreateEvent',token:adminToken,name,startDate,endDate,rooms:rooms.join(',')});
   if(!res.ok){alert(res.error||'Failed.');return;}
   const url=window.location.origin+window.location.pathname+'?event='+encodeURIComponent(name)+'#submit';
   const el=document.getElementById('lg-result');el.style.display='block';
-  el.innerHTML='<strong>Event created.</strong> Submission link:<br><a href="'+url+'" target="_blank">'+url+'</a><button class="copy-btn" onclick="cpL(event,\''+url+'\')"><i class="ti ti-copy"></i> Copy</button>';
-  ['fe','grid-ev'].forEach(sid=>{const s=document.getElementById(sid);const o=document.createElement('option');o.value=name;o.textContent=name;s.appendChild(o);});
-  availEvents.push({name,date,active:true});
+  const dateRange=startDate?(startDate===endDate?fD(startDate):fD(startDate)+' \u2013 '+fD(endDate)):'(no dates set)';
+  el.innerHTML='<strong>Event created:</strong> '+name+' &middot; '+dateRange+(rooms.length?' &middot; '+rooms.length+' rooms':'')+'<br>Submission link: <a href="'+url+'" target="_blank">'+url+'</a><button class="copy-btn" onclick="cpL(event,\''+url+'\')"><i class="ti ti-copy"></i> Copy</button>';
+  ['fe','grid-ev','rooms-ev'].forEach(sid=>{const s=document.getElementById(sid);if(s){const o=document.createElement('option');o.value=name;o.textContent=name;s.appendChild(o);}});
+  availEvents.push({name,startDate,endDate,rooms,active:true});
 }
 function cpL(ev,u){navigator.clipboard.writeText(u).then(()=>{const b=ev.target.closest('button');b.textContent='\u2713 Copied';setTimeout(()=>b.innerHTML='<i class="ti ti-copy"></i> Copy',2000);});}
 
 async function loadGrid(){
-  const ev=document.getElementById('grid-ev').value,wrap=document.getElementById('grid-view');
-  if(!ev){wrap.style.display='none';return;}
+  const evName=document.getElementById('grid-ev').value,wrap=document.getElementById('grid-view');
+  if(!evName){wrap.style.display='none';return;}
   wrap.style.display='block';
-  const res=await api({action:'adminGetGrid',token:adminToken,event:ev});
+  const res=await api({action:'adminGetGrid',token:adminToken,event:evName});
   if(!res.ok)return;
-  renderGrid(res.approved||[]);
+  const cls=res.approved||[];
+  // Get event date range to build day tabs
+  const ev=availEvents.find(e=>e.name===evName);
+  const days=getEventDays(ev,cls);
+  renderGridWithDays(cls,days);
 }
-function renderGrid(cls){
+
+function getEventDays(ev,cls){
+  // Build list of dates from the event range, falling back to whatever dates the classes use
+  const dates=new Set(cls.map(c=>c.date).filter(Boolean));
+  if(ev&&ev.startDate&&ev.endDate){
+    let d=new Date(ev.startDate+'T00:00:00');
+    const end=new Date(ev.endDate+'T00:00:00');
+    while(d<=end){
+      dates.add(d.toISOString().slice(0,10));
+      d.setDate(d.getDate()+1);
+    }
+  }
+  return [...dates].sort();
+}
+
+function renderGridWithDays(cls,days){
+  const wrap=document.getElementById('grid-view');
+  // Remove any old day-tabs before the legend
+  const oldTabs=wrap.querySelector('.day-tabs');if(oldTabs)oldTabs.remove();
+  if(days.length<=1){
+    // Single day — render directly, no tabs needed
+    renderGrid(cls,days[0]||null);
+    return;
+  }
+  // Build tab bar
+  const tabBar=document.createElement('div');
+  tabBar.className='day-tabs';
+  tabBar.style.cssText='display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;';
+  days.forEach((d,i)=>{
+    const btn=document.createElement('button');
+    btn.className='print-btn'+(i===0?' day-tab-active':'');
+    if(i===0)btn.style.cssText='background:var(--accent);color:#fff;border-color:var(--accent)';
+    btn.textContent=fD(d);
+    btn.dataset.date=d;
+    btn.onclick=function(){
+      wrap.querySelectorAll('.day-tabs button').forEach(b=>{b.style.cssText='';b.classList.remove('day-tab-active');});
+      this.style.cssText='background:var(--accent);color:#fff;border-color:var(--accent)';
+      this.classList.add('day-tab-active');
+      renderGrid(cls,this.dataset.date);
+    };
+    tabBar.appendChild(btn);
+  });
+  const legend=wrap.querySelector('.grid-legend');
+  wrap.insertBefore(tabBar,legend);
+  renderGrid(cls,days[0]);
+}
+
+function renderGrid(cls,filterDate){
   const times=['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00'];
-  const rooms=[...new Set(cls.map(c=>c.room||'Unassigned').filter(Boolean))].sort();
+  const dayCls=filterDate?cls.filter(c=>c.date===filterDate):cls;
+  const rooms=[...new Set(dayCls.map(c=>c.room||'Unassigned').filter(Boolean))].sort();
   const tbl=document.getElementById('grid-table');
-  if(!rooms.length){tbl.innerHTML='<tr><td style="padding:1rem;font-family:sans-serif;color:var(--text2)">No approved classes with rooms assigned yet.</td></tr>';return;}
+  if(!rooms.length){tbl.innerHTML='<tr><td style="padding:1rem;font-family:sans-serif;color:var(--text2)">No approved classes with rooms assigned yet'+(filterDate?' for '+fD(filterDate):'')+'. </td></tr>';return;}
   function cfl(c){
     const s=t2m(c.time),e=s+(Number(c.duration)||60);
-    const sm=cls.filter(x=>x.id!==c.id&&x.date===c.date);
+    const sm=dayCls.filter(x=>x.id!==c.id);
     const tc=sm.some(x=>{const xs=t2m(x.time),xe=xs+(Number(x.duration)||60);return s<xe&&e>xs&&x.topic===c.topic;});
     const th=sm.some(x=>{const xs=t2m(x.time),xe=xs+(Number(x.duration)||60);return s<xe&&e>xs&&x.teacher===c.teacher;});
     return{tc,th};
@@ -817,7 +948,7 @@ function renderGrid(cls){
   times.forEach(t=>{
     h+='<tr><td class="sgtime">'+fT(t)+'</td>';
     rooms.forEach(r=>{
-      const sl=cls.filter(c=>(c.room||'Unassigned')===r&&String(c.time).slice(0,5)===t);
+      const sl=dayCls.filter(c=>(c.room||'Unassigned')===r&&String(c.time).slice(0,5)===t);
       h+='<td>';
       sl.forEach(c=>{const{tc,th}=cfl(c);const k=(tc&&th)?'cb':th?'ch':tc?'ct':'';const du=Number(c.duration)||60;
         h+='<div class="gc '+k+'" title="'+c.title+' \u2014 '+c.teacher+' ('+du+'min)'+(tc?' topic overlap':'')+(th?' double-booked':'')+'">'
@@ -829,7 +960,135 @@ function renderGrid(cls){
   });
   tbl.innerHTML=h;
 }
-['reg-modal','approve-modal','roster-modal'].forEach(id=>document.getElementById(id).addEventListener('click',function(e){if(e.target===this)closeModal(id);}));
+['reg-modal','approve-modal','roster-modal','edit-modal'].forEach(id=>document.getElementById(id).addEventListener('click',function(e){if(e.target===this)closeModal(id);}));
+
+let curEditId=null;
+function openEditClass(id){
+  const c=IS_DEMO?dC.find(x=>String(x.id)===String(id)):allClasses.find(x=>String(x.id)===String(id));
+  if(!c)return;
+  curEditId=id;
+  document.getElementById('em-sub').textContent=c.title;
+  document.getElementById('em-title').value=c.title||'';
+  document.getElementById('em-date').value=c.date||'';
+  document.getElementById('em-time').value=c.time||'';
+  document.getElementById('em-max').value=c.max||'';
+  document.getElementById('em-fee').value=c.fee||'';
+  document.getElementById('em-bring').value=c.bring||'';
+  document.getElementById('em-desc').value=c.desc||'';
+  populateRoomDropdown('em-room-sel',c.event||'',c.room||'');
+  document.getElementById('edit-modal').classList.add('open');
+}
+async function confirmEditClass(){
+  const btn=document.getElementById('em-confirm');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
+  const updates={
+    action:'adminEditClass',token:adminToken,id:String(curEditId),
+    title:document.getElementById('em-title').value.trim(),
+    date:document.getElementById('em-date').value,
+    time:document.getElementById('em-time').value,
+    room:getEmRoom(),
+    max:document.getElementById('em-max').value||'',
+    fee:document.getElementById('em-fee').value.trim(),
+    bring:document.getElementById('em-bring').value.trim(),
+    desc:document.getElementById('em-desc').value.trim()
+  };
+  const res=await api(updates);
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-device-floppy"></i> Save changes';
+  if(!res.ok){alert(res.error||'Save failed.');return;}
+  closeModal('edit-modal');await loadClasses();loadAdmin();
+}
+async function doCancelClass(id){
+  const c=IS_DEMO?dC.find(x=>String(x.id)===String(id)):allClasses.find(x=>String(x.id)===String(id));
+  if(!c)return;
+  if(!confirm('Cancel "'+c.title+'"?\n\nThis will mark it cancelled on the schedule. Registrants will see a cancellation notice (in a live deployment this triggers an email).'))return;
+  const res=await api({action:'adminCancelClass',token:adminToken,id:String(id)});
+  if(!res.ok){alert(res.error||'Could not cancel.');return;}
+  await loadClasses();loadAdmin();
+  // In demo mode, show what the email would say
+  if(IS_DEMO&&(dRegs[id]||[]).length){
+    const names=(dRegs[id]||[]).map(r=>r.email).join(', ');
+    alert('📧 [Demo — email would be sent]\nTo: '+names+'\nSubject: Class cancelled — '+c.title+'\n\nWe\'re sorry to let you know that "'+c.title+" ("+fD(c.date)+" at "+fT(c.time)+')" has been cancelled. No action is needed on your part. We hope to see you at another class soon!');
+  }
+}
+
+// ── Room editor ──
+function loadRoomEditor(){
+  const evName=document.getElementById('rooms-ev').value;
+  const wrap=document.getElementById('room-editor');
+  if(!evName){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  renderRoomList(evName);
+}
+function renderRoomList(evName){
+  const ev=availEvents.find(e=>e.name===evName);
+  if(!ev){document.getElementById('room-list').innerHTML='';return;}
+  if(!ev.rooms)ev.rooms=[];
+  document.getElementById('room-list').innerHTML=ev.rooms.map((r,i)=>
+    '<div style="display:flex;gap:6px;align-items:center">'
+    +'<input class="modal-input" style="flex:1" value="'+r.replace(/"/g,'&quot;')+'" onchange="renameRoom(\''+evName+'\','+i+',this.value)">'
+    +'<button class="reject-btn" style="padding:5px 10px;white-space:nowrap" onclick="removeRoom(\''+evName+'\','+i+')"><i class="ti ti-trash"></i></button>'
+    +'</div>'
+  ).join('');
+}
+function renameRoom(evName,idx,val){
+  const ev=availEvents.find(e=>e.name===evName);
+  if(!ev||!ev.rooms)return;
+  ev.rooms[idx]=val.trim();
+  // Also update any already-approved classes that used the old name? No — that would
+  // change historical records. Renaming only affects future approvals.
+}
+function removeRoom(evName,idx){
+  const ev=availEvents.find(e=>e.name===evName);
+  if(!ev||!ev.rooms)return;
+  if(!confirm('Remove this room?'))return;
+  ev.rooms.splice(idx,1);
+  renderRoomList(evName);
+}
+function addRoom(){
+  const evName=document.getElementById('rooms-ev').value;
+  const ev=availEvents.find(e=>e.name===evName);
+  if(!ev)return;
+  if(!ev.rooms)ev.rooms=[];
+  ev.rooms.push('Room '+(ev.rooms.length+1));
+  renderRoomList(evName);
+}
+
+// ── Room dropdown helpers for Approve & Edit modals ──
+function populateRoomDropdown(selId,evName,currentRoom){
+  const sel=document.getElementById(selId);
+  const ev=availEvents.find(e=>e.name===evName);
+  const rooms=(ev&&ev.rooms)||[];
+  sel.innerHTML='<option value="">— select room —</option>'
+    +rooms.map(r=>'<option value="'+r.replace(/"/g,'&quot;')+'"'+(r===currentRoom?' selected':'')+'>'+r+'</option>').join('')
+    +'<option value="__other__">Other (type in)&hellip;</option>';
+  sel.style.display='block';
+  // Show/hide the text fallback
+  const textId=selId==='am-room-sel'?'am-room':'em-room';
+  const textEl=document.getElementById(textId);
+  if(currentRoom&&!rooms.includes(currentRoom)){
+    sel.value='__other__';textEl.style.display='block';textEl.value=currentRoom;
+  } else {
+    textEl.style.display='none';textEl.value='';
+  }
+}
+function amRoomSelChange(){
+  const sel=document.getElementById('am-room-sel'),txt=document.getElementById('am-room');
+  if(sel.value==='__other__'){txt.style.display='block';txt.focus();}
+  else{txt.style.display='none';txt.value='';}
+}
+function emRoomSelChange(){
+  const sel=document.getElementById('em-room-sel'),txt=document.getElementById('em-room');
+  if(sel.value==='__other__'){txt.style.display='block';txt.focus();}
+  else{txt.style.display='none';txt.value='';}
+}
+function getAmRoom(){
+  const sel=document.getElementById('am-room-sel');
+  return sel.value==='__other__'?document.getElementById('am-room').value.trim():sel.value;
+}
+function getEmRoom(){
+  const sel=document.getElementById('em-room-sel');
+  return sel.value==='__other__'?document.getElementById('em-room').value.trim():sel.value;
+}
 </script>
 </body>
 </html>
