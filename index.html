@@ -103,6 +103,9 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .print-btn:hover{background:var(--bg3)}
 .empty-sched{text-align:center;padding:3rem 1rem;color:var(--text2);font-family:sans-serif;font-size:14px;line-height:1.8}
 .sched-item{display:grid;grid-template-columns:90px 1fr auto;gap:12px;align-items:start;padding:1rem 1.1rem;border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:10px;background:var(--bg);box-shadow:var(--shadow)}
+.sched-item-zoom{border-left:4px solid var(--accent-mid);background:var(--accent-light)}
+.sched-zoom-btn{display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 16px;border-radius:var(--radius);background:var(--accent);color:#fff;font-size:13px;font-family:sans-serif;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:background .15s}
+.sched-zoom-btn:hover{background:var(--accent-mid)}
 .sched-time{font-size:13px;color:var(--accent-mid);font-family:sans-serif;font-weight:600;padding-top:2px}
 .sched-title{font-size:14px;font-weight:600;font-family:Georgia,serif;margin-bottom:3px}
 .sched-meta{font-size:12px;color:var(--text2);font-family:sans-serif}
@@ -293,7 +296,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
       <div id="api-banner" class="api-banner demo" style="display:none"></div>
       <div class="filters">
         <input class="search-input" type="text" placeholder="Search classes, teachers&#x2026;" oninput="rC()" id="si">
-        <select class="filter-select" onchange="rC()" id="ff"><option value="">All formats</option><option value="zoom">Online / Zoom</option><option value="in-person">In person</option></select>
+        <select class="filter-select" onchange="rC()" id="ff"><option value="">All formats</option><option value="zoom">Online</option><option value="in-person">In person</option></select>
         <select class="filter-select" onchange="rC()" id="ft"><option value="">All topics</option></select>
         <select class="filter-select" onchange="rC()" id="fe"><option value="">All events</option></select>
         <select class="filter-select" onchange="rC()" id="fs"><option value="date">Sort: Date</option><option value="title">Sort: Title</option></select>
@@ -330,12 +333,12 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
           <div class="form-col"><label class="form-label">Topic</label>
             <select class="form-select" id="fc-tp"><option>Fiber Arts</option><option>Costuming</option><option>Dance</option><option>History</option><option>Society Skills</option><option>Bardic Arts</option><option>Scribal Arts</option><option>Cooking &amp; Brewing</option><option>Combat</option><option>Archery</option><option>Heraldry</option><option>Crafts</option><option>Other</option></select>
           </div>
-          <div class="form-col"><label class="form-label">Format</label><select class="form-select" id="fc-fm" onchange="tzf()"><option value="in-person">In person</option><option value="zoom">Zoom / Online</option></select></div>
+          <div class="form-col"><label class="form-label">Format</label><select class="form-select" id="fc-fm" onchange="tzf()"><option value="in-person">In person</option><option value="zoom">Online</option></select></div>
         </div>
         <div class="form-grid">
           <div class="form-col"><label class="form-label">Max attendees (blank = unlimited)</label><input class="form-input" id="fc-mx" type="number" min="1"></div>
         </div>
-        <div class="form-full" id="zf" style="display:none"><label class="form-label">Zoom link</label><input class="form-input" id="fc-zl" type="url" placeholder="https://zoom.us/j/..."><span class="form-hint">Shown to registered attendees only.</span></div>
+        <div class="form-full" id="zf" style="display:none"><label class="form-label">Meeting link</label><input class="form-input" id="fc-zl" type="url" placeholder="https://…"><span class="form-hint">Shown to registered attendees only.</span></div>
         <div class="form-full"><label class="form-label">Teacher bio <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional, shown publicly)</span></label><textarea class="form-textarea" id="fc-bio" style="min-height:70px" placeholder="A sentence or two about your background with this topic. Shown as a hover tooltip on your name in the class catalog."></textarea></div>
         <div class="form-full"><label class="form-label">Class thumbnail image URL <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><input class="form-input" id="fc-img" type="url" placeholder="https://… paste a link to a hosted image"><span class="form-hint">Paste a link from Google Photos, Imgur, or your own site. Displays at the top of your class card.</span></div>
         <div class="form-full"><label class="form-label">Class description</label><textarea class="form-textarea" id="fc-d" placeholder="What will attendees learn? What level?"></textarea></div>
@@ -356,7 +359,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
             <select class="form-select" id="fc-ev">
               <option value="">— select an event or leave blank —</option>
             </select>
-            <span class="form-hint">Choose an upcoming event, or leave blank for a standalone/Zoom class.</span>
+            <span class="form-hint">Choose an upcoming event, or leave blank for a standalone/online class.</span>
           </div>
         </div>
         <div id="sched-pf" style="display:none">
@@ -399,17 +402,19 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
             </div>
           </div>
           <div class="form-col"><label class="form-label">Format preference</label>
-            <select class="form-select" id="rq-format"><option value="">No preference</option><option value="In person">In person</option><option value="Online / Zoom">Online / Zoom</option></select>
+            <select class="form-select" id="rq-format"><option value="">No preference</option><option value="In person">In person</option><option value="Online / Zoom">Online</option></select>
           </div>
         </div>
         <div class="form-full"><label class="form-label">Notes for organizers <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><textarea class="form-textarea" id="rq-notes" style="min-height:65px" placeholder="Anything that would help — specific time period, skill focus, etc."></textarea></div>
         <div class="form-grid">
-          <div class="form-col"><label class="form-label">Your SCA name <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><input class="form-input" id="rq-name" type="text" placeholder="Leave blank to submit anonymously"></div>
-          <div class="form-col" style="justify-content:flex-end">
-            <div style="display:flex;gap:8px;justify-content:flex-end;align-items:flex-end;height:100%">
-              <button class="modal-cancel" onclick="toggleReqForm()">Cancel</button>
-              <button class="submit-action" onclick="submitRequest()"><i class="ti ti-send"></i> Submit request</button>
-            </div>
+          <div class="form-col"><label class="form-label">Your SCA name *</label><input class="form-input" id="rq-name" type="text" placeholder="Required"></div>
+          <div class="form-col"><label class="form-label">Barony <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><input class="form-input" id="rq-barony" type="text" placeholder="e.g. Dreiburgen"></div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:13px">
+          <label class="cb-row" style="margin-bottom:0;user-select:none"><input type="checkbox" id="rq-hidden"> Hide my name from the public wishlist</label>
+          <div style="display:flex;gap:8px;">
+            <button class="modal-cancel" onclick="toggleReqForm()">Cancel</button>
+            <button class="submit-action" onclick="submitRequest()"><i class="ti ti-send"></i> Submit request</button>
           </div>
         </div>
         <div class="success-msg" id="req-submit-ok"><i class="ti ti-check"></i> Request submitted! It'll appear in the wishlist shortly.</div>
@@ -594,10 +599,27 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
       <select class="modal-select" id="em-room-sel" onchange="emRoomSelChange()"><option value="">— select room —</option></select>
       <input class="modal-input" id="em-room" type="text" placeholder="Type room name" style="margin-top:6px;display:none">
     </div>
-    <div class="modal-field"><label class="modal-label">Max attendees (blank = unlimited)</label><input class="modal-input" id="em-max" type="number" min="1"></div>
+    <div class="modal-grid">
+      <div class="modal-field"><label class="modal-label">Topic</label>
+        <select class="modal-select" id="em-topic"><option>Fiber Arts</option><option>Costuming</option><option>Dance</option><option>History</option><option>Society Skills</option><option>Bardic Arts</option><option>Scribal Arts</option><option>Cooking &amp; Brewing</option><option>Combat</option><option>Archery</option><option>Heraldry</option><option>Crafts</option><option>Other</option></select>
+      </div>
+      <div class="modal-field"><label class="modal-label">Format</label>
+        <select class="modal-select" id="em-format"><option value="in-person">In person</option><option value="zoom">Online</option></select>
+      </div>
+    </div>
+    <div class="modal-grid">
+      <div class="modal-field"><label class="modal-label">Duration</label>
+        <select class="modal-select" id="em-duration"><option value="30">30 min</option><option value="60">1 hour</option><option value="90">90 min</option><option value="120">2 hours</option><option value="180">3 hours</option></select>
+      </div>
+      <div class="modal-field"><label class="modal-label">Max attendees (blank = unlimited)</label><input class="modal-input" id="em-max" type="number" min="1"></div>
+    </div>
     <div class="modal-field"><label class="modal-label">Fee (blank if free)</label><input class="modal-input" id="em-fee" type="text"></div>
     <div class="modal-field"><label class="modal-label">What to bring</label><input class="modal-input" id="em-bring" type="text"></div>
+    <div class="modal-field"><label class="modal-label">Prerequisites</label><input class="modal-input" id="em-prereqs" type="text" placeholder="Leave blank if none"></div>
     <div class="modal-field"><label class="modal-label">Description</label><textarea class="modal-input" id="em-desc" style="min-height:80px;resize:vertical"></textarea></div>
+    <div class="modal-field"><label class="modal-label">Teacher bio <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><textarea class="modal-input" id="em-bio" style="min-height:60px;resize:vertical"></textarea></div>
+    <div class="modal-field"><label class="modal-label">Thumbnail image URL <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><input class="modal-input" id="em-img" type="url" placeholder="https://…"></div>
+    <div class="modal-field"><label class="modal-label">Meeting link <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><input class="modal-input" id="em-zoom" type="url" placeholder="https://…"></div>
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeModal('edit-modal')">Cancel</button>
       <button class="modal-confirm mc-gold" id="em-confirm" onclick="confirmEditClass()"><i class="ti ti-device-floppy"></i> Save changes</button>
@@ -716,6 +738,13 @@ function apiD(p){
     c.room=p.room||c.room;c.fee=p.fee!==undefined?p.fee:c.fee;
     c.bring=p.bring!==undefined?p.bring:c.bring;c.desc=p.desc||c.desc;
     c.max=p.max?Number(p.max):null;
+    if(p.prereqs!==undefined)c.prereqs=p.prereqs;
+    if(p.bio!==undefined)c.bio=p.bio;
+    if(p.imageUrl!==undefined)c.imageUrl=p.imageUrl;
+    if(p.zoomLink!==undefined)c.zoomLink=p.zoomLink;
+    if(p.topic)c.topic=p.topic;
+    if(p.format)c.format=p.format;
+    if(p.duration)c.duration=Number(p.duration);
     return{ok:true};
   }
   if(action==='adminCancelClass'){
@@ -820,7 +849,7 @@ function rC(){
       +(c.topic?'<span><i class="ti ti-tag"></i> '+c.topic+'</span>':'')
       +'</div>'+(c.prereqs?'<div style="font-size:11px;color:var(--accent);font-family:sans-serif;margin-bottom:6px"><i class="ti ti-info"></i> Prereq: '+c.prereqs+'</div>':'')
       +'<div class="card-desc">'+c.desc+'</div>'+cancelledBanner+'<div class="card-logistics">'+fp+bp+'</div>'
-      +(c.zoomLink&&reg?'<div style="font-size:12px;font-family:sans-serif;margin-bottom:8px"><i class="ti ti-video"></i> <a href="'+c.zoomLink+'" target="_blank">Join Zoom</a></div>':'')
+      +(c.zoomLink&&reg?'<a class="sched-zoom-btn" href="'+c.zoomLink+'" target="_blank" style="margin-bottom:8px"><i class="ti ti-video"></i> Join online</a>':'')
       +'<div class="card-footer"><button class="'+bc+'" onclick="'+(cancelled?'':'handleEnroll(\''+c.id+'\')')+'" '+(cancelled?'disabled style="opacity:.5;cursor:not-allowed"':'')+'>'+bt+'</button>'+sp+'</div>'+ro+'</div>';
   }).join('');
 }
@@ -940,8 +969,9 @@ function renderSchedule(){
   const s=[...mc].sort((a,b)=>(String(a.date)+String(a.time)).localeCompare(String(b.date)+String(b.time)));
   l.innerHTML=s.map(c=>{
     const wl=isWL(c),pos=wlPos(c);
-    const du=c.duration&&c.duration!==60?' \u00b7 '+Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h':'';
-    return '<div class="sched-item">'
+    const du=c.duration?' \u00b7 '+(c.duration>=60?Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h':c.duration+'min'):'';
+    const isZoom=c.format==='zoom';
+    return '<div class="sched-item'+(isZoom?' sched-item-zoom':'')+'">'
       +'<div class="sched-time">'+(c.date?fD(c.date)+'<br>':'')+(c.time?fT(c.time):'TBD')+'</div>'
       +'<div><div class="sched-title">'+c.title+'</div>'
       +'<div class="sched-meta">'+c.teacher+(c.event?' \u00b7 '+c.event:'')+(c.room?' \u00b7 '+c.room:'')+du+'</div>'
@@ -949,7 +979,8 @@ function renderSchedule(){
       +(wl?'<div class="sched-wl"><i class="ti ti-clock"></i> Waitlist #'+pos+'</div>':'')
       +(c.fee?'<div class="sched-meta" style="color:var(--accent-mid);margin-top:2px"><i class="ti ti-coin"></i> '+c.fee+'</div>':'')
       +(c.bring?'<div class="sched-meta" style="margin-top:2px"><i class="ti ti-backpack"></i> Bring: '+c.bring+'</div>':'')
-      +(c.zoomLink?'<div class="sched-meta" style="margin-top:3px"><i class="ti ti-video"></i> <a href="'+c.zoomLink+'" target="_blank">Join Zoom</a></div>':'')
+      +(c.prereqs?'<div class="sched-meta" style="margin-top:2px"><i class="ti ti-info-circle"></i> Prereq: '+c.prereqs+'</div>':'')
+      +(isZoom&&c.zoomLink?'<a class="sched-zoom-btn" href="'+c.zoomLink+'" target="_blank"><i class="ti ti-video"></i> Join online</a>':'')
       +'</div>'
       +'<button class="remove-btn" onclick="'+(wl?'doLeaveWL':'doUnreg')+'(\''+c.id+'\')"><i class="ti ti-x"></i> '+(wl?'Leave list':'Cancel')+'</button>'
       +'</div>';
@@ -1306,6 +1337,13 @@ function openEditClass(id){
   document.getElementById('em-fee').value=c.fee||'';
   document.getElementById('em-bring').value=c.bring||'';
   document.getElementById('em-desc').value=c.desc||'';
+  document.getElementById('em-prereqs').value=c.prereqs||'';
+  document.getElementById('em-bio').value=c.bio||'';
+  document.getElementById('em-img').value=c.imageUrl||'';
+  document.getElementById('em-zoom').value=c.zoomLink||'';
+  document.getElementById('em-topic').value=c.topic||'Fiber Arts';
+  document.getElementById('em-format').value=c.format||'in-person';
+  document.getElementById('em-duration').value=String(c.duration||60);
   populateRoomDropdown('em-room-sel',c.event||'',c.room||'');
   document.getElementById('edit-modal').classList.add('open');
 }
@@ -1321,7 +1359,14 @@ async function confirmEditClass(){
     max:document.getElementById('em-max').value||'',
     fee:document.getElementById('em-fee').value.trim(),
     bring:document.getElementById('em-bring').value.trim(),
-    desc:document.getElementById('em-desc').value.trim()
+    desc:document.getElementById('em-desc').value.trim(),
+    prereqs:document.getElementById('em-prereqs').value.trim(),
+    bio:document.getElementById('em-bio').value.trim(),
+    imageUrl:document.getElementById('em-img').value.trim(),
+    zoomLink:document.getElementById('em-zoom').value.trim(),
+    topic:document.getElementById('em-topic').value,
+    format:document.getElementById('em-format').value,
+    duration:document.getElementById('em-duration').value
   };
   const res=await api(updates);
   btn.disabled=false;btn.innerHTML='<i class="ti ti-device-floppy"></i> Save changes';
@@ -1375,10 +1420,12 @@ function initRequests(){
     const o1=document.createElement('option'); o1.value=ev.name; o1.textContent=ev.name; evSel.appendChild(o1);
     const o2=document.createElement('option'); o2.value=ev.name; o2.textContent=ev.name; filterSel.appendChild(o2);
   });
-  // Pre-select from URL param
+  // Pre-select from URL param and auto-open form
   if(reqEventParam){
     if(evSel.querySelector('option[value="'+CSS.escape(reqEventParam)+'"]')) evSel.value=reqEventParam;
     if(filterSel.querySelector('option[value="'+CSS.escape(reqEventParam)+'"]')) filterSel.value=reqEventParam;
+    document.getElementById('req-form-wrap').classList.add('open');
+    setTimeout(()=>document.getElementById('rq-topic').focus(), 60);
   }
   renderRequests();
 }
@@ -1394,8 +1441,11 @@ function toggleReqForm(){
 async function submitRequest(){
   const topic = document.getElementById('rq-topic').value.trim();
   if(!topic){alert('Please enter a topic.');return;}
+  const name = document.getElementById('rq-name').value.trim();
+  if(!name){alert('Please enter your SCA name.');document.getElementById('rq-name').focus();return;}
   const btn = document.querySelector('#req-form-wrap .submit-action');
   btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Submitting…';
+  const hidden = document.getElementById('rq-hidden').checked;
   const res = await api({
     action:'submitRequest',
     topic,
@@ -1403,13 +1453,16 @@ async function submitRequest(){
     level: [...document.querySelectorAll('.rq-level-cb:checked')].map(cb=>cb.value).join(','),
     format: document.getElementById('rq-format').value,
     notes: document.getElementById('rq-notes').value.trim(),
-    submitter: document.getElementById('rq-name').value.trim()
+    submitter: name,
+    barony: document.getElementById('rq-barony').value.trim(),
+    hidden: hidden ? '1' : ''
   });
   btn.disabled=false; btn.innerHTML='<i class="ti ti-send"></i> Submit request';
   if(!res.ok){alert(res.error||'Submission failed.');return;}
   document.getElementById('req-submit-ok').style.display='block';
-  ['rq-topic','rq-notes','rq-name'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['rq-topic','rq-notes','rq-name','rq-barony'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('rq-event').value='';
+  document.getElementById('rq-hidden').checked=false;
   document.querySelectorAll('.rq-level-cb').forEach(cb=>cb.checked=false);
   document.getElementById('rq-format').value='';
   renderRequests();
@@ -1460,7 +1513,7 @@ function renderRequests(){
       +'<span style="font-size:12px">'+r.hearts+'</span>'
       +'</button>'
       +'<span style="font-size:11.5px;color:var(--text2);font-family:sans-serif;opacity:.7;display:flex;flex-direction:column;align-items:flex-end;gap:1px">'
-      +(r.submitter?'<span>'+escH(r.submitter)+'</span>':'')
+      +(r.submitter?'<span>Requested by '+escH(r.submitter)+'</span>':'')
       +(ds?'<span>'+ds+'</span>':'')
       +'</span>'
       +'</div></div>';
@@ -1504,7 +1557,7 @@ function renderAdminRequests(){
     +'<div class="req-admin-meta">'
     +(r.event?'<span><i class="ti ti-star"></i>'+escH(r.event)+'</span>':'<span><i class="ti ti-globe"></i>General</span>')
     +(r.level?r.level.split(',').map(l=>'<span><i class="ti ti-signal"></i>'+l+'</span>').join(''):'')
-    +(r.format?'<span><i class="ti ti-'+(r.format==='Online / Zoom'?'video':'map-pin')+'"></i>'+escH(r.format)+'</span>':'')
+    +(r.format?'<span><i class="ti ti-'+(r.format==='Online / Zoom'?'video':'map-pin')+'"></i>'+escH(r.format==='Online / Zoom'?'Online':r.format)+'</span>':'')
     +'<span style="color:#c0392b"><i class="ti ti-heart"></i> '+r.hearts+' agree</span>'
     +(r.submitter?'<span><i class="ti ti-user"></i>'+escH(r.submitter)+'</span>':'<span style="opacity:.6"><i class="ti ti-user-off"></i> Anonymous</span>')
     +(ds?'<span><i class="ti ti-calendar"></i>'+ds+'</span>':'')
