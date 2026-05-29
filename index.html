@@ -190,6 +190,63 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* ── Teacher bio popover ── */
+.bio-btn{background:none;border:none;padding:0;cursor:pointer;color:var(--accent-mid);font-size:13px;line-height:1;vertical-align:middle;margin-left:4px;position:relative;display:inline-flex;align-items:center}
+.bio-btn:hover{color:var(--accent)}
+.bio-popover{display:none;position:absolute;z-index:50;left:50%;transform:translateX(-50%);bottom:calc(100% + 6px);width:220px;background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:10px 12px;box-shadow:var(--shadow-lg);font-size:12.5px;font-family:sans-serif;color:var(--text2);line-height:1.55;text-align:left;pointer-events:none}
+.bio-popover::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--border2)}
+.bio-popover::before{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--bg);z-index:1;margin-top:-1px}
+.bio-btn:hover .bio-popover,.bio-btn:focus .bio-popover{display:block}
+.bio-name{font-weight:700;color:var(--text);margin-bottom:4px;font-size:13px}
+
+/* ── Card thumbnail ── */
+.card-thumb{width:100%;height:130px;object-fit:cover;border-radius:var(--radius) var(--radius) 0 0;display:block;margin:-1.2rem -1.3rem 1rem;width:calc(100% + 2.6rem)}
+
+
+.req-intro{font-size:13.5px;color:var(--text2);font-family:sans-serif;margin-bottom:1.25rem;line-height:1.6}
+.req-event-picker{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem;align-items:center}
+.req-event-picker .form-label{font-size:12px;color:var(--text2);font-family:sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;align-self:center}
+.req-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem;align-items:center}
+.req-sort{font-size:12px;font-family:sans-serif;color:var(--text2);display:flex;align-items:center;gap:6px;margin-left:auto}
+.req-sort select{padding:5px 8px;border:1px solid var(--border2);border-radius:var(--radius);font-size:12px;font-family:sans-serif;background:var(--bg);color:var(--text)}
+.req-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.req-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.2rem;box-shadow:var(--shadow);transition:border-color .15s,box-shadow .15s;display:flex;flex-direction:column;gap:0}
+.req-card:hover{border-color:var(--border2);box-shadow:0 4px 14px rgba(10,30,80,.13)}
+.req-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.req-topic{font-size:15px;font-weight:600;font-family:Georgia,serif;color:var(--text);line-height:1.4;flex:1}
+.req-event-tag{font-size:11px;padding:3px 8px;border-radius:10px;background:var(--accent-light);color:var(--accent);border:1px solid var(--border2);white-space:nowrap;font-family:sans-serif;font-weight:600;flex-shrink:0}
+.req-event-tag.general{background:var(--bg2);color:var(--text2);border-color:var(--border2)}
+.req-meta{font-size:12px;color:var(--text2);font-family:sans-serif;display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.req-meta span{display:flex;align-items:center;gap:4px}
+.req-notes{font-size:13px;color:var(--text2);font-family:sans-serif;line-height:1.55;margin-bottom:10px;font-style:italic}
+.req-footer{display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid var(--border);margin-top:auto}
+.heart-btn{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;border:1px solid var(--border2);background:var(--bg2);cursor:pointer;font-size:13px;font-family:sans-serif;color:var(--text2);transition:all .15s;font-weight:500}
+.heart-btn:hover{border-color:#e07070;color:#c0392b;background:#fdf0f0}
+.heart-btn.hearted{background:#fdf0f0;border-color:#e07070;color:#c0392b;font-weight:700}
+.heart-btn .heart-icon{font-size:15px;transition:transform .15s}
+.heart-btn.hearted .heart-icon{transform:scale(1.2)}
+.heart-count{font-size:12px;color:var(--text2);font-family:sans-serif}
+.req-submitter{font-size:11.5px;color:var(--text2);font-family:sans-serif;opacity:.7}
+.new-req-btn{padding:8px 18px;border-radius:var(--radius);background:var(--accent);color:#fff;border:none;font-size:13px;cursor:pointer;font-weight:600;font-family:sans-serif;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.new-req-btn:hover{background:#4A2E78}
+.req-form-wrap{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:1.25rem 1.4rem;margin-bottom:1.5rem;display:none}
+.req-form-wrap.open{display:block}
+.req-form-title{font-size:16px;font-weight:600;font-family:Georgia,serif;margin-bottom:3px}
+.req-form-sub{font-size:12.5px;color:var(--text2);font-family:sans-serif;margin-bottom:1rem}
+.req-empty{text-align:center;padding:2.5rem 1rem;color:var(--text2);font-family:sans-serif;font-size:14px;line-height:1.9;grid-column:1/-1}
+
+/* ── Admin requests view ── */
+.req-admin-card{background:var(--bg);border:1px solid var(--border);border-left:4px solid #e07070;border-radius:var(--radius-lg);padding:.9rem 1.1rem;margin-bottom:10px;box-shadow:var(--shadow)}
+.req-admin-topic{font-size:14px;font-weight:600;font-family:Georgia,serif;margin-bottom:3px}
+.req-admin-meta{font-size:12px;color:var(--text2);font-family:sans-serif;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:5px}
+.req-admin-notes{font-size:12.5px;color:var(--text2);font-family:sans-serif;font-style:italic}
+.req-tally-bar{margin-bottom:1.25rem}
+.req-tally-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-family:sans-serif;font-size:13px}
+.req-tally-label{min-width:160px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.req-tally-track{flex:1;background:var(--bg2);border-radius:4px;height:8px;overflow:hidden;border:1px solid var(--border)}
+.req-tally-fill{height:100%;background:var(--accent-mid);border-radius:4px;transition:width .3s}
+.req-tally-num{font-size:12px;color:var(--text2);min-width:28px;text-align:right}
+
 /* ── Print ── */
 @media print{
   .topbar .nav,.filters,.enroll-btn,.remove-btn,.print-btn,.roster-toggle,.roster-list{display:none!important}
@@ -226,8 +283,9 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
     <nav class="nav">
       <button class="nav-btn active" onclick="showPanel('catalog',this)"><i class="ti ti-menu-2"></i> Catalog</button>
       <button class="nav-btn" onclick="showPanel('schedule',this)"><i class="ti ti-calendar"></i> My Schedule <span class="badge" id="sched-count">0</span></button>
-      <button class="nav-btn" onclick="showPanel('submit',this)"><i class="ti ti-plus"></i> Teach a Class</button>
-      <button class="nav-btn" onclick="showPanel('admin',this)" title="Admin"><i class="ti ti-settings"></i></button>
+      <button class="nav-btn" id="nav-requests" onclick="showPanel('requests',this)"><i class="ti ti-heart"></i> Class Requests</button>
+      <button class="nav-btn" id="nav-submit" onclick="showPanel('submit',this)"><i class="ti ti-plus"></i> Teach a Class</button>
+      <button class="nav-btn" id="nav-admin" onclick="handleAdminNav(this)" title="Admin"><i class="ti ti-settings"></i></button>
     </nav>
   </div>
   <div class="main">
@@ -266,15 +324,20 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         </div>
         <div class="form-grid">
           <div class="form-col"><label class="form-label">Your email (admin contact only)</label><input class="form-input" id="fc-em" type="email" placeholder="not shown publicly"></div>
+          <div class="form-col"><label class="form-label">Phone (admin contact only)</label><input class="form-input" id="fc-ph" type="tel" placeholder="not shown publicly"><span class="form-hint">Optional. Helps admin reach you quickly at events.</span></div>
+        </div>
+        <div class="form-grid">
           <div class="form-col"><label class="form-label">Topic</label>
             <select class="form-select" id="fc-tp"><option>Fiber Arts</option><option>Costuming</option><option>Dance</option><option>History</option><option>Society Skills</option><option>Bardic Arts</option><option>Scribal Arts</option><option>Cooking &amp; Brewing</option><option>Combat</option><option>Archery</option><option>Heraldry</option><option>Crafts</option><option>Other</option></select>
           </div>
+          <div class="form-col"><label class="form-label">Format</label><select class="form-select" id="fc-fm" onchange="tzf()"><option value="in-person">In person</option><option value="zoom">Zoom / Online</option></select></div>
         </div>
         <div class="form-grid">
-          <div class="form-col"><label class="form-label">Format</label><select class="form-select" id="fc-fm" onchange="tzf()"><option value="in-person">In person</option><option value="zoom">Zoom / Online</option></select></div>
           <div class="form-col"><label class="form-label">Max attendees (blank = unlimited)</label><input class="form-input" id="fc-mx" type="number" min="1"></div>
         </div>
         <div class="form-full" id="zf" style="display:none"><label class="form-label">Zoom link</label><input class="form-input" id="fc-zl" type="url" placeholder="https://zoom.us/j/..."><span class="form-hint">Shown to registered attendees only.</span></div>
+        <div class="form-full"><label class="form-label">Teacher bio <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional, shown publicly)</span></label><textarea class="form-textarea" id="fc-bio" style="min-height:70px" placeholder="A sentence or two about your background with this topic. Shown as a hover tooltip on your name in the class catalog."></textarea></div>
+        <div class="form-full"><label class="form-label">Class thumbnail image URL <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><input class="form-input" id="fc-img" type="url" placeholder="https://… paste a link to a hosted image"><span class="form-hint">Paste a link from Google Photos, Imgur, or your own site. Displays at the top of your class card.</span></div>
         <div class="form-full"><label class="form-label">Class description</label><textarea class="form-textarea" id="fc-d" placeholder="What will attendees learn? What level?"></textarea></div>
         <div class="form-full"><label class="form-label">Prerequisites</label><input class="form-input" id="fc-pr" type="text" placeholder="Leave blank if none"></div>
         <div class="form-divider">Logistics</div>
@@ -289,7 +352,12 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
             <div class="form-col"><label class="form-label">Date *</label><input class="form-input" id="fc-da" type="date"></div>
             <div class="form-col"><label class="form-label">Time *</label><input class="form-input" id="fc-ti" type="time"></div>
           </div>
-          <div class="form-full"><label class="form-label">Event / context (optional)</label><input class="form-input" id="fc-ev" type="text" placeholder="e.g. weeknight Zoom, standalone workshop"></div>
+          <div class="form-full"><label class="form-label">Event / context (optional)</label>
+            <select class="form-select" id="fc-ev">
+              <option value="">— select an event or leave blank —</option>
+            </select>
+            <span class="form-hint">Choose an upcoming event, or leave blank for a standalone/Zoom class.</span>
+          </div>
         </div>
         <div id="sched-pf" style="display:none">
           <div class="form-grid"><div class="form-col"><label class="form-label">How many times?</label><select class="form-select" id="fc-rp"><option value="once">Once</option><option value="twice">Twice</option><option value="three+">3+</option></select></div></div>
@@ -302,6 +370,61 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         </div>
         <div class="success-msg" id="submit-ok"><i class="ti ti-check"></i> Submitted! Your class will appear after admin review.</div>
       </div>
+    </div>
+    <div id="panel-requests" class="panel">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1rem">
+        <div>
+          <div style="font-size:20px;font-weight:600;font-family:Georgia,serif;margin-bottom:3px">Class Wishlist</div>
+          <div class="req-intro">Tell us what you want to learn. Browse requests below and ♥ any topic you'd also like to see offered.</div>
+        </div>
+        <button class="new-req-btn" onclick="toggleReqForm()"><i class="ti ti-plus"></i> Request a class</button>
+      </div>
+
+      <!-- Submission form (collapsed by default) -->
+      <div class="req-form-wrap" id="req-form-wrap">
+        <div class="req-form-title">Request a class</div>
+        <div class="req-form-sub">Your request helps organizers recruit the right teachers. No login needed.</div>
+        <div class="form-grid">
+          <div class="form-col"><label class="form-label">Topic / what you want to learn *</label><input class="form-input" id="rq-topic" type="text" placeholder="e.g. Medieval dyeing techniques"></div>
+          <div class="form-col"><label class="form-label">Event (optional)</label>
+            <select class="form-select" id="rq-event"><option value="">General (not event-specific)</option></select>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-col"><label class="form-label">Skill level you're looking for</label>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:2px">
+              <label style="display:flex;align-items:center;gap:5px;font-size:13px;font-family:sans-serif;color:var(--text2);cursor:pointer"><input type="checkbox" class="rq-level-cb" value="Beginner"> Beginner</label>
+              <label style="display:flex;align-items:center;gap:5px;font-size:13px;font-family:sans-serif;color:var(--text2);cursor:pointer"><input type="checkbox" class="rq-level-cb" value="Intermediate"> Intermediate</label>
+              <label style="display:flex;align-items:center;gap:5px;font-size:13px;font-family:sans-serif;color:var(--text2);cursor:pointer"><input type="checkbox" class="rq-level-cb" value="Advanced"> Advanced</label>
+            </div>
+          </div>
+          <div class="form-col"><label class="form-label">Format preference</label>
+            <select class="form-select" id="rq-format"><option value="">No preference</option><option value="In person">In person</option><option value="Online / Zoom">Online / Zoom</option></select>
+          </div>
+        </div>
+        <div class="form-full"><label class="form-label">Notes for organizers <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><textarea class="form-textarea" id="rq-notes" style="min-height:65px" placeholder="Anything that would help — specific time period, skill focus, etc."></textarea></div>
+        <div class="form-grid">
+          <div class="form-col"><label class="form-label">Your SCA name <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><input class="form-input" id="rq-name" type="text" placeholder="Leave blank to submit anonymously"></div>
+          <div class="form-col" style="justify-content:flex-end">
+            <div style="display:flex;gap:8px;justify-content:flex-end;align-items:flex-end;height:100%">
+              <button class="modal-cancel" onclick="toggleReqForm()">Cancel</button>
+              <button class="submit-action" onclick="submitRequest()"><i class="ti ti-send"></i> Submit request</button>
+            </div>
+          </div>
+        </div>
+        <div class="success-msg" id="req-submit-ok"><i class="ti ti-check"></i> Request submitted! It'll appear in the wishlist shortly.</div>
+      </div>
+
+      <!-- Filters -->
+      <div class="req-filters">
+        <select class="filter-select" id="rq-filter-ev" onchange="renderRequests()"><option value="">All events</option><option value="__general__">General only</option></select>
+        <select class="filter-select" id="rq-filter-level" onchange="renderRequests()"><option value="">All levels</option><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+        <div class="req-sort"><span>Sort:</span>
+          <select id="rq-sort" onchange="renderRequests()"><option value="hearts">Most ♥</option><option value="newest">Newest</option></select>
+        </div>
+      </div>
+
+      <div class="req-grid" id="req-grid"></div>
     </div>
     <div id="panel-admin" class="panel">
       <div id="admin-lock-wrap">
@@ -317,35 +440,74 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         <div class="admin-tabs">
           <button class="admin-tab active" id="atab-events" onclick="showAdminTab('events')"><i class="ti ti-calendar-event"></i> Events</button>
           <button class="admin-tab" id="atab-classes" onclick="showAdminTab('classes')"><i class="ti ti-book"></i> Classes</button>
+          <button class="admin-tab" id="atab-requests" onclick="showAdminTab('requests')"><i class="ti ti-heart"></i> Class Requests</button>
         </div>
 
         <!-- EVENTS TAB -->
         <div id="admin-tab-events">
-          <div class="link-gen">
-            <div class="link-gen-title"><i class="ti ti-plus"></i> Create new event</div>
-            <div class="lg-row">
-              <input class="lg-input" id="lg-name" type="text" placeholder="Event name, e.g. Great Western War">
-              <input class="lg-input" id="lg-start" type="date" style="max-width:150px" title="Start date">
-              <span style="font-size:12px;font-family:sans-serif;color:var(--text2);white-space:nowrap;align-self:center">to</span>
-              <input class="lg-input" id="lg-end" type="date" style="max-width:150px" title="End date (same as start for single-day)">
-              <input class="lg-input" id="lg-rooms" type="number" min="1" max="50" style="max-width:80px" placeholder="# rooms" title="Number of classrooms">
-              <button class="lg-btn" onclick="createEvent()"><i class="ti ti-plus"></i> Create</button>
-            </div>
-            <div class="lg-result" id="lg-result" style="display:none"></div>
+
+          <!-- Event picker -->
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:1.25rem">
+            <select class="filter-select" id="ev-picker" onchange="loadEventPanel()" style="flex:1;min-width:200px;font-size:13px;padding:9px 12px">
+              <option value="">— select an event to manage —</option>
+            </select>
+            <button class="lg-btn" onclick="toggleCreateEvent()" id="create-ev-btn" style="white-space:nowrap"><i class="ti ti-plus"></i> Create new event</button>
           </div>
 
-          <div class="admin-section-title"><i class="ti ti-door"></i> Manage rooms</div>
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
-            <select class="filter-select" id="rooms-ev" onchange="loadRoomEditor()"><option value="">Select event&hellip;</option></select>
+          <!-- Create event form (collapsed by default) -->
+          <div id="create-ev-wrap" style="display:none;margin-bottom:1.25rem">
+            <div class="link-gen">
+              <div class="link-gen-title"><i class="ti ti-plus"></i> Create new event</div>
+              <div class="lg-row">
+                <input class="lg-input" id="lg-name" type="text" placeholder="Event name, e.g. Great Western War">
+                <input class="lg-input" id="lg-start" type="date" style="max-width:150px" title="Start date">
+                <span style="font-size:12px;font-family:sans-serif;color:var(--text2);white-space:nowrap;align-self:center">to</span>
+                <input class="lg-input" id="lg-end" type="date" style="max-width:150px" title="End date (same as start for single-day)">
+                <input class="lg-input" id="lg-rooms" type="number" min="1" max="50" style="max-width:80px" placeholder="# rooms" title="Number of classrooms">
+                <button class="lg-btn" onclick="createEvent()"><i class="ti ti-plus"></i> Create</button>
+              </div>
+              <div class="lg-result" id="lg-result" style="display:none"></div>
+            </div>
           </div>
-          <div id="room-editor" style="display:none">
-            <div id="room-list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px"></div>
-            <button class="approve-btn" onclick="addRoom()" style="font-size:12px"><i class="ti ti-plus"></i> Add room</button>
+
+          <!-- Per-event panel (shown after selecting an event) -->
+          <div id="ev-panel" style="display:none">
+            <div class="admin-section-title"><i class="ti ti-link"></i> Share links</div>
+            <div class="link-gen">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                  <span style="font-size:12.5px;font-family:sans-serif;color:var(--text2);min-width:140px"><i class="ti ti-plus"></i> Teach a class</span>
+                  <div class="lg-result" id="teach-link-result" style="display:block;margin:0;flex:1"></div>
+                  <button class="copy-btn" id="teach-link-copy" onclick="cpL(event, document.getElementById('teach-link-result').dataset.url)" style="white-space:nowrap"><i class="ti ti-copy"></i> Copy</button>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                  <span style="font-size:12.5px;font-family:sans-serif;color:var(--text2);min-width:140px"><i class="ti ti-heart"></i> Request a class</span>
+                  <div class="lg-result" id="req-link-result" style="display:block;margin:0;flex:1"></div>
+                  <button class="copy-btn" id="req-link-copy" onclick="cpL(event, document.getElementById('req-link-result').dataset.url)" style="white-space:nowrap"><i class="ti ti-copy"></i> Copy</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="admin-section-title"><i class="ti ti-door"></i> Rooms</div>
+            <div id="room-editor">
+              <div id="room-list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px"></div>
+              <button class="approve-btn" onclick="addRoom()" style="font-size:12px"><i class="ti ti-plus"></i> Add room</button>
+            </div>
           </div>
+
+          <!-- Empty state -->
+          <div id="ev-empty" style="color:var(--text2);font-size:13px;font-family:sans-serif;padding:.5rem 0">Select an event above to manage its links and rooms, or create a new one.</div>
+
         </div>
 
         <!-- CLASSES TAB -->
         <div id="admin-tab-classes" style="display:none">
+          <div class="filters" style="margin-bottom:1.25rem">
+            <input class="search-input" type="text" id="acf-q" placeholder="Search title, teacher…" oninput="renderPending();renderApproved()">
+            <select class="filter-select" id="acf-ev" onchange="renderPending();renderApproved()"><option value="">All events</option></select>
+            <select class="filter-select" id="acf-tp" onchange="renderPending();renderApproved()"><option value="">All topics</option><option>Fiber Arts</option><option>Costuming</option><option>Dance</option><option>History</option><option>Society Skills</option><option>Bardic Arts</option><option>Scribal Arts</option><option>Cooking &amp; Brewing</option><option>Combat</option><option>Archery</option><option>Heraldry</option><option>Crafts</option><option>Other</option></select>
+            <select class="filter-select" id="acf-fm" onchange="renderPending();renderApproved()"><option value="">All formats</option><option value="in-person">In person</option><option value="zoom">Online</option></select>
+          </div>
           <div class="admin-section-title"><i class="ti ti-clock"></i> Pending submissions <span class="badge" id="pending-count" style="background:var(--accent-mid)">0</span></div>
           <div id="pending-list"></div>
           <div class="admin-section-title"><i class="ti ti-check"></i> Published classes</div>
@@ -362,6 +524,16 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
             </div>
             <div class="grid-wrap"><table class="sg" id="grid-table"></table></div>
           </div>
+        </div>
+        <!-- REQUESTS ADMIN TAB -->
+        <div id="admin-tab-requests" style="display:none">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:1rem">
+            <select class="filter-select" id="req-admin-filter" onchange="renderAdminRequests()"><option value="">All events</option><option value="__general__">General only</option></select>
+          </div>
+          <div class="admin-section-title"><i class="ti ti-chart-bar"></i> Topic tally</div>
+          <div id="req-tally"></div>
+          <div class="admin-section-title"><i class="ti ti-list"></i> All requests</div>
+          <div id="req-admin-list"></div>
         </div>
       </div>
     </div>
@@ -444,29 +616,40 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 
 <script>
 const SEED_CLASSES=[
-  {id:'1',title:`The Art of the Illuminated Initial`,teacher:`Mistress Alienor of Wakefield`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Arts/History Rm 1`,desc:`Learn the basics of painting illuminated initials in the style of 12th-century English manuscripts. We'll cover gilding, pigment mixing, and letterform. Beginners welcome.`,bring:`Small brush if you have one; supplies provided.`,fee:'',zoomLink:'',max:12,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'2',title:`Introduction to Tablet Weaving`,teacher:`Lady Aelswith of Mercia`,date:'2026-08-16',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,desc:`An entry-level class covering warping, turning sequences, and reading simple patterns. You'll leave with a small band in progress.`,bring:`Nothing — cards, warp, and loom provided.`,fee:'$3 materials',zoomLink:'',max:8,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'3',title:`Ottoman Garb Basics`,teacher:`Rayhana bint Estafanos al-Ábbas`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Cooking/Costuming`,desc:`This class walks through the basics of period-appropriate mid-16th century Ottoman clothing, with practical guidance on layers, silhouettes, and accessible starting points for creating garb.`,bring:`N/a`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'4',title:`Heraldic Charges: A Visual Survey`,teacher:`Lord Seamus mac Neill`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Heraldry',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`A fast-paced tour through common and uncommon charges in period heraldry, with examples from the Rolls of Arms. Great for new heralds or anyone designing devices.`,bring:`Ideas for your own device if you have them.`,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'5',title:`Simple Iron Gall Ink`,teacher:`Fiachra an Doire`,date:'2026-08-16',time:'12:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`Learn to make an easy, effective iron gall ink based on a late 14th or early 15th century English recipe. Students take home a small vial.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'6',title:`Intro to SCA Rapier`,teacher:`Don Rodrigo de Castilla`,date:'2026-08-16',time:'14:00',duration:90,format:'in-person',topic:'Combat',event:'Collegium 2026',room:`Field - Martial Class, all types`,desc:`An overview of rapier combat in the SCA: rules, equipment, and basic footwork and guards. Loaner gear available for new fighters to try.`,bring:`Comfortable clothes you can move in.`,fee:'',zoomLink:'',max:20,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'7',title:`Cooking from the Forme of Cury`,teacher:`Mistress Gwenllian ferch Caradog`,date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Collegium 2026',room:`Grab Bag Rm 3`,desc:`We'll work through two recipes from the 14th-century English cookbook, adapting them for modern kitchens. Tasting included.`,bring:`Any food allergies to share.`,fee:'',zoomLink:'',max:16,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'8',title:`Arrow Dynamics`,teacher:`Gideon the Genuine`,date:'2026-08-16',time:'15:00',duration:60,format:'in-person',topic:'Archery',event:'Collegium 2026',room:`Archery`,desc:`This class covers the dynamics of what happens when an arrow is shot from a bow: release, flex, and flight. Physics made accessible.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'9',title:`Weeknight Zoom: Period Dance Q&A`,teacher:`Lady Isabeau de Bretagne`,date:'2026-09-10',time:'19:00',duration:60,format:'zoom',topic:'Dance',event:'',room:``,desc:`An informal Zoom session to answer questions about period dance, recommend resources, and maybe walk through a basse danse or two together.`,bring:``,fee:'',zoomLink:'https://zoom.us/j/example',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'10',title:`Thread Woven Buttons`,teacher:`Rayhana bint Estafanos al-Ábbas`,date:'2026-08-16',time:'16:00',duration:60,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,desc:`Learn to create thread-covered wooden buttons common in 16th-century tailoring. Students practice wrapping and stitching on wooden bead cores. Kit included.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]}
+  {id:'1',title:`The Art of the Illuminated Initial`,teacher:`Mistress Alienor of Wakefield`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Arts/History Rm 1`,desc:`Learn the basics of painting illuminated initials in the style of 12th-century English manuscripts. We'll cover gilding, pigment mixing, and letterform. Beginners welcome.`,bring:`Small brush if you have one; supplies provided.`,fee:'',zoomLink:'',max:12,prereqs:'',bio:`Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'2',title:`Introduction to Tablet Weaving`,teacher:`Lady Aelswith of Mercia`,date:'2026-08-16',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,desc:`An entry-level class covering warping, turning sequences, and reading simple patterns. You'll leave with a small band in progress.`,bring:`Nothing — cards, warp, and loom provided.`,fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'3',title:`Ottoman Garb Basics`,teacher:`Rayhana bint Estafanos al-Ábbas`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Cooking/Costuming`,desc:`This class walks through the basics of period-appropriate mid-16th century Ottoman clothing, with practical guidance on layers, silhouettes, and accessible starting points for creating garb.`,bring:`N/a`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'4',title:`Heraldic Charges: A Visual Survey`,teacher:`Lord Seamus mac Neill`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Heraldry',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`A fast-paced tour through common and uncommon charges in period heraldry, with examples from the Rolls of Arms. Great for new heralds or anyone designing devices.`,bring:`Ideas for your own device if you have them.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Lord Seamus is a pursuivant with Caid's College of Heralds and has been consulting on device submissions for eight years. He enjoys the obscure corners of the heraldic menagerie.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'5',title:`Simple Iron Gall Ink`,teacher:`Fiachra an Doire`,date:'2026-08-16',time:'12:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`Learn to make an easy, effective iron gall ink based on a late 14th or early 15th century English recipe. Students take home a small vial.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Fiachra is a scribe and calligrapher with a particular interest in medieval ink recipes and writing materials. He has been recreating period inks for over eight years.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'6',title:`Intro to SCA Rapier`,teacher:`Don Rodrigo de Castilla`,date:'2026-08-16',time:'14:00',duration:90,format:'in-person',topic:'Combat',event:'Collegium 2026',room:`Field - Martial Class, all types`,desc:`An overview of rapier combat in the SCA: rules, equipment, and basic footwork and guards. Loaner gear available for new fighters to try.`,bring:`Comfortable clothes you can move in.`,fee:'',zoomLink:'',max:20,prereqs:'',bio:`Don Rodrigo holds the rank of Don in Caid's rapier community and has been teaching introductory fencing for over a decade. He specializes in Italian rapier styles of the late 16th century.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'7',title:`Cooking from the Forme of Cury`,teacher:`Mistress Gwenllian ferch Caradog`,date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Collegium 2026',room:`Grab Bag Rm 3`,desc:`We'll work through two recipes from the 14th-century English cookbook, adapting them for modern kitchens. Tasting included.`,bring:`Any food allergies to share.`,fee:'',zoomLink:'',max:16,prereqs:'',bio:`Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery. She has cooked multiple SCA feasts from period sources and written extensively on redaction methodology.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'8',title:`Arrow Dynamics`,teacher:`Gideon the Genuine`,date:'2026-08-16',time:'15:00',duration:60,format:'in-person',topic:'Archery',event:'Collegium 2026',room:`Archery`,desc:`This class covers the dynamics of what happens when an arrow is shot from a bow: release, flex, and flight. Physics made accessible.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Gideon has been shooting in the SCA for eighteen years and holds multiple Royal Round records. He brings a background in physics to his teaching of archery mechanics.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'9',title:`Weeknight Zoom: Period Dance Q&A`,teacher:`Lady Isabeau de Bretagne`,date:'2026-09-10',time:'19:00',duration:60,format:'zoom',topic:'Dance',event:'',room:``,desc:`An informal Zoom session to answer questions about period dance, recommend resources, and maybe walk through a basse danse or two together.`,bring:``,fee:'',zoomLink:'https://zoom.us/j/example',max:null,prereqs:'',bio:`Lady Isabeau has been dancing and teaching period dance in the SCA for seven years, with a focus on 15th and 16th century French and Italian forms.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'10',title:`Thread Woven Buttons`,teacher:`Rayhana bint Estafanos al-Ábbas`,date:'2026-08-16',time:'16:00',duration:60,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,desc:`Learn to create thread-covered wooden buttons common in 16th-century tailoring. Students practice wrapping and stitching on wooden bead cores. Kit included.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  // ── Great Western War 2026 ──
+  {id:'11',title:`Dyeing with Natural Pigments`,teacher:`Mistress Sorcha inghean Uí Fhaoláin`,date:'2026-11-05',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`An introduction to natural dyeing using madder, weld, and woad. We'll discuss mordanting, color modifiers, and period dye recipes. Hands-on dyeing of small wool samples included.`,bring:`Old clothes you don't mind staining.`,fee:'$4 materials',zoomLink:'',max:14,prereqs:'',bio:`Mistress Sorcha is a Pelican with twenty years of experience in natural dyeing and fiber arts. She has taught at events across the Known World and maintains a dye garden at home.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'12',title:`Reading a Medieval Recipe`,teacher:`Mistress Gwenllian ferch Caradog`,date:'2026-11-05',time:'13:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Great Western War 2026',room:`A&S Tent`,desc:`How do you turn a cryptic 14th-century recipe into something you can actually cook? This class walks through the redaction process step by step, with examples from multiple sources.`,bring:`Nothing needed.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery. She has cooked multiple SCA feasts from period sources and written extensively on redaction methodology.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'13',title:`Sprang: The Lost Textile Art`,teacher:`Lady Aelswith of Mercia`,date:'2026-11-06',time:'10:00',duration:120,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`Sprang is an ancient textile technique that predates knitting by millennia — elastic, strong, and used across medieval Europe. This class introduces the basic structure and gets students started on a small piece.`,bring:`Nothing — frames and thread provided.`,fee:'$5 materials',zoomLink:'',max:10,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'14',title:`Illuminating a Scroll: Full Workflow`,teacher:`Mistress Alienor of Wakefield`,date:'2026-11-06',time:'14:00',duration:90,format:'in-person',topic:'Scribal Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`From blank vellum to finished scroll — this class covers layout, ruling, calligraphy placement, and illumination in sequence. We'll use a 13th-century English charter as our model.`,bring:`Small brush if you have one; all other supplies provided.`,fee:'$3 materials',zoomLink:'',max:10,prereqs:'Some calligraphy experience helpful but not required.',bio:`Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'15',title:`Period Perfume and Scent`,teacher:`Lord Tariq ibn Mahmoud`,date:'2026-11-07',time:'10:00',duration:60,format:'in-person',topic:'Crafts',event:'Great Western War 2026',room:`A&S Tent`,desc:`An exploration of medieval and Renaissance perfumery: the ingredients, blending methods, and social context of scent in period Europe and the Islamic world. Students blend a small take-home mixture.`,bring:`Nothing needed.`,fee:'$3 materials',zoomLink:'',max:20,prereqs:'',bio:`Lord Tariq has been researching medieval Islamic material culture for eight years, with a particular interest in al-Andalus. He is currently working toward a Laurel in historical craft research.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'16',title:`Armored Combat for Newcomers`,teacher:`Sir Baldwin of Ashford`,date:'2026-11-07',time:'14:00',duration:90,format:'in-person',topic:'Combat',event:'Great Western War 2026',room:`List Field`,desc:`Never held a sword? This class covers SCA heavy combat basics: rules, safety, how to get authorized, and what loaner gear is available. Includes time in armor with experienced fighters.`,bring:`Comfortable clothes you can move in.`,fee:'',zoomLink:'',max:16,prereqs:'',bio:`Sir Baldwin is a knight in the West/Caid chivalry and has been fighting and teaching heavy combat for over twenty years. He runs newcomer fighter practices in the greater Los Angeles area.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'17',title:`Blackwork Embroidery Fundamentals`,teacher:`Rayhana bint Estafanos al-Ábbas`,date:'2026-11-08',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`Blackwork is the elegant counted embroidery seen on Tudor portraits — geometric, reversible, and endlessly adaptable. This class teaches the basic double-running stitch and three starter patterns.`,bring:`Nothing — needles, fabric, and thread provided.`,fee:'$2 materials',zoomLink:'',max:12,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'18',title:`Heraldry Office Hours`,teacher:`Lord Seamus mac Neill`,date:'2026-11-08',time:'13:00',duration:60,format:'in-person',topic:'Heraldry',event:'Great Western War 2026',room:`A&S Tent`,desc:`Bring your device ideas, name questions, or just your curiosity. This is an open consulting session — Lord Seamus will work through submissions and questions one-on-one with anyone who stops by.`,bring:`Any sketches or notes you have on your device or name.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Lord Seamus is a pursuivant with Caid's College of Heralds and has been consulting on device submissions for eight years. He enjoys the obscure corners of the heraldic menagerie.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]}
 ];
 const APPS_SCRIPT_URL='YOUR_APPS_SCRIPT_URL_HERE';
 const IS_DEMO=APPS_SCRIPT_URL==='YOUR_APPS_SCRIPT_URL_HERE';
 const lockedEvent=new URLSearchParams(window.location.search).get('event');
 const dC=SEED_CLASSES.map(c=>({...c}));
-const dP=[],dEv=[{name:'Collegium 2026',startDate:'2026-08-16',endDate:'2026-08-16',rooms:['Arts/History Rm 1','Fiber Arts','Cooking/Costuming','Grab Bag Rm 2','Grab Bag Rm 3','Field','Archery'],active:true}];
+const dP=[],dEv=[{name:'Collegium 2026',startDate:'2026-08-16',endDate:'2026-08-16',rooms:['Arts/History Rm 1','Fiber Arts','Cooking/Costuming','Grab Bag Rm 2','Grab Bag Rm 3','Field','Archery'],active:true},{name:'Great Western War 2026',startDate:'2026-11-05',endDate:'2026-11-08',rooms:['A&S Tent','List Field','Archery Range','Bardic Circle'],active:true}];
 const dRegs={},dWL={};
 let dPid=1000,allClasses=[],myRegs={},scheduleEmail='';
 let adminToken=sessionStorage.getItem('aT')||null,pendingClasses=[],availEvents=[];
 let curModalId=null,curModalWL=false,curApprovingId=null;
 
 if(lockedEvent)document.getElementById('topbar-sub').textContent='Kingdom of Caid \u00b7 '+lockedEvent;
-if(window.location.hash==='#submit')setTimeout(()=>showPanel('submit',document.querySelector('.nav-btn:nth-child(3)')),50);
+if(window.location.hash==='#submit')setTimeout(()=>showPanel('submit',document.getElementById('nav-submit')),50);
+if(window.location.hash==='#requests')setTimeout(()=>showPanel('requests',document.getElementById('nav-requests')),50);
+updateAdminNavBtn();
 loadClasses();
 
 async function api(p){
@@ -547,6 +730,11 @@ function apiD(p){
     return{ok:true,roster:r,waitlist:w};
   }
   if(action==='adminGetGrid')return{ok:true,approved:dC.filter(c=>!p.event||c.event===p.event),pending:dP.filter(c=>!p.event||c.event===p.event)};
+  if(action==='submitRequest'){const id='r'+(dReqPid++);allRequests.push({id,topic:p.topic,event:p.event||'',level:p.level||'',format:p.format||'',notes:p.notes||'',submitter:p.submitter||'',hearts:0,ts:Date.now()});return{ok:true,id};}
+  if(action==='heartRequest'){const r=allRequests.find(x=>String(x.id)===String(p.id));if(r)r.hearts=Math.max(0,r.hearts+(p.dir==='up'?1:-1));return{ok:true};}
+  if(action==='getRequests')return{ok:true,requests:allRequests};
+  if(action==='adminDeleteRequest'){const i=allRequests.findIndex(x=>String(x.id)===String(p.id));if(i>=0)allRequests.splice(i,1);return{ok:true};}
+  if(action==='adminHideRequest'){const r=allRequests.find(x=>String(x.id)===String(p.id));if(r)r.hidden=p.hidden==='true';return{ok:true};}
   return{ok:false,error:'Unknown action'};
 }
 
@@ -567,6 +755,7 @@ function showPanel(name,btn){
   if(name==='catalog')rC();
   if(name==='admin')initAdmin();
   if(name==='submit')initSubmit();
+  if(name==='requests')initRequests();
 }
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 
@@ -622,8 +811,10 @@ function rC(){
     const roId='ro-'+c.id;
     const ro=c.roster&&c.roster.length?'<button class="roster-toggle" onclick="toggleR(&apos;'+roId+'&apos;)"><i class="ti ti-users" style="font-size:12px"></i> See who\'s registered ('+c.registrationCount+')</button><div class="roster-list" id="'+roId+'"><ul>'+c.roster.map(n=>'<li>'+n+'</li>').join('')+'</ul>'+(c.waitlistRoster&&c.waitlistRoster.length?'<div class="roster-wl-title">Waitlist</div><ul>'+c.waitlistRoster.map(w=>'<li>#'+w.pos+' '+w.name+'</li>').join('')+'</ul>':'')+'</div>':'';
     const du=c.duration&&c.duration!==60?' ('+Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h)':'';
-    return '<div class="class-card'+(reg?' registered':'')+'"><div class="card-top"><div class="card-title">'+c.title+'</div><span class="tag '+c.format+'">'+(c.format==='zoom'?'Online':'In person')+'</span></div>'
-      +'<div class="card-meta"><span><i class="ti ti-user"></i> '+c.teacher+'</span>'
+    const thumb=c.imageUrl?'<img class="card-thumb" src="'+c.imageUrl+'" alt="" onerror="this.style.display=\'none\'">':'';
+    const bioBtn=c.bio?'<button class="bio-btn" tabindex="0" aria-label="Teacher bio"><i class="ti ti-info-circle"></i><div class="bio-popover"><div class="bio-name">'+c.teacher+'</div>'+c.bio+'</div></button>':'';
+    return '<div class="class-card'+(reg?' registered':'')+'">'+thumb+'<div class="card-top"><div class="card-title">'+c.title+'</div><span class="tag '+c.format+'">'+(c.format==='zoom'?'Online':'In person')+'</span></div>'
+      +'<div class="card-meta"><span><i class="ti ti-user"></i> '+c.teacher+bioBtn+'</span>'
       +(c.date?'<span><i class="ti ti-calendar"></i> '+fD(c.date)+' \u00b7 '+fT(c.time)+du+'</span>':'')
       +((c.event||c.room)?'<span><i class="ti ti-location"></i> '+(c.event||'')+(c.event&&c.room?' \u00b7 ':'')+c.room+'</span>':'')
       +(c.topic?'<span><i class="ti ti-tag"></i> '+c.topic+'</span>':'')
@@ -769,11 +960,15 @@ function initSubmit(){
   const lock=lockedEvent;
   const banner=document.getElementById('ev-banner'),bannerTxt=document.getElementById('ev-banner-txt');
   const schedDt=document.getElementById('sched-dt'),schedPf=document.getElementById('sched-pf'),schedLbl=document.getElementById('sched-lbl');
+  // Populate event dropdown
+  const evSel=document.getElementById('fc-ev');
+  evSel.innerHTML='<option value="">— select an event or leave blank —</option>';
+  availEvents.forEach(ev=>{const o=document.createElement('option');o.value=ev.name;o.textContent=ev.name;evSel.appendChild(o);});
   if(lock){
     banner.style.display='flex';bannerTxt.textContent='Submitting for: '+lock;
     schedDt.style.display='none';schedPf.style.display='block';
     schedLbl.textContent='Scheduling preferences';
-    document.getElementById('fc-ev').value=lock;
+    evSel.value=lock;
   }else{
     banner.style.display='none';schedDt.style.display='block';schedPf.style.display='none';
     schedLbl.textContent='Scheduling';
@@ -789,6 +984,9 @@ async function submitClass(){
   const btn=document.querySelector('.submit-action');btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Submitting...';
   const res=await api({
     action:'submitClass',title:t,teacher:tc,email:document.getElementById('fc-em').value.trim(),
+    phone:document.getElementById('fc-ph').value.trim(),
+    bio:document.getElementById('fc-bio').value.trim(),
+    imageUrl:document.getElementById('fc-img').value.trim(),
     topic:document.getElementById('fc-tp').value,format:document.getElementById('fc-fm').value,
     max:document.getElementById('fc-mx').value||'',fee:document.getElementById('fc-fe').value.trim(),
     duration:document.getElementById('fc-du').value,bring:document.getElementById('fc-br').value.trim(),
@@ -801,21 +999,60 @@ async function submitClass(){
   btn.disabled=false;btn.innerHTML='<i class="ti ti-send"></i> Submit class';
   if(!res.ok){alert(res.error||'Submission failed.');return;}
   document.getElementById('submit-ok').style.display='block';
-  ['fc-t','fc-tc','fc-em','fc-d','fc-pr','fc-fe','fc-br','fc-da','fc-ti','fc-ev','fc-no'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['fc-t','fc-tc','fc-em','fc-ph','fc-bio','fc-img','fc-d','fc-pr','fc-fe','fc-br','fc-da','fc-ti','fc-no'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
 }
 
 function initAdmin(){
   if(adminToken){document.getElementById('admin-lock-wrap').style.display='none';document.getElementById('admin-panel').style.display='block';loadAdmin();}
   else{document.getElementById('admin-lock-wrap').style.display='block';document.getElementById('admin-panel').style.display='none';}
 }
+function updateAdminNavBtn(){
+  const btn=document.getElementById('nav-admin');
+  if(!btn)return;
+  if(adminToken){
+    btn.innerHTML='<i class="ti ti-lock-open"></i>';
+    btn.title='Admin (unlocked) — click to lock';
+    btn.style.background='rgba(255,255,255,.2)';
+    btn.style.color='#fff';
+    btn.style.borderColor='rgba(255,255,255,.5)';
+  } else {
+    btn.innerHTML='<i class="ti ti-settings"></i>';
+    btn.title='Admin';
+    btn.style.background='';
+    btn.style.color='';
+    btn.style.borderColor='';
+  }
+}
+function handleAdminNav(btn){
+  if(adminToken){
+    doLogout();
+  } else {
+    showPanel('admin',btn);
+  }
+}
+function doLogout(){
+  adminToken=null;
+  sessionStorage.removeItem('aT');
+  document.getElementById('admin-lock-wrap').style.display='block';
+  document.getElementById('admin-panel').style.display='none';
+  document.getElementById('lock-pw').value='';
+  document.getElementById('lock-err').style.display='none';
+  // Deactivate the admin nav button
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.nav-btn:first-child').classList.add('active');
+  showPanel('catalog',document.querySelector('.nav-btn:first-child'));
+  updateAdminNavBtn();
+}
 async function doLogin(){
   const pw=document.getElementById('lock-pw').value;
   const res=await api({action:'adminLogin',password:pw});
   if(!res.ok){document.getElementById('lock-err').style.display='block';return;}
-  adminToken=res.token;sessionStorage.setItem('aT',adminToken);
+  adminToken=res.token;
+  if(!IS_DEMO) sessionStorage.setItem('aT',adminToken);
   document.getElementById('lock-err').style.display='none';
   document.getElementById('admin-lock-wrap').style.display='none';
   document.getElementById('admin-panel').style.display='block';
+  updateAdminNavBtn();
   loadAdmin();
 }
 async function loadAdmin(){
@@ -824,20 +1061,45 @@ async function loadAdmin(){
   pendingClasses=res.pending||[];
   document.getElementById('pending-count').textContent=pendingClasses.length;
   renderPending();renderApproved();
-  ['grid-ev','rooms-ev'].forEach(sid=>{
+  // Populate ev-picker and grid-ev
+  ['ev-picker','grid-ev','acf-ev'].forEach(sid=>{
     const gs=document.getElementById(sid);if(!gs)return;
-    gs.innerHTML='<option value="">Select event\u2026</option>';
+    const cur=gs.value;
+    gs.innerHTML=sid==='ev-picker'?'<option value="">— select an event to manage —</option>':'<option value="">Select event\u2026</option>';
     availEvents.forEach(ev=>{const o=document.createElement('option');o.value=ev.name;o.textContent=ev.name;gs.appendChild(o);});
+    if(cur)gs.value=cur;
   });
+  // req-admin-filter
+  const raf=document.getElementById('req-admin-filter');
+  if(raf){
+    raf.innerHTML='<option value="">All events</option><option value="__general__">General only</option>';
+    availEvents.forEach(ev=>{const o=document.createElement('option');o.value=ev.name;o.textContent=ev.name;raf.appendChild(o);});
+  }
+}
+function getAdminClassFilters(){
+  const q=(document.getElementById('acf-q')?.value||'').toLowerCase();
+  const ev=document.getElementById('acf-ev')?.value||'';
+  const tp=document.getElementById('acf-tp')?.value||'';
+  const fm=document.getElementById('acf-fm')?.value||'';
+  return {q,ev,tp,fm};
+}
+function matchesAdminFilter(c,{q,ev,tp,fm}){
+  if(ev&&c.event!==ev)return false;
+  if(tp&&c.topic!==tp)return false;
+  if(fm&&c.format!==fm)return false;
+  if(q&&!c.title.toLowerCase().includes(q)&&!(c.teacher||'').toLowerCase().includes(q))return false;
+  return true;
 }
 function renderPending(){
+  const f=getAdminClassFilters();
   const l=document.getElementById('pending-list');
-  if(!pendingClasses.length){l.innerHTML='<div class="no-items">No pending submissions.</div>';return;}
-  l.innerHTML=pendingClasses.map(c=>{
+  const filtered=pendingClasses.filter(c=>matchesAdminFilter(c,f));
+  if(!filtered.length){l.innerHTML='<div class="no-items">'+(pendingClasses.length?'No pending submissions match your filters.':'No pending submissions.')+'</div>';return;}
+  l.innerHTML=filtered.map(c=>{
     const hasDatetime=c.date&&c.time;
     return '<div class="pending-card">'
       +'<div class="pending-header"><div class="pending-title">'+c.title+'</div></div>'
-      +'<div class="pending-teacher">'+c.teacher+(c.email?' \u00b7 '+c.email:'')+'</div>'
+      +'<div class="pending-teacher">'+c.teacher+(c.email?' \u00b7 '+c.email:'')+(c.phone?' \u00b7 <i class="ti ti-phone" style="font-size:11px"></i> '+c.phone:'')+'</div>'
       +(c.desc?'<div class="pending-desc">'+c.desc+'</div>':'')
       +'<div class="pending-meta">'
       +(c.topic?'<span><i class="ti ti-tag"></i>'+c.topic+'</span>':'')
@@ -858,16 +1120,20 @@ function renderPending(){
   }).join('');
 }
 function renderApproved(){
-  document.getElementById('approved-list').innerHTML=allClasses.map(c=>
+  const f=getAdminClassFilters();
+  const filtered=allClasses.filter(c=>matchesAdminFilter(c,f));
+  document.getElementById('approved-list').innerHTML=filtered.length
+    ? filtered.map(c=>
     '<div class="approved-row"><div><div class="approved-name">'+c.title+'</div>'
-    +'<div class="approved-sub">'+c.teacher+' \u00b7 '+fD(c.date)+' \u00b7 '+fT(c.time)+(c.event?' \u00b7 '+c.event:'')+(c.room?' \u00b7 '+c.room:'')+'</div>'
+    +'<div class="approved-sub">'+c.teacher+(c.email?' \u00b7 '+c.email:'')+(c.phone?' \u00b7 \u260e '+c.phone:'')+' \u00b7 '+fD(c.date)+' \u00b7 '+fT(c.time)+(c.event?' \u00b7 '+c.event:'')+(c.room?' \u00b7 '+c.room:'')+'</div>'
     +(c.waitlistCount?'<div class="wl-detail"><i class="ti ti-clock"></i> '+c.waitlistCount+' on waitlist</div>':'')+'</div>'
     +'<div class="reg-count">'+c.registrationCount+(c.max?' / '+c.max:'')+' reg</div>'
     +'<button class="a-roster-btn" onclick="showRoster(\''+c.id+'\')"><i class="ti ti-users"></i></button>'
     +'<button class="a-roster-btn" style="color:var(--accent-mid)" onclick="openEditClass(\''+c.id+'\')"><i class="ti ti-pencil"></i></button>'
     +(c.cancelled?'<span style="font-size:11px;color:var(--red-text);font-weight:700;font-family:sans-serif;padding:4px 8px">Cancelled</span>':'<button class="a-roster-btn" style="color:var(--red-text)" onclick="doCancelClass(\''+c.id+'\')"><i class="ti ti-ban"></i></button>')
     +'<button class="a-remove-btn" onclick="doRemove(\''+c.id+'\')"><i class="ti ti-trash"></i></button></div>'
-  ).join('');
+  ).join('')
+  : '<div class="no-items">'+(allClasses.length?'No published classes match your filters.':'No published classes yet.')+'</div>';
 }
 function openApprove(id){
   curApprovingId=id;
@@ -928,32 +1194,13 @@ async function showRoster(classId){
   document.getElementById('roster-modal').classList.add('open');
 }
 function showAdminTab(tab){
-  ['events','classes'].forEach(t=>{
+  ['events','classes','requests'].forEach(t=>{
     document.getElementById('admin-tab-'+t).style.display=t===tab?'block':'none';
     document.getElementById('atab-'+t).classList.toggle('active',t===tab);
   });
+  if(tab==='requests')renderAdminRequests();
 }
 
-async function createEvent(){
-  const name=document.getElementById('lg-name').value.trim();
-  const startDate=document.getElementById('lg-start').value;
-  const endDate=document.getElementById('lg-end').value||startDate;
-  const roomCount=parseInt(document.getElementById('lg-rooms').value)||0;
-  if(!name){alert('Event name is required.');return;}
-  if(startDate&&endDate&&endDate<startDate){alert('End date cannot be before start date.');return;}
-  const rooms=roomCount>0?Array.from({length:roomCount},(_,i)=>'Room '+(i+1)):[];
-  const res=await api({action:'adminCreateEvent',token:adminToken,name,startDate,endDate,rooms:rooms.join(',')});
-  if(!res.ok){alert(res.error||'Failed to create event.');return;}
-  const url=window.location.origin+window.location.pathname+'?event='+encodeURIComponent(name)+'#submit';
-  const el=document.getElementById('lg-result');el.style.display='block';
-  const dateRange=startDate?(startDate===endDate?fD(startDate):fD(startDate)+'\u2013'+fD(endDate)):'(no dates set)';
-  el.innerHTML='<strong>Event created:</strong> '+name+' &middot; '+dateRange+(rooms.length?' &middot; '+rooms.length+' rooms':'')+'<br>Submission link: <a href="'+url+'" target="_blank">'+url+'</a><button class="copy-btn" onclick="cpL(event,\''+url+'\')"><i class="ti ti-copy"></i> Copy</button>';
-  // Clear form
-  document.getElementById('lg-name').value='';document.getElementById('lg-start').value='';document.getElementById('lg-end').value='';document.getElementById('lg-rooms').value='';
-  // Add to dropdowns
-  ['fe','grid-ev','rooms-ev'].forEach(sid=>{const s=document.getElementById(sid);if(s){const o=document.createElement('option');o.value=name;o.textContent=name;s.appendChild(o);}});
-  availEvents.push({name,startDate,endDate,rooms,active:true});
-}
 function cpL(ev,u){navigator.clipboard.writeText(u).then(()=>{const b=ev.target.closest('button');b.textContent='\u2713 Copied';setTimeout(()=>b.innerHTML='<i class="ti ti-copy"></i> Copy',2000);});}
 
 async function loadGrid(){
@@ -1095,12 +1342,241 @@ async function doCancelClass(id){
   }
 }
 
-// ── Room editor ──
+// ── Requests data ──
+const dReqStore = [
+  {id:'r1', topic:'Medieval dyeing techniques', event:'', level:'Intermediate', format:'In person', notes:'Especially interested in woad and madder.', submitter:'Lady Áine ingen Briain', hearts:4, ts: Date.now()-8e6},
+  {id:'r2', topic:'Intro to 14th-century Italian cooking', event:'Collegium 2026', level:'Beginner', format:'', notes:'', submitter:'', hearts:7, ts: Date.now()-4e6},
+  {id:'r3', topic:'Court etiquette and ceremony', event:'Collegium 2026', level:'Beginner', format:'In person', notes:'Good for newcomers.', submitter:'Tomas de Burgos', hearts:3, ts: Date.now()-2e6},
+  {id:'r4', topic:'Period perfume and scent', event:'', level:'', format:'', notes:'', submitter:'', hearts:2, ts: Date.now()-1e7},
+  {id:'r5', topic:'Elizabethan embroidery patterns', event:'Collegium 2026', level:'Intermediate', format:'In person', notes:'Blackwork specifically if possible.', submitter:'Margot de la Forêt', hearts:5, ts: Date.now()-3e6},
+];
+let allRequests = dReqStore.map(r=>({...r}));
+let dReqPid = 2000;
+
+// LocalStorage heart tracking
+function getHearted(){try{return JSON.parse(localStorage.getItem('kcr_hearts')||'[]');}catch{return[];}}
+function setHearted(arr){try{localStorage.setItem('kcr_hearts',JSON.stringify(arr));}catch{}}
+function hasHearted(id){return getHearted().includes(String(id));}
+function addHeart(id){const h=getHearted();if(!h.includes(String(id))){h.push(String(id));setHearted(h);}}
+function removeHeart(id){setHearted(getHearted().filter(x=>x!==String(id)));}
+
+
+
+// ── URL param for pre-selecting request event ──
+const reqEventParam = new URLSearchParams(window.location.search).get('request');
+
+function initRequests(){
+  // Populate event dropdowns in the request form and filter
+  const evSel = document.getElementById('rq-event');
+  const filterSel = document.getElementById('rq-filter-ev');
+  evSel.innerHTML = '<option value="">General (not event-specific)</option>';
+  filterSel.innerHTML = '<option value="">All events</option><option value="__general__">General only</option>';
+  availEvents.forEach(ev=>{
+    const o1=document.createElement('option'); o1.value=ev.name; o1.textContent=ev.name; evSel.appendChild(o1);
+    const o2=document.createElement('option'); o2.value=ev.name; o2.textContent=ev.name; filterSel.appendChild(o2);
+  });
+  // Pre-select from URL param
+  if(reqEventParam){
+    if(evSel.querySelector('option[value="'+CSS.escape(reqEventParam)+'"]')) evSel.value=reqEventParam;
+    if(filterSel.querySelector('option[value="'+CSS.escape(reqEventParam)+'"]')) filterSel.value=reqEventParam;
+  }
+  renderRequests();
+}
+
+function toggleReqForm(){
+  const wrap = document.getElementById('req-form-wrap');
+  const isOpen = wrap.classList.contains('open');
+  wrap.classList.toggle('open', !isOpen);
+  document.getElementById('req-submit-ok').style.display='none';
+  if(!isOpen) setTimeout(()=>document.getElementById('rq-topic').focus(), 60);
+}
+
+async function submitRequest(){
+  const topic = document.getElementById('rq-topic').value.trim();
+  if(!topic){alert('Please enter a topic.');return;}
+  const btn = document.querySelector('#req-form-wrap .submit-action');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Submitting…';
+  const res = await api({
+    action:'submitRequest',
+    topic,
+    event: document.getElementById('rq-event').value,
+    level: [...document.querySelectorAll('.rq-level-cb:checked')].map(cb=>cb.value).join(','),
+    format: document.getElementById('rq-format').value,
+    notes: document.getElementById('rq-notes').value.trim(),
+    submitter: document.getElementById('rq-name').value.trim()
+  });
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-send"></i> Submit request';
+  if(!res.ok){alert(res.error||'Submission failed.');return;}
+  document.getElementById('req-submit-ok').style.display='block';
+  ['rq-topic','rq-notes','rq-name'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('rq-event').value='';
+  document.querySelectorAll('.rq-level-cb').forEach(cb=>cb.checked=false);
+  document.getElementById('rq-format').value='';
+  renderRequests();
+}
+
+async function toggleHeart(id){
+  const hearted = hasHearted(id);
+  const dir = hearted ? 'down' : 'up';
+  if(hearted) removeHeart(id); else addHeart(id);
+  await api({action:'heartRequest', id:String(id), dir});
+  renderRequests();
+}
+
+function renderRequests(){
+  const evF = document.getElementById('rq-filter-ev').value;
+  const lvF = document.getElementById('rq-filter-level').value;
+  const sort = document.getElementById('rq-sort').value;
+  let list = allRequests.filter(r=>{
+    if(r.hidden) return false;
+    if(evF==='__general__' && r.event) return false;
+    if(evF && evF!=='__general__' && r.event!==evF) return false;
+    if(lvF && !r.level.split(',').includes(lvF)) return false;
+    return true;
+  });
+  if(sort==='hearts') list=[...list].sort((a,b)=>b.hearts-a.hearts);
+  else list=[...list].sort((a,b)=>b.ts-a.ts);
+
+  const grid = document.getElementById('req-grid');
+  if(!list.length){
+    grid.innerHTML='<div class="req-empty"><i class="ti ti-heart" style="font-size:36px;display:block;margin:0 auto 10px;opacity:.2"></i>No requests yet for these filters.<br>Be the first to request a class!</div>';
+    return;
+  }
+  grid.innerHTML = list.map(r=>{
+    const hearted = hasHearted(r.id);
+    const evTag = r.event
+      ? '<span class="req-event-tag">'+r.event+'</span>'
+      : '<span class="req-event-tag general">General</span>';
+    const levels = r.level ? r.level.split(',').map(v=>'<span><i class="ti ti-signal" style="font-size:11px"></i> '+v+'</span>').join('') : '';
+    const pills = [levels, r.format ? '<span><i class="ti ti-tag" style="font-size:11px"></i> '+r.format+'</span>' : ''].filter(Boolean).join('');
+    const ds = r.ts ? new Date(r.ts).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+    return '<div class="req-card">'
+      +'<div class="req-card-top"><div class="req-topic">'+escH(r.topic)+'</div>'+evTag+'</div>'
+      +(pills?'<div class="req-meta">'+pills+'</div>':'')
+      +(r.notes?'<div class="req-notes">'+escH(r.notes)+'</div>':'')
+      +'<div class="req-footer">'
+      +'<button class="heart-btn'+(hearted?' hearted':'')+'" onclick="toggleHeart(\''+r.id+'\')" title="'+(hearted?'Remove your agreement':'Agree with this request')+'">'
+      +'<span class="heart-icon">'+(hearted?'♥':'♡')+'</span>'
+      +'<span style="font-size:12px">'+r.hearts+'</span>'
+      +'</button>'
+      +'<span style="font-size:11.5px;color:var(--text2);font-family:sans-serif;opacity:.7;display:flex;flex-direction:column;align-items:flex-end;gap:1px">'
+      +(r.submitter?'<span>'+escH(r.submitter)+'</span>':'')
+      +(ds?'<span>'+ds+'</span>':'')
+      +'</span>'
+      +'</div></div>';
+  }).join('');
+}
+
+function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// ── Admin requests view ──
+function renderAdminRequests(){
+  const evF = document.getElementById('req-admin-filter').value;
+  let list = allRequests.filter(r=>{
+    if(evF==='__general__' && r.event) return false;
+    if(evF && evF!=='__general__' && r.event!==evF) return false;
+    return true;
+  }).sort((a,b)=>b.hearts-a.hearts);
+
+  // Tally by topic
+  const tally={};
+  list.forEach(r=>{const k=r.topic;tally[k]=(tally[k]||0)+1+(r.hearts||0);});
+  const maxTally=Math.max(...Object.values(tally),1);
+  const tallyEl=document.getElementById('req-tally');
+  if(!Object.keys(tally).length){tallyEl.innerHTML='<div class="no-items">No requests yet.</div>';}
+  else{
+    tallyEl.innerHTML='<div class="req-tally-bar">'
+      +Object.entries(tally).sort((a,b)=>b[1]-a[1]).map(([topic,score])=>
+        '<div class="req-tally-row">'
+        +'<div class="req-tally-label" title="'+escH(topic)+'">'+escH(topic)+'</div>'
+        +'<div class="req-tally-track"><div class="req-tally-fill" style="width:'+Math.round(score/maxTally*100)+'%"></div></div>'
+        +'<div class="req-tally-num">'+score+'</div>'
+        +'</div>'
+      ).join('')+'</div>';
+  }
+
+  const listEl=document.getElementById('req-admin-list');
+  if(!list.length){listEl.innerHTML='<div class="no-items">No requests.</div>';return;}
+  listEl.innerHTML=list.map(r=>{
+    const ds = r.ts ? new Date(r.ts).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+    return '<div class="req-admin-card">'
+    +'<div class="req-admin-topic">'+escH(r.topic)+(r.hidden?' <span style="font-size:10px;font-family:sans-serif;background:var(--bg3);color:var(--text2);padding:2px 6px;border-radius:8px;font-weight:600">Hidden</span>':'')+'</div>'
+    +'<div class="req-admin-meta">'
+    +(r.event?'<span><i class="ti ti-star"></i>'+escH(r.event)+'</span>':'<span><i class="ti ti-globe"></i>General</span>')
+    +(r.level?r.level.split(',').map(l=>'<span><i class="ti ti-signal"></i>'+l+'</span>').join(''):'')
+    +(r.format?'<span><i class="ti ti-'+(r.format==='Online / Zoom'?'video':'map-pin')+'"></i>'+escH(r.format)+'</span>':'')
+    +'<span style="color:#c0392b"><i class="ti ti-heart"></i> '+r.hearts+' agree</span>'
+    +(r.submitter?'<span><i class="ti ti-user"></i>'+escH(r.submitter)+'</span>':'<span style="opacity:.6"><i class="ti ti-user-off"></i> Anonymous</span>')
+    +(ds?'<span><i class="ti ti-calendar"></i>'+ds+'</span>':'')
+    +'</div>'
+    +(r.notes?'<div class="req-admin-notes">'+escH(r.notes)+'</div>':'')
+    +'<div style="margin-top:8px"><button class="reject-btn" style="font-size:11px;padding:3px 9px" onclick="adminToggleHideRequest(\''+r.id+'\','+!!r.hidden+')"><i class="ti ti-'+(r.hidden?'eye':'eye-off')+'"></i> '+(r.hidden?'Unhide':'Hide')+'</button></div>'
+    +'</div>';
+  }).join('');
+}
+
+async function adminToggleHideRequest(id, currentlyHidden){
+  await api({action:'adminHideRequest',token:adminToken,id:String(id),hidden:String(!currentlyHidden)});
+  renderAdminRequests();
+  renderRequests();
+}
+
+
+function toggleCreateEvent(){
+  const wrap=document.getElementById('create-ev-wrap');
+  const open=wrap.style.display==='block';
+  wrap.style.display=open?'none':'block';
+  document.getElementById('create-ev-btn').innerHTML=open?'<i class="ti ti-plus"></i> Create new event':'<i class="ti ti-x"></i> Cancel';
+  if(!open)setTimeout(()=>document.getElementById('lg-name').focus(),50);
+}
+
+function loadEventPanel(){
+  const evName=document.getElementById('ev-picker').value;
+  const panel=document.getElementById('ev-panel');
+  const empty=document.getElementById('ev-empty');
+  if(!evName){panel.style.display='none';empty.style.display='block';return;}
+  panel.style.display='block';empty.style.display='none';
+  // Build both links
+  const base=window.location.origin+window.location.pathname;
+  const teachUrl=base+'?event='+encodeURIComponent(evName)+'#submit';
+  const reqUrl=base+'?request='+encodeURIComponent(evName)+'#requests';
+  const tEl=document.getElementById('teach-link-result');
+  tEl.dataset.url=teachUrl;
+  tEl.innerHTML='<a href="'+teachUrl+'" target="_blank">'+teachUrl+'</a>';
+  const rEl=document.getElementById('req-link-result');
+  rEl.dataset.url=reqUrl;
+  rEl.innerHTML='<a href="'+reqUrl+'" target="_blank">'+reqUrl+'</a>';
+  // Load room editor
+  renderRoomList(evName);
+}
+
+async function createEvent(){
+  const name=document.getElementById('lg-name').value.trim();
+  const startDate=document.getElementById('lg-start').value;
+  const endDate=document.getElementById('lg-end').value||startDate;
+  const roomCount=parseInt(document.getElementById('lg-rooms').value)||0;
+  if(!name){alert('Event name is required.');return;}
+  if(startDate&&endDate&&endDate<startDate){alert('End date cannot be before start date.');return;}
+  const rooms=roomCount>0?Array.from({length:roomCount},(_,i)=>'Room '+(i+1)):[];
+  const res=await api({action:'adminCreateEvent',token:adminToken,name,startDate,endDate,rooms:rooms.join(',')});
+  if(!res.ok){alert(res.error||'Failed to create event.');return;}
+  // Clear and close create form
+  document.getElementById('lg-name').value='';document.getElementById('lg-start').value='';document.getElementById('lg-end').value='';document.getElementById('lg-rooms').value='';
+  document.getElementById('lg-result').style.display='none';
+  toggleCreateEvent();
+  // Add to all dropdowns
+  ['fe','grid-ev','fc-ev','ev-picker','acf-ev','rq-event','rq-filter-ev','req-admin-filter'].forEach(sid=>{
+    const s=document.getElementById(sid);if(!s)return;
+    const o=document.createElement('option');o.value=name;o.textContent=name;s.appendChild(o);
+  });
+  availEvents.push({name,startDate,endDate,rooms,active:true});
+  // Auto-select the new event in the picker
+  document.getElementById('ev-picker').value=name;
+  loadEventPanel();
+}
+
 function loadRoomEditor(){
-  const evName=document.getElementById('rooms-ev').value;
-  const wrap=document.getElementById('room-editor');
-  if(!evName){wrap.style.display='none';return;}
-  wrap.style.display='block';
+  const evName=document.getElementById('ev-picker').value;
   renderRoomList(evName);
 }
 function renderRoomList(evName){
@@ -1118,8 +1594,6 @@ function renameRoom(evName,idx,val){
   const ev=availEvents.find(e=>e.name===evName);
   if(!ev||!ev.rooms)return;
   ev.rooms[idx]=val.trim();
-  // Also update any already-approved classes that used the old name? No — that would
-  // change historical records. Renaming only affects future approvals.
 }
 function removeRoom(evName,idx){
   const ev=availEvents.find(e=>e.name===evName);
@@ -1129,13 +1603,14 @@ function removeRoom(evName,idx){
   renderRoomList(evName);
 }
 function addRoom(){
-  const evName=document.getElementById('rooms-ev').value;
+  const evName=document.getElementById('ev-picker').value;
   const ev=availEvents.find(e=>e.name===evName);
   if(!ev)return;
   if(!ev.rooms)ev.rooms=[];
   ev.rooms.push('Room '+(ev.rooms.length+1));
   renderRoomList(evName);
 }
+
 
 // ── Room dropdown helpers for Approve & Edit modals ──
 function populateRoomDropdown(selId,evName,currentRoom){
