@@ -468,11 +468,11 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         <select class="filter-select" id="rq-filter-ev" onchange="renderRequests()"><option value="">All events</option><option value="__general__">General only</option></select>
         <select class="filter-select" id="rq-filter-topic" onchange="renderRequests()"><option value="">All topics</option></select>
         <select class="filter-select" id="rq-filter-level" onchange="renderRequests()"><option value="">All levels</option><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+        <select class="filter-select" id="rq-filter-format" onchange="renderRequests()"><option value="">All formats</option><option value="In person">In person</option><option value="Online / Zoom">Online</option></select>
         <div class="req-sort"><span>Sort:</span>
           <select id="rq-sort" onchange="renderRequests()"><option value="hearts">Most ♥</option><option value="newest">Newest</option></select>
         </div>
         <button id="rq-clear-btn" onclick="clearReqFilters()" style="display:none;padding:7px 14px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap"><i class="ti ti-x"></i> Clear filters</button>
-      </div>
       </div>
 
       <div class="req-grid" id="req-grid"></div>
@@ -689,6 +689,8 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         <div id="admin-tab-requests" style="display:none">
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:1rem">
             <select class="filter-select" id="req-admin-filter" onchange="renderAdminRequests()"><option value="">All events</option><option value="__general__">General only</option></select>
+            <select class="filter-select" id="req-admin-topic" onchange="renderAdminRequests()"><option value="">All topics</option></select>
+            <select class="filter-select" id="req-admin-sort" onchange="renderAdminRequests()"><option value="hearts">Sort: Most ♥</option><option value="newest">Sort: Newest</option><option value="oldest">Sort: Oldest</option></select>
           </div>
           <div class="admin-section-title"><i class="ti ti-chart-bar"></i> Topic tally</div>
           <div id="req-tally"></div>
@@ -2326,6 +2328,12 @@ function populateAllTopicSelects(){
     const cur=rqFilter.value;
     rqFilter.innerHTML='<option value="">All topics</option>'+getVisibleTopics().map(t=>'<option value="'+escH(t)+'"'+(t===cur?' selected':'')+'>'+escH(t)+'</option>').join('');
   }
+  // Admin requests topic filter — blank first
+  const rqAdminFilter=document.getElementById('req-admin-topic');
+  if(rqAdminFilter){
+    const cur=rqAdminFilter.value;
+    rqAdminFilter.innerHTML='<option value="">All topics</option>'+getVisibleTopics().map(t=>'<option value="'+escH(t)+'"'+(t===cur?' selected':'')+'>'+escH(t)+'</option>').join('');
+  }
 }
 function renderTopicsList(){
   const el=document.getElementById('topics-list');if(!el)return;
@@ -2467,6 +2475,7 @@ function clearReqFilters(){
   document.getElementById('rq-filter-ev').value='';
   document.getElementById('rq-filter-topic').value='';
   document.getElementById('rq-filter-level').value='';
+  const fmtEl=document.getElementById('rq-filter-format');if(fmtEl)fmtEl.value='';
   renderRequests();
 }
 function renderRequests(){
@@ -2474,8 +2483,9 @@ function renderRequests(){
   const evF = document.getElementById('rq-filter-ev').value;
   const lvF = document.getElementById('rq-filter-level').value;
   const tpF = document.getElementById('rq-filter-topic')?.value||'';
+  const fmF = document.getElementById('rq-filter-format')?.value||'';
   const sort = document.getElementById('rq-sort').value;
-  const hasFilter=!!(q||evF||lvF||tpF);
+  const hasFilter=!!(q||evF||lvF||tpF||fmF);
   const clearBtn=document.getElementById('rq-clear-btn');
   if(clearBtn)clearBtn.style.display=hasFilter?'inline-block':'none';
   let list = allRequests.filter(r=>{
@@ -2484,6 +2494,7 @@ function renderRequests(){
     if(evF && evF!=='__general__' && r.event!==evF) return false;
     if(lvF && !r.level.split(',').includes(lvF)) return false;
     if(tpF && r.topicTag!==tpF) return false;
+    if(fmF && r.format!==fmF) return false;
     if(q && !r.topic.toLowerCase().includes(q) && !(r.notes||'').toLowerCase().includes(q) && !(r.submitter||'').toLowerCase().includes(q)) return false;
     return true;
   });
@@ -2527,11 +2538,17 @@ function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 // ── Admin requests view ──
 function renderAdminRequests(){
   const evF = document.getElementById('req-admin-filter').value;
+  const tpF = document.getElementById('req-admin-topic')?.value||'';
+  const sort = document.getElementById('req-admin-sort')?.value||'hearts';
   let list = allRequests.filter(r=>{
     if(evF==='__general__' && r.event) return false;
     if(evF && evF!=='__general__' && r.event!==evF) return false;
+    if(tpF && r.topicTag!==tpF) return false;
     return true;
-  }).sort((a,b)=>b.hearts-a.hearts);
+  });
+  if(sort==='newest') list=[...list].sort((a,b)=>b.ts-a.ts);
+  else if(sort==='oldest') list=[...list].sort((a,b)=>a.ts-b.ts);
+  else list=[...list].sort((a,b)=>b.hearts-a.hearts);
 
   // Tally by top-level managed topic
   const tally={};
