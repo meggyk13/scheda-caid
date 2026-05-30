@@ -332,46 +332,46 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         <div id="ev-banner" class="ev-banner" style="display:none"><i class="ti ti-lock"></i> <span id="ev-banner-txt"></span></div>
         <div class="form-section-title">Submit a class</div>
         <div class="form-section-sub">Submissions go to admin review before appearing in the catalog.</div>
+        <div class="form-full">
+          <label class="form-label">Event or class type *</label>
+          <select class="form-select" id="fc-ev" onchange="fcEvChange()">
+            <option value="">— Choose an event or format —</option>
+            <option value="__online__">Online / Zoom (I'll set my own date &amp; time)</option>
+          </select>
+          <span class="form-hint" id="fc-ev-hint"></span>
+        </div>
+        <input type="hidden" id="fc-fm" value="in-person">
+        <div class="form-full" id="zf" style="display:none"><label class="form-label">Meeting link</label><input class="form-input" id="fc-zl" type="url" placeholder="https://…"><span class="form-hint">Shown to registered attendees only.</span></div>
         <div class="form-divider">About the class</div>
-        <div class="form-grid">
-          <div class="form-col"><label class="form-label">Class title *</label><input class="form-input" id="fc-t" type="text" placeholder="e.g. Intro to tablet weaving"></div>
-          <div class="form-col"><label class="form-label">Your SCA name *</label><input class="form-input" id="fc-tc" type="text"></div>
-        </div>
-        <div class="form-grid">
-          <div class="form-col"><label class="form-label">Your email (admin contact only)</label><input class="form-input" id="fc-em" type="email" placeholder="not shown publicly"></div>
-          <div class="form-col"><label class="form-label">Phone (admin contact only)</label><input class="form-input" id="fc-ph" type="tel" placeholder="not shown publicly"><span class="form-hint">Optional. Helps admin reach you quickly at events.</span></div>
-        </div>
+        <div class="form-full"><label class="form-label">Class title *</label><input class="form-input" id="fc-t" type="text" placeholder="e.g. Intro to tablet weaving"></div>
         <div class="form-grid">
           <div class="form-col"><label class="form-label">Topic</label>
             <select class="form-select" id="fc-tp"><option>Fiber Arts</option><option>Costuming</option><option>Dance</option><option>History</option><option>Society Skills</option><option>Bardic Arts</option><option>Scribal Arts</option><option>Cooking &amp; Brewing</option><option>Combat</option><option>Archery</option><option>Heraldry</option><option>Crafts</option><option>Other</option></select>
           </div>
-          <div class="form-col"><label class="form-label">Format</label><select class="form-select" id="fc-fm" onchange="tzf()"><option value="in-person">In person</option><option value="zoom">Online</option></select></div>
+          <div class="form-col"><label class="form-label">Level / who is this for?</label><input class="form-input" id="fc-pr" type="text" placeholder="e.g. Beginners welcome, or No prereqs"></div>
         </div>
+        <div class="form-full"><label class="form-label">Class description</label><textarea class="form-textarea" id="fc-d" placeholder="What will attendees learn? What should they expect?"></textarea></div>
+        <div class="form-divider">About you</div>
         <div class="form-grid">
-          <div class="form-col"><label class="form-label">Max attendees (blank = unlimited)</label><input class="form-input" id="fc-mx" type="number" min="1"></div>
+          <div class="form-col"><label class="form-label">Your SCA name *</label><input class="form-input" id="fc-tc" type="text"></div>
+          <div class="form-col"><label class="form-label">Your email (admin contact only)</label><input class="form-input" id="fc-em" type="email" placeholder="not shown publicly"></div>
         </div>
-        <div class="form-full" id="zf" style="display:none"><label class="form-label">Meeting link</label><input class="form-input" id="fc-zl" type="url" placeholder="https://…"><span class="form-hint">Shown to registered attendees only.</span></div>
+        <div class="form-full"><label class="form-label">Phone (admin contact only) <span style="font-weight:400;text-transform:none;letter-spacing:0">optional</span></label><input class="form-input" id="fc-ph" type="tel" placeholder="Helps admin reach you quickly at events"></div>
         <div class="form-full"><label class="form-label">Teacher bio <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional, shown publicly)</span></label><textarea class="form-textarea" id="fc-bio" style="min-height:70px" placeholder="A sentence or two about your background with this topic. Shown as a hover tooltip on your name in the class catalog."></textarea></div>
-        <div class="form-full"><label class="form-label">Class thumbnail image URL <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><input class="form-input" id="fc-img" type="url" placeholder="https://… paste a link to a hosted image"><span class="form-hint">Paste a link from Google Photos, Imgur, or your own site. Displays at the top of your class card.</span></div>
-        <div class="form-full"><label class="form-label">Class description</label><textarea class="form-textarea" id="fc-d" placeholder="What will attendees learn? What level?"></textarea></div>
-        <div class="form-full"><label class="form-label">Prerequisites</label><input class="form-input" id="fc-pr" type="text" placeholder="Leave blank if none"></div>
         <div class="form-divider">Logistics</div>
         <div class="form-grid">
-          <div class="form-col"><label class="form-label">Class fee</label><input class="form-input" id="fc-fe" type="text" placeholder="e.g. $5 materials &#x2014; blank if free"></div>
           <div class="form-col"><label class="form-label">Duration</label><select class="form-select" id="fc-du"><option value="30">30 min</option><option value="60" selected>1 hour</option><option value="90">90 min</option><option value="120">2 hours</option><option value="180">3 hours</option></select></div>
+          <div class="form-col"><label class="form-label">Max attendees (blank = unlimited)</label><input class="form-input" id="fc-mx" type="number" min="1"></div>
         </div>
-        <div class="form-full"><label class="form-label">What should students bring?</label><input class="form-input" id="fc-br" type="text" placeholder="Leave blank if nothing needed"></div>
+        <div class="form-grid">
+          <div class="form-col"><label class="form-label">Class fee</label><input class="form-input" id="fc-fe" type="text" placeholder="e.g. $5 materials — blank if free"></div>
+          <div class="form-col"><label class="form-label">What should students bring?</label><input class="form-input" id="fc-br" type="text" placeholder="Leave blank if nothing needed"></div>
+        </div>
         <div class="form-divider" id="sched-lbl">Scheduling</div>
         <div id="sched-dt">
           <div class="form-grid">
             <div class="form-col"><label class="form-label">Date *</label><input class="form-input" id="fc-da" type="date"></div>
             <div class="form-col"><label class="form-label">Time *</label><input class="form-input" id="fc-ti" type="time"></div>
-          </div>
-          <div class="form-full"><label class="form-label">Event / context (optional)</label>
-            <select class="form-select" id="fc-ev">
-              <option value="">— select an event or leave blank —</option>
-            </select>
-            <span class="form-hint">Choose an upcoming event, or leave blank for a standalone/online class.</span>
           </div>
         </div>
         <div id="sched-pf" style="display:none">
@@ -379,11 +379,18 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
           <div class="form-full"><label class="form-label">Time preferences</label><textarea class="form-textarea" id="fc-tpref" style="min-height:60px" placeholder="e.g. Friday afternoon preferred, avoid Saturday evening"></textarea><span class="form-hint">Organizer assigns the final slot.</span></div>
         </div>
         <div class="form-full"><label class="form-label">Anything else the admin should know?</label><textarea class="form-textarea" id="fc-no" style="min-height:60px" placeholder="Special requirements, equipment, scheduling notes, etc."></textarea></div>
+        <div class="form-divider">Optional extras</div>
+        <div class="form-full"><label class="form-label">Class thumbnail image URL</label><input class="form-input" id="fc-img" type="url" placeholder="https://… paste a link to a hosted image"><span class="form-hint">Paste a link from Google Photos, Imgur, or your own site. Displays at the top of your class card.</span></div>
         <div class="submit-row">
           <div class="submit-note"><i class="ti ti-info"></i> Goes to admin review before publishing</div>
           <button class="submit-action" onclick="submitClass()"><i class="ti ti-send"></i> Submit class</button>
         </div>
-        <div class="success-msg" id="submit-ok"><i class="ti ti-check"></i> Submitted! Your class will appear after admin review.</div>
+      </div>
+      <div id="submit-ok" style="display:none;text-align:center;padding:3rem 1.5rem;max-width:480px;margin:0 auto">
+        <div style="font-size:48px;margin-bottom:1rem">✅</div>
+        <div style="font-size:22px;font-weight:600;font-family:Georgia,serif;margin-bottom:8px;color:var(--text)">Thank you!</div>
+        <div style="font-size:14px;color:var(--text2);font-family:sans-serif;line-height:1.7;margin-bottom:1.5rem">Your class submission has been received. An organizer will review it and reach out if they have any questions. It will appear in the catalog once approved.</div>
+        <button class="submit-action" onclick="resetSubmitForm()" style="font-size:13px;padding:8px 20px"><i class="ti ti-plus"></i> Submit another class</button>
       </div>
     </div>
     <div id="panel-requests" class="panel">
@@ -621,6 +628,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
     <div class="modal-title">Approve &amp; schedule</div>
     <div class="modal-sub" id="am-sub"></div>
     <div class="modal-note mn-info" id="am-pref" style="display:none"></div>
+    <div class="modal-field"><label class="modal-label">Event</label><select class="modal-select" id="am-event" onchange="amEventChange()"><option value="">— No event / standalone —</option></select></div>
     <div class="modal-grid">
       <div class="modal-field"><label class="modal-label">Date *</label><input class="modal-input" id="am-date" type="date"></div>
       <div class="modal-field"><label class="modal-label">Time *</label><input class="modal-input" id="am-time" type="time"></div>
@@ -870,7 +878,7 @@ function apiD(p){
   if(action==='adminApprove'){
     const i=dP.findIndex(c=>String(c.id)===String(p.id));
     if(i<0)return{ok:false,error:'Not found'};
-    const cls={...dP[i],status:'approved',date:p.date||dP[i].date,time:p.time||dP[i].time,room:p.room||'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]};
+    const cls={...dP[i],status:'approved',date:p.date||dP[i].date,time:p.time||dP[i].time,room:p.room||'',event:p.event!==undefined?p.event:dP[i].event||'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]};
     dP.splice(i,1);dC.push(cls);return{ok:true};
   }
   if(action==='adminReject'){const i=dP.findIndex(c=>String(c.id)===String(p.id));if(i>=0)dP.splice(i,1);return{ok:true};}
@@ -1402,30 +1410,52 @@ function togglePast(){
 function initSubmit(){
   const lock=lockedEvent;
   const banner=document.getElementById('ev-banner'),bannerTxt=document.getElementById('ev-banner-txt');
-  const schedDt=document.getElementById('sched-dt'),schedPf=document.getElementById('sched-pf'),schedLbl=document.getElementById('sched-lbl');
-  // Populate event dropdown
   const evSel=document.getElementById('fc-ev');
-  evSel.innerHTML='<option value="">— select an event or leave blank —</option>';
+  // Rebuild options: keep online option, then add events
+  evSel.innerHTML='<option value="">— Choose an event or format —</option><option value="__online__">Online / Zoom (I\'ll set my own date &amp; time)</option>';
   availEvents.forEach(ev=>{const o=document.createElement('option');o.value=ev.name;o.textContent=ev.name;evSel.appendChild(o);});
   if(lock){
     banner.style.display='flex';bannerTxt.textContent='Submitting for: '+lock;
-    schedDt.style.display='none';schedPf.style.display='block';
-    schedLbl.textContent='Scheduling preferences';
-    evSel.value=lock;
-  }else{
-    banner.style.display='none';schedDt.style.display='block';schedPf.style.display='none';
-    schedLbl.textContent='Scheduling';
+    evSel.value=lock;evSel.disabled=true;
+  } else {
+    banner.style.display='none';evSel.disabled=false;
+  }
+  fcEvChange();
+}
+
+function fcEvChange(){
+  const lock=lockedEvent;
+  const evVal=document.getElementById('fc-ev').value;
+  const isOnline=evVal==='__online__';
+  const isEvent=!!(lock||(evVal&&!isOnline));
+  const fmEl=document.getElementById('fc-fm');
+  if(fmEl)fmEl.value=isOnline?'zoom':'in-person';
+  document.getElementById('zf').style.display=isOnline?'block':'none';
+  const schedDt=document.getElementById('sched-dt');
+  const schedPf=document.getElementById('sched-pf');
+  const schedLbl=document.getElementById('sched-lbl');
+  schedDt.style.display=(isEvent)?'none':'block';
+  schedPf.style.display=(isEvent)?'block':'none';
+  schedLbl.textContent=isEvent?'Scheduling preferences':'Scheduling';
+  const hint=document.getElementById('fc-ev-hint');
+  if(hint){
+    if(isEvent)hint.textContent='Admin will assign your date and time. Share your preferences below.';
+    else if(isOnline)hint.textContent='You\'ll set your own date and time below.';
+    else hint.textContent='';
   }
 }
-function tzf(){document.getElementById('zf').style.display=document.getElementById('fc-fm').value==='zoom'?'block':'none';}
 document.getElementById('fc-da').min=new Date().toISOString().slice(0,10);
 async function submitClass(){
   const t=document.getElementById('fc-t').value.trim(),tc=document.getElementById('fc-tc').value.trim();
   if(!t||!tc){alert('Class title and your SCA name are required.');return;}
   const lock=lockedEvent;
+  const evRaw=document.getElementById('fc-ev').value;
+  const isOnline=evRaw==='__online__';
+  const evVal=isOnline?'':evRaw;
+  const isEventClass=!!(lock||(evVal&&!isOnline));
   const da=document.getElementById('fc-da').value,ti=document.getElementById('fc-ti').value;
-  if(!lock&&(!da||!ti)){alert('Please enter a date and time for your class.');return;}
-  if(!lock&&da){
+  if(!isEventClass&&(!da||!ti)){alert('Please enter a date and time for your class.');return;}
+  if(!isEventClass&&da){
     const chosen=new Date(da+'T'+ti);
     if(chosen<new Date()){alert('Please choose a date and time in the future.');return;}
   }
@@ -1435,19 +1465,24 @@ async function submitClass(){
     phone:document.getElementById('fc-ph').value.trim(),
     bio:document.getElementById('fc-bio').value.trim(),
     imageUrl:document.getElementById('fc-img').value.trim(),
-    topic:document.getElementById('fc-tp').value,format:document.getElementById('fc-fm').value,
+    topic:document.getElementById('fc-tp').value,format:document.getElementById('fc-fm')?.value||'in-person',
     max:document.getElementById('fc-mx').value||'',fee:document.getElementById('fc-fe').value.trim(),
     duration:document.getElementById('fc-du').value,bring:document.getElementById('fc-br').value.trim(),
     desc:document.getElementById('fc-d').value.trim(),prereqs:document.getElementById('fc-pr').value.trim(),
     zoomLink:document.getElementById('fc-zl')?document.getElementById('fc-zl').value.trim():'',
-    date:da,time:ti,event:lock||document.getElementById('fc-ev').value.trim(),
+    date:da,time:ti,event:lock||evVal,
     timepref:document.getElementById('fc-tpref')?document.getElementById('fc-tpref').value.trim():'',
     notes:document.getElementById('fc-no').value.trim()
   });
   btn.disabled=false;btn.innerHTML='<i class="ti ti-send"></i> Submit class';
   if(!res.ok){alert(res.error||'Submission failed.');return;}
+  document.querySelector('.submit-form').style.display='none';
   document.getElementById('submit-ok').style.display='block';
   ['fc-t','fc-tc','fc-em','fc-ph','fc-bio','fc-img','fc-d','fc-pr','fc-fe','fc-br','fc-da','fc-ti','fc-no'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+}
+function resetSubmitForm(){
+  document.querySelector('.submit-form').style.display='block';
+  document.getElementById('submit-ok').style.display='none';
 }
 
 function initAdmin(){
@@ -1602,27 +1637,48 @@ function openApprove(id){
   const pn=document.getElementById('am-pref');
   if(c&&c.timepref){pn.style.display='block';pn.innerHTML='<i class="ti ti-clock"></i> Teacher preference: '+c.timepref;}
   else pn.style.display='none';
-  // Constrain date to event range if known
+  // Populate event dropdown
+  const evSel=document.getElementById('am-event');
+  evSel.innerHTML='<option value="">— No event / standalone —</option>';
+  availEvents.forEach(ev=>{const o=document.createElement('option');o.value=ev.name;o.textContent=ev.name;evSel.appendChild(o);});
+  evSel.value=c&&c.event?c.event:'';
+  // Constrain date to event range and pre-fill
   const dateEl=document.getElementById('am-date');
+  const timeEl=document.getElementById('am-time');
   dateEl.removeAttribute('min');dateEl.removeAttribute('max');
   const ev=c&&c.event?availEvents.find(e=>e.name===c.event):null;
   if(ev){
     if(ev.startDate)dateEl.setAttribute('min',ev.startDate);
     if(ev.endDate)dateEl.setAttribute('max',ev.endDate);
     if(ev.startDate&&ev.startDate===ev.endDate)dateEl.value=ev.startDate;
-    else dateEl.value=c.date||'';
+    else dateEl.value=c&&c.date?c.date:'';
   } else dateEl.value=c&&c.date?c.date:'';
+  // Pre-fill time from submission
+  timeEl.value=c&&c.time?c.time:'';
   // Populate room dropdown
   populateRoomDropdown('am-room-sel',c&&c.event?c.event:'','');
-  document.getElementById('am-time').value='';
   document.getElementById('approve-modal').classList.add('open');
-  setTimeout(()=>(dateEl.value?document.getElementById('am-time'):dateEl).focus(),50);
+  setTimeout(()=>(dateEl.value?timeEl:dateEl).focus(),50);
+}
+
+function amEventChange(){
+  const evName=document.getElementById('am-event').value;
+  const dateEl=document.getElementById('am-date');
+  dateEl.removeAttribute('min');dateEl.removeAttribute('max');
+  const ev=evName?availEvents.find(e=>e.name===evName):null;
+  if(ev){
+    if(ev.startDate)dateEl.setAttribute('min',ev.startDate);
+    if(ev.endDate)dateEl.setAttribute('max',ev.endDate);
+    if(ev.startDate&&ev.startDate===ev.endDate)dateEl.value=ev.startDate;
+  }
+  populateRoomDropdown('am-room-sel',evName,'');
 }
 async function confirmApprove(){
   const d=document.getElementById('am-date').value,t=document.getElementById('am-time').value,r=getAmRoom();
   if(!d||!t){alert('Date and time are required.');return;}
   const btn=document.getElementById('am-confirm');btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
-  const res=await api({action:'adminApprove',token:adminToken,id:String(curApprovingId),date:d,time:t,room:r});
+  const ev=document.getElementById('am-event')?.value||'';
+  const res=await api({action:'adminApprove',token:adminToken,id:String(curApprovingId),date:d,time:t,room:r,event:ev});
   btn.disabled=false;btn.innerHTML='<i class="ti ti-check"></i> Approve &amp; publish';
   if(!res.ok){alert(res.error||'Failed.');return;}
   closeModal('approve-modal');await loadClasses();loadAdmin();
