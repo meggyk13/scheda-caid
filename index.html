@@ -1901,9 +1901,13 @@ function renderGrid(cls,filterDate){
       const sl=dayCls.filter(c=>(c.room||'Unassigned')===r&&String(c.time).slice(0,5)===t);
       h+='<td>';
       sl.forEach(c=>{const{tc,th}=cfl(c);const k=(tc&&th)?'cb':th?'ch':tc?'ct':'';const du=Number(c.duration)||60;
-        h+='<div class="gc '+k+'" style="cursor:pointer" onclick="focusAdminClass(\''+c.id+'\')" title="'+c.title+' \u2014 '+c.teacher+' ('+du+'min)'+(tc?' topic overlap':'')+(th?' double-booked':'')+'">'
-          +'<strong>'+c.title.slice(0,26)+(c.title.length>26?'\u2026':'')+'</strong><br>'
-          +c.teacher+(du!==60?' ('+du+'m)':'')+'</div>';});
+        const cancelled=!!c.cancelled,full=isFull(c);
+        let extraStyle=k===''?'':'';  // conflict styles handled by class k
+        if(cancelled)extraStyle='background:var(--red-bg);color:var(--red-text);border-left:3px solid var(--red-border);';
+        else if(full&&!k)extraStyle='background:#f0f0f0;color:#888;';
+        h+='<div class="gc '+k+'" style="cursor:pointer;'+extraStyle+'" onclick="focusAdminClass(\''+c.id+'\')" title="'+c.title+' \u2014 '+c.teacher+' ('+du+'min)'+(cancelled?' \u2014 CANCELLED':full?' \u2014 Full':'')+(tc?' topic overlap':'')+(th?' double-booked':'')+'">'
+          +'<strong style="'+(cancelled?'text-decoration:line-through;':'')+'">'+(c.title.slice(0,26))+(c.title.length>26?'\u2026':'')+'</strong><br>'
+          +(cancelled?'<span style="font-size:10px;font-weight:700;text-transform:uppercase">Cancelled</span>':c.teacher+(du!==60?' ('+du+'m)':'')+(full?'<br><span style="font-size:10px;font-style:italic">Full</span>':''))+'</div>';});
       h+='</td>';
     });
     h+='</tr>';
