@@ -1072,8 +1072,8 @@ async function lookupSchedule(){
   scheduleEmail=email;
   // In demo mode, scan dRegs and dWL
   allClasses.forEach(c=>{
-    const reg=(window.IS_DEMO?(window.dRegs[c.id]||[]):[]).find(r=>r.email===email);
-    const wl=(window.IS_DEMO?(window.dWL[c.id]||[]):[]).find(r=>r.email===email);
+    const reg=(IS_DEMO?(dRegs[c.id]||[]):[]).find(r=>r.email===email);
+    const wl=(IS_DEMO?(dWL[c.id]||[]):[]).find(r=>r.email===email);
     if(reg)myRegs[c.id]={scaName:reg.scaName,email,waitlisted:false};
     else if(wl)myRegs[c.id]={scaName:wl.scaName,email,waitlisted:true};
   });
@@ -1099,10 +1099,13 @@ function renderSchedule(){
   const evDiv=document.getElementById('sched-events');
   const myEvents=[...new Set(mc.map(c=>c.event).filter(Boolean))];
   if(myEvents.length){
+    const todayStr=new Date().toISOString().slice(0,10);
     evDiv.style.display='block';
     evDiv.innerHTML=myEvents.map(evName=>{
       const evObj=availEvents.find(e=>e.name===evName);
       if(!evObj)return'';
+      const evEnd=evObj.endDate||evObj.startDate||'';
+      if(evEnd&&evEnd<todayStr)return'';
       const dateStr=evObj.startDate?(evObj.endDate&&evObj.endDate!==evObj.startDate?fD(evObj.startDate)+' – '+fD(evObj.endDate):fD(evObj.startDate)):'';
       return'<div class="modal-note mn-info" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:8px">'
         +'<div><strong>'+escH(evName)+'</strong>'+(dateStr?' · <span style="font-weight:400">'+dateStr+'</span>':'')
@@ -1136,18 +1139,20 @@ function renderSchedule(){
     const wl=isWL(c),pos=wlPos(c);
     const du=c.duration?' \u00b7 '+(c.duration>=60?Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h':c.duration+'min'):'';
     const isZoom=c.format==='zoom';
-    return '<div class="sched-item'+(isZoom?' sched-item-zoom':'')+'">'
+    const wlBanner=wl?'<div style="display:flex;align-items:center;gap:8px;background:var(--gold-light);color:var(--accent);border:1px solid var(--gold-mid);border-radius:var(--radius);padding:7px 11px;margin-bottom:8px;font-size:13px;font-family:sans-serif;font-weight:600"><i class="ti ti-clock" style="font-size:16px;flex-shrink:0"></i><span>Waitlist position #'+pos+' \u2014 you\u2019ll be notified if a spot opens</span></div>':'';
+    const wlBorder=wl?'border-left:4px solid var(--gold-mid);':'';
+    return '<div class="sched-item'+(isZoom&&!wl?' sched-item-zoom':'')+'" style="'+wlBorder+'">'
       +'<div class="sched-time">'+(c.date?fD(c.date)+'<br>':'')+(c.time?fT(c.time):'TBD')+'</div>'
-      +'<div><div class="sched-title">'+c.title+'</div>'
+      +'<div style="min-width:0">'+wlBanner+'<div class="sched-title">'+c.title+'</div>'
       +'<div class="sched-meta">'+c.teacher+(c.event?' \u00b7 '+c.event:'')+(c.room?' \u00b7 '+c.room:'')+du+'</div>'
       +(c.cancelled?'<div style="font-size:12px;font-family:sans-serif;color:var(--red-text);font-weight:700;margin-top:3px"><i class="ti ti-ban"></i> CANCELLED</div>':'')
-      +(wl?'<div class="sched-wl"><i class="ti ti-clock"></i> Waitlist #'+pos+'</div>':'')
       +(c.fee?'<div class="sched-meta" style="color:var(--accent-mid);margin-top:2px"><i class="ti ti-coin"></i> '+c.fee+'</div>':'')
       +(c.bring?'<div class="sched-meta" style="margin-top:2px"><i class="ti ti-backpack"></i> Bring: '+c.bring+'</div>':'')
       +(c.prereqs?'<div class="sched-meta" style="margin-top:2px"><i class="ti ti-info-circle"></i> Prereq: '+c.prereqs+'</div>':'')
-      +(isZoom&&c.zoomLink?'<a class="sched-zoom-btn" href="'+c.zoomLink+'" target="_blank"><i class="ti ti-video"></i> Join online</a>':'')
+      +(isZoom&&c.zoomLink&&!wl?'<a class="sched-zoom-btn" href="'+c.zoomLink+'" target="_blank"><i class="ti ti-video"></i> Join online</a>':'')
       +'</div>'
-      +'<button class="remove-btn" onclick="'+(wl?'doLeaveWL':'doUnreg')+'(\''+c.id+'\')"><i class="ti ti-x"></i> '+(wl?'Leave list':'Cancel')+'</button>'
+      +'<button class="remove-btn" onclick="'+(wl?'doLeaveWL':'doUnreg')+'(\''+c.id+'\')" style="'+(wl?'color:var(--accent-mid);border-color:var(--gold-mid)':'')+'">'
+      +'<i class="ti ti-x"></i> '+(wl?'Leave waitlist':'Cancel')+'</button>'
       +'</div>';
   }
   const upcomingHtml=upcoming.map(buildCard).join('');
