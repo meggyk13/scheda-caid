@@ -296,7 +296,6 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
       <div id="api-banner" class="api-banner demo" style="display:none"></div>
       <div id="ev-picker-row" style="display:flex;align-items:center;gap:10px;margin-bottom:1.25rem;flex-wrap:wrap">
         <select class="filter-select" onchange="rC()" id="fe" style="flex:1;min-width:200px;font-size:14px;padding:9px 12px;font-family:Georgia,serif;font-weight:600;color:var(--accent)"><option value="">— Choose an event —</option></select>
-        <button id="cat-see-all-btn" onclick="catClearEvent()" style="display:none;padding:8px 16px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap"><i class="ti ti-x"></i> See all classes</button>
         <button class="print-btn" id="cat-grid-btn" onclick="toggleCatalogGrid()" style="display:none;white-space:nowrap"><i class="ti ti-layout-grid"></i> Grid view</button>
       </div>
       <div class="filters" id="cat-secondary-filters">
@@ -305,6 +304,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         <select class="filter-select" onchange="rC()" id="ft"><option value="">All topics</option></select>
         <select class="filter-select" onchange="rC()" id="fmy" style="display:none"><option value="">All classes</option><option value="mine">My events only</option></select>
         <select class="filter-select" onchange="rC()" id="fs"><option value="date">Sort: Date</option><option value="title">Sort: Title</option></select>
+        <button id="cat-see-all-btn" onclick="catClearEvent()" style="display:none;padding:7px 14px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap"><i class="ti ti-x"></i> Clear filters</button>
       </div>
       <div id="cat-grid-wrap" style="display:none;margin-bottom:1.5rem">
         <label class="cb-row" style="margin-bottom:8px;font-size:12px"><input type="checkbox" id="cat-show-cancelled" checked onchange="renderCatalogGrid()"> Show cancelled classes</label>
@@ -931,7 +931,7 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.innerHTML='<i class="ti ti-info"></i> Demo mode \u2014 data resets on refresh. Set APPS_SCRIPT_URL to go live.';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode</div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){allClasses=res.classes;await loadEvFilter();populateTopics();rC();}
@@ -973,7 +973,8 @@ function rC(){
   const catSeeAll=document.getElementById('cat-see-all-btn');
   const evSelected=!!(document.getElementById('fe').value);
   if(catGridBtn) catGridBtn.style.display=evSelected?'':'none';
-  if(catSeeAll) catSeeAll.style.display=evSelected?'':'none';
+  const anyFilter=!!(evSelected||q||(document.getElementById('ff')||{}).value||(document.getElementById('ft')||{}).value);
+  if(catSeeAll) catSeeAll.style.display=anyFilter?'':'none';
   if(!evSelected&&catGridWrap&&catGridWrap.style.display!=='none'){
     catGridWrap.style.display='none';g.style.display='';
     if(catGridBtn)catGridBtn.innerHTML='<i class="ti ti-layout-grid"></i> Grid view';
@@ -1033,7 +1034,10 @@ function focusCatalogCard(id){
 }
 
 function catClearEvent(){
-  const fe=document.getElementById('fe');if(fe)fe.value='';
+  const ids=['fe','ff','ft','fmy','fs','si'];
+  ids.forEach(id=>{const el=document.getElementById(id);if(!el)return;el.tagName==='INPUT'?el.value='':el.value=el.options[0].value;});
+  // Reset sort to default
+  const fs=document.getElementById('fs');if(fs)fs.value='date';
   rC();
 }
 
