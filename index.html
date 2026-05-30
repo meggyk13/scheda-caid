@@ -294,13 +294,21 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
   <div class="main">
     <div id="panel-catalog" class="panel active">
       <div id="api-banner" class="api-banner demo" style="display:none"></div>
-      <div class="filters">
+      <div id="ev-picker-row" style="display:flex;align-items:center;gap:10px;margin-bottom:1.25rem;flex-wrap:wrap">
+        <select class="filter-select" onchange="rC()" id="fe" style="flex:1;min-width:200px;font-size:14px;padding:9px 12px;font-family:Georgia,serif;font-weight:600;color:var(--accent)"><option value="">— Choose an event —</option></select>
+        <button id="cat-see-all-btn" onclick="catClearEvent()" style="display:none;padding:8px 16px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap"><i class="ti ti-x"></i> See all classes</button>
+        <button class="print-btn" id="cat-grid-btn" onclick="toggleCatalogGrid()" style="display:none;white-space:nowrap"><i class="ti ti-layout-grid"></i> Grid view</button>
+      </div>
+      <div class="filters" id="cat-secondary-filters">
         <input class="search-input" type="text" placeholder="Search classes, teachers&#x2026;" oninput="rC()" id="si">
         <select class="filter-select" onchange="rC()" id="ff"><option value="">All formats</option><option value="zoom">Online</option><option value="in-person">In person</option></select>
         <select class="filter-select" onchange="rC()" id="ft"><option value="">All topics</option></select>
-        <select class="filter-select" onchange="rC()" id="fe"><option value="">All events</option></select>
         <select class="filter-select" onchange="rC()" id="fmy" style="display:none"><option value="">All classes</option><option value="mine">My events only</option></select>
         <select class="filter-select" onchange="rC()" id="fs"><option value="date">Sort: Date</option><option value="title">Sort: Title</option></select>
+      </div>
+      <div id="cat-grid-wrap" style="display:none;margin-bottom:1.5rem">
+        <label class="cb-row" style="margin-bottom:8px;font-size:12px"><input type="checkbox" id="cat-show-cancelled" checked onchange="renderCatalogGrid()"> Show cancelled classes</label>
+        <div class="grid-wrap"><table class="sg" id="cat-grid-table"></table></div>
       </div>
       <div class="class-grid" id="cg"></div>
     </div>
@@ -315,6 +323,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         </div>
         <div id="sched-lookup-msg" style="display:none;margin-top:8px;font-size:12px;font-family:sans-serif;color:var(--text2)"></div>
       </div>
+      <div id="sched-filters" style="display:none;margin-bottom:1rem"><div class="filters"><input class="search-input" id="sched-q" type="text" placeholder="Search title or teacher…" oninput="renderSchedule()" style="flex:1;min-width:160px"><select class="filter-select" id="sched-fev" onchange="renderSchedule()"><option value="">All events</option></select><select class="filter-select" id="sched-ftype" onchange="renderSchedule()"><option value="">All types</option><option value="teaching">Teaching</option><option value="attending">Attending</option><option value="waitlist">Waitlisted</option></select></div></div>
       <div id="sl"></div>
     </div>
     <div id="panel-submit" class="panel">
@@ -563,6 +572,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
               <span><span class="ld" style="background:var(--accent-light);border:1px solid var(--accent-mid)"></span>Normal</span>
               <span><span class="ld" style="background:var(--gold-light);border-left:3px solid #C8820A"></span>Topic overlap</span>
               <span><span class="ld" style="background:var(--red-bg);border-left:3px solid var(--red-text)"></span>Double-booked teacher</span>
+              <label class="cb-row" style="margin-left:auto;font-size:12px"><input type="checkbox" id="admin-show-cancelled" checked onchange="reloadGrid()"> Show cancelled</label>
             </div>
             <div class="grid-wrap"><table class="sg" id="grid-table"></table></div>
           </div>
@@ -678,7 +688,7 @@ const SEED_CLASSES=[
   {id:'1',title:`The Art of the Illuminated Initial`,teacher:`Mistress Alienor of Wakefield`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Arts/History Rm 1`,desc:`Learn the basics of painting illuminated initials in the style of 12th-century English manuscripts. We'll cover gilding, pigment mixing, and letterform. Beginners welcome.`,bring:`Small brush if you have one; supplies provided.`,fee:'',zoomLink:'',max:12,prereqs:'',bio:`Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'2',title:`Introduction to Tablet Weaving`,teacher:`Lady Aelswith of Mercia`,date:'2026-08-16',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,desc:`An entry-level class covering warping, turning sequences, and reading simple patterns. You'll leave with a small band in progress.`,bring:`Nothing — cards, warp, and loom provided.`,fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'3',title:`Ottoman Garb Basics`,teacher:`Rayhana bint Estafanos al-Ábbas`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Cooking/Costuming`,desc:`This class walks through the basics of period-appropriate mid-16th century Ottoman clothing, with practical guidance on layers, silhouettes, and accessible starting points for creating garb.`,bring:`N/a`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'4',title:`Heraldic Charges: A Visual Survey`,teacher:`Lord Seamus mac Neill`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Heraldry',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`A fast-paced tour through common and uncommon charges in period heraldry, with examples from the Rolls of Arms. Great for new heralds or anyone designing devices.`,bring:`Ideas for your own device if you have them.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Lord Seamus is a pursuivant with Caid's College of Heralds and has been consulting on device submissions for eight years. He enjoys the obscure corners of the heraldic menagerie.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'4',title:`Heraldic Charges: A Visual Survey`,cancelled:true,teacher:`Lord Seamus mac Neill`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Heraldry',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`A fast-paced tour through common and uncommon charges in period heraldry, with examples from the Rolls of Arms. Great for new heralds or anyone designing devices.`,bring:`Ideas for your own device if you have them.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Lord Seamus is a pursuivant with Caid's College of Heralds and has been consulting on device submissions for eight years. He enjoys the obscure corners of the heraldic menagerie.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'5',title:`Simple Iron Gall Ink`,teacher:`Fiachra an Doire`,email:'margery@example.com',date:'2026-08-16',time:'12:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`Learn to make an easy, effective iron gall ink based on a late 14th or early 15th century English recipe. Students take home a small vial.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Fiachra is a scribe and calligrapher with a particular interest in medieval ink recipes and writing materials. He has been recreating period inks for over eight years.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'6',title:`Intro to SCA Rapier`,teacher:`Don Rodrigo de Castilla`,date:'2026-08-16',time:'14:00',duration:90,format:'in-person',topic:'Combat',event:'Collegium 2026',room:`Field - Martial Class, all types`,desc:`An overview of rapier combat in the SCA: rules, equipment, and basic footwork and guards. Loaner gear available for new fighters to try.`,bring:`Comfortable clothes you can move in.`,fee:'',zoomLink:'',max:20,prereqs:'',bio:`Don Rodrigo holds the rank of Don in Caid's rapier community and has been teaching introductory fencing for over a decade. He specializes in Italian rapier styles of the late 16th century.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'7',title:`Cooking from the Forme of Cury`,teacher:`Mistress Gwenllian ferch Caradog`,date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Collegium 2026',room:`Grab Bag Rm 3`,desc:`We'll work through two recipes from the 14th-century English cookbook, adapting them for modern kitchens. Tasting included.`,bring:`Any food allergies to share.`,fee:'',zoomLink:'',max:16,prereqs:'',bio:`Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery. She has cooked multiple SCA feasts from period sources and written extensively on redaction methodology.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
@@ -957,6 +967,18 @@ function rC(){
   if(so==='date')fl=[...fl].sort((a,b)=>(String(a.date)+String(a.time)).localeCompare(String(b.date)+String(b.time)));
   else if(so==='title')fl=[...fl].sort((a,b)=>a.title.localeCompare(b.title));
   const g=document.getElementById('cg');
+  // Show/hide grid toggle button and re-render grid if open
+  const catGridBtn=document.getElementById('cat-grid-btn');
+  const catGridWrap=document.getElementById('cat-grid-wrap');
+  const catSeeAll=document.getElementById('cat-see-all-btn');
+  const evSelected=!!(document.getElementById('fe').value);
+  if(catGridBtn) catGridBtn.style.display=evSelected?'':'none';
+  if(catSeeAll) catSeeAll.style.display=evSelected?'':'none';
+  if(!evSelected&&catGridWrap&&catGridWrap.style.display!=='none'){
+    catGridWrap.style.display='none';g.style.display='';
+    if(catGridBtn)catGridBtn.innerHTML='<i class="ti ti-layout-grid"></i> Grid view';
+  }
+  if(evSelected&&catGridWrap&&catGridWrap.style.display!=='none')renderCatalogGrid();
   if(!fl.length){g.innerHTML='<div style="grid-column:1/-1;padding:2rem;text-align:center;color:var(--text2);font-size:14px;font-family:sans-serif;">No classes match your filters.</div>';return;}
   g.innerHTML=fl.map(c=>{
     const reg=isReg(c),wl=isWL(c),full=isFull(c),cancelled=!!c.cancelled;
@@ -988,6 +1010,141 @@ function rC(){
   }).join('');
 }
 function toggleR(id){const e=document.getElementById(id);if(e)e.classList.toggle('open');}
+function focusCatalogCard(id){
+  // Switch to card view if grid is showing
+  const wrap=document.getElementById('cat-grid-wrap');
+  const cg=document.getElementById('cg');
+  const btn=document.getElementById('cat-grid-btn');
+  if(wrap&&wrap.style.display!=='none'){
+    wrap.style.display='none';cg.style.display='';
+    if(btn)btn.innerHTML='<i class="ti ti-layout-grid"></i> Grid view';
+  }
+  // Clear search and re-render with just this class
+  const si=document.getElementById('si');
+  const c=allClasses.find(x=>String(x.id)===String(id));
+  if(!c)return;
+  if(si)si.value=c.title;
+  rC();
+  // Scroll to the card
+  setTimeout(()=>{
+    const el=document.querySelector('.class-card');
+    if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  },50);
+}
+
+function catClearEvent(){
+  const fe=document.getElementById('fe');if(fe)fe.value='';
+  rC();
+}
+
+function toggleCatalogGrid(){
+  const wrap=document.getElementById('cat-grid-wrap');
+  const cg=document.getElementById('cg');
+  const btn=document.getElementById('cat-grid-btn');
+  const showing=wrap.style.display!=='none';
+  if(showing){
+    wrap.style.display='none';cg.style.display='';
+    btn.innerHTML='<i class="ti ti-layout-grid"></i> Grid view';
+  } else {
+    wrap.style.display='block';cg.style.display='none';
+    btn.innerHTML='<i class="ti ti-menu-2"></i> Card view';
+    renderCatalogGrid();
+  }
+}
+
+function renderCatalogGrid(){
+  const evName=document.getElementById('fe').value;
+  const ev=availEvents.find(e=>e.name===evName);
+  const showCancelled=document.getElementById('cat-show-cancelled')?.checked!==false;
+  const cls=allClasses.filter(c=>c.event===evName&&(showCancelled||!c.cancelled));
+  const days=getEventDays(ev,cls);
+  const tbl=document.getElementById('cat-grid-table');
+  const wrap=document.getElementById('cat-grid-wrap');
+  // Remove old day tabs and single-day header
+  const old=wrap.querySelector('.day-tabs');if(old)old.remove();
+  const oldDh=wrap.querySelector('.single-day-header');if(oldDh)oldDh.remove();
+  if(!days.length){tbl.innerHTML='<tr><td style="padding:1rem;font-family:sans-serif;color:var(--text2)">No scheduled classes found for this event.</td></tr>';return;}
+  if(days.length<=1){
+    if(days[0]){
+      const dh=document.createElement('div');
+      dh.className='single-day-header';
+      dh.style.cssText='font-size:14px;font-weight:600;font-family:Georgia,serif;color:var(--accent);margin-bottom:8px;';
+      dh.textContent=fD(days[0]);
+      wrap.insertBefore(dh,wrap.querySelector('.grid-wrap'));
+    }
+    renderCatalogGridDay(cls,days[0]||null);return;
+  }
+  const tabBar=document.createElement('div');
+  tabBar.className='day-tabs';
+  tabBar.style.cssText='display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;';
+  days.forEach((d,i)=>{
+    const btn=document.createElement('button');
+    btn.className='print-btn'+(i===0?' day-tab-active':'');
+    if(i===0)btn.style.cssText='background:var(--accent);color:#fff;border-color:var(--accent)';
+    btn.textContent=fD(d);btn.dataset.date=d;
+    btn.onclick=function(){
+      wrap.querySelectorAll('.day-tabs button').forEach(b=>{b.style.cssText='';b.classList.remove('day-tab-active');});
+      this.style.cssText='background:var(--accent);color:#fff;border-color:var(--accent)';
+      this.classList.add('day-tab-active');
+      renderCatalogGridDay(cls,this.dataset.date);
+    };
+    tabBar.appendChild(btn);
+  });
+  wrap.insertBefore(tabBar,wrap.querySelector('.grid-wrap'));
+  renderCatalogGridDay(cls,days[0]);
+}
+
+function renderCatalogGridDay(cls,filterDate){
+  const times=['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00'];
+  const showAdminCancelled=document.getElementById('admin-show-cancelled')?.checked!==false;
+  const dayCls=(filterDate?cls.filter(c=>c.date===filterDate):cls).filter(c=>showAdminCancelled||!c.cancelled);
+  const rooms=[...new Set(dayCls.map(c=>c.room||'Unassigned').filter(Boolean))].sort();
+  const tbl=document.getElementById('cat-grid-table');
+  if(!rooms.length){tbl.innerHTML='<tr><td style="padding:1rem;font-family:sans-serif;color:var(--text2)">No classes with rooms assigned yet'+(filterDate?' for '+fD(filterDate):'')+'. </td></tr>';return;}
+  let h='<tr><th>Time</th>'+rooms.map(r=>'<th>'+escH(r)+'</th>').join('')+'</tr>';
+  times.forEach(t=>{
+    const rowHasCls=dayCls.some(c=>String(c.time).slice(0,5)===t);
+    if(!rowHasCls)return;
+    h+='<tr><td class="sgtime">'+fT(t)+'</td>';
+    rooms.forEach(r=>{
+      const sl=dayCls.filter(c=>(c.room||'Unassigned')===r&&String(c.time).slice(0,5)===t);
+      h+='<td>';
+      sl.forEach(c=>{
+        const du=Number(c.duration)||60;
+        const reg=isReg(c),wl=isWL(c);
+        const cancelled=!!c.cancelled;
+        const full=isFull(c)&&!reg&&!wl;
+        let style,extra='';
+        if(cancelled){
+          style='background:var(--red-bg);color:var(--red-text);border-left:3px solid var(--red-border);';
+        } else if(full){
+          style='background:#f0f0f0;color:#888;';
+        } else if(reg){
+          extra=' style="border-left:3px solid var(--accent-mid)"';
+          style='';
+        } else if(wl){
+          extra=' style="border-left:3px solid var(--gold-mid)"';
+          style='';
+        } else {
+          style='';
+        }
+        const clickStyle=cancelled?'':'cursor:pointer;';
+        h+='<div class="gc" onclick="'+(cancelled?'':'focusCatalogCard(\''+c.id+'\')')+'" style="'+(style||'')+clickStyle+'" '+((!style&&extra)?extra.replace(' style=','').replace(/^"|"$/g,''):'')
+          +' title="'+escH(c.title)+' — '+escH(c.teacher)+' ('+du+'min)'+(cancelled?' — CANCELLED':full?' — Full':'')+'">'
+          +'<strong style="'+(cancelled?'text-decoration:line-through;':'')+'">'+escH(c.title.slice(0,26)+(c.title.length>26?'…':''))+'</strong><br>'
+          +(cancelled
+            ? '<span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em">Cancelled</span>'
+            : escH(c.teacher)+(du!==60?' ('+du+'m)':'')
+              +(full?'<br><span style="font-size:10px;font-style:italic">Waitlist available</span>':'')
+              +(reg?' <i class="ti ti-check" style="font-size:10px"></i>':wl?' <i class="ti ti-clock" style="font-size:10px"></i>':''))
+          +'</div>';
+      });
+      h+='</td>';
+    });
+    h+='</tr>';
+  });
+  tbl.innerHTML=h;
+}
 
 function handleEnroll(id){
   const c=allClasses.find(x=>String(x.id)===String(id));
@@ -1134,6 +1291,36 @@ function renderSchedule(){
     if(!scheduleEmail)l.innerHTML='<div class="empty-sched"><i class="ti ti-mail" style="font-size:36px;display:block;margin:0 auto 10px;opacity:.25"></i>Enter your email address above to view your schedule.</div>';
     return;
   }
+  // Show filters and populate event dropdown
+  const filtersDiv=document.getElementById('sched-filters');
+  if(filtersDiv){
+    filtersDiv.style.display='block';
+    const fevSel=document.getElementById('sched-fev');
+    if(fevSel){
+      const currentFev=fevSel.value;
+      fevSel.innerHTML='<option value="">All events</option>';
+      [...new Set(mc.map(c=>c.event).filter(Boolean))].sort().forEach(ev=>{
+        const o=document.createElement('option');o.value=ev;o.textContent=ev;fevSel.appendChild(o);
+      });
+      fevSel.value=currentFev;
+    }
+  }
+  // Apply filters
+  const fq=(document.getElementById('sched-q')||{}).value||'';
+  const fev=(document.getElementById('sched-fev')||{}).value||'';
+  const ftype=(document.getElementById('sched-ftype')||{}).value||'';
+  const filtered=mc.filter(c=>{
+    if(fev&&c.event!==fev)return false;
+    if(ftype){
+      const teaching=!!(myRegs[c.id]&&myRegs[c.id].teaching);
+      const wl=!teaching&&isWL(c);
+      if(ftype==='teaching'&&!teaching)return false;
+      if(ftype==='waitlist'&&!wl)return false;
+      if(ftype==='attending'&&(teaching||wl))return false;
+    }
+    if(fq){const q=fq.toLowerCase();if(!c.title.toLowerCase().includes(q)&&!c.teacher.toLowerCase().includes(q))return false;}
+    return true;
+  });
   const today=new Date(); today.setHours(0,0,0,0);
   function isPast(c){
     if(!c.date)return false;
@@ -1152,8 +1339,8 @@ function renderSchedule(){
     }
     return(String(a.date)+String(a.time)).localeCompare(String(b.date)+String(b.time));
   };
-  const upcoming=[...mc].filter(c=>!isPast(c)).sort(sortFn);
-  const past=[...mc].filter(c=>isPast(c)).sort(sortFn);
+  const upcoming=[...filtered].filter(c=>!isPast(c)).sort(sortFn);
+  const past=[...filtered].filter(c=>isPast(c)).sort(sortFn);
   function buildCard(c){
     const du=c.duration?' \u00b7 '+(c.duration>=60?Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h':c.duration+'min'):'';
     const isZoom=c.format==='zoom';
@@ -1161,7 +1348,7 @@ function renderSchedule(){
     const wl=!teaching&&isWL(c),pos=wlPos(c);
     const teachBanner=teaching?'<div style="display:flex;align-items:center;gap:8px;background:var(--accent-light);color:var(--accent);border:1px solid var(--accent-mid);border-radius:var(--radius);padding:7px 11px;margin-bottom:8px;font-size:13px;font-family:sans-serif;font-weight:600"><i class="ti ti-chalkboard" style="font-size:16px;flex-shrink:0"></i><span>You are teaching this class</span></div>':'';
     const wlBanner=wl?'<div style="display:flex;align-items:center;gap:8px;background:var(--gold-light);color:var(--accent);border:1px solid var(--gold-mid);border-radius:var(--radius);padding:7px 11px;margin-bottom:8px;font-size:13px;font-family:sans-serif;font-weight:600"><i class="ti ti-clock" style="font-size:16px;flex-shrink:0"></i><span>Waitlist position #'+pos+' \u2014 you\u2019ll be notified if a spot opens</span></div>':'';
-    const borderStyle=teaching?'border-left:4px solid var(--accent-mid);':wl?'border-left:4px solid var(--gold-mid);':'';
+    const borderStyle=teaching?'border-left:4px solid var(--accent-mid);background:var(--accent-light);':wl?'border-left:4px solid var(--gold-mid);':'';
     const removeBtn=teaching?'':'<button class="remove-btn" onclick="'+(wl?'doLeaveWL':'doUnreg')+'(\''+c.id+'\')" style="'+(wl?'color:var(--accent-mid);border-color:var(--gold-mid)':'')+'">'+'<i class="ti ti-x"></i> '+(wl?'Leave waitlist':'Cancel')+'</button>';
     return '<div class="sched-item'+(isZoom&&!wl&&!teaching?' sched-item-zoom':'')+'" style="'+borderStyle+'">'
       +'<div class="sched-time">'+(c.date?fD(c.date)+'<br>':'')+(c.time?fT(c.time):'TBD')+'</div>'
@@ -1546,7 +1733,17 @@ async function loadGrid(){
   const res=await api({action:'adminGetGrid',token:adminToken,event:evName});
   if(!res.ok)return;
   const cls=res.approved||[];
+  window._lastGridCls=cls;
   // Get event date range to build day tabs
+  const ev=availEvents.find(e=>e.name===evName);
+  const days=getEventDays(ev,cls);
+  renderGridWithDays(cls,days);
+}
+
+function reloadGrid(){
+  const evName=document.getElementById('grid-ev').value;
+  if(!evName)return;
+  const cls=window._lastGridCls||[];
   const ev=availEvents.find(e=>e.name===evName);
   const days=getEventDays(ev,cls);
   renderGridWithDays(cls,days);
@@ -1600,7 +1797,8 @@ function renderGridWithDays(cls,days){
 
 function renderGrid(cls,filterDate){
   const times=['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00'];
-  const dayCls=filterDate?cls.filter(c=>c.date===filterDate):cls;
+  const showCatCancelled=document.getElementById('cat-show-cancelled')?.checked!==false;
+  const dayCls=(filterDate?cls.filter(c=>c.date===filterDate):cls).filter(c=>showCatCancelled||!c.cancelled);
   const rooms=[...new Set(dayCls.map(c=>c.room||'Unassigned').filter(Boolean))].sort();
   const tbl=document.getElementById('grid-table');
   if(!rooms.length){tbl.innerHTML='<tr><td style="padding:1rem;font-family:sans-serif;color:var(--text2)">No approved classes with rooms assigned yet'+(filterDate?' for '+fD(filterDate):'')+'. </td></tr>';return;}
