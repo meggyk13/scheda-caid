@@ -304,10 +304,11 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         <select class="filter-select" onchange="rC()" id="ft"><option value="">All topics</option></select>
         <select class="filter-select" onchange="rC()" id="fmy" style="display:none"><option value="">All classes</option><option value="mine">My events only</option></select>
         <select class="filter-select" onchange="rC()" id="fs"><option value="date">Sort: Date</option><option value="title">Sort: Title</option></select>
+        <label class="cb-row" style="margin-bottom:0;font-size:13px;white-space:nowrap"><input type="checkbox" id="fhc" onchange="rC();if(document.getElementById('cat-grid-wrap').style.display!=='none')renderCatalogGrid()"> Hide cancelled</label>
+        <label class="cb-row" style="margin-bottom:0;font-size:13px;white-space:nowrap"><input type="checkbox" id="fhw" onchange="rC();if(document.getElementById('cat-grid-wrap').style.display!=='none')renderCatalogGrid()"> Hide full/waitlist</label>
         <button id="cat-see-all-btn" onclick="catClearEvent()" style="display:none;padding:7px 14px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap"><i class="ti ti-x"></i> Clear filters</button>
       </div>
       <div id="cat-grid-wrap" style="display:none;margin-bottom:1.5rem">
-        <label class="cb-row" style="margin-bottom:8px;font-size:12px"><input type="checkbox" id="cat-show-cancelled" checked onchange="renderCatalogGrid()"> Show cancelled classes</label>
         <div class="grid-wrap"><table class="sg" id="cat-grid-table"></table></div>
       </div>
       <div class="class-grid" id="cg"></div>
@@ -553,9 +554,22 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 
         <!-- CLASSES TAB -->
         <div id="admin-tab-classes" style="display:none">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:1.25rem;flex-wrap:wrap">
+            <select class="filter-select" id="acf-ev" onchange="renderPending();renderApproved();syncAdminGridEv()" style="flex:1;min-width:200px;font-size:14px;padding:9px 12px;font-family:Georgia,serif;font-weight:600;color:var(--accent)"><option value="">— Choose an event —</option></select>
+            <button class="print-btn" id="admin-grid-btn" onclick="toggleAdminGrid()" style="display:none;white-space:nowrap"><i class="ti ti-layout-grid"></i> Grid view</button>
+          </div>
+          <div id="admin-grid-wrap" style="display:none;margin-bottom:1.5rem">
+            <div class="grid-legend">
+              <span><span class="ld" style="background:var(--accent-light);border:1px solid var(--accent-mid)"></span>Normal</span>
+              <span><span class="ld" style="background:var(--gold-light);border-left:3px solid #C8820A"></span>Topic overlap</span>
+              <span><span class="ld" style="background:var(--red-bg);border-left:3px solid var(--red-text)"></span>Double-booked teacher</span>
+              <label class="cb-row" style="margin-left:auto;font-size:12px"><input type="checkbox" id="admin-show-cancelled" checked onchange="reloadGrid()"> Show cancelled</label>
+              <label class="cb-row" style="font-size:12px"><input type="checkbox" id="admin-hide-full" onchange="reloadGrid()"> Hide full</label>
+            </div>
+            <div class="grid-wrap"><table class="sg" id="grid-table"></table></div>
+          </div>
           <div class="filters" style="margin-bottom:1.25rem">
             <input class="search-input" type="text" id="acf-q" placeholder="Search title, teacher…" oninput="renderPending();renderApproved()">
-            <select class="filter-select" id="acf-ev" onchange="renderPending();renderApproved()"><option value="">All events</option></select>
             <select class="filter-select" id="acf-tp" onchange="renderPending();renderApproved()"><option value="">All topics</option><option>Fiber Arts</option><option>Costuming</option><option>Dance</option><option>History</option><option>Society Skills</option><option>Bardic Arts</option><option>Scribal Arts</option><option>Cooking &amp; Brewing</option><option>Combat</option><option>Archery</option><option>Heraldry</option><option>Crafts</option><option>Other</option></select>
             <select class="filter-select" id="acf-fm" onchange="renderPending();renderApproved()"><option value="">All formats</option><option value="in-person">In person</option><option value="zoom">Online</option></select>
             <select class="filter-select" id="acf-so" onchange="renderApproved()"><option value="date">Sort: Date</option><option value="title">Sort: A–Z Title</option><option value="teacher">Sort: Teacher</option><option value="regs">Sort: Most registered</option></select>
@@ -564,19 +578,6 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
           <div id="pending-list"></div>
           <div class="admin-section-title"><i class="ti ti-check"></i> Published classes</div>
           <div id="approved-list"></div>
-          <div class="admin-section-title"><i class="ti ti-layout-grid"></i> Schedule grid</div>
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
-            <select class="filter-select" id="grid-ev" onchange="loadGrid()"><option value="">Select event&hellip;</option></select>
-          </div>
-          <div id="grid-view" style="display:none">
-            <div class="grid-legend">
-              <span><span class="ld" style="background:var(--accent-light);border:1px solid var(--accent-mid)"></span>Normal</span>
-              <span><span class="ld" style="background:var(--gold-light);border-left:3px solid #C8820A"></span>Topic overlap</span>
-              <span><span class="ld" style="background:var(--red-bg);border-left:3px solid var(--red-text)"></span>Double-booked teacher</span>
-              <label class="cb-row" style="margin-left:auto;font-size:12px"><input type="checkbox" id="admin-show-cancelled" checked onchange="reloadGrid()"> Show cancelled</label>
-            </div>
-            <div class="grid-wrap"><table class="sg" id="grid-table"></table></div>
-          </div>
         </div>
         <!-- REQUESTS ADMIN TAB -->
         <div id="admin-tab-requests" style="display:none">
@@ -956,11 +957,14 @@ function rC(){
   const q=(document.getElementById('si').value||'').toLowerCase();
   const fm=document.getElementById('ff').value,tp=document.getElementById('ft').value,ev=document.getElementById('fe').value,so=document.getElementById('fs').value;
   const fmy=document.getElementById('fmy')?.value||'';
+  const fav=document.getElementById('fav')?.value||'';
   let fl=allClasses.filter(c=>{
     if(fm&&c.format!==fm)return false;
     if(tp&&c.topic!==tp)return false;
     if(ev&&c.event!==ev)return false;
     if(fmy==='mine'&&!myRegs[c.id])return false;
+    if(document.getElementById('fhc')?.checked&&c.cancelled)return false;
+    if(document.getElementById('fhw')?.checked&&isFull(c))return false;
     if(q&&!c.title.toLowerCase().includes(q)&&!c.teacher.toLowerCase().includes(q)&&!c.desc.toLowerCase().includes(q))return false;
     return true;
   });
@@ -973,7 +977,7 @@ function rC(){
   const catSeeAll=document.getElementById('cat-see-all-btn');
   const evSelected=!!(document.getElementById('fe').value);
   if(catGridBtn) catGridBtn.style.display=evSelected?'':'none';
-  const anyFilter=!!(evSelected||q||(document.getElementById('ff')||{}).value||(document.getElementById('ft')||{}).value);
+  const anyFilter=!!(evSelected||q||(document.getElementById('ff')||{}).value||(document.getElementById('ft')||{}).value||document.getElementById('fhc')?.checked||document.getElementById('fhw')?.checked);
   if(catSeeAll) catSeeAll.style.display=anyFilter?'':'none';
   if(!evSelected&&catGridWrap&&catGridWrap.style.display!=='none'){
     catGridWrap.style.display='none';g.style.display='';
@@ -1037,7 +1041,7 @@ function focusCatalogCard(id){
 function catClearEvent(){
   const ids=['fe','ff','ft','fmy','fs','si'];
   ids.forEach(id=>{const el=document.getElementById(id);if(!el)return;el.tagName==='INPUT'?el.value='':el.value=el.options[0].value;});
-  // Reset sort to default
+  ['fhc','fhw'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=false;});
   const fs=document.getElementById('fs');if(fs)fs.value='date';
   rC();
 }
@@ -1060,8 +1064,8 @@ function toggleCatalogGrid(){
 function renderCatalogGrid(){
   const evName=document.getElementById('fe').value;
   const ev=availEvents.find(e=>e.name===evName);
-  const showCancelled=document.getElementById('cat-show-cancelled')?.checked!==false;
-  const cls=allClasses.filter(c=>c.event===evName&&(showCancelled||!c.cancelled));
+  const hideCancelled=document.getElementById('fhc')?.checked;
+  const cls=allClasses.filter(c=>c.event===evName&&(!hideCancelled||!c.cancelled));
   const days=getEventDays(ev,cls);
   const tbl=document.getElementById('cat-grid-table');
   const wrap=document.getElementById('cat-grid-wrap');
@@ -1101,8 +1105,9 @@ function renderCatalogGrid(){
 
 function renderCatalogGridDay(cls,filterDate){
   const times=['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00'];
-  const showAdminCancelled=document.getElementById('admin-show-cancelled')?.checked!==false;
-  const dayCls=(filterDate?cls.filter(c=>c.date===filterDate):cls).filter(c=>showAdminCancelled||!c.cancelled);
+  const hideCatCancelled=document.getElementById('fhc')?.checked;
+  const hideCatFull=document.getElementById('fhw')?.checked;
+  const dayCls=(filterDate?cls.filter(c=>c.date===filterDate):cls).filter(c=>(!hideCatCancelled||!c.cancelled)&&(!hideCatFull||!isFull(c)));
   const rooms=[...new Set(dayCls.map(c=>c.room||'Unassigned').filter(Boolean))].sort();
   const tbl=document.getElementById('cat-grid-table');
   if(!rooms.length){tbl.innerHTML='<tr><td style="padding:1rem;font-family:sans-serif;color:var(--text2)">No classes with rooms assigned yet'+(filterDate?' for '+fD(filterDate):'')+'. </td></tr>';return;}
@@ -1503,7 +1508,7 @@ async function loadAdmin(){
   document.getElementById('pending-count').textContent=pendingClasses.length;
   renderPending();renderApproved();
   // Populate ev-picker and grid-ev
-  ['ev-picker','grid-ev','acf-ev'].forEach(sid=>{
+  ['ev-picker','acf-ev'].forEach(sid=>{
     const gs=document.getElementById(sid);if(!gs)return;
     const cur=gs.value;
     gs.innerHTML=sid==='ev-picker'?'<option value="">— select an event to manage —</option>':'<option value="">Select event\u2026</option>';
@@ -1562,6 +1567,8 @@ function renderPending(){
 }
 function renderApproved(){
   const f=getAdminClassFilters();
+  const adminGridBtn=document.getElementById('admin-grid-btn');
+  if(adminGridBtn)adminGridBtn.style.display=f.ev?'':'none';
   const so=(document.getElementById('acf-so')||{}).value||'date';
   const filtered=allClasses.filter(c=>matchesAdminFilter(c,f)).sort((a,b)=>{
     if(so==='title')return a.title.localeCompare(b.title);
@@ -1753,26 +1760,75 @@ function showAdminTab(tab){
 function cpL(ev,u){navigator.clipboard.writeText(u).then(()=>{const b=ev.target.closest('button');b.textContent='\u2713 Copied';setTimeout(()=>b.innerHTML='<i class="ti ti-copy"></i> Copy',2000);});}
 
 async function loadGrid(){
-  const evName=document.getElementById('grid-ev').value,wrap=document.getElementById('grid-view');
-  if(!evName){wrap.style.display='none';return;}
-  wrap.style.display='block';
-  const res=await api({action:'adminGetGrid',token:adminToken,event:evName});
-  if(!res.ok)return;
-  const cls=res.approved||[];
-  window._lastGridCls=cls;
-  // Get event date range to build day tabs
-  const ev=availEvents.find(e=>e.name===evName);
-  const days=getEventDays(ev,cls);
-  renderGridWithDays(cls,days);
+  // Legacy — now handled by loadAdminGrid
+  loadAdminGrid();
 }
 
 function reloadGrid(){
-  const evName=document.getElementById('grid-ev').value;
+  const evName=document.getElementById('acf-ev')?.value||document.getElementById('grid-ev')?.value||'';
   if(!evName)return;
   const cls=window._lastGridCls||[];
   const ev=availEvents.find(e=>e.name===evName);
   const days=getEventDays(ev,cls);
   renderGridWithDays(cls,days);
+}
+
+function syncAdminGridEv(){
+  const evName=document.getElementById('acf-ev')?.value||'';
+  const btn=document.getElementById('admin-grid-btn');
+  const wrap=document.getElementById('admin-grid-wrap');
+  if(btn)btn.style.display=evName?'':'none';
+  if(!evName&&wrap&&wrap.style.display!=='none'){
+    wrap.style.display='none';
+    if(btn)btn.innerHTML='<i class="ti ti-layout-grid"></i> Grid view';
+  }
+  if(evName&&wrap&&wrap.style.display!=='none')loadAdminGrid();
+}
+
+async function loadAdminGrid(){
+  const evName=document.getElementById('acf-ev')?.value||'';
+  if(!evName)return;
+  const res=await api({action:'adminGetGrid',token:adminToken,event:evName});
+  if(!res.ok)return;
+  const cls=res.approved||[];
+  window._lastGridCls=cls;
+  const ev=availEvents.find(e=>e.name===evName);
+  const days=getEventDays(ev,cls);
+  renderGridWithDays(cls,days);
+}
+
+function focusAdminClass(id){
+  const c=allClasses.find(x=>String(x.id)===String(id));
+  if(!c)return;
+  // Switch to list view
+  const wrap=document.getElementById('admin-grid-wrap');
+  const btn=document.getElementById('admin-grid-btn');
+  if(wrap&&wrap.style.display!=='none'){
+    wrap.style.display='none';
+    if(btn)btn.innerHTML='<i class="ti ti-layout-grid"></i> Grid view';
+  }
+  // Filter the list to this class
+  const q=document.getElementById('acf-q');
+  if(q){q.value=c.title;renderPending();renderApproved();}
+  // Scroll to first result
+  setTimeout(()=>{
+    const el=document.querySelector('.approved-row');
+    if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  },50);
+}
+
+function toggleAdminGrid(){
+  const wrap=document.getElementById('admin-grid-wrap');
+  const btn=document.getElementById('admin-grid-btn');
+  const showing=wrap&&wrap.style.display!=='none';
+  if(showing){
+    wrap.style.display='none';
+    btn.innerHTML='<i class="ti ti-layout-grid"></i> Grid view';
+  } else {
+    wrap.style.display='block';
+    btn.innerHTML='<i class="ti ti-menu-2"></i> List view';
+    loadAdminGrid();
+  }
 }
 
 function getEventDays(ev,cls){
@@ -1790,7 +1846,7 @@ function getEventDays(ev,cls){
 }
 
 function renderGridWithDays(cls,days){
-  const wrap=document.getElementById('grid-view');
+  const wrap=document.getElementById('admin-grid-wrap')||document.getElementById('grid-view');
   // Remove any old day-tabs before the legend
   const oldTabs=wrap.querySelector('.day-tabs');if(oldTabs)oldTabs.remove();
   if(days.length<=1){
@@ -1823,8 +1879,9 @@ function renderGridWithDays(cls,days){
 
 function renderGrid(cls,filterDate){
   const times=['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00'];
-  const showCatCancelled=document.getElementById('cat-show-cancelled')?.checked!==false;
-  const dayCls=(filterDate?cls.filter(c=>c.date===filterDate):cls).filter(c=>showCatCancelled||!c.cancelled);
+  const showAdminCancelled=document.getElementById('admin-show-cancelled')?.checked!==false;
+  const hideAdminFull=document.getElementById('admin-hide-full')?.checked;
+  const dayCls=(filterDate?cls.filter(c=>c.date===filterDate):cls).filter(c=>(showAdminCancelled||!c.cancelled)&&(!hideAdminFull||!isFull(c)));
   const rooms=[...new Set(dayCls.map(c=>c.room||'Unassigned').filter(Boolean))].sort();
   const tbl=document.getElementById('grid-table');
   if(!rooms.length){tbl.innerHTML='<tr><td style="padding:1rem;font-family:sans-serif;color:var(--text2)">No approved classes with rooms assigned yet'+(filterDate?' for '+fD(filterDate):'')+'. </td></tr>';return;}
@@ -1842,7 +1899,7 @@ function renderGrid(cls,filterDate){
       const sl=dayCls.filter(c=>(c.room||'Unassigned')===r&&String(c.time).slice(0,5)===t);
       h+='<td>';
       sl.forEach(c=>{const{tc,th}=cfl(c);const k=(tc&&th)?'cb':th?'ch':tc?'ct':'';const du=Number(c.duration)||60;
-        h+='<div class="gc '+k+'" title="'+c.title+' \u2014 '+c.teacher+' ('+du+'min)'+(tc?' topic overlap':'')+(th?' double-booked':'')+'">'
+        h+='<div class="gc '+k+'" style="cursor:pointer" onclick="focusAdminClass(\''+c.id+'\')" title="'+c.title+' \u2014 '+c.teacher+' ('+du+'min)'+(tc?' topic overlap':'')+(th?' double-booked':'')+'">'
           +'<strong>'+c.title.slice(0,26)+(c.title.length>26?'\u2026':'')+'</strong><br>'
           +c.teacher+(du!==60?' ('+du+'m)':'')+'</div>';});
       h+='</td>';
@@ -2200,7 +2257,7 @@ async function createEvent(){
   document.getElementById('lg-result').style.display='none';
   toggleCreateEvent();
   // Add to all dropdowns
-  ['fe','grid-ev','fc-ev','ev-picker','acf-ev','rq-event','rq-filter-ev','req-admin-filter'].forEach(sid=>{
+  ['fe','fc-ev','ev-picker','acf-ev','rq-event','rq-filter-ev','req-admin-filter'].forEach(sid=>{
     const s=document.getElementById(sid);if(!s)return;
     const o=document.createElement('option');o.value=name;o.textContent=name;s.appendChild(o);
   });
