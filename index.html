@@ -61,8 +61,8 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .logistics-pill.fee{background:var(--gold-light);color:var(--accent);border-color:var(--gold-mid);font-weight:600}
 .logistics-pill.free{background:var(--green-bg);color:var(--green-text);border-color:var(--green-border)}
 .card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--border)}
-.enroll-btn{font-size:12.5px;padding:6px 15px;border-radius:var(--radius);border:1px solid var(--border2);cursor:pointer;background:var(--bg2);color:var(--text);font-family:sans-serif;transition:all .15s;white-space:nowrap;font-weight:500}
-.enroll-btn:hover{background:var(--bg3)}
+.enroll-btn{font-size:12.5px;padding:6px 15px;border-radius:var(--radius);border:1px solid var(--accent);cursor:pointer;background:var(--accent);color:#fff;font-family:sans-serif;transition:all .15s;white-space:nowrap;font-weight:600}
+.enroll-btn:hover{background:var(--accent-mid);border-color:var(--accent-mid)}
 .enroll-btn.enrolled{background:var(--accent-light);color:var(--accent);border-color:var(--accent-mid);font-weight:600}
 .enroll-btn.waitlist-btn{background:var(--gold-light);color:var(--accent-mid);border-color:var(--gold-mid)}
 .enroll-btn.waitlisted{background:var(--gold-light);color:var(--accent-mid);border-color:var(--gold-mid);font-weight:600}
@@ -103,9 +103,9 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .print-btn:hover{background:var(--bg3)}
 .empty-sched{text-align:center;padding:3rem 1rem;color:var(--text2);font-family:sans-serif;font-size:14px;line-height:1.8}
 .sched-item{display:grid;grid-template-columns:90px 1fr auto;gap:12px;align-items:start;padding:1rem 1.1rem;border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:10px;background:var(--bg);box-shadow:var(--shadow)}
-.sched-item-zoom{border-left:4px solid var(--accent-mid);background:var(--accent-light)}
-.sched-zoom-btn{display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 16px;border-radius:var(--radius);background:var(--accent);color:#fff;font-size:13px;font-family:sans-serif;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:background .15s}
-.sched-zoom-btn:hover{background:var(--accent-mid)}
+.sched-item-zoom{border-left:4px solid var(--accent-mid);background:var(--accent-light)}.sched-item-past{opacity:.45;filter:grayscale(.4)}
+.sched-zoom-btn{display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 16px;border-radius:var(--radius);background:var(--bg2);color:var(--text2);font-size:13px;font-family:sans-serif;font-weight:500;text-decoration:none;border:1px solid var(--border2);cursor:pointer;transition:all .15s}
+.sched-zoom-btn:hover{background:var(--bg3);color:var(--text);border-color:var(--border2)}
 .sched-time{font-size:13px;color:var(--accent-mid);font-family:sans-serif;font-weight:600;padding-top:2px}
 .sched-title{font-size:14px;font-weight:600;font-family:Georgia,serif;margin-bottom:3px}
 .sched-meta{font-size:12px;color:var(--text2);font-family:sans-serif}
@@ -299,12 +299,14 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         <select class="filter-select" onchange="rC()" id="ff"><option value="">All formats</option><option value="zoom">Online</option><option value="in-person">In person</option></select>
         <select class="filter-select" onchange="rC()" id="ft"><option value="">All topics</option></select>
         <select class="filter-select" onchange="rC()" id="fe"><option value="">All events</option></select>
+        <select class="filter-select" onchange="rC()" id="fmy" style="display:none"><option value="">All classes</option><option value="mine">My events only</option></select>
         <select class="filter-select" onchange="rC()" id="fs"><option value="date">Sort: Date</option><option value="title">Sort: Title</option></select>
       </div>
       <div class="class-grid" id="cg"></div>
     </div>
     <div id="panel-schedule" class="panel">
       <div class="schedule-header"><div class="sched-title-h">My Schedule</div><button class="print-btn" onclick="window.print()"><i class="ti ti-printer"></i> Print</button></div>
+      <div id="sched-events" style="display:none;margin-bottom:1.5rem"></div>
       <div id="sched-lookup" style="max-width:480px;margin-bottom:1.5rem">
         <div class="modal-note mn-info" style="margin-bottom:10px"><i class="ti ti-info"></i> Enter the email address you used when registering for classes.</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -466,13 +468,19 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
           <div id="create-ev-wrap" style="display:none;margin-bottom:1.25rem">
             <div class="link-gen">
               <div class="link-gen-title"><i class="ti ti-plus"></i> Create new event</div>
-              <div class="lg-row">
-                <input class="lg-input" id="lg-name" type="text" placeholder="Event name, e.g. Great Western War">
-                <input class="lg-input" id="lg-start" type="date" style="max-width:150px" title="Start date">
-                <span style="font-size:12px;font-family:sans-serif;color:var(--text2);white-space:nowrap;align-self:center">to</span>
-                <input class="lg-input" id="lg-end" type="date" style="max-width:150px" title="End date (same as start for single-day)">
-                <input class="lg-input" id="lg-rooms" type="number" min="1" max="50" style="max-width:80px" placeholder="# rooms" title="Number of classrooms">
-                <button class="lg-btn" onclick="createEvent()"><i class="ti ti-plus"></i> Create</button>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div class="lg-row">
+                  <input class="lg-input" id="lg-name" type="text" placeholder="Event name, e.g. Great Western War" style="flex:2">
+                  <input class="lg-input" id="lg-start" type="date" style="max-width:150px" title="Start date">
+                  <span style="font-size:12px;font-family:sans-serif;color:var(--text2);white-space:nowrap;align-self:center">to</span>
+                  <input class="lg-input" id="lg-end" type="date" style="max-width:150px" title="End date (same as start for single-day)">
+                  <input class="lg-input" id="lg-rooms" type="number" min="1" max="50" style="max-width:80px" placeholder="# rooms" title="Number of classrooms">
+                </div>
+                <div class="lg-row">
+                  <input class="lg-input" id="lg-address" type="text" placeholder="Venue address (optional)" style="flex:2">
+                  <input class="lg-input" id="lg-url" type="url" placeholder="Link to full event info (optional)" style="flex:2">
+                  <button class="lg-btn" onclick="createEvent()"><i class="ti ti-plus"></i> Create</button>
+                </div>
               </div>
               <div class="lg-result" id="lg-result" style="display:none"></div>
             </div>
@@ -480,6 +488,32 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 
           <!-- Per-event panel (shown after selecting an event) -->
           <div id="ev-panel" style="display:none">
+            <div class="admin-section-title"><i class="ti ti-calendar-event"></i> Event details</div>
+            <div class="link-gen" style="margin-bottom:1rem">
+              <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap">
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  <label class="form-label" style="font-size:11px">Start date</label>
+                  <input class="lg-input" id="ev-start-date" type="date" style="max-width:160px">
+                </div>
+                <span style="font-size:12px;font-family:sans-serif;color:var(--text2);padding-bottom:8px">to</span>
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  <label class="form-label" style="font-size:11px">End date</label>
+                  <input class="lg-input" id="ev-end-date" type="date" style="max-width:160px">
+                </div>
+                <button class="lg-btn" onclick="saveEventDates()" style="margin-bottom:1px">Save</button>
+                <span id="ev-date-saved" style="font-size:12px;font-family:sans-serif;color:var(--green-text);display:none;padding-bottom:8px"><i class="ti ti-check"></i> Saved</span>
+              </div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+                <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:200px">
+                  <label class="form-label" style="font-size:11px">Venue address</label>
+                  <input class="lg-input" id="ev-address" type="text" placeholder="e.g. 123 Main St, Temecula CA" style="width:100%">
+                </div>
+                <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:200px">
+                  <label class="form-label" style="font-size:11px">Event info link</label>
+                  <input class="lg-input" id="ev-url" type="url" placeholder="https://… link to full event description" style="width:100%">
+                </div>
+              </div>
+            </div>
             <div class="admin-section-title"><i class="ti ti-link"></i> Share links</div>
             <div class="link-gen">
               <div style="display:flex;flex-direction:column;gap:8px">
@@ -665,7 +699,7 @@ const APPS_SCRIPT_URL='YOUR_APPS_SCRIPT_URL_HERE';
 const IS_DEMO=APPS_SCRIPT_URL==='YOUR_APPS_SCRIPT_URL_HERE';
 const lockedEvent=new URLSearchParams(window.location.search).get('event');
 const dC=SEED_CLASSES.map(c=>({...c}));
-const dP=[],dEv=[{name:'Collegium 2026',startDate:'2026-08-16',endDate:'2026-08-16',rooms:['Arts/History Rm 1','Fiber Arts','Cooking/Costuming','Grab Bag Rm 2','Grab Bag Rm 3','Field','Archery'],active:true},{name:'Great Western War 2026',startDate:'2026-11-05',endDate:'2026-11-08',rooms:['A&S Tent','List Field','Archery Range','Bardic Circle'],active:true}];
+const dP=[],dEv=[{name:'Collegium 2026',startDate:'2026-08-16',endDate:'2026-08-16',rooms:['Arts/History Rm 1','Fiber Arts','Cooking/Costuming','Grab Bag Rm 2','Grab Bag Rm 3','Field','Archery'],address:'Los Angeles County Fairplex, 1101 W McKinley Ave, Pomona CA 91768',url:'https://www.caid.sca.org/collegium',active:true},{name:'Great Western War 2026',startDate:'2026-11-05',endDate:'2026-11-08',rooms:['A&S Tent','List Field','Archery Range','Bardic Circle'],address:'Kern County Fairgrounds, 1142 South P St, Bakersfield CA 93307',url:'https://www.caid.sca.org/gww',active:true}];
 const dRegs={
   '1':[
     {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
@@ -848,7 +882,7 @@ function apiD(p){
     if(!c)return{ok:false,error:'Not found'};
     c.cancelled=true;return{ok:true};
   }
-  if(action==='adminCreateEvent'){if(!p.name)return{ok:false,error:'Name required'};const rooms=p.rooms?p.rooms.split(',').map(r=>r.trim()).filter(Boolean):[];dEv.push({name:p.name,startDate:p.startDate||'',endDate:p.endDate||p.startDate||'',rooms,active:true});return{ok:true};}
+  if(action==='adminCreateEvent'){if(!p.name)return{ok:false,error:'Name required'};const rooms=p.rooms?p.rooms.split(',').map(r=>r.trim()).filter(Boolean):[];dEv.push({name:p.name,startDate:p.startDate||'',endDate:p.endDate||p.startDate||'',rooms,address:p.address||'',url:p.url||'',active:true});return{ok:true};}
   if(action==='adminGetRoster'){
     const r=(dRegs[p.classId]||[]).map(x=>({scaName:x.scaName,email:x.email,barony:x.barony||'',hidden:x.hidden}));
     const w=(dWL[p.classId]||[]).map((x,i)=>({pos:i+1,scaName:x.scaName,email:x.email,barony:x.barony||'',hidden:x.hidden}));
@@ -910,10 +944,12 @@ function populateTopics(){
 function rC(){
   const q=(document.getElementById('si').value||'').toLowerCase();
   const fm=document.getElementById('ff').value,tp=document.getElementById('ft').value,ev=document.getElementById('fe').value,so=document.getElementById('fs').value;
+  const fmy=document.getElementById('fmy')?.value||'';
   let fl=allClasses.filter(c=>{
     if(fm&&c.format!==fm)return false;
     if(tp&&c.topic!==tp)return false;
     if(ev&&c.event!==ev)return false;
+    if(fmy==='mine'&&!myRegs[c.id])return false;
     if(q&&!c.title.toLowerCase().includes(q)&&!c.teacher.toLowerCase().includes(q)&&!c.desc.toLowerCase().includes(q))return false;
     return true;
   });
@@ -946,6 +982,7 @@ function rC(){
       +'</div>'+(c.prereqs?'<div style="font-size:11px;color:var(--accent);font-family:sans-serif;margin-bottom:6px"><i class="ti ti-info"></i> Prereq: '+c.prereqs+'</div>':'')
       +'<div class="card-desc">'+c.desc+'</div>'+cancelledBanner+'<div class="card-logistics">'+fp+bp+'</div>'
       +(c.zoomLink&&reg?'<a class="sched-zoom-btn" href="'+c.zoomLink+'" target="_blank" style="margin-bottom:8px"><i class="ti ti-video"></i> Join online</a>':'')
+      +(c.format!=='zoom'&&c.event?(()=>{const evObj=availEvents.find(e=>e.name===c.event);return evObj&&evObj.url?'<a class="sched-zoom-btn" href="'+evObj.url+'" target="_blank" style="margin-bottom:8px"><i class="ti ti-info-circle"></i> Event details</a>':''})():'') 
       +'<div class="card-footer"><button class="'+bc+'" onclick="'+(cancelled?'':'handleEnroll(\''+c.id+'\')')+'" '+(cancelled?'disabled style="opacity:.5;cursor:not-allowed"':'')+'>'+bt+'</button>'+sp+'</div>'+ro+'</div>';
   }).join('');
 }
@@ -1058,12 +1095,44 @@ async function lookupSchedule(){
 function renderSchedule(){
   const mc=allClasses.filter(c=>myRegs[c.id]);
   const l=document.getElementById('sl');
+  // Build event info block
+  const evDiv=document.getElementById('sched-events');
+  const myEvents=[...new Set(mc.map(c=>c.event).filter(Boolean))];
+  if(myEvents.length){
+    evDiv.style.display='block';
+    evDiv.innerHTML=myEvents.map(evName=>{
+      const evObj=availEvents.find(e=>e.name===evName);
+      if(!evObj)return'';
+      const dateStr=evObj.startDate?(evObj.endDate&&evObj.endDate!==evObj.startDate?fD(evObj.startDate)+' – '+fD(evObj.endDate):fD(evObj.startDate)):'';
+      return'<div class="modal-note mn-info" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:8px">'
+        +'<div><strong>'+escH(evName)+'</strong>'+(dateStr?' · <span style="font-weight:400">'+dateStr+'</span>':'')
+        +(evObj.address?' <span style="font-size:12px;opacity:.8">· '+escH(evObj.address)+'</span>':'')+'</div>'
+        +'<div style="display:flex;gap:8px;flex-wrap:wrap">'
+        +(evObj.address?'<a class="sched-zoom-btn" href="https://maps.google.com/?q='+encodeURIComponent(evObj.address)+'" target="_blank" style="font-size:12px;padding:5px 12px"><i class="ti ti-map-pin"></i> Directions</a>':'')
+        +(evObj.url?'<a class="sched-zoom-btn" href="'+escH(evObj.url)+'" target="_blank" style="font-size:12px;padding:5px 12px"><i class="ti ti-info-circle"></i> Event details</a>':'')
+        +'</div></div>';
+    }).join('');
+    // Show "my events" filter in catalog and populate it
+    const fmy=document.getElementById('fmy');
+    if(fmy){fmy.style.display='block';}
+  } else {
+    evDiv.style.display='none';
+  }
   if(!mc.length){
     if(!scheduleEmail)l.innerHTML='<div class="empty-sched"><i class="ti ti-mail" style="font-size:36px;display:block;margin:0 auto 10px;opacity:.25"></i>Enter your email address above to view your schedule.</div>';
     return;
   }
-  const s=[...mc].sort((a,b)=>(String(a.date)+String(a.time)).localeCompare(String(b.date)+String(b.time)));
-  l.innerHTML=s.map(c=>{
+  const today=new Date(); today.setHours(0,0,0,0);
+  function isPast(c){
+    if(!c.date)return false;
+    const d=new Date(c.date+'T'+(c.time||'00:00'));
+    if(c.duration){d.setMinutes(d.getMinutes()+Number(c.duration));}
+    return d<today;
+  }
+  const sortFn=(a,b)=>(String(a.date)+String(a.time)).localeCompare(String(b.date)+String(b.time));
+  const upcoming=[...mc].filter(c=>!isPast(c)).sort(sortFn);
+  const past=[...mc].filter(c=>isPast(c)).sort(sortFn);
+  function buildCard(c){
     const wl=isWL(c),pos=wlPos(c);
     const du=c.duration?' \u00b7 '+(c.duration>=60?Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h':c.duration+'min'):'';
     const isZoom=c.format==='zoom';
@@ -1080,7 +1149,29 @@ function renderSchedule(){
       +'</div>'
       +'<button class="remove-btn" onclick="'+(wl?'doLeaveWL':'doUnreg')+'(\''+c.id+'\')"><i class="ti ti-x"></i> '+(wl?'Leave list':'Cancel')+'</button>'
       +'</div>';
+  }
+  const upcomingHtml=upcoming.map(buildCard).join('');
+  const pastHtml=past.map(c=>{
+    const card=buildCard(c);
+    return card.replace('class="sched-item','class="sched-item sched-item-past');
   }).join('');
+  const pastToggle=past.length
+    ?'<button class="roster-toggle" id="past-toggle" onclick="togglePast()" style="margin-bottom:10px">'
+     +'<i class="ti ti-clock" style="font-size:12px"></i> Show '+past.length+' past class'+(past.length===1?'':'es')
+     +'</button>'
+     +'<div id="past-list" style="display:none">'+pastHtml+'</div>'
+    :'';
+  l.innerHTML=(upcomingHtml||'<div class="empty-sched" style="padding:1.5rem 0">No upcoming classes.</div>')+pastToggle;
+}
+function togglePast(){
+  const list=document.getElementById('past-list');
+  const btn=document.getElementById('past-toggle');
+  const open=list.style.display==='block';
+  list.style.display=open?'none':'block';
+  const count=list.querySelectorAll('.sched-item').length;
+  btn.innerHTML=(open
+    ?'<i class="ti ti-clock" style="font-size:12px"></i> Show '+count+' past class'+(count===1?'':'es')
+    :'<i class="ti ti-chevron-up" style="font-size:12px"></i> Hide past classes');
 }
 
 function initSubmit(){
@@ -1809,8 +1900,32 @@ function loadEventPanel(){
   const rEl=document.getElementById('req-link-result');
   rEl.dataset.url=reqUrl;
   rEl.innerHTML='<a href="'+reqUrl+'" target="_blank">'+reqUrl+'</a>';
+  // Populate date fields
+  const evObj = availEvents.find(e=>e.name===evName);
+  document.getElementById('ev-start-date').value = evObj&&evObj.startDate ? evObj.startDate : '';
+  document.getElementById('ev-end-date').value = evObj&&evObj.endDate ? evObj.endDate : '';
+  document.getElementById('ev-address').value = evObj&&evObj.address ? evObj.address : '';
+  document.getElementById('ev-url').value = evObj&&evObj.url ? evObj.url : '';
+  document.getElementById('ev-date-saved').style.display='none';
   // Load room editor
   renderRoomList(evName);
+}
+
+function saveEventDates(){
+  const evName = document.getElementById('ev-picker').value;
+  if(!evName) return;
+  const evObj = availEvents.find(e=>e.name===evName);
+  if(!evObj) return;
+  const start = document.getElementById('ev-start-date').value;
+  const end = document.getElementById('ev-end-date').value || start;
+  if(end && start && end < start){alert('End date cannot be before start date.');return;}
+  evObj.startDate = start;
+  evObj.endDate = end;
+  evObj.address = document.getElementById('ev-address').value.trim();
+  evObj.url = document.getElementById('ev-url').value.trim();
+  const saved = document.getElementById('ev-date-saved');
+  saved.style.display='inline';
+  setTimeout(()=>saved.style.display='none', 2500);
 }
 
 async function createEvent(){
@@ -1821,10 +1936,12 @@ async function createEvent(){
   if(!name){alert('Event name is required.');return;}
   if(startDate&&endDate&&endDate<startDate){alert('End date cannot be before start date.');return;}
   const rooms=roomCount>0?Array.from({length:roomCount},(_,i)=>'Room '+(i+1)):[];
-  const res=await api({action:'adminCreateEvent',token:adminToken,name,startDate,endDate,rooms:rooms.join(',')});
+  const address=document.getElementById('lg-address').value.trim();
+  const url=document.getElementById('lg-url').value.trim();
+  const res=await api({action:'adminCreateEvent',token:adminToken,name,startDate,endDate,rooms:rooms.join(','),address,url});
   if(!res.ok){alert(res.error||'Failed to create event.');return;}
   // Clear and close create form
-  document.getElementById('lg-name').value='';document.getElementById('lg-start').value='';document.getElementById('lg-end').value='';document.getElementById('lg-rooms').value='';
+  document.getElementById('lg-name').value='';document.getElementById('lg-start').value='';document.getElementById('lg-end').value='';document.getElementById('lg-rooms').value='';document.getElementById('lg-address').value='';document.getElementById('lg-url').value='';
   document.getElementById('lg-result').style.display='none';
   toggleCreateEvent();
   // Add to all dropdowns
