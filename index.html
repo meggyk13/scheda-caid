@@ -137,10 +137,19 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .label-error{color:var(--red-text)!important;}
 
 /* ── Admin tabs ── */
-.admin-tabs{display:flex;gap:6px;margin-bottom:1.5rem;border-bottom:2px solid var(--border2);padding-bottom:0}
-.admin-tab{background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;padding:8px 16px;font-size:13px;font-family:sans-serif;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:6px;transition:color .15s,border-color .15s}
-.admin-tab:hover{color:var(--text)}
-.admin-tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.admin-layout{display:flex;gap:0;align-items:flex-start}
+.admin-tabs{display:flex;flex-direction:column;gap:2px;min-width:130px;padding:4px;border-right:2px solid var(--border2);margin-right:1.5rem;flex-shrink:0}
+.admin-tab{background:none;border:none;border-right:2px solid transparent;margin-right:-2px;padding:9px 14px;font-size:13px;font-family:sans-serif;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:7px;transition:color .15s,background .15s,border-color .15s;white-space:nowrap;border-radius:var(--radius) 0 0 var(--radius);text-align:left;width:100%}
+.admin-tab:hover{color:var(--text);background:var(--bg2)}
+.admin-tab.active{color:var(--accent);border-right-color:var(--accent);font-weight:600;background:var(--accent-light)}
+.admin-tab-content{flex:1;min-width:0}
+@media(max-width:640px){
+  .admin-layout{flex-direction:column}
+  .admin-tabs{flex-direction:row;flex-wrap:wrap;min-width:0;width:100%;border-right:none;border-bottom:2px solid var(--border2);margin-right:0;margin-bottom:1rem;padding:0 0 4px}
+  .admin-tab{border-right:none;border-bottom:2px solid transparent;margin-right:0;margin-bottom:-2px;border-radius:var(--radius) var(--radius) 0 0;padding:7px 10px;font-size:12px}
+  .admin-tab.active{border-right-color:transparent;border-bottom-color:var(--accent)}
+  .admin-tab-content{width:100%}
+}
 
 /* ── Admin ── */
 .admin-section-title{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;margin:1.25rem 0 10px;font-family:sans-serif;display:flex;align-items:center;gap:6px}
@@ -350,7 +359,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         <div class="form-full"><label class="form-label">Class title *</label><input class="form-input" id="fc-t" type="text" placeholder="e.g. Intro to tablet weaving"></div>
         <div class="form-grid">
           <div class="form-col"><label class="form-label">Topic</label>
-            <select class="form-select" id="fc-tp"><option>Fiber Arts</option><option>Costuming</option><option>Dance</option><option>History</option><option>Society Skills</option><option>Bardic Arts</option><option>Scribal Arts</option><option>Cooking &amp; Brewing</option><option>Combat</option><option>Archery</option><option>Heraldry</option><option>Crafts</option><option>Other</option></select>
+            <select class="form-select" id="fc-tp"></select>
           </div>
           <div class="form-col"><label class="form-label">Level / who is this for?</label><input class="form-input" id="fc-pr" type="text" placeholder="e.g. Beginners welcome, or No prereqs"></div>
         </div>
@@ -382,7 +391,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
           <div class="form-grid"><div class="form-col"><label class="form-label">How many times?</label><select class="form-select" id="fc-rp"><option value="once">Once</option><option value="twice">Twice</option><option value="three+">3+</option></select></div></div>
           <div class="form-full"><label class="form-label">Time preferences</label><textarea class="form-textarea" id="fc-tpref" style="min-height:60px" placeholder="e.g. Friday afternoon preferred, avoid Saturday evening"></textarea><span class="form-hint">Organizer assigns the final slot.</span></div>
         </div>
-        <div class="form-full"><label class="form-label">Anything else the admin should know?</label><textarea class="form-textarea" id="fc-no" style="min-height:60px" placeholder="Special requirements, equipment, scheduling notes, etc."></textarea></div>
+        <div class="form-full"><label class="form-label">Anything else the stewards should know?</label><textarea class="form-textarea" id="fc-no" style="min-height:60px" placeholder="Special requirements, equipment, scheduling notes, etc."></textarea></div>
         <div class="form-divider">Optional extras</div>
         <div class="form-full"><label class="form-label">Class thumbnail image URL</label><input class="form-input" id="fc-img" type="url" placeholder="https://… paste a link to a hosted image"><span class="form-hint">Paste a link from Google Photos, Imgur, or your own site. Displays at the top of your class card.</span></div>
         <div class="submit-row">
@@ -410,8 +419,15 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
       <div class="req-form-wrap" id="req-form-wrap">
         <div class="req-form-title">Request a class</div>
         <div class="req-form-sub">Your request helps organizers recruit the right teachers. No login needed.</div>
+        <div class="form-full">
+          <label class="form-label">What do you want to learn? *</label>
+          <input class="form-input" id="rq-topic" type="text" placeholder="e.g. Natural dyeing with woad and madder">
+        </div>
         <div class="form-grid">
-          <div class="form-col"><label class="form-label">Topic / what you want to learn *</label><input class="form-input" id="rq-topic" type="text" placeholder="e.g. Medieval dyeing techniques"></div>
+          <div class="form-col">
+            <label class="form-label">Closest topic <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional — helps with filtering)</span></label>
+            <select class="form-select" id="rq-topic-sel"></select>
+          </div>
           <div class="form-col"><label class="form-label">Event (optional)</label>
             <select class="form-select" id="rq-event"><option value="">General (not event-specific)</option></select>
           </div>
@@ -448,11 +464,15 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 
       <!-- Filters -->
       <div class="req-filters">
+        <input class="search-input" type="text" id="rq-search" placeholder="Search requests…" oninput="renderRequests()" style="flex:1;min-width:180px">
         <select class="filter-select" id="rq-filter-ev" onchange="renderRequests()"><option value="">All events</option><option value="__general__">General only</option></select>
+        <select class="filter-select" id="rq-filter-topic" onchange="renderRequests()"><option value="">All topics</option></select>
         <select class="filter-select" id="rq-filter-level" onchange="renderRequests()"><option value="">All levels</option><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
         <div class="req-sort"><span>Sort:</span>
           <select id="rq-sort" onchange="renderRequests()"><option value="hearts">Most ♥</option><option value="newest">Newest</option></select>
         </div>
+        <button id="rq-clear-btn" onclick="clearReqFilters()" style="display:none;padding:7px 14px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap"><i class="ti ti-x"></i> Clear filters</button>
+      </div>
       </div>
 
       <div class="req-grid" id="req-grid"></div>
@@ -467,21 +487,26 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         </div>
       </div>
       <div id="admin-panel" style="display:none">
-        <!-- Admin sub-tabs -->
+        <div class="admin-layout">
+        <!-- Admin sidebar tabs -->
         <div class="admin-tabs">
-          <button class="admin-tab active" id="atab-events" onclick="showAdminTab('events')"><i class="ti ti-calendar-event"></i> Events</button>
+          <button class="admin-tab" id="atab-events" onclick="showAdminTab('events')"><i class="ti ti-calendar-event"></i> Events</button>
           <button class="admin-tab" id="atab-classes" onclick="showAdminTab('classes')"><i class="ti ti-book"></i> Classes</button>
-          <button class="admin-tab" id="atab-requests" onclick="showAdminTab('requests')"><i class="ti ti-heart"></i> Class Requests</button>
+          <button class="admin-tab" id="atab-requests" onclick="showAdminTab('requests')"><i class="ti ti-heart"></i> Requests</button>
+          <button class="admin-tab" id="atab-topics" onclick="showAdminTab('topics')"><i class="ti ti-tag"></i> Topics</button>
         </div>
+        <div class="admin-tab-content">
+          <div id="admin-tab-empty" style="color:var(--text2);font-size:13px;font-family:sans-serif;padding:.5rem 0">Select a section from the menu to get started.</div>
 
         <!-- EVENTS TAB -->
-        <div id="admin-tab-events">
+        <div id="admin-tab-events" style="display:none">
 
-          <!-- Event picker -->
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:1.25rem">
+          <!-- Event picker row (hidden while creating) -->
+          <div id="ev-picker-row-admin" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:1.25rem">
             <select class="filter-select" id="ev-picker" onchange="loadEventPanel()" style="flex:1;min-width:200px;font-size:13px;padding:9px 12px">
               <option value="">— select an event to manage —</option>
             </select>
+            <button class="print-btn" id="ev-clear-btn" onclick="clearEvSelection()" style="display:none;white-space:nowrap"><i class="ti ti-x"></i> Clear selection</button>
             <button class="lg-btn" onclick="toggleCreateEvent()" id="create-ev-btn" style="white-space:nowrap"><i class="ti ti-plus"></i> Create new event</button>
           </div>
 
@@ -489,20 +514,52 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
           <div id="create-ev-wrap" style="display:none;margin-bottom:1.25rem">
             <div class="link-gen">
               <div class="link-gen-title"><i class="ti ti-plus"></i> Create new event</div>
-              <div style="display:flex;flex-direction:column;gap:10px">
-                <div class="lg-row">
-                  <input class="lg-input" id="lg-name" type="text" placeholder="Event name, e.g. Great Western War" style="flex:2">
-                  <input class="lg-input" id="lg-start" type="date" style="max-width:140px" title="Start date">
-                  <input class="lg-input" id="lg-start-time" type="time" step="900" style="max-width:110px" title="Start time">
-                  <span style="font-size:12px;font-family:sans-serif;color:var(--text2);white-space:nowrap;align-self:center">to</span>
-                  <input class="lg-input" id="lg-end" type="date" style="max-width:140px" title="End date (same as start for single-day)">
-                  <input class="lg-input" id="lg-end-time" type="time" step="900" style="max-width:110px" title="End time">
-                  <input class="lg-input" id="lg-rooms" type="number" min="1" max="50" style="max-width:80px" placeholder="# rooms" title="Number of classrooms">
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <!-- Row 1: Name -->
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  <label class="form-label" style="font-size:11px">Event name *</label>
+                  <input class="lg-input" id="lg-name" type="text" placeholder="e.g. Great Western War 2027" style="width:100%">
                 </div>
-                <div class="lg-row">
-                  <input class="lg-input" id="lg-address" type="text" placeholder="Venue address (optional)" style="flex:2">
-                  <input class="lg-input" id="lg-url" type="url" placeholder="Link to full event info (optional)" style="flex:2">
-                  <button class="lg-btn" onclick="createEvent()"><i class="ti ti-plus"></i> Create</button>
+                <!-- Row 2: Dates and times -->
+                <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap">
+                  <div style="display:flex;flex-direction:column;gap:4px">
+                    <label class="form-label" style="font-size:11px">Start date *</label>
+                    <input class="lg-input" id="lg-start" type="date" style="max-width:150px">
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:4px">
+                    <label class="form-label" style="font-size:11px">Start time (optional)</label>
+                    <input class="lg-input" id="lg-start-time" type="time" step="900" style="max-width:120px">
+                  </div>
+                  <span style="font-size:12px;font-family:sans-serif;color:var(--text2);white-space:nowrap;align-self:flex-end;padding-bottom:9px">to</span>
+                  <div style="display:flex;flex-direction:column;gap:4px">
+                    <label class="form-label" style="font-size:11px">End date (same if one day)</label>
+                    <input class="lg-input" id="lg-end" type="date" style="max-width:150px">
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:4px">
+                    <label class="form-label" style="font-size:11px">End time (optional)</label>
+                    <input class="lg-input" id="lg-end-time" type="time" step="900" style="max-width:120px">
+                  </div>
+                </div>
+                <!-- Row 3: Rooms -->
+                <div style="display:flex;flex-direction:column;gap:4px;max-width:160px">
+                  <label class="form-label" style="font-size:11px">Number of rooms</label>
+                  <input class="lg-input" id="lg-rooms" type="number" min="1" max="50" placeholder="e.g. 4">
+                  <span style="font-size:11px;font-family:sans-serif;color:var(--text2);font-style:italic">Generates Room 1, Room 2… You can rename them after.</span>
+                </div>
+                <!-- Row 4: Address and URL -->
+                <div style="display:flex;gap:10px;flex-wrap:wrap">
+                  <div style="display:flex;flex-direction:column;gap:4px;flex:2;min-width:200px">
+                    <label class="form-label" style="font-size:11px">Venue address (optional)</label>
+                    <input class="lg-input" id="lg-address" type="text" placeholder="e.g. Kern County Fairgrounds, Bakersfield CA">
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:4px;flex:2;min-width:200px">
+                    <label class="form-label" style="font-size:11px">Event info link (optional)</label>
+                    <input class="lg-input" id="lg-url" type="url" placeholder="https://… link to full event page">
+                  </div>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <button class="lg-btn" onclick="createEvent()"><i class="ti ti-plus"></i> Create event</button>
+                  <button class="modal-cancel" onclick="toggleCreateEvent()" style="font-size:13px">Cancel</button>
                 </div>
               </div>
               <div class="lg-result" id="lg-result" style="display:none"></div>
@@ -511,9 +568,26 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 
           <!-- Per-event panel (shown after selecting an event) -->
           <div id="ev-panel" style="display:none">
+
+            <!-- 1. Published toggle — TOP -->
+            <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;margin-bottom:1rem;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-lg)">
+              <label class="cb-row" style="margin-bottom:0;font-size:14px;font-weight:600;font-family:Georgia,serif"><input type="checkbox" id="ev-published" onchange="saveEventPublished()"> Classes publicly visible</label>
+              <span id="ev-published-note" style="font-size:12px;font-family:sans-serif;color:var(--text2)"></span>
+            </div>
+
+            <!-- 2. Event details (name + dates + address + url) -->
             <div class="admin-section-title"><i class="ti ti-calendar-event"></i> Event details</div>
             <div class="link-gen" style="margin-bottom:1rem">
               <div style="display:flex;flex-direction:column;gap:10px">
+                <!-- Editable event name -->
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  <label class="form-label" style="font-size:11px">Event name</label>
+                  <div style="display:flex;gap:8px;align-items:center">
+                    <input class="lg-input" id="ev-name" type="text" style="flex:1" placeholder="Event name">
+                    <button class="lg-btn" onclick="saveEventName()" style="white-space:nowrap;font-size:12px;padding:6px 12px">Rename</button>
+                    <span id="ev-name-saved" style="font-size:12px;font-family:sans-serif;color:var(--green-text);display:none"><i class="ti ti-check"></i> Saved</span>
+                  </div>
+                </div>
                 <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap">
                   <div style="display:flex;flex-direction:column;gap:4px">
                     <label class="form-label" style="font-size:11px">Start date</label>
@@ -533,7 +607,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
                   </div>
                   <div style="display:flex;flex-direction:column;gap:4px">
                     <label class="form-label" style="font-size:11px">Event info link</label>
-                    <input class="lg-input" id="ev-url" type="url" placeholder="https://… link to full event description" style="width:100%">
+                    <input class="lg-input" id="ev-url" type="url" placeholder="http://places.sca-caid.org/caid/" style="width:100%">
                   </div>
                 </div>
                 <div style="display:flex;gap:8px;align-items:center">
@@ -542,10 +616,15 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
                 </div>
               </div>
             </div>
-            <div style="display:flex;align-items:center;gap:12px;padding:10px 0;margin-bottom:4px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-              <label class="cb-row" style="margin-bottom:0;font-size:14px;font-weight:600;font-family:Georgia,serif"><input type="checkbox" id="ev-published" onchange="saveEventPublished()"> Classes publicly visible</label>
-              <span id="ev-published-note" style="font-size:12px;font-family:sans-serif;color:var(--text2)"></span>
+
+            <!-- 3. Rooms -->
+            <div class="admin-section-title"><i class="ti ti-door"></i> Rooms</div>
+            <div id="room-editor" style="margin-bottom:1.25rem">
+              <div id="room-list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px"></div>
+              <button class="approve-btn" onclick="addRoom()" style="font-size:12px"><i class="ti ti-plus"></i> Add room</button>
             </div>
+
+            <!-- 4. Share links — BOTTOM -->
             <div class="admin-section-title"><i class="ti ti-link"></i> Share links</div>
             <div class="link-gen">
               <div style="display:flex;flex-direction:column;gap:8px">
@@ -561,16 +640,10 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
                 </div>
               </div>
             </div>
-
-            <div class="admin-section-title"><i class="ti ti-door"></i> Rooms</div>
-            <div id="room-editor">
-              <div id="room-list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px"></div>
-              <button class="approve-btn" onclick="addRoom()" style="font-size:12px"><i class="ti ti-plus"></i> Add room</button>
-            </div>
           </div>
 
           <!-- Empty state -->
-          <div id="ev-empty" style="color:var(--text2);font-size:13px;font-family:sans-serif;padding:.5rem 0">Select an event above to manage its links and rooms, or create a new one.</div>
+          <div id="ev-empty" style="color:var(--text2);font-size:13px;font-family:sans-serif;padding:.5rem 0">Select an event above to manage it, or create a new one.</div>
 
         </div>
 
@@ -594,7 +667,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
           </div>
           <div class="filters" style="margin-bottom:1.25rem">
             <input class="search-input" type="text" id="acf-q" placeholder="Search title, teacher…" oninput="renderPending();renderApproved()">
-            <select class="filter-select" id="acf-tp" onchange="renderPending();renderApproved()"><option value="">All topics</option><option>Fiber Arts</option><option>Costuming</option><option>Dance</option><option>History</option><option>Society Skills</option><option>Bardic Arts</option><option>Scribal Arts</option><option>Cooking &amp; Brewing</option><option>Combat</option><option>Archery</option><option>Heraldry</option><option>Crafts</option><option>Other</option></select>
+            <select class="filter-select" id="acf-tp" onchange="renderPending();renderApproved()"><option value="">All topics</option></select>
             <select class="filter-select" id="acf-fm" onchange="renderPending();renderApproved()"><option value="">All formats</option><option value="in-person">In person</option><option value="zoom">Online</option></select>
             <select class="filter-select" id="acf-so" onchange="renderApproved()"><option value="date">Sort: Date</option><option value="title">Sort: A–Z Title</option><option value="teacher">Sort: Teacher</option><option value="regs">Sort: Most registered</option></select>
           </div>
@@ -613,6 +686,18 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
           <div class="admin-section-title"><i class="ti ti-list"></i> All requests</div>
           <div id="req-admin-list"></div>
         </div>
+
+        <!-- TOPICS TAB -->
+        <div id="admin-tab-topics" style="display:none">
+          <div style="font-size:13px;color:var(--text2);font-family:sans-serif;margin-bottom:1rem;line-height:1.6">Topics appear in the class catalog filters, submission form, and class request form. Hidden topics are excluded from public-facing dropdowns but kept for existing classes.</div>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:1rem">
+            <input class="search-input" type="text" id="new-topic-input" placeholder="New topic name…" style="flex:1;max-width:280px" onkeydown="if(event.key==='Enter')addTopic()">
+            <button class="approve-btn" onclick="addTopic()" style="font-size:12px;white-space:nowrap"><i class="ti ti-plus"></i> Add topic</button>
+          </div>
+          <div id="topics-list" style="display:flex;flex-direction:column;gap:6px"></div>
+        </div>
+        </div><!-- /admin-tab-content -->
+        </div><!-- /admin-layout -->
       </div>
     </div>
   </div>
@@ -675,7 +760,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
     </div>
     <div class="modal-grid">
       <div class="modal-field"><label class="modal-label">Topic</label>
-        <select class="modal-select" id="em-topic"><option>Fiber Arts</option><option>Costuming</option><option>Dance</option><option>History</option><option>Society Skills</option><option>Bardic Arts</option><option>Scribal Arts</option><option>Cooking &amp; Brewing</option><option>Combat</option><option>Archery</option><option>Heraldry</option><option>Crafts</option><option>Other</option></select>
+        <select class="modal-select" id="em-topic"></select>
       </div>
       <div class="modal-field"><label class="modal-label">Format</label>
         <select class="modal-select" id="em-format"><option value="in-person">In person</option><option value="zoom">Online</option></select>
@@ -929,14 +1014,14 @@ function apiD(p){
     if(!c)return{ok:false,error:'Not found'};
     c.cancelled=true;return{ok:true};
   }
-  if(action==='adminCreateEvent'){if(!p.name)return{ok:false,error:'Name required'};const rooms=p.rooms?p.rooms.split(',').map(r=>r.trim()).filter(Boolean):[];dEv.push({name:p.name,startDate:p.startDate||'',startTime:p.startTime||'',endDate:p.endDate||p.startDate||'',endTime:p.endTime||'',rooms,address:p.address||'',url:p.url||'',active:true,published:true});return{ok:true};}
+  if(action==='adminCreateEvent'){if(!p.name)return{ok:false,error:'Name required'};const rooms=p.rooms?p.rooms.split(',').map(r=>r.trim()).filter(Boolean):[];dEv.push({name:p.name,startDate:p.startDate||'',startTime:p.startTime||'',endDate:p.endDate||p.startDate||'',endTime:p.endTime||'',rooms,address:p.address||'',url:p.url||'',active:true,published:false});return{ok:true};}
   if(action==='adminGetRoster'){
     const r=(dRegs[p.classId]||[]).map(x=>({scaName:x.scaName,email:x.email,barony:x.barony||'',hidden:x.hidden}));
     const w=(dWL[p.classId]||[]).map((x,i)=>({pos:i+1,scaName:x.scaName,email:x.email,barony:x.barony||'',hidden:x.hidden}));
     return{ok:true,roster:r,waitlist:w};
   }
   if(action==='adminGetGrid')return{ok:true,approved:dC.filter(c=>!p.event||c.event===p.event),pending:dP.filter(c=>!p.event||c.event===p.event)};
-  if(action==='submitRequest'){const id='r'+(dReqPid++);allRequests.push({id,topic:p.topic,event:p.event||'',level:p.level||'',format:p.format||'',notes:p.notes||'',submitter:p.submitter||'',hearts:0,ts:Date.now()});return{ok:true,id};}
+  if(action==='submitRequest'){const id='r'+(dReqPid++);allRequests.push({id,topic:p.topic,topicTag:p.topicTag||'',event:p.event||'',level:p.level||'',format:p.format||'',notes:p.notes||'',submitter:p.submitter||'',hearts:0,ts:Date.now()});return{ok:true,id};}
   if(action==='heartRequest'){const r=allRequests.find(x=>String(x.id)===String(p.id));if(r)r.hearts=Math.max(0,r.hearts+(p.dir==='up'?1:-1));return{ok:true};}
   if(action==='getRequests')return{ok:true,requests:allRequests};
   if(action==='adminDeleteRequest'){const i=allRequests.findIndex(x=>String(x.id)===String(p.id));if(i>=0)allRequests.splice(i,1);return{ok:true};}
@@ -967,7 +1052,7 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode</div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated May 29, 2026 · 11:20 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){allClasses=res.classes;await loadEvFilter();populateTopics();rC();}
@@ -983,10 +1068,7 @@ async function loadEvFilter(){
   if(lockedEvent){s.value=lockedEvent;s.disabled=true;}
 }
 function populateTopics(){
-  const topics=[...new Set(allClasses.map(c=>c.topic).filter(Boolean))].sort();
-  const s=document.getElementById('ft');
-  s.innerHTML='<option value="">All topics</option>';
-  topics.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;s.appendChild(o);});
+  populateAllTopicSelects();
 }
 function rC(){
   const q=(document.getElementById('si').value||'').toLowerCase();
@@ -1034,7 +1116,7 @@ function rC(){
     const bp=c.bring?'<span class="logistics-pill"><i class="ti ti-backpack"></i> Bring: '+c.bring+'</span>':'';
     const roId='ro-'+c.id;
     const ro=c.roster&&c.roster.length?'<button class="roster-toggle" onclick="toggleR(&apos;'+roId+'&apos;)"><i class="ti ti-users" style="font-size:12px"></i> See who\'s registered ('+c.registrationCount+')</button><div class="roster-list" id="'+roId+'"><ul>'+c.roster.map(n=>'<li>'+n+'</li>').join('')+'</ul>'+(c.waitlistRoster&&c.waitlistRoster.length?'<div class="roster-wl-title">Waitlist</div><ul>'+c.waitlistRoster.map(w=>'<li>#'+w.pos+' '+w.name+'</li>').join('')+'</ul>':'')+'</div>':'';
-    const du=c.duration&&c.duration!==60?' · '+Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h':'';
+    const du='';
     const duPill=c.duration?'<span class="logistics-pill"><i class="ti ti-clock"></i> '+(c.duration<60?c.duration+'min':Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h')+'</span>':'';
     const thumb=c.imageUrl?'<img class="card-thumb" src="'+c.imageUrl+'" alt="" onerror="this.style.display=\'none\'">':'';
     const bioBtn=c.bio?'<button class="bio-btn" tabindex="0" aria-label="Teacher bio"><i class="ti ti-info-circle"></i><div class="bio-popover"><div class="bio-name">'+c.teacher+'</div>'+c.bio+'</div></button>':'';
@@ -1433,6 +1515,7 @@ function togglePast(){
 }
 
 function initSubmit(){
+  populateAllTopicSelects();
   const lock=lockedEvent;
   const banner=document.getElementById('ev-banner'),bannerTxt=document.getElementById('ev-banner-txt');
   const evSel=document.getElementById('fc-ev');
@@ -1917,11 +2000,14 @@ ${wl.length ? `<div class="section-head">Waitlist (${wl.length})</div>
   win.document.close();
 }
 function showAdminTab(tab){
-  ['events','classes','requests'].forEach(t=>{
+  ['events','classes','requests','topics'].forEach(t=>{
     document.getElementById('admin-tab-'+t).style.display=t===tab?'block':'none';
     document.getElementById('atab-'+t).classList.toggle('active',t===tab);
   });
+  const empty=document.getElementById('admin-tab-empty');
+  if(empty)empty.style.display='none';
   if(tab==='requests')renderAdminRequests();
+  if(tab==='topics'){renderTopicsList();populateAllTopicSelects();}
 }
 
 function cpL(ev,u){navigator.clipboard.writeText(u).then(()=>{const b=ev.target.closest('button');b.textContent='\u2713 Copied';setTimeout(()=>b.innerHTML='<i class="ti ti-copy"></i> Copy',2000);});}
@@ -2110,7 +2196,7 @@ function openEditClass(id){
   document.getElementById('em-bio').value=c.bio||'';
   document.getElementById('em-img').value=c.imageUrl||'';
   document.getElementById('em-zoom').value=c.zoomLink||'';
-  document.getElementById('em-topic').value=c.topic||'Fiber Arts';
+  populateTopicSelect('em-topic',false,true,c.topic||'Fiber Arts');
   document.getElementById('em-format').value=c.format||'in-person';
   document.getElementById('em-duration').value=String(c.duration||60);
   populateRoomDropdown('em-room-sel',c.event||'',c.room||'');
@@ -2158,14 +2244,98 @@ async function doCancelClass(id){
 
 // ── Requests data ──
 const dReqStore = [
-  {id:'r1', topic:'Medieval dyeing techniques', event:'', level:'Intermediate', format:'In person', notes:'Especially interested in woad and madder.', submitter:'Lady Áine ingen Briain', hearts:4, ts: Date.now()-8e6},
-  {id:'r2', topic:'Intro to 14th-century Italian cooking', event:'Collegium 2026', level:'Beginner', format:'', notes:'', submitter:'', hearts:7, ts: Date.now()-4e6},
-  {id:'r3', topic:'Court etiquette and ceremony', event:'Collegium 2026', level:'Beginner', format:'In person', notes:'Good for newcomers.', submitter:'Tomas de Burgos', hearts:3, ts: Date.now()-2e6},
-  {id:'r4', topic:'Period perfume and scent', event:'', level:'', format:'', notes:'', submitter:'', hearts:2, ts: Date.now()-1e7},
-  {id:'r5', topic:'Elizabethan embroidery patterns', event:'Collegium 2026', level:'Intermediate', format:'In person', notes:'Blackwork specifically if possible.', submitter:'Margot de la Forêt', hearts:5, ts: Date.now()-3e6},
+  {id:'r1', topic:'Natural dyeing with woad and madder', topicTag:'Fiber Arts', event:'', level:'Intermediate', format:'In person', notes:'Especially interested in period mordanting techniques.', submitter:'Lady Áine ingen Briain', hearts:4, ts: Date.now()-8e6},
+  {id:'r2', topic:'14th-century Italian cooking', topicTag:'Cooking & Brewing', event:'Collegium 2026', level:'Beginner', format:'', notes:'', submitter:'', hearts:7, ts: Date.now()-4e6},
+  {id:'r3', topic:'Court etiquette and ceremony for newcomers', topicTag:'Society Skills', event:'Collegium 2026', level:'Beginner', format:'In person', notes:'Good intro for people new to the SCA.', submitter:'Tomas de Burgos', hearts:3, ts: Date.now()-2e6},
+  {id:'r4', topic:'Period perfume and scent — ingredients and blending', topicTag:'Crafts', event:'', level:'', format:'', notes:'', submitter:'', hearts:2, ts: Date.now()-1e7},
+  {id:'r5', topic:'Elizabethan blackwork embroidery', topicTag:'Fiber Arts', event:'Collegium 2026', level:'Intermediate', format:'In person', notes:'Blackwork patterns specifically.', submitter:'Margot de la Forêt', hearts:5, ts: Date.now()-3e6},
 ];
 let allRequests = dReqStore.map(r=>({...r}));
 let dReqPid = 2000;
+
+// ── Managed topics ──
+let managedTopics = [
+  {name:'Fiber Arts',hidden:false},
+  {name:'Costuming',hidden:false},
+  {name:'Dance',hidden:false},
+  {name:'History',hidden:false},
+  {name:'Society Skills',hidden:false},
+  {name:'Bardic Arts',hidden:false},
+  {name:'Scribal Arts',hidden:false},
+  {name:'Cooking & Brewing',hidden:false},
+  {name:'Combat',hidden:false},
+  {name:'Archery',hidden:false},
+  {name:'Heraldry',hidden:false},
+  {name:'Crafts',hidden:false},
+  {name:'Other',hidden:false},
+];
+function getVisibleTopics(){return managedTopics.filter(t=>!t.hidden).map(t=>t.name);}
+function populateTopicSelect(selId, includeBlank, includeOther, currentVal){
+  const sel=document.getElementById(selId);if(!sel)return;
+  const visible=getVisibleTopics();
+  sel.innerHTML=(includeBlank?'<option value="">All topics</option>':'')
+    +visible.map(t=>'<option value="'+escH(t)+'"'+(t===currentVal?' selected':'')+'>'+escH(t)+'</option>').join('');
+  if(includeOther&&!visible.includes('Other'))sel.innerHTML+='<option value="Other">Other</option>';
+}
+function populateAllTopicSelects(){
+  // Submit form — no blank, topic always required
+  populateTopicSelect('fc-tp',false,true,document.getElementById('fc-tp')?.value);
+  // Admin classes filter — blank first
+  populateTopicSelect('acf-tp',true,false,document.getElementById('acf-tp')?.value);
+  // Edit modal — no blank, topic always required
+  populateTopicSelect('em-topic',false,true,document.getElementById('em-topic')?.value);
+  // Catalog filter (ft) — blank first
+  const ftSel=document.getElementById('ft');
+  if(ftSel){
+    const cur=ftSel.value;
+    ftSel.innerHTML='<option value="">All topics</option>'+getVisibleTopics().map(t=>'<option value="'+escH(t)+'"'+(t===cur?' selected':'')+'>'+escH(t)+'</option>').join('');
+  }
+  // Requests form closest-topic tag dropdown — blank + topics
+  const rqSel=document.getElementById('rq-topic-sel');
+  if(rqSel){
+    const cur=rqSel.value;
+    rqSel.innerHTML='<option value="">— Select closest topic —</option>'+getVisibleTopics().map(t=>'<option value="'+escH(t)+'"'+(t===cur?' selected':'')+'>'+escH(t)+'</option>').join('');
+  }
+  // Requests filter dropdown — blank first
+  const rqFilter=document.getElementById('rq-filter-topic');
+  if(rqFilter){
+    const cur=rqFilter.value;
+    rqFilter.innerHTML='<option value="">All topics</option>'+getVisibleTopics().map(t=>'<option value="'+escH(t)+'"'+(t===cur?' selected':'')+'>'+escH(t)+'</option>').join('');
+  }
+}
+function renderTopicsList(){
+  const el=document.getElementById('topics-list');if(!el)return;
+  if(!managedTopics.length){el.innerHTML='<div class="no-items">No topics yet.</div>';return;}
+  el.innerHTML=managedTopics.map((t,i)=>'<div style="display:flex;gap:8px;align-items:center;padding:6px 10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius)">'
+    +(t.hidden?'<span style="font-size:11px;font-family:sans-serif;color:var(--text2);font-style:italic;min-width:50px">(hidden)</span>':'<span style="min-width:50px"></span>')
+    +'<input class="modal-input" style="flex:1" value="'+escH(t.name)+'" onchange="renameTopic('+i+',this.value)">'
+    +'<button class="print-btn" style="font-size:11px;padding:4px 10px;white-space:nowrap" onclick="toggleTopicHidden('+i+')">'+(t.hidden?'<i class="ti ti-eye"></i> Show':'<i class="ti ti-eye-off"></i> Hide')+'</button>'
+    +'<button class="reject-btn" style="padding:4px 10px;font-size:11px;white-space:nowrap" onclick="deleteTopic('+i+')"><i class="ti ti-trash"></i></button>'
+    +'</div>'
+  ).join('');
+}
+function addTopic(){
+  const inp=document.getElementById('new-topic-input');
+  const name=inp.value.trim();if(!name)return;
+  if(managedTopics.some(t=>t.name.toLowerCase()===name.toLowerCase())){alert('That topic already exists.');return;}
+  managedTopics.push({name,hidden:false});
+  inp.value='';
+  renderTopicsList();populateAllTopicSelects();
+}
+function renameTopic(i,name){
+  name=name.trim();if(!name)return;
+  managedTopics[i].name=name;
+  populateAllTopicSelects();
+}
+function toggleTopicHidden(i){
+  managedTopics[i].hidden=!managedTopics[i].hidden;
+  renderTopicsList();populateAllTopicSelects();
+}
+function deleteTopic(i){
+  if(!confirm('Delete topic "'+managedTopics[i].name+'"? Existing classes keep their topic label.'))return;
+  managedTopics.splice(i,1);
+  renderTopicsList();populateAllTopicSelects();
+}
 
 // LocalStorage heart tracking
 function getHearted(){try{return JSON.parse(localStorage.getItem('kcr_hearts')||'[]');}catch{return[];}}
@@ -2189,6 +2359,8 @@ function initRequests(){
     const o1=document.createElement('option'); o1.value=ev.name; o1.textContent=ev.name; evSel.appendChild(o1);
     const o2=document.createElement('option'); o2.value=ev.name; o2.textContent=ev.name; filterSel.appendChild(o2);
   });
+  // Populate topic dropdowns
+  populateAllTopicSelects();
   // Pre-select from URL param and auto-open form
   if(reqEventParam){
     if(evSel.querySelector('option[value="'+CSS.escape(reqEventParam)+'"]')) evSel.value=reqEventParam;
@@ -2213,7 +2385,8 @@ function setHeartEmail(e){try{localStorage.setItem('kcr_heart_email',e);}catch{}
 
 async function submitRequest(){
   const topic = document.getElementById('rq-topic').value.trim();
-  if(!topic){alert('Please enter a topic.');return;}
+  if(!topic){alert('Please describe what you want to learn.');document.getElementById('rq-topic').focus();return;}
+  const topicTag = document.getElementById('rq-topic-sel').value;
   const name = document.getElementById('rq-name').value.trim();
   if(!name){alert('Please enter your SCA name.');document.getElementById('rq-name').focus();return;}
   const email = document.getElementById('rq-email').value.trim();
@@ -2224,6 +2397,7 @@ async function submitRequest(){
   const res = await api({
     action:'submitRequest',
     topic,
+    topicTag,
     event: document.getElementById('rq-event').value,
     level: [...document.querySelectorAll('.rq-level-cb:checked')].map(cb=>cb.value).join(','),
     format: document.getElementById('rq-format').value,
@@ -2237,7 +2411,9 @@ async function submitRequest(){
   if(!res.ok){alert(res.error||'Submission failed.');return;}
   setHeartEmail(email);
   document.getElementById('req-submit-ok').style.display='block';
-  ['rq-topic','rq-notes','rq-name','rq-barony','rq-email'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('rq-topic').value='';
+  document.getElementById('rq-topic-sel').value='';
+  ['rq-notes','rq-name','rq-barony','rq-email'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('rq-event').value='';
   document.getElementById('rq-hidden').checked=false;
   document.querySelectorAll('.rq-level-cb').forEach(cb=>cb.checked=false);
@@ -2262,15 +2438,29 @@ async function toggleHeart(id){
   renderRequests();
 }
 
+function clearReqFilters(){
+  document.getElementById('rq-search').value='';
+  document.getElementById('rq-filter-ev').value='';
+  document.getElementById('rq-filter-topic').value='';
+  document.getElementById('rq-filter-level').value='';
+  renderRequests();
+}
 function renderRequests(){
+  const q=(document.getElementById('rq-search')?.value||'').toLowerCase();
   const evF = document.getElementById('rq-filter-ev').value;
   const lvF = document.getElementById('rq-filter-level').value;
+  const tpF = document.getElementById('rq-filter-topic')?.value||'';
   const sort = document.getElementById('rq-sort').value;
+  const hasFilter=!!(q||evF||lvF||tpF);
+  const clearBtn=document.getElementById('rq-clear-btn');
+  if(clearBtn)clearBtn.style.display=hasFilter?'inline-block':'none';
   let list = allRequests.filter(r=>{
     if(r.hidden) return false;
     if(evF==='__general__' && r.event) return false;
     if(evF && evF!=='__general__' && r.event!==evF) return false;
     if(lvF && !r.level.split(',').includes(lvF)) return false;
+    if(tpF && r.topicTag!==tpF) return false;
+    if(q && !r.topic.toLowerCase().includes(q) && !(r.notes||'').toLowerCase().includes(q) && !(r.submitter||'').toLowerCase().includes(q)) return false;
     return true;
   });
   if(sort==='hearts') list=[...list].sort((a,b)=>b.hearts-a.hearts);
@@ -2286,11 +2476,13 @@ function renderRequests(){
     const evTag = r.event
       ? '<span class="req-event-tag">'+r.event+'</span>'
       : '<span class="req-event-tag general">General</span>';
+    const topicBadge = r.topicTag ? '<span style="font-size:11px;font-family:sans-serif;background:var(--bg2);color:var(--text2);border:1px solid var(--border2);border-radius:10px;padding:2px 8px;white-space:nowrap"><i class="ti ti-tag" style="font-size:10px"></i> '+escH(r.topicTag)+'</span>' : '';
     const levels = r.level ? r.level.split(',').map(v=>'<span><i class="ti ti-signal" style="font-size:11px"></i> '+v+'</span>').join('') : '';
-    const pills = [levels, r.format ? '<span><i class="ti ti-tag" style="font-size:11px"></i> '+r.format+'</span>' : ''].filter(Boolean).join('');
+    const pills = [levels, r.format ? '<span><i class="ti ti-'+(r.format==='Online / Zoom'?'video':'map-pin')+'" style="font-size:11px"></i> '+r.format+'</span>' : ''].filter(Boolean).join('');
     const ds = r.ts ? new Date(r.ts).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
     return '<div class="req-card">'
       +'<div class="req-card-top"><div class="req-topic">'+escH(r.topic)+'</div>'+evTag+'</div>'
+      +'<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:'+(pills?'4':'8')+'px">'+topicBadge+'</div>'
       +(pills?'<div class="req-meta">'+pills+'</div>':'')
       +(r.notes?'<div class="req-notes">'+escH(r.notes)+'</div>':'')
       +'<div class="req-footer">'
@@ -2317,15 +2509,21 @@ function renderAdminRequests(){
     return true;
   }).sort((a,b)=>b.hearts-a.hearts);
 
-  // Tally by topic
+  // Tally by top-level managed topic
   const tally={};
-  list.forEach(r=>{const k=r.topic;tally[k]=(tally[k]||0)+1+(r.hearts||0);});
+  managedTopics.forEach(t=>{if(!t.hidden)tally[t.name]=0;});
+  list.forEach(r=>{
+    const topicName=r.topicTag&&managedTopics.find(t=>t.name===r.topicTag)?r.topicTag:'Untagged';
+    if(!(topicName in tally))tally[topicName]=0;
+    tally[topicName]+=(1+(r.hearts||0));
+  });
+  const nonZero=Object.entries(tally).filter(([,v])=>v>0);
   const maxTally=Math.max(...Object.values(tally),1);
   const tallyEl=document.getElementById('req-tally');
-  if(!Object.keys(tally).length){tallyEl.innerHTML='<div class="no-items">No requests yet.</div>';}
+  if(!nonZero.length){tallyEl.innerHTML='<div class="no-items">No requests yet.</div>';}
   else{
     tallyEl.innerHTML='<div class="req-tally-bar">'
-      +Object.entries(tally).sort((a,b)=>b[1]-a[1]).map(([topic,score])=>
+      +nonZero.sort((a,b)=>b[1]-a[1]).map(([topic,score])=>
         '<div class="req-tally-row">'
         +'<div class="req-tally-label" title="'+escH(topic)+'">'+escH(topic)+'</div>'
         +'<div class="req-tally-track"><div class="req-tally-fill" style="width:'+Math.round(score/maxTally*100)+'%"></div></div>'
@@ -2373,18 +2571,31 @@ async function adminToggleHideRequest(id, currentlyHidden){
 
 function toggleCreateEvent(){
   const wrap=document.getElementById('create-ev-wrap');
+  const pickerRow=document.getElementById('ev-picker-row-admin');
   const open=wrap.style.display==='block';
   wrap.style.display=open?'none':'block';
+  // Hide the picker row while creating (can't do both at once)
+  if(pickerRow)pickerRow.style.display=open?'flex':'none';
   document.getElementById('create-ev-btn').innerHTML=open?'<i class="ti ti-plus"></i> Create new event':'<i class="ti ti-x"></i> Cancel';
   if(!open)setTimeout(()=>document.getElementById('lg-name').focus(),50);
+}
+
+function clearEvSelection(){
+  const picker=document.getElementById('ev-picker');
+  if(picker)picker.value='';
+  document.getElementById('ev-panel').style.display='none';
+  document.getElementById('ev-empty').style.display='block';
+  document.getElementById('ev-clear-btn').style.display='none';
 }
 
 function loadEventPanel(){
   const evName=document.getElementById('ev-picker').value;
   const panel=document.getElementById('ev-panel');
   const empty=document.getElementById('ev-empty');
-  if(!evName){panel.style.display='none';empty.style.display='block';return;}
+  const clearBtn=document.getElementById('ev-clear-btn');
+  if(!evName){panel.style.display='none';empty.style.display='block';if(clearBtn)clearBtn.style.display='none';return;}
   panel.style.display='block';empty.style.display='none';
+  if(clearBtn)clearBtn.style.display='inline-flex';
   // Build both links
   const base=window.location.origin+window.location.pathname;
   const teachUrl=base+'?event='+encodeURIComponent(evName)+'#submit';
@@ -2395,6 +2606,9 @@ function loadEventPanel(){
   const rEl=document.getElementById('req-link-result');
   rEl.dataset.url=reqUrl;
   rEl.innerHTML='<a href="'+reqUrl+'" target="_blank">'+reqUrl+'</a>';
+  // Populate event name field
+  const evNameEl=document.getElementById('ev-name');
+  if(evNameEl)evNameEl.value=evName;
   // Populate date fields
   const evObj = availEvents.find(e=>e.name===evName);
   document.getElementById('ev-start-date').value = evObj&&evObj.startDate ? evObj.startDate : '';
@@ -2406,7 +2620,7 @@ function loadEventPanel(){
   // Published toggle
   const pubCb=document.getElementById('ev-published');
   const pubNote=document.getElementById('ev-published-note');
-  pubCb.checked=evObj?evObj.published!==false:true;
+  pubCb.checked=evObj?evObj.published!==false:false;
   pubNote.textContent=pubCb.checked?'Classes appear in the public catalog.':'Hidden from public — classes won\'t show in the catalog.';
   pubNote.style.color=pubCb.checked?'var(--green-text)':'var(--red-text)';
   // Load room editor
@@ -2438,6 +2652,30 @@ function saveEventDates(){
   setTimeout(()=>saved.style.display='none', 2500);
 }
 
+function saveEventName(){
+  const oldName=document.getElementById('ev-picker').value;
+  const newName=(document.getElementById('ev-name').value||'').trim();
+  if(!newName||newName===oldName)return;
+  // Update in availEvents and dEv
+  const evObj=availEvents.find(e=>e.name===oldName);
+  const devEv=dEv.find(e=>e.name===oldName);
+  if(evObj)evObj.name=newName;
+  if(devEv)devEv.name=newName;
+  // Update all classes that reference this event
+  allClasses.forEach(c=>{if(c.event===oldName)c.event=newName;});
+  dC.forEach(c=>{if(c.event===oldName)c.event=newName;});
+  // Update all dropdowns
+  ['ev-picker','fe','fc-ev','acf-ev','rq-event','rq-filter-ev','req-admin-filter'].forEach(sid=>{
+    const s=document.getElementById(sid);if(!s)return;
+    [...s.options].forEach(o=>{if(o.value===oldName){o.value=newName;o.textContent=newName;}});
+  });
+  document.getElementById('ev-picker').value=newName;
+  const saved=document.getElementById('ev-name-saved');
+  saved.style.display='inline';
+  setTimeout(()=>saved.style.display='none',2500);
+  loadEventPanel();
+}
+
 async function createEvent(){
   const name=document.getElementById('lg-name').value.trim();
   const startDate=document.getElementById('lg-start').value;
@@ -2461,7 +2699,7 @@ async function createEvent(){
     const s=document.getElementById(sid);if(!s)return;
     const o=document.createElement('option');o.value=name;o.textContent=name;s.appendChild(o);
   });
-  availEvents.push({name,startDate,startTime,endDate,endTime,rooms,active:true,published:true});
+  availEvents.push({name,startDate,startTime,endDate,endTime,rooms,active:true,published:false});
   // Auto-select the new event in the picker
   document.getElementById('ev-picker').value=name;
   loadEventPanel();
