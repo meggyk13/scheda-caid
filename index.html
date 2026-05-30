@@ -305,7 +305,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
       <div class="class-grid" id="cg"></div>
     </div>
     <div id="panel-schedule" class="panel">
-      <div class="schedule-header"><div class="sched-title-h">My Schedule</div><button class="print-btn" onclick="window.print()"><i class="ti ti-printer"></i> Print</button></div>
+      <div class="schedule-header"><div class="sched-title-h">My Schedule</div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><label style="font-size:12px;font-family:sans-serif;color:var(--text2)">Sort:</label><select class="filter-select" id="sched-sort" onchange="renderSchedule()" style="min-width:0"><option value="date">By date</option><option value="title">By title</option><option value="event">By event</option><option value="type">By type (teaching first)</option></select><button class="print-btn" onclick="printSchedule()"><i class="ti ti-printer"></i> Print</button></div></div>
       <div id="sched-events" style="display:none;margin-bottom:1.5rem"></div>
       <div id="sched-lookup" style="max-width:480px;margin-bottom:1.5rem">
         <div class="modal-note mn-info" style="margin-bottom:10px"><i class="ti ti-info"></i> Enter the email address you used when registering for classes.</div>
@@ -347,7 +347,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         <div class="form-full"><label class="form-label">Prerequisites</label><input class="form-input" id="fc-pr" type="text" placeholder="Leave blank if none"></div>
         <div class="form-divider">Logistics</div>
         <div class="form-grid">
-          <div class="form-col"><label class="form-label">Class fee</label><input class="form-input" id="fc-fe" type="text" placeholder="e.g. $5 materials &#x2014; blank if free"><span class="form-hint">Leave blank if free.</span></div>
+          <div class="form-col"><label class="form-label">Class fee</label><input class="form-input" id="fc-fe" type="text" placeholder="e.g. $5 materials &#x2014; blank if free"></div>
           <div class="form-col"><label class="form-label">Duration</label><select class="form-select" id="fc-du"><option value="30">30 min</option><option value="60" selected>1 hour</option><option value="90">90 min</option><option value="120">2 hours</option><option value="180">3 hours</option></select></div>
         </div>
         <div class="form-full"><label class="form-label">What should students bring?</label><input class="form-input" id="fc-br" type="text" placeholder="Leave blank if nothing needed"></div>
@@ -679,7 +679,7 @@ const SEED_CLASSES=[
   {id:'2',title:`Introduction to Tablet Weaving`,teacher:`Lady Aelswith of Mercia`,date:'2026-08-16',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,desc:`An entry-level class covering warping, turning sequences, and reading simple patterns. You'll leave with a small band in progress.`,bring:`Nothing — cards, warp, and loom provided.`,fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'3',title:`Ottoman Garb Basics`,teacher:`Rayhana bint Estafanos al-Ábbas`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Cooking/Costuming`,desc:`This class walks through the basics of period-appropriate mid-16th century Ottoman clothing, with practical guidance on layers, silhouettes, and accessible starting points for creating garb.`,bring:`N/a`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'4',title:`Heraldic Charges: A Visual Survey`,teacher:`Lord Seamus mac Neill`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Heraldry',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`A fast-paced tour through common and uncommon charges in period heraldry, with examples from the Rolls of Arms. Great for new heralds or anyone designing devices.`,bring:`Ideas for your own device if you have them.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Lord Seamus is a pursuivant with Caid's College of Heralds and has been consulting on device submissions for eight years. He enjoys the obscure corners of the heraldic menagerie.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'5',title:`Simple Iron Gall Ink`,teacher:`Fiachra an Doire`,date:'2026-08-16',time:'12:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`Learn to make an easy, effective iron gall ink based on a late 14th or early 15th century English recipe. Students take home a small vial.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Fiachra is a scribe and calligrapher with a particular interest in medieval ink recipes and writing materials. He has been recreating period inks for over eight years.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'5',title:`Simple Iron Gall Ink`,teacher:`Fiachra an Doire`,email:'margery@example.com',date:'2026-08-16',time:'12:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`Learn to make an easy, effective iron gall ink based on a late 14th or early 15th century English recipe. Students take home a small vial.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Fiachra is a scribe and calligrapher with a particular interest in medieval ink recipes and writing materials. He has been recreating period inks for over eight years.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'6',title:`Intro to SCA Rapier`,teacher:`Don Rodrigo de Castilla`,date:'2026-08-16',time:'14:00',duration:90,format:'in-person',topic:'Combat',event:'Collegium 2026',room:`Field - Martial Class, all types`,desc:`An overview of rapier combat in the SCA: rules, equipment, and basic footwork and guards. Loaner gear available for new fighters to try.`,bring:`Comfortable clothes you can move in.`,fee:'',zoomLink:'',max:20,prereqs:'',bio:`Don Rodrigo holds the rank of Don in Caid's rapier community and has been teaching introductory fencing for over a decade. He specializes in Italian rapier styles of the late 16th century.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'7',title:`Cooking from the Forme of Cury`,teacher:`Mistress Gwenllian ferch Caradog`,date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Collegium 2026',room:`Grab Bag Rm 3`,desc:`We'll work through two recipes from the 14th-century English cookbook, adapting them for modern kitchens. Tasting included.`,bring:`Any food allergies to share.`,fee:'',zoomLink:'',max:16,prereqs:'',bio:`Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery. She has cooked multiple SCA feasts from period sources and written extensively on redaction methodology.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'8',title:`Arrow Dynamics`,teacher:`Gideon the Genuine`,date:'2026-08-16',time:'15:00',duration:60,format:'in-person',topic:'Archery',event:'Collegium 2026',room:`Archery`,desc:`This class covers the dynamics of what happens when an arrow is shot from a bow: release, flex, and flight. Physics made accessible.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Gideon has been shooting in the SCA for eighteen years and holds multiple Royal Round records. He brings a background in physics to his teaching of archery mechanics.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
@@ -788,6 +788,7 @@ dWL={
   ],
   '2':[
     {scaName:'Countess Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Margery la Rousse',email:'margery@example.com',barony:'Angels',hidden:false},
   ],
   '11':[
     {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
@@ -1070,25 +1071,33 @@ async function lookupSchedule(){
   // Build myRegs from all classes matching this email
   myRegs={};
   scheduleEmail=email;
-  // In demo mode, scan dRegs and dWL
+  // In demo mode, scan dRegs, dWL, and teaching assignments
   allClasses.forEach(c=>{
+    if(c.email&&c.email.toLowerCase()===email.toLowerCase()){
+      myRegs[c.id]={scaName:c.teacher,email,waitlisted:false,teaching:true};
+      return;
+    }
     const reg=(IS_DEMO?(dRegs[c.id]||[]):[]).find(r=>r.email===email);
     const wl=(IS_DEMO?(dWL[c.id]||[]):[]).find(r=>r.email===email);
     if(reg)myRegs[c.id]={scaName:reg.scaName,email,waitlisted:false};
     else if(wl)myRegs[c.id]={scaName:wl.scaName,email,waitlisted:true};
   });
-  // In live mode, we'd call an API action — stub shown here
-  // const res=await api({action:'getMySchedule',email});
-  // if(res.ok)res.registrations.forEach(r=>{myRegs[r.classId]={scaName:r.scaName,email,waitlisted:r.waitlisted};});
+  const teachingCount=Object.values(myRegs).filter(r=>r.teaching).length;
+  const attendingCount=Object.values(myRegs).filter(r=>!r.teaching&&!r.waitlisted).length;
+  const waitlistCount=Object.values(myRegs).filter(r=>r.waitlisted).length;
   const count=Object.keys(myRegs).length;
   updSC();
   if(!count){
-    msg.innerHTML='<i class="ti ti-info"></i> No registrations found for <strong>'+email+'</strong>. Double-check the address or register via the catalog.';
+    msg.innerHTML='<i class="ti ti-info"></i> No schedule found for <strong>'+email+'</strong>. Double-check the address or register via the catalog.';
     l.innerHTML='';
     return;
   }
   msg.style.color='var(--green-text)';
-  msg.innerHTML='<i class="ti ti-check"></i> Found '+count+' registration'+(count===1?'':'s')+' for <strong>'+email+'</strong>';
+  const parts=[];
+  if(teachingCount)parts.push(teachingCount+' teaching');
+  if(attendingCount)parts.push(attendingCount+' attending');
+  if(waitlistCount)parts.push(waitlistCount+' waitlisted');
+  msg.innerHTML='<i class="ti ti-check"></i> Found '+parts.join(', ')+' for <strong>'+email+'</strong>';
   renderSchedule();
 }
 
@@ -1132,27 +1141,39 @@ function renderSchedule(){
     if(c.duration){d.setMinutes(d.getMinutes()+Number(c.duration));}
     return d<today;
   }
-  const sortFn=(a,b)=>(String(a.date)+String(a.time)).localeCompare(String(b.date)+String(b.time));
+  const so=(document.getElementById('sched-sort')||{}).value||'date';
+  const sortFn=(a,b)=>{
+    if(so==='title')return a.title.localeCompare(b.title);
+    if(so==='event')return(a.event||'').localeCompare(b.event||'')||(String(a.date)+String(a.time)).localeCompare(String(b.date)+String(b.time));
+    if(so==='type'){
+      const ta=!!(myRegs[a.id]&&myRegs[a.id].teaching),tb=!!(myRegs[b.id]&&myRegs[b.id].teaching);
+      if(ta!==tb)return ta?-1:1;
+      return(String(a.date)+String(a.time)).localeCompare(String(b.date)+String(b.time));
+    }
+    return(String(a.date)+String(a.time)).localeCompare(String(b.date)+String(b.time));
+  };
   const upcoming=[...mc].filter(c=>!isPast(c)).sort(sortFn);
   const past=[...mc].filter(c=>isPast(c)).sort(sortFn);
   function buildCard(c){
-    const wl=isWL(c),pos=wlPos(c);
     const du=c.duration?' \u00b7 '+(c.duration>=60?Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h':c.duration+'min'):'';
     const isZoom=c.format==='zoom';
+    const teaching=!!(myRegs[c.id]&&myRegs[c.id].teaching);
+    const wl=!teaching&&isWL(c),pos=wlPos(c);
+    const teachBanner=teaching?'<div style="display:flex;align-items:center;gap:8px;background:var(--accent-light);color:var(--accent);border:1px solid var(--accent-mid);border-radius:var(--radius);padding:7px 11px;margin-bottom:8px;font-size:13px;font-family:sans-serif;font-weight:600"><i class="ti ti-chalkboard" style="font-size:16px;flex-shrink:0"></i><span>You are teaching this class</span></div>':'';
     const wlBanner=wl?'<div style="display:flex;align-items:center;gap:8px;background:var(--gold-light);color:var(--accent);border:1px solid var(--gold-mid);border-radius:var(--radius);padding:7px 11px;margin-bottom:8px;font-size:13px;font-family:sans-serif;font-weight:600"><i class="ti ti-clock" style="font-size:16px;flex-shrink:0"></i><span>Waitlist position #'+pos+' \u2014 you\u2019ll be notified if a spot opens</span></div>':'';
-    const wlBorder=wl?'border-left:4px solid var(--gold-mid);':'';
-    return '<div class="sched-item'+(isZoom&&!wl?' sched-item-zoom':'')+'" style="'+wlBorder+'">'
+    const borderStyle=teaching?'border-left:4px solid var(--accent-mid);':wl?'border-left:4px solid var(--gold-mid);':'';
+    const removeBtn=teaching?'':'<button class="remove-btn" onclick="'+(wl?'doLeaveWL':'doUnreg')+'(\''+c.id+'\')" style="'+(wl?'color:var(--accent-mid);border-color:var(--gold-mid)':'')+'">'+'<i class="ti ti-x"></i> '+(wl?'Leave waitlist':'Cancel')+'</button>';
+    return '<div class="sched-item'+(isZoom&&!wl&&!teaching?' sched-item-zoom':'')+'" style="'+borderStyle+'">'
       +'<div class="sched-time">'+(c.date?fD(c.date)+'<br>':'')+(c.time?fT(c.time):'TBD')+'</div>'
-      +'<div style="min-width:0">'+wlBanner+'<div class="sched-title">'+c.title+'</div>'
-      +'<div class="sched-meta">'+c.teacher+(c.event?' \u00b7 '+c.event:'')+(c.room?' \u00b7 '+c.room:'')+du+'</div>'
+      +'<div style="min-width:0">'+teachBanner+wlBanner+'<div class="sched-title">'+c.title+'</div>'
+      +'<div class="sched-meta">'+(teaching?'Your class':'By: '+c.teacher)+(c.event?' \u00b7 '+c.event:'')+(c.room?' \u00b7 '+c.room:'')+du+'</div>'
       +(c.cancelled?'<div style="font-size:12px;font-family:sans-serif;color:var(--red-text);font-weight:700;margin-top:3px"><i class="ti ti-ban"></i> CANCELLED</div>':'')
       +(c.fee?'<div class="sched-meta" style="color:var(--accent-mid);margin-top:2px"><i class="ti ti-coin"></i> '+c.fee+'</div>':'')
-      +(c.bring?'<div class="sched-meta" style="margin-top:2px"><i class="ti ti-backpack"></i> Bring: '+c.bring+'</div>':'')
+      +(c.bring&&!teaching?'<div class="sched-meta" style="margin-top:2px"><i class="ti ti-backpack"></i> Bring: '+c.bring+'</div>':'')
       +(c.prereqs?'<div class="sched-meta" style="margin-top:2px"><i class="ti ti-info-circle"></i> Prereq: '+c.prereqs+'</div>':'')
-      +(isZoom&&c.zoomLink&&!wl?'<a class="sched-zoom-btn" href="'+c.zoomLink+'" target="_blank"><i class="ti ti-video"></i> Join online</a>':'')
+      +(isZoom&&c.zoomLink?'<a class="sched-zoom-btn" href="'+c.zoomLink+'" target="_blank"><i class="ti ti-video"></i> '+(teaching?'Your meeting link':'Join online')+'</a>':'')
       +'</div>'
-      +'<button class="remove-btn" onclick="'+(wl?'doLeaveWL':'doUnreg')+'(\''+c.id+'\')" style="'+(wl?'color:var(--accent-mid);border-color:var(--gold-mid)':'')+'">'
-      +'<i class="ti ti-x"></i> '+(wl?'Leave waitlist':'Cancel')+'</button>'
+      +removeBtn
       +'</div>';
   }
   const upcomingHtml=upcoming.map(buildCard).join('');
@@ -1198,12 +1219,17 @@ function initSubmit(){
   }
 }
 function tzf(){document.getElementById('zf').style.display=document.getElementById('fc-fm').value==='zoom'?'block':'none';}
+document.getElementById('fc-da').min=new Date().toISOString().slice(0,10);
 async function submitClass(){
   const t=document.getElementById('fc-t').value.trim(),tc=document.getElementById('fc-tc').value.trim();
   if(!t||!tc){alert('Class title and your SCA name are required.');return;}
   const lock=lockedEvent;
   const da=document.getElementById('fc-da').value,ti=document.getElementById('fc-ti').value;
   if(!lock&&(!da||!ti)){alert('Please enter a date and time for your class.');return;}
+  if(!lock&&da){
+    const chosen=new Date(da+'T'+ti);
+    if(chosen<new Date()){alert('Please choose a date and time in the future.');return;}
+  }
   const btn=document.querySelector('.submit-action');btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Submitting...';
   const res=await api({
     action:'submitClass',title:t,teacher:tc,email:document.getElementById('fc-em').value.trim(),
@@ -2033,6 +2059,47 @@ function getEmRoom(){
   const sel=document.getElementById('em-room-sel');
   return sel.value==='__other__'?document.getElementById('em-room').value.trim():sel.value;
 }
+function printSchedule(){
+  const email=scheduleEmail||'';
+  const evHtml=document.getElementById('sched-events').innerHTML||'';
+  const schedHtml=document.getElementById('sl').innerHTML||'';
+  const win=window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+<title>My Schedule</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;color:#0D1F3C;padding:1.5rem;font-size:13px}
+h1{font-size:20px;font-weight:600;margin-bottom:4px}
+.sub{font-size:13px;color:#3A5278;font-family:sans-serif;margin-bottom:1.25rem}
+.ev-block{background:#E6EDF8;border:1px solid rgba(26,63,122,.26);border-radius:6px;padding:9px 13px;margin-bottom:1rem;font-family:sans-serif;font-size:13px;color:#1A3F7A}
+.ev-block strong{font-weight:600}
+.sched-item{display:grid;grid-template-columns:90px 1fr;gap:12px;align-items:start;padding:.85rem 1rem;border:1px solid #d9e5f5;border-radius:8px;margin-bottom:8px}
+.sched-item-teach{border-left:4px solid #3D6DB5}
+.sched-item-wl{border-left:4px solid #4A7EC7;opacity:.8}
+.sched-time{font-size:12px;color:#3D6DB5;font-family:sans-serif;font-weight:600}
+.sched-title{font-size:14px;font-weight:600;margin-bottom:2px}
+.sched-meta{font-size:12px;color:#3A5278;font-family:sans-serif}
+.banner{font-size:11px;font-family:sans-serif;font-weight:600;padding:4px 8px;border-radius:4px;margin-bottom:5px;display:inline-block}
+.banner-teach{background:#E6EDF8;color:#1A3F7A}
+.banner-wl{background:#D6E4F5;color:#2A5FAD}
+.section-head{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#3A5278;font-family:sans-serif;margin:1.25rem 0 8px;border-top:1px solid #d9e5f5;padding-top:10px}
+.remove-btn,.roster-toggle,.sched-zoom-btn{display:none}
+@media print{body{padding:.5rem}}
+</style></head><body>
+<h1>My Schedule</h1>
+<div class="sub">${email}</div>
+<div id="ev">${evHtml}</div>
+<div id="sl">${schedHtml}</div>
+<script>
+// Strip interactive elements not needed in print
+document.querySelectorAll('.remove-btn,.roster-toggle,.sched-zoom-btn').forEach(el=>el.remove());
+// Strip inline gold/blue backgrounds from banners that don't match print styles
+window.onload=()=>window.print();
+<\/script>
+</body></html>`);
+  win.document.close();
+}
+
 </script>
 </body>
 </html>
