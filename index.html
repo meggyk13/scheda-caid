@@ -155,7 +155,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .approve-btn:hover{background:var(--green-border)}
 .reject-btn{padding:5px 14px;border-radius:var(--radius);font-size:12px;cursor:pointer;background:var(--red-bg);color:var(--red-text);border:1px solid var(--red-border);font-family:sans-serif}
 .reject-btn:hover{background:var(--red-border)}
-.approved-row{display:grid;grid-template-columns:1fr auto auto auto;gap:12px;align-items:center;padding:10px 1rem;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;background:var(--bg)}
+.approved-row{display:flex;flex-direction:column;gap:10px;padding:10px 1rem;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;background:var(--bg)}.approved-row-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.approved-row-btns{display:flex;gap:6px;flex-wrap:wrap}.a-labeled-btn{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:var(--radius);border:1px solid var(--border);cursor:pointer;font-size:12px;font-family:sans-serif;background:var(--bg2);color:var(--text2);white-space:nowrap}.a-labeled-btn:hover{background:var(--bg3)}
 .approved-name{font-size:14px;font-weight:600;font-family:Georgia,serif}
 .approved-sub{font-size:12px;color:var(--text2);font-family:sans-serif}
 .reg-count{font-size:13px;color:var(--text2);white-space:nowrap;font-family:sans-serif}
@@ -271,7 +271,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
   .sched-time{display:block;grid-column:1/-1;padding-top:0;margin-bottom:2px}
   .filters{flex-direction:column}
   .search-input,.filter-select{width:100%;min-width:0}
-  .approved-row{grid-template-columns:1fr auto;gap:8px}
+  .approved-row-btns{gap:5px}
   .approved-row .a-roster-btn,.approved-row .a-remove-btn{padding:3px 8px}
 }
 </style>
@@ -635,7 +635,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
   <div class="modal">
     <div class="modal-title" id="roM-title">Roster</div>
     <div id="roM-body"></div>
-    <div class="modal-actions"><button class="modal-cancel" onclick="closeModal('roster-modal')">Close</button></div>
+    <div class="modal-actions"><button class="modal-cancel" onclick="closeModal('roster-modal')">Close</button><button class="modal-confirm" id="roM-print-btn" onclick="printRoster(roM_currentId)"><i class="ti ti-printer"></i> Print Roster</button></div>
   </div>
 </div>
 
@@ -674,7 +674,7 @@ const dRegs={
     {scaName:'Brother Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
     {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',barony:'Lyondemere',hidden:false},
     {scaName:'Countess Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
-    {scaName:'Anonymous attendee',email:'anon1@example.com',barony:'',hidden:true},
+    {scaName:'Philippa of Rouen',email:'anon1@example.com',barony:'Dreiburgen',hidden:true},
     {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',barony:'Naevehjem',hidden:false},
     {scaName:'Cecilia de Montfort',email:'cecilia@example.com',barony:'Angels',hidden:false},
   ],
@@ -706,7 +706,7 @@ const dRegs={
     {scaName:'Finn Eriksson',email:'finn@example.com',barony:'Calafia',hidden:false},
     {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',barony:'Calafia',hidden:false},
     {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
-    {scaName:'Anonymous attendee',email:'anon2@example.com',barony:'',hidden:true},
+    {scaName:'Haakon Sigurdsson',email:'anon2@example.com',barony:'Calafia',hidden:true},
     {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',barony:'Angels',hidden:false},
     {scaName:'Brother Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
     {scaName:'Constance of Hartwood',email:'constance@example.com',barony:'Naevehjem',hidden:false},
@@ -726,7 +726,7 @@ const dRegs={
     {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',barony:'Dreiburgen',hidden:false},
     {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',barony:'Lyondemere',hidden:false},
     {scaName:'Rosamund of the Dales',email:'rosamund@example.com',barony:'Gyldenholt',hidden:false},
-    {scaName:'Anonymous attendee',email:'anon3@example.com',barony:'',hidden:true},
+    {scaName:'Alienor de Vaux',email:'anon3@example.com',barony:'Angels',hidden:true},
     {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',barony:'Angels',hidden:false},
     {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
   ],
@@ -738,7 +738,7 @@ const dRegs={
     {scaName:'Margery la Rousse',email:'margery@example.com',barony:'Angels',hidden:false},
     {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',barony:'Angels',hidden:false},
     {scaName:'Countess Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
-    {scaName:'Anonymous attendee',email:'anon4@example.com',barony:'',hidden:true},
+    {scaName:'Thorvald Eiriksson',email:'anon4@example.com',barony:'Gyldenholt',hidden:true},
     {scaName:'Brother Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
     {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',barony:'Lyondemere',hidden:false},
     {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',barony:'Calafia',hidden:false},
@@ -1251,15 +1251,18 @@ function renderApproved(){
   const filtered=allClasses.filter(c=>matchesAdminFilter(c,f));
   document.getElementById('approved-list').innerHTML=filtered.length
     ? filtered.map(c=>
-    '<div class="approved-row"><div><div class="approved-name">'+c.title+'</div>'
-    +'<div class="approved-sub">'+c.teacher+(c.email?' \u00b7 '+c.email:'')+(c.phone?' \u00b7 \u260e '+c.phone:'')+' \u00b7 '+fD(c.date)+' \u00b7 '+fT(c.time)+(c.event?' \u00b7 '+c.event:'')+(c.room?' \u00b7 '+c.room:'')+'</div>'
-    +(c.waitlistCount?'<div class="wl-detail"><i class="ti ti-clock"></i> '+c.waitlistCount+' on waitlist</div>':'')+'</div>'
-    +'<div class="reg-count">'+c.registrationCount+(c.max?' / '+c.max:'')+' reg</div>'
-    +'<button class="a-roster-btn" title="Print roster" onclick="printRoster(\''+c.id+'\')" style="color:var(--accent)"><i class="ti ti-printer"></i></button>'
-    +'<button class="a-roster-btn" onclick="showRoster(\''+c.id+'\')"><i class="ti ti-users"></i></button>'
-    +'<button class="a-roster-btn" style="color:var(--accent-mid)" onclick="openEditClass(\''+c.id+'\')"><i class="ti ti-pencil"></i></button>'
-    +(c.cancelled?'<span style="font-size:11px;color:var(--red-text);font-weight:700;font-family:sans-serif;padding:4px 8px">Cancelled</span>':'<button class="a-roster-btn" style="color:var(--red-text)" onclick="doCancelClass(\''+c.id+'\')"><i class="ti ti-ban"></i></button>')
-    +'<button class="a-remove-btn" onclick="doRemove(\''+c.id+'\')"><i class="ti ti-trash"></i></button></div>'
+    '<div class="approved-row">'
+    +'<div class="approved-row-top"><div>'
+    +'<div class="approved-name">'+c.title+'</div>'
+    +'<div class="approved-sub">'+c.teacher+(c.email?' · '+c.email:'')+(c.phone?' · ☎ '+c.phone:'')+' · '+fD(c.date)+' · '+fT(c.time)+(c.event?' · '+c.event:'')+(c.room?' · '+c.room:'')+'</div>'
+    +(c.waitlistCount?'<div class="wl-detail"><i class="ti ti-clock"></i> '+c.waitlistCount+' on waitlist</div>':'')
+    +'</div><div class="reg-count">'+c.registrationCount+(c.max?' / '+c.max:'')+' reg</div></div>'
+    +'<div class="approved-row-btns">'
+    +'<button class="a-labeled-btn" onclick="showRoster(\''+c.id+'\')"><i class="ti ti-users"></i> View Roster</button>'
+    +'<button class="a-labeled-btn" style="color:var(--accent-mid)" onclick="openEditClass(\''+c.id+'\')"><i class="ti ti-pencil"></i> Edit</button>'
+    +(c.cancelled?'<span style="font-size:11px;color:var(--red-text);font-weight:700;font-family:sans-serif;padding:5px 8px">Cancelled</span>':'<button class="a-labeled-btn" style="color:var(--red-text)" onclick="doCancelClass(\''+c.id+'\')"><i class="ti ti-ban"></i> Cancel</button>')
+    +'<button class="a-labeled-btn" style="color:var(--red-text)" onclick="doRemove(\''+c.id+'\')"><i class="ti ti-trash"></i> Remove</button>'
+    +'</div></div>'
   ).join('')
   : '<div class="no-items">'+(allClasses.length?'No published classes match your filters.':'No published classes yet.')+'</div>';
 }
@@ -1309,6 +1312,7 @@ async function showRoster(classId){
   const res=await api({action:'adminGetRoster',token:adminToken,classId:String(classId)});
   if(!res.ok){alert('Could not load roster.');return;}
   const cls=allClasses.find(c=>String(c.id)===String(classId));
+  window.roM_currentId=classId;
   document.getElementById('roM-title').textContent='Roster: '+(cls?cls.title:classId);
   const rg=res.roster||[],wl=res.waitlist||[];
   let h='';
@@ -1339,14 +1343,13 @@ async function printRoster(classId){
   const cbStyle = 'width:20px;height:20px;border:1.5px solid #555;border-radius:3px;display:inline-block;';
 
   function buildRows(list, showPos){
-    if(!list.length) return '<tr><td colspan="5" style="padding:12px 8px;font-size:13px;color:#888;">None</td></tr>';
+    if(!list.length) return '<tr><td colspan="4" style="padding:12px 8px;font-size:13px;color:#888;">None</td></tr>';
     return list.map((x,i)=>
       '<tr style="'+rowStyle+'">'
       +'<td style="'+tdStyle+'text-align:center;width:36px;">'+(showPos?'<span style="font-size:12px;color:#777;">#'+x.pos+'</span>':'<span style="'+cbStyle+'"></span>')+'</td>'
       +'<td style="'+tdStyle+'">'+(x.scaName||'')+'</td>'
       +'<td style="'+tdStyle+'font-size:12px;color:#555;">'+(x.email||'')+'</td>'
       +'<td style="'+tdStyle+'font-size:12px;color:#555;">'+(x.barony||'')+'</td>'
-      +'<td style="'+tdStyle+'text-align:center;width:24px;font-size:12px;color:#aaa;">'+(x.hidden?'●':'')+'</td>'
       +'</tr>'
     ).join('');
   }
@@ -1382,7 +1385,6 @@ async function printRoster(classId){
     <th style="${thStyle}">SCA Name</th>
     <th style="${thStyle}">Email</th>
     <th style="${thStyle}">Barony / Location</th>
-    <th style="${thStyle}text-align:center;width:24px;" title="Anonymous on public roster">Anon</th>
   </tr></thead>
   <tbody>${buildRows(rg, false)}</tbody>
 </table>
@@ -1394,7 +1396,6 @@ ${wl.length ? `<div class="section-head">Waitlist (${wl.length})</div>
     <th style="${thStyle}">SCA Name</th>
     <th style="${thStyle}">Email</th>
     <th style="${thStyle}">Barony / Location</th>
-    <th style="${thStyle}text-align:center;width:24px;" title="Anonymous on public roster">Anon</th>
   </tr></thead>
   <tbody>${buildRows(wl, true)}</tbody>
 </table>` : ''}
