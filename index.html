@@ -654,6 +654,8 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
           <!-- Empty state -->
           <div id="ev-empty" style="color:var(--text2);font-size:13px;font-family:sans-serif;padding:.5rem 0">Select an event above to manage it, or create a new one.</div>
 
+        </div><!-- /admin-tab-events -->
+
         <!-- CLASSES TAB -->
         <div id="admin-tab-classes" style="display:none">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:1.25rem;flex-wrap:wrap">
@@ -952,7 +954,7 @@ function apiD(p){
   }
   if(action==='getClasses'){
     const ef=p.event||'';
-    const unpublished=new Set(dEv.filter(e=>e.published===false).map(e=>e.name));
+    const unpublished=new Set(dEv.filter(e=>e.published===false&&!e.cancelled).map(e=>e.name));
     return{ok:true,classes:dC.filter(c=>(!ef||c.event===ef)&&!unpublished.has(c.event||'')).map(c=>{
       const r=dRegs[c.id]||[],w=dWL[c.id]||[];
       return{...c,registrationCount:r.length,waitlistCount:w.length,
@@ -2667,18 +2669,12 @@ function cancelEvent(){
   if(input.trim().toUpperCase()!=='CANCEL'){alert('Confirmation text did not match. Event was not cancelled.');return;}
   // Cancel the event
   evObj.cancelled=true;
-  evObj.published=false;
   const devEv=dEv.find(e=>e.name===evName);
-  if(devEv){devEv.cancelled=true;devEv.published=false;}
+  if(devEv){devEv.cancelled=true;}
   // Cancel all associated classes
   let affected=0;
   allClasses.forEach(c=>{if(c.event===evName&&!c.cancelled){c.cancelled=true;affected++;}});
   dC.forEach(c=>{if(c.event===evName&&!c.cancelled)c.cancelled=true;});
-  // Update published checkbox
-  const pubCb=document.getElementById('ev-published');
-  const pubNote=document.getElementById('ev-published-note');
-  if(pubCb)pubCb.checked=false;
-  if(pubNote){pubNote.textContent='Hidden from public — classes won\'t show in the catalog.';pubNote.style.color='var(--red-text)';}
   // Swap danger zone UI
   document.getElementById('ev-cancel-wrap').style.display='none';
   document.getElementById('ev-cancelled-notice').style.display='block';
