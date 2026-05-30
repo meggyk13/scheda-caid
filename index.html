@@ -558,6 +558,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
             <select class="filter-select" id="acf-ev" onchange="renderPending();renderApproved()"><option value="">All events</option></select>
             <select class="filter-select" id="acf-tp" onchange="renderPending();renderApproved()"><option value="">All topics</option><option>Fiber Arts</option><option>Costuming</option><option>Dance</option><option>History</option><option>Society Skills</option><option>Bardic Arts</option><option>Scribal Arts</option><option>Cooking &amp; Brewing</option><option>Combat</option><option>Archery</option><option>Heraldry</option><option>Crafts</option><option>Other</option></select>
             <select class="filter-select" id="acf-fm" onchange="renderPending();renderApproved()"><option value="">All formats</option><option value="in-person">In person</option><option value="zoom">Online</option></select>
+            <select class="filter-select" id="acf-so" onchange="renderApproved()"><option value="date">Sort: Date</option><option value="title">Sort: A–Z Title</option><option value="teacher">Sort: Teacher</option><option value="regs">Sort: Most registered</option></select>
           </div>
           <div class="admin-section-title"><i class="ti ti-clock"></i> Pending submissions <span class="badge" id="pending-count" style="background:var(--accent-mid)">0</span></div>
           <div id="pending-list"></div>
@@ -995,7 +996,8 @@ function rC(){
     const bp=c.bring?'<span class="logistics-pill"><i class="ti ti-backpack"></i> Bring: '+c.bring+'</span>':'';
     const roId='ro-'+c.id;
     const ro=c.roster&&c.roster.length?'<button class="roster-toggle" onclick="toggleR(&apos;'+roId+'&apos;)"><i class="ti ti-users" style="font-size:12px"></i> See who\'s registered ('+c.registrationCount+')</button><div class="roster-list" id="'+roId+'"><ul>'+c.roster.map(n=>'<li>'+n+'</li>').join('')+'</ul>'+(c.waitlistRoster&&c.waitlistRoster.length?'<div class="roster-wl-title">Waitlist</div><ul>'+c.waitlistRoster.map(w=>'<li>#'+w.pos+' '+w.name+'</li>').join('')+'</ul>':'')+'</div>':'';
-    const du=c.duration&&c.duration!==60?' ('+Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h)':'';
+    const du=c.duration&&c.duration!==60?' · '+Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h':'';
+    const duPill=c.duration?'<span class="logistics-pill"><i class="ti ti-clock"></i> '+(c.duration<60?c.duration+'min':Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h')+'</span>':'';
     const thumb=c.imageUrl?'<img class="card-thumb" src="'+c.imageUrl+'" alt="" onerror="this.style.display=\'none\'">':'';
     const bioBtn=c.bio?'<button class="bio-btn" tabindex="0" aria-label="Teacher bio"><i class="ti ti-info-circle"></i><div class="bio-popover"><div class="bio-name">'+c.teacher+'</div>'+c.bio+'</div></button>':'';
     return '<div class="class-card'+(reg?' registered':'')+'">'+thumb+'<div class="card-top"><div class="card-title">'+c.title+'</div><span class="tag '+c.format+'">'+(c.format==='zoom'?'Online':'In person')+'</span></div>'
@@ -1004,7 +1006,7 @@ function rC(){
       +((c.event||c.room)?'<span><i class="ti ti-location"></i> '+(c.event||'')+(c.event&&c.room?' \u00b7 ':'')+c.room+'</span>':'')
       +(c.topic?'<span><i class="ti ti-tag"></i> '+c.topic+'</span>':'')
       +'</div>'+(c.prereqs?'<div style="font-size:11px;color:var(--accent);font-family:sans-serif;margin-bottom:6px"><i class="ti ti-info"></i> Prereq: '+c.prereqs+'</div>':'')
-      +'<div class="card-desc">'+c.desc+'</div>'+cancelledBanner+'<div class="card-logistics">'+fp+bp+'</div>'
+      +'<div class="card-desc">'+c.desc+'</div>'+cancelledBanner+'<div class="card-logistics">'+duPill+fp+bp+'</div>'
       +(c.zoomLink&&reg?'<a class="sched-zoom-btn" href="'+c.zoomLink+'" target="_blank" style="margin-bottom:8px"><i class="ti ti-video"></i> Join online</a>':'')
       +(c.format!=='zoom'&&c.event?(()=>{const evObj=availEvents.find(e=>e.name===c.event);return evObj&&evObj.url?'<a class="sched-zoom-btn" href="'+evObj.url+'" target="_blank" style="margin-bottom:8px"><i class="ti ti-info-circle"></i> Event details</a>':''})():'') 
       +'<div class="card-footer"><button class="'+bc+'" onclick="'+(cancelled?'':'handleEnroll(\''+c.id+'\')')+'" '+(cancelled?'disabled style="opacity:.5;cursor:not-allowed"':'')+'>'+bt+'</button>'+sp+'</div>'+ro+'</div>';
@@ -1561,7 +1563,13 @@ function renderPending(){
 }
 function renderApproved(){
   const f=getAdminClassFilters();
-  const filtered=allClasses.filter(c=>matchesAdminFilter(c,f));
+  const so=(document.getElementById('acf-so')||{}).value||'date';
+  const filtered=allClasses.filter(c=>matchesAdminFilter(c,f)).sort((a,b)=>{
+    if(so==='title')return a.title.localeCompare(b.title);
+    if(so==='teacher')return(a.teacher||'').localeCompare(b.teacher||'');
+    if(so==='regs')return(b.registrationCount||0)-(a.registrationCount||0);
+    return(String(a.date)+String(a.time)).localeCompare(String(b.date)+String(b.time));
+  });
   document.getElementById('approved-list').innerHTML=filtered.length
     ? filtered.map(c=>
     '<div class="approved-row">'
@@ -1630,13 +1638,28 @@ async function showRoster(classId){
   const rg=res.roster||[],wl=res.waitlist||[];
   let h='';
   if(!rg.length)h+='<p style="color:var(--text2);margin-bottom:8px">No registrations yet.</p>';
-  else h+='<table style="width:100%;border-collapse:collapse;margin-bottom:12px"><tr style="background:var(--bg2)"><th style="text-align:left;padding:5px 8px;font-size:12px;border-bottom:1px solid var(--border2)">SCA Name</th><th style="text-align:left;padding:5px 8px;font-size:12px;border-bottom:1px solid var(--border2)">Email</th><th style="padding:5px 8px;font-size:12px;border-bottom:1px solid var(--border2)">Hidden</th></tr>'
-    +rg.map(x=>'<tr><td style="padding:5px 8px;font-size:13px;border-bottom:1px solid var(--border)">'+x.scaName+'</td><td style="padding:5px 8px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border)">'+x.email+'</td><td style="text-align:center;padding:5px 8px;border-bottom:1px solid var(--border)">'+(x.hidden?'(hidden)':'')+'</td></tr>').join('')+'</table>';
+  else h+='<table style="width:100%;border-collapse:collapse;margin-bottom:12px"><tr style="background:var(--bg2)"><th style="text-align:left;padding:5px 8px;font-size:12px;border-bottom:1px solid var(--border2)">SCA Name</th><th style="text-align:left;padding:5px 8px;font-size:12px;border-bottom:1px solid var(--border2)">Email</th><th style="padding:5px 8px;font-size:12px;border-bottom:1px solid var(--border2)">Hidden</th><th style="padding:5px 8px;border-bottom:1px solid var(--border2)"></th></tr>'
+    +rg.map(x=>'<tr><td style="padding:5px 8px;font-size:13px;border-bottom:1px solid var(--border)">'+x.scaName+'</td><td style="padding:5px 8px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border)">'+x.email+'</td><td style="text-align:center;padding:5px 8px;border-bottom:1px solid var(--border)">'+(x.hidden?'(hidden)':'')+'</td><td style="padding:3px 6px;border-bottom:1px solid var(--border)"><button class="reject-btn" style="padding:3px 8px;font-size:11px" onclick="adminRemoveStudent(\''+classId+'\',\''+x.email+'\',false)"><i class="ti ti-x"></i> Remove</button></td></tr>').join('')+'</table>';
   if(wl.length)h+='<div style="font-weight:700;font-size:11px;text-transform:uppercase;color:var(--accent-mid);margin-bottom:6px">Waitlist</div>'
     +'<table style="width:100%;border-collapse:collapse"><tr style="background:var(--bg2)"><th style="text-align:left;padding:5px 8px;font-size:12px">#</th><th style="text-align:left;padding:5px 8px;font-size:12px">SCA Name</th><th style="text-align:left;padding:5px 8px;font-size:12px">Email</th></tr>'
-    +wl.map(x=>'<tr><td style="padding:5px 8px;font-size:12px;color:var(--accent-mid)">#'+x.pos+'</td><td style="padding:5px 8px;font-size:13px">'+x.scaName+'</td><td style="padding:5px 8px;font-size:12px;color:var(--text2)">'+x.email+'</td></tr>').join('')+'</table>';
+    +wl.map(x=>'<tr><td style="padding:5px 8px;font-size:12px;color:var(--accent-mid)">#'+x.pos+'</td><td style="padding:5px 8px;font-size:13px">'+x.scaName+'</td><td style="padding:5px 8px;font-size:12px;color:var(--text2)">'+x.email+'</td><td style="padding:3px 6px"><button class="reject-btn" style="padding:3px 8px;font-size:11px" onclick="adminRemoveStudent(\''+classId+'\',\''+x.email+'\',true)"><i class="ti ti-x"></i> Remove</button></td></tr>').join('')+'</table>';
   document.getElementById('roM-body').innerHTML=h;
   document.getElementById('roster-modal').classList.add('open');
+}
+
+async function adminRemoveStudent(classId,email,fromWaitlist){
+  if(!confirm('Remove '+(fromWaitlist?'from waitlist':'from class')+'?'))return;
+  const action=fromWaitlist?'leaveWaitlist':'unregister';
+  const res=await api({action,classId:String(classId),email,token:adminToken});
+  if(!res.ok){alert(res.error||'Could not remove student.');return;}
+  // Update local allClasses count
+  const c=allClasses.find(x=>String(x.id)===String(classId));
+  if(c){
+    if(fromWaitlist){c.waitlistCount=Math.max(0,(c.waitlistCount||1)-1);}
+    else{c.registrationCount=Math.max(0,(c.registrationCount||1)-1);}
+  }
+  renderApproved();
+  showRoster(classId);
 }
 
 async function printRoster(classId){
