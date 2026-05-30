@@ -394,6 +394,10 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
           </div>
         </div>
         <div class="form-grid">
+          <div class="form-col"><label class="form-label">Your SCA name *</label><input class="form-input" id="rq-name" type="text" placeholder="Required"></div>
+          <div class="form-col"><label class="form-label">Barony / Location <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><input class="form-input" id="rq-barony" type="text" placeholder="e.g. Dreiburgen or San Diego"></div>
+        </div>
+        <div class="form-grid">
           <div class="form-col"><label class="form-label">Skill level you're looking for</label>
             <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:2px">
               <label style="display:flex;align-items:center;gap:5px;font-size:13px;font-family:sans-serif;color:var(--text2);cursor:pointer"><input type="checkbox" class="rq-level-cb" value="Beginner"> Beginner</label>
@@ -407,8 +411,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         </div>
         <div class="form-full"><label class="form-label">Notes for organizers <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><textarea class="form-textarea" id="rq-notes" style="min-height:65px" placeholder="Anything that would help — specific time period, skill focus, etc."></textarea></div>
         <div class="form-grid">
-          <div class="form-col"><label class="form-label">Your SCA name *</label><input class="form-input" id="rq-name" type="text" placeholder="Required"></div>
-          <div class="form-col"><label class="form-label">Barony <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><input class="form-input" id="rq-barony" type="text" placeholder="e.g. Dreiburgen"></div>
+          <div class="form-col"><label class="form-label">Your email *</label><input class="form-input" id="rq-email" type="email" placeholder="For admin contact only — not shown publicly"><span class="form-hint">We'll email you when a class on this topic gets scheduled.</span></div>
         </div>
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:13px">
           <label class="cb-row" style="margin-bottom:0;user-select:none"><input type="checkbox" id="rq-hidden"> Hide my name from the public wishlist</label>
@@ -663,7 +666,100 @@ const IS_DEMO=APPS_SCRIPT_URL==='YOUR_APPS_SCRIPT_URL_HERE';
 const lockedEvent=new URLSearchParams(window.location.search).get('event');
 const dC=SEED_CLASSES.map(c=>({...c}));
 const dP=[],dEv=[{name:'Collegium 2026',startDate:'2026-08-16',endDate:'2026-08-16',rooms:['Arts/History Rm 1','Fiber Arts','Cooking/Costuming','Grab Bag Rm 2','Grab Bag Rm 3','Field','Archery'],active:true},{name:'Great Western War 2026',startDate:'2026-11-05',endDate:'2026-11-08',rooms:['A&S Tent','List Field','Archery Range','Bardic Circle'],active:true}];
-const dRegs={},dWL={};
+const dRegs={
+  '1':[
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Margery la Rousse',email:'margery@example.com',barony:'Angels',hidden:false},
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',barony:'Gyldenholt',hidden:false},
+    {scaName:'Brother Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',barony:'Lyondemere',hidden:false},
+    {scaName:'Countess Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Anonymous attendee',email:'anon1@example.com',barony:'',hidden:true},
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',barony:'Naevehjem',hidden:false},
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',barony:'Angels',hidden:false},
+  ],
+  '2':[
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',barony:'Gyldenholt',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',barony:'Calafia',hidden:false},
+    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',barony:'Angels',hidden:false},
+    {scaName:'Leofric the Just',email:'leofric@example.com',barony:'Lyondemere',hidden:false},
+    {scaName:'Constance of Hartwood',email:'constance@example.com',barony:'Naevehjem',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',barony:'Calafia',hidden:false},
+  ],
+  '3':[
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',barony:'Gyldenholt',hidden:false},
+    {scaName:'Margery la Rousse',email:'margery@example.com',barony:'Angels',hidden:false},
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',barony:'Gyldenholt',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',barony:'Calafia',hidden:false},
+    {scaName:'Constance of Hartwood',email:'constance@example.com',barony:'Naevehjem',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',barony:'Lyondemere',hidden:false},
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',barony:'Naevehjem',hidden:false},
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',barony:'Angels',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',barony:'Calafia',hidden:false},
+    {scaName:'Leofric the Just',email:'leofric@example.com',barony:'Lyondemere',hidden:false},
+  ],
+  '6':[
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',barony:'Naevehjem',hidden:false},
+    {scaName:'Leofric the Just',email:'leofric@example.com',barony:'Lyondemere',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',barony:'Calafia',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',barony:'Calafia',hidden:false},
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Anonymous attendee',email:'anon2@example.com',barony:'',hidden:true},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',barony:'Angels',hidden:false},
+    {scaName:'Brother Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
+    {scaName:'Constance of Hartwood',email:'constance@example.com',barony:'Naevehjem',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',barony:'Gyldenholt',hidden:false},
+    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',barony:'Lyondemere',hidden:false},
+    {scaName:'Countess Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',barony:'Angels',hidden:false},
+  ],
+  '7':[
+    {scaName:'Margery la Rousse',email:'margery@example.com',barony:'Angels',hidden:false},
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',barony:'Gyldenholt',hidden:false},
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',barony:'Angels',hidden:false},
+    {scaName:'Countess Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Constance of Hartwood',email:'constance@example.com',barony:'Naevehjem',hidden:false},
+    {scaName:'Brother Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
+    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',barony:'Lyondemere',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',barony:'Gyldenholt',hidden:false},
+    {scaName:'Anonymous attendee',email:'anon3@example.com',barony:'',hidden:true},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',barony:'Angels',hidden:false},
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
+  ],
+  '11':[
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',barony:'Gyldenholt',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',barony:'Gyldenholt',hidden:false},
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',barony:'Angels',hidden:false},
+    {scaName:'Constance of Hartwood',email:'constance@example.com',barony:'Naevehjem',hidden:false},
+    {scaName:'Margery la Rousse',email:'margery@example.com',barony:'Angels',hidden:false},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',barony:'Angels',hidden:false},
+    {scaName:'Countess Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Anonymous attendee',email:'anon4@example.com',barony:'',hidden:true},
+    {scaName:'Brother Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',barony:'Lyondemere',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',barony:'Calafia',hidden:false},
+    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',barony:'Naevehjem',hidden:false},
+  ],
+},
+dWL={
+  '1':[
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',barony:'Angels',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',barony:'Calafia',hidden:false},
+    {scaName:'Leofric the Just',email:'leofric@example.com',barony:'Lyondemere',hidden:false},
+  ],
+  '2':[
+    {scaName:'Countess Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
+  ],
+  '11':[
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',barony:'Calafia',hidden:false},
+  ],
+};
 let dPid=1000,allClasses=[],myRegs={},scheduleEmail='';
 let adminToken=sessionStorage.getItem('aT')||null,pendingClasses=[],availEvents=[];
 let curModalId=null,curModalWL=false,curApprovingId=null;
@@ -754,8 +850,8 @@ function apiD(p){
   }
   if(action==='adminCreateEvent'){if(!p.name)return{ok:false,error:'Name required'};const rooms=p.rooms?p.rooms.split(',').map(r=>r.trim()).filter(Boolean):[];dEv.push({name:p.name,startDate:p.startDate||'',endDate:p.endDate||p.startDate||'',rooms,active:true});return{ok:true};}
   if(action==='adminGetRoster'){
-    const r=(dRegs[p.classId]||[]).map(x=>({scaName:x.scaName,email:x.email,hidden:x.hidden}));
-    const w=(dWL[p.classId]||[]).map((x,i)=>({pos:i+1,scaName:x.scaName,email:x.email,hidden:x.hidden}));
+    const r=(dRegs[p.classId]||[]).map(x=>({scaName:x.scaName,email:x.email,barony:x.barony||'',hidden:x.hidden}));
+    const w=(dWL[p.classId]||[]).map((x,i)=>({pos:i+1,scaName:x.scaName,email:x.email,barony:x.barony||'',hidden:x.hidden}));
     return{ok:true,roster:r,waitlist:w};
   }
   if(action==='adminGetGrid')return{ok:true,approved:dC.filter(c=>!p.event||c.event===p.event),pending:dP.filter(c=>!p.event||c.event===p.event)};
@@ -1159,6 +1255,7 @@ function renderApproved(){
     +'<div class="approved-sub">'+c.teacher+(c.email?' \u00b7 '+c.email:'')+(c.phone?' \u00b7 \u260e '+c.phone:'')+' \u00b7 '+fD(c.date)+' \u00b7 '+fT(c.time)+(c.event?' \u00b7 '+c.event:'')+(c.room?' \u00b7 '+c.room:'')+'</div>'
     +(c.waitlistCount?'<div class="wl-detail"><i class="ti ti-clock"></i> '+c.waitlistCount+' on waitlist</div>':'')+'</div>'
     +'<div class="reg-count">'+c.registrationCount+(c.max?' / '+c.max:'')+' reg</div>'
+    +'<button class="a-roster-btn" title="Print roster" onclick="printRoster(\''+c.id+'\')" style="color:var(--accent)"><i class="ti ti-printer"></i></button>'
     +'<button class="a-roster-btn" onclick="showRoster(\''+c.id+'\')"><i class="ti ti-users"></i></button>'
     +'<button class="a-roster-btn" style="color:var(--accent-mid)" onclick="openEditClass(\''+c.id+'\')"><i class="ti ti-pencil"></i></button>'
     +(c.cancelled?'<span style="font-size:11px;color:var(--red-text);font-weight:700;font-family:sans-serif;padding:4px 8px">Cancelled</span>':'<button class="a-roster-btn" style="color:var(--red-text)" onclick="doCancelClass(\''+c.id+'\')"><i class="ti ti-ban"></i></button>')
@@ -1223,6 +1320,91 @@ async function showRoster(classId){
     +wl.map(x=>'<tr><td style="padding:5px 8px;font-size:12px;color:var(--accent-mid)">#'+x.pos+'</td><td style="padding:5px 8px;font-size:13px">'+x.scaName+'</td><td style="padding:5px 8px;font-size:12px;color:var(--text2)">'+x.email+'</td></tr>').join('')+'</table>';
   document.getElementById('roM-body').innerHTML=h;
   document.getElementById('roster-modal').classList.add('open');
+}
+
+async function printRoster(classId){
+  const res = await api({action:'adminGetRoster', token:adminToken, classId:String(classId)});
+  if(!res.ok){alert('Could not load roster.');return;}
+  const cls = allClasses.find(c=>String(c.id)===String(classId));
+  if(!cls)return;
+  const rg = res.roster||[], wl = res.waitlist||[];
+  const date = cls.date ? fD(cls.date) : '';
+  const time = cls.time ? fT(cls.time) : '';
+  const meta = [cls.teacher, date, time, cls.room, cls.event].filter(Boolean).join(' · ');
+  const dur = cls.duration ? (cls.duration>=60 ? Math.floor(cls.duration/60)+(cls.duration%60?'.5':'')+'h' : cls.duration+'min') : '';
+
+  const rowStyle = 'border-bottom:1px solid #ccc;';
+  const thStyle = 'text-align:left;padding:6px 8px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#555;border-bottom:2px solid #333;';
+  const tdStyle = 'padding:8px;font-size:13px;vertical-align:top;border-bottom:1px solid #ddd;';
+  const cbStyle = 'width:20px;height:20px;border:1.5px solid #555;border-radius:3px;display:inline-block;';
+
+  function buildRows(list, showPos){
+    if(!list.length) return '<tr><td colspan="5" style="padding:12px 8px;font-size:13px;color:#888;">None</td></tr>';
+    return list.map((x,i)=>
+      '<tr style="'+rowStyle+'">'
+      +'<td style="'+tdStyle+'text-align:center;width:36px;">'+(showPos?'<span style="font-size:12px;color:#777;">#'+x.pos+'</span>':'<span style="'+cbStyle+'"></span>')+'</td>'
+      +'<td style="'+tdStyle+'">'+(x.scaName||'')+'</td>'
+      +'<td style="'+tdStyle+'font-size:12px;color:#555;">'+(x.email||'')+'</td>'
+      +'<td style="'+tdStyle+'font-size:12px;color:#555;">'+(x.barony||'')+'</td>'
+      +'<td style="'+tdStyle+'text-align:center;width:24px;font-size:12px;color:#aaa;">'+(x.hidden?'●':'')+'</td>'
+      +'</tr>'
+    ).join('');
+  }
+
+  const win = window.open('','_blank','width=850,height=1100');
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+<title>Roster — ${escH(cls.title)}</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Georgia,serif;color:#111;padding:32px 40px;font-size:14px}
+  h1{font-size:22px;margin-bottom:4px}
+  .meta{font-size:13px;color:#555;margin-bottom:6px;font-family:sans-serif}
+  .desc{font-size:12px;color:#666;margin-bottom:20px;font-family:sans-serif;font-style:italic}
+  table{width:100%;border-collapse:collapse;margin-bottom:28px}
+  .section-head{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#444;font-family:sans-serif;margin-bottom:6px;padding-top:4px}
+  .footer{margin-top:32px;font-size:11px;color:#aaa;font-family:sans-serif;border-top:1px solid #ddd;padding-top:10px;display:flex;justify-content:space-between}
+  @media print{body{padding:18px 24px}button{display:none!important}.no-print{display:none!important}}
+</style></head><body>
+<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px">
+  <div>
+    <h1>${escH(cls.title)}</h1>
+    <div class="meta">${escH(meta)}${dur?' · '+dur:''}</div>
+    ${cls.fee?'<div class="desc">Fee: '+escH(cls.fee)+'</div>':''}
+    ${cls.bring?'<div class="desc">Students bring: '+escH(cls.bring)+'</div>':''}
+  </div>
+  <button class="no-print" onclick="window.print()" style="padding:7px 16px;background:#1A3F7A;color:#fff;border:none;border-radius:5px;font-size:13px;cursor:pointer;font-family:sans-serif;margin-top:4px">&#x1F5A8; Print</button>
+</div>
+
+<div class="section-head">Registered (${rg.length}${cls.max?' of '+cls.max:''})</div>
+<table>
+  <thead><tr>
+    <th style="${thStyle}text-align:center;width:36px;">✓</th>
+    <th style="${thStyle}">SCA Name</th>
+    <th style="${thStyle}">Email</th>
+    <th style="${thStyle}">Barony / Location</th>
+    <th style="${thStyle}text-align:center;width:24px;" title="Anonymous on public roster">Anon</th>
+  </tr></thead>
+  <tbody>${buildRows(rg, false)}</tbody>
+</table>
+
+${wl.length ? `<div class="section-head">Waitlist (${wl.length})</div>
+<table>
+  <thead><tr>
+    <th style="${thStyle}text-align:center;width:36px;">#</th>
+    <th style="${thStyle}">SCA Name</th>
+    <th style="${thStyle}">Email</th>
+    <th style="${thStyle}">Barony / Location</th>
+    <th style="${thStyle}text-align:center;width:24px;" title="Anonymous on public roster">Anon</th>
+  </tr></thead>
+  <tbody>${buildRows(wl, true)}</tbody>
+</table>` : ''}
+
+<div class="footer">
+  <span>Kingdom Class Registry — Caid</span>
+  <span>Printed ${new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}</span>
+</div>
+</body></html>`);
+  win.document.close();
 }
 function showAdminTab(tab){
   ['events','classes','requests'].forEach(t=>{
@@ -1438,11 +1620,17 @@ function toggleReqForm(){
   if(!isOpen) setTimeout(()=>document.getElementById('rq-topic').focus(), 60);
 }
 
+function isValidEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
+function getHeartEmail(){try{return localStorage.getItem('kcr_heart_email')||'';}catch{return '';}}
+function setHeartEmail(e){try{localStorage.setItem('kcr_heart_email',e);}catch{}}
+
 async function submitRequest(){
   const topic = document.getElementById('rq-topic').value.trim();
   if(!topic){alert('Please enter a topic.');return;}
   const name = document.getElementById('rq-name').value.trim();
   if(!name){alert('Please enter your SCA name.');document.getElementById('rq-name').focus();return;}
+  const email = document.getElementById('rq-email').value.trim();
+  if(!email||!isValidEmail(email)){alert('Please enter a valid email address.');document.getElementById('rq-email').focus();return;}
   const btn = document.querySelector('#req-form-wrap .submit-action');
   btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Submitting…';
   const hidden = document.getElementById('rq-hidden').checked;
@@ -1454,13 +1642,15 @@ async function submitRequest(){
     format: document.getElementById('rq-format').value,
     notes: document.getElementById('rq-notes').value.trim(),
     submitter: name,
+    email,
     barony: document.getElementById('rq-barony').value.trim(),
     hidden: hidden ? '1' : ''
   });
   btn.disabled=false; btn.innerHTML='<i class="ti ti-send"></i> Submit request';
   if(!res.ok){alert(res.error||'Submission failed.');return;}
+  setHeartEmail(email);
   document.getElementById('req-submit-ok').style.display='block';
-  ['rq-topic','rq-notes','rq-name','rq-barony'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['rq-topic','rq-notes','rq-name','rq-barony','rq-email'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('rq-event').value='';
   document.getElementById('rq-hidden').checked=false;
   document.querySelectorAll('.rq-level-cb').forEach(cb=>cb.checked=false);
@@ -1470,6 +1660,15 @@ async function submitRequest(){
 
 async function toggleHeart(id){
   const hearted = hasHearted(id);
+  // If they haven't hearted it yet, make sure we have a valid email on file
+  if(!hearted){
+    let email = getHeartEmail();
+    if(!email||!isValidEmail(email)){
+      email = (prompt('Please enter your email address to record your vote (admin contact only, not shown publicly):') || '').trim();
+      if(!email||!isValidEmail(email)){alert('A valid email is required to agree with a request.');return;}
+      setHeartEmail(email);
+    }
+  }
   const dir = hearted ? 'down' : 'up';
   if(hearted) removeHeart(id); else addHeart(id);
   await api({action:'heartRequest', id:String(id), dir});
@@ -1552,6 +1751,14 @@ function renderAdminRequests(){
   if(!list.length){listEl.innerHTML='<div class="no-items">No requests.</div>';return;}
   listEl.innerHTML=list.map(r=>{
     const ds = r.ts ? new Date(r.ts).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+    const emailLine = r.email
+      ? '<div style="margin-top:6px;font-size:12px;font-family:sans-serif;color:var(--text2);display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
+        +'<span><i class="ti ti-mail"></i> <strong>Submitter email:</strong> <a href="mailto:'+escH(r.email)+'" style="color:var(--accent)">'+escH(r.email)+'</a></span>'
+        +(r.barony?'<span style="opacity:.5">·</span><span><i class="ti ti-map-pin"></i> '+escH(r.barony)+'</span>':'')
+        +'</div>' : '';
+    const hearterNote = (r.hearts||0) > 0
+      ? '<div style="margin-top:4px;font-size:11.5px;font-family:sans-serif;color:var(--text2);font-style:italic"><i class="ti ti-heart" style="color:#c0392b"></i> '+(r.hearts)+' additional people agreed &mdash; their emails are tracked server-side for notification.</div>'
+      : '';
     return '<div class="req-admin-card">'
     +'<div class="req-admin-topic">'+escH(r.topic)+(r.hidden?' <span style="font-size:10px;font-family:sans-serif;background:var(--bg3);color:var(--text2);padding:2px 6px;border-radius:8px;font-weight:600">Hidden</span>':'')+'</div>'
     +'<div class="req-admin-meta">'
@@ -1562,7 +1769,9 @@ function renderAdminRequests(){
     +(r.submitter?'<span><i class="ti ti-user"></i>'+escH(r.submitter)+'</span>':'<span style="opacity:.6"><i class="ti ti-user-off"></i> Anonymous</span>')
     +(ds?'<span><i class="ti ti-calendar"></i>'+ds+'</span>':'')
     +'</div>'
-    +(r.notes?'<div class="req-admin-notes">'+escH(r.notes)+'</div>':'')
+    +emailLine
+    +hearterNote
+    +(r.notes?'<div class="req-admin-notes" style="margin-top:6px">'+escH(r.notes)+'</div>':'')
     +'<div style="margin-top:8px"><button class="reject-btn" style="font-size:11px;padding:3px 9px" onclick="adminToggleHideRequest(\''+r.id+'\','+!!r.hidden+')"><i class="ti ti-'+(r.hidden?'eye':'eye-off')+'"></i> '+(r.hidden?'Unhide':'Hide')+'</button></div>'
     +'</div>';
   }).join('');
