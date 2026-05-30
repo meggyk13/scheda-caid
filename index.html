@@ -640,12 +640,19 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
                 </div>
               </div>
             </div>
+
+            <!-- 5. Danger zone -->
+            <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border2)">
+              <div id="ev-cancel-wrap">
+                <button class="reject-btn" onclick="cancelEvent()" style="font-size:13px;padding:8px 16px"><i class="ti ti-ban"></i> Cancel this event…</button>
+                <div style="font-size:11px;font-family:sans-serif;color:var(--text2);margin-top:5px">Cancels the event and all associated classes. Cannot be undone.</div>
+              </div>
+              <div id="ev-cancelled-notice" style="display:none;font-size:13px;font-family:sans-serif;color:var(--red-text);font-weight:600"><i class="ti ti-ban"></i> This event has been cancelled.</div>
+            </div>
           </div>
 
           <!-- Empty state -->
           <div id="ev-empty" style="color:var(--text2);font-size:13px;font-family:sans-serif;padding:.5rem 0">Select an event above to manage it, or create a new one.</div>
-
-        </div>
 
         <!-- CLASSES TAB -->
         <div id="admin-tab-classes" style="display:none">
@@ -1052,7 +1059,7 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated May 29, 2026 · 11:20 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated May 30, 2026 · 9:00 AM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){allClasses=res.classes;await loadEvFilter();populateTopics();rC();}
@@ -1120,16 +1127,31 @@ function rC(){
     const duPill=c.duration?'<span class="logistics-pill"><i class="ti ti-clock"></i> '+(c.duration<60?c.duration+'min':Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h')+'</span>':'';
     const thumb=c.imageUrl?'<img class="card-thumb" src="'+c.imageUrl+'" alt="" onerror="this.style.display=\'none\'">':'';
     const bioBtn=c.bio?'<button class="bio-btn" tabindex="0" aria-label="Teacher bio"><i class="ti ti-info-circle"></i><div class="bio-popover"><div class="bio-name">'+c.teacher+'</div>'+c.bio+'</div></button>':'';
-    return '<div class="class-card'+(reg?' registered':'')+'">'+thumb+'<div class="card-top"><div class="card-title">'+c.title+'</div><span class="tag '+c.format+'">'+(c.format==='zoom'?'Online':'In person')+'</span></div>'
+    return '<div class="class-card'+(reg?' registered':'')+(cancelled?' cancelled-card':'')+'">'+thumb+'<div class="card-top"><div class="card-title">'+c.title+'</div><span class="tag '+c.format+'">'+(c.format==='zoom'?'Online':'In person')+'</span></div>'
       +'<div class="card-meta"><span><i class="ti ti-user"></i> '+c.teacher+bioBtn+'</span>'
-      +(c.date?'<span><i class="ti ti-calendar"></i> '+fD(c.date)+' \u00b7 '+fT(c.time)+du+'</span>':'')
-      +((c.event||c.room)?'<span><i class="ti ti-location"></i> '+(c.event||'')+(c.event&&c.room?' \u00b7 ':'')+c.room+'</span>':'')
+      +(c.date?'<span><i class="ti ti-calendar"></i> '+fD(c.date)+' \u00b7 '+fT(c.time)+'</span>':'')
+      +((c.event||c.room)?'<span><i class="ti ti-location"></i> '+(()=>{
+        const evObj=availEvents.find(e=>e.name===c.event);
+        const evCancelled=evObj&&evObj.cancelled;
+        const evDisplay=evCancelled?'<s>'+escH(c.event)+'</s> <span style="color:var(--red-text);font-size:11px;font-weight:600">Cancelled</span>':escH(c.event||'');
+        if(cancelled){return c.event?evDisplay:escH(c.room);}
+        return (c.event?evDisplay:'')+(c.event&&c.room?' · ':'')+escH(c.room);
+      })()+'</span>':'')
       +(c.topic?'<span><i class="ti ti-tag"></i> '+c.topic+'</span>':'')
-      +'</div>'+(c.prereqs?'<div style="font-size:11px;color:var(--accent);font-family:sans-serif;margin-bottom:6px"><i class="ti ti-info"></i> Prereq: '+c.prereqs+'</div>':'')
-      +'<div class="card-desc">'+c.desc+'</div>'+cancelledBanner+'<div class="card-logistics">'+duPill+fp+bp+'</div>'
-      +(c.zoomLink&&reg?'<a class="sched-zoom-btn" href="'+c.zoomLink+'" target="_blank" style="margin-bottom:8px"><i class="ti ti-video"></i> Join online</a>':'')
-      +(c.format!=='zoom'&&c.event?(()=>{const evObj=availEvents.find(e=>e.name===c.event);return evObj&&evObj.url?'<a class="sched-zoom-btn" href="'+evObj.url+'" target="_blank" style="margin-bottom:8px"><i class="ti ti-info-circle"></i> Event details</a>':''})():'') 
-      +'<div class="card-footer"><button class="'+bc+'" onclick="'+(cancelled?'':'handleEnroll(\''+c.id+'\')')+'" '+(cancelled?'disabled style="opacity:.5;cursor:not-allowed"':'')+'>'+bt+'</button>'+sp+'</div>'+ro+'</div>';
+      +'</div>'
+      +cancelledBanner
+      +(!cancelled?(
+          (c.prereqs?'<div style="font-size:11px;color:var(--accent);font-family:sans-serif;margin-bottom:6px"><i class="ti ti-info"></i> Prereq: '+c.prereqs+'</div>':'')
+          +'<div class="card-desc">'+c.desc+'</div>'
+          +'<div class="card-logistics">'+duPill+fp+bp+'</div>'
+          +(c.zoomLink&&reg?'<a class="sched-zoom-btn" href="'+c.zoomLink+'" target="_blank" style="margin-bottom:8px"><i class="ti ti-video"></i> Join online</a>':'')
+          +(c.format!=='zoom'&&c.event?(()=>{const evObj=availEvents.find(e=>e.name===c.event);return evObj&&evObj.url?'<a class="sched-zoom-btn" href="'+evObj.url+'" target="_blank" style="margin-bottom:8px"><i class="ti ti-info-circle"></i> Event details</a>':''})():'')
+          +'<div class="card-footer"><button class="'+bc+'" onclick="handleEnroll(\''+c.id+'\')">'+bt+'</button>'+sp+'</div>'+ro
+        ):(
+          '<div class="card-desc" style="opacity:.6">'+c.desc+'</div>'
+          +'<div class="card-footer"><button class="'+bc+'" disabled style="opacity:.4;cursor:not-allowed">'+bt+'</button></div>'
+        ))
+      +'</div>';
   }).join('');
 }
 function toggleR(id){const e=document.getElementById(id);if(e)e.classList.toggle('open');}
@@ -2625,6 +2647,46 @@ function loadEventPanel(){
   pubNote.style.color=pubCb.checked?'var(--green-text)':'var(--red-text)';
   // Load room editor
   renderRoomList(evName);
+  // Cancelled state
+  const isCancelledEv=!!(evObj&&evObj.cancelled);
+  document.getElementById('ev-cancel-wrap').style.display=isCancelledEv?'none':'block';
+  document.getElementById('ev-cancelled-notice').style.display=isCancelledEv?'block':'none';
+}
+
+function cancelEvent(){
+  const evName=document.getElementById('ev-picker').value;
+  if(!evName)return;
+  const evObj=availEvents.find(e=>e.name===evName);
+  if(!evObj)return;
+  const classCount=allClasses.filter(c=>c.event===evName&&!c.cancelled).length;
+  const msg='Cancel "'+evName+'"?\n\n'
+    +(classCount>0?'This will also cancel '+classCount+' associated class'+(classCount>1?'es':'')+'.\n\n':'')
+    +'This cannot be undone. Type CANCEL to confirm.';
+  const input=prompt(msg);
+  if(input===null)return;
+  if(input.trim().toUpperCase()!=='CANCEL'){alert('Confirmation text did not match. Event was not cancelled.');return;}
+  // Cancel the event
+  evObj.cancelled=true;
+  evObj.published=false;
+  const devEv=dEv.find(e=>e.name===evName);
+  if(devEv){devEv.cancelled=true;devEv.published=false;}
+  // Cancel all associated classes
+  let affected=0;
+  allClasses.forEach(c=>{if(c.event===evName&&!c.cancelled){c.cancelled=true;affected++;}});
+  dC.forEach(c=>{if(c.event===evName&&!c.cancelled)c.cancelled=true;});
+  // Update published checkbox
+  const pubCb=document.getElementById('ev-published');
+  const pubNote=document.getElementById('ev-published-note');
+  if(pubCb)pubCb.checked=false;
+  if(pubNote){pubNote.textContent='Hidden from public — classes won\'t show in the catalog.';pubNote.style.color='var(--red-text)';}
+  // Swap danger zone UI
+  document.getElementById('ev-cancel-wrap').style.display='none';
+  document.getElementById('ev-cancelled-notice').style.display='block';
+  // Update picker option to show cancelled
+  const picker=document.getElementById('ev-picker');
+  [...picker.options].forEach(o=>{if(o.value===evName)o.textContent=evName+' (cancelled)';});
+  showToast('Event cancelled. '+affected+' class'+(affected!==1?'es':'')+(affected>0?' also cancelled':'')+'.');
+  renderPending();renderApproved();loadClasses();
 }
 
 function saveEventDates(){
@@ -2758,12 +2820,37 @@ function renameRoom(evName,idx,val){
   if(!ev||!ev.rooms)return;
   ev.rooms[idx]=val.trim();
 }
+function showToast(msg){
+  let t=document.getElementById('app-toast');
+  if(!t){t=document.createElement('div');t.id='app-toast';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 20px;border-radius:20px;font-size:13px;font-family:sans-serif;z-index:9999;opacity:0;transition:opacity .2s;white-space:nowrap;pointer-events:none';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';
+  clearTimeout(t._to);t._to=setTimeout(()=>t.style.opacity='0',3000);
+}
 function removeRoom(evName,idx){
   const ev=availEvents.find(e=>e.name===evName);
   if(!ev||!ev.rooms)return;
-  if(!confirm('Remove this room?'))return;
+  const roomName=ev.rooms[idx];
+  if(!confirm('Remove room "'+roomName+'"? Any classes assigned to this room will be moved back to pending.'))return;
   ev.rooms.splice(idx,1);
+  // Move affected approved classes back to pending
+  let affected=0;
+  allClasses.forEach(c=>{
+    if(c.event===evName&&c.room===roomName&&c.status==='approved'){
+      c.status='pending';
+      c.room='';
+      affected++;
+    }
+  });
+  dC.forEach(c=>{
+    if(c.event===evName&&c.room===roomName&&c.status==='approved'){
+      c.status='pending';
+      c.room='';
+    }
+  });
+  if(affected>0)showToast(affected+' class'+(affected>1?' classes were':' was')+' moved back to pending.');
   renderRoomList(evName);
+  renderPending();
+  renderApproved();
 }
 function addRoom(){
   const evName=document.getElementById('ev-picker').value;
