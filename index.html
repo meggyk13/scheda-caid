@@ -563,8 +563,10 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
               <span><span class="ld" style="background:var(--accent-light);border:1px solid var(--accent-mid)"></span>Normal</span>
               <span><span class="ld" style="background:var(--gold-light);border-left:3px solid #C8820A"></span>Topic overlap</span>
               <span><span class="ld" style="background:var(--red-bg);border-left:3px solid var(--red-text)"></span>Double-booked teacher</span>
-              <label class="cb-row" style="margin-left:auto;font-size:12px"><input type="checkbox" id="admin-show-cancelled" checked onchange="reloadGrid()"> Show cancelled</label>
-              <label class="cb-row" style="font-size:12px"><input type="checkbox" id="admin-hide-full" onchange="reloadGrid()"> Hide full</label>
+            </div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:8px;font-size:12px;font-family:sans-serif">
+              <label class="cb-row" style="margin-bottom:0;font-size:12px"><input type="checkbox" id="admin-show-cancelled" checked onchange="reloadGrid()"> Show cancelled</label>
+              <label class="cb-row" style="margin-bottom:0;font-size:12px"><input type="checkbox" id="admin-hide-full" onchange="reloadGrid()"> Hide full</label>
             </div>
             <div class="grid-wrap"><table class="sg" id="grid-table"></table></div>
           </div>
