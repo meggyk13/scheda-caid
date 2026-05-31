@@ -336,6 +336,18 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         <label class="cb-row" style="margin-bottom:0;font-size:13px;white-space:nowrap"><input type="checkbox" id="fhw" onchange="rC();if(document.getElementById('cat-grid-wrap').style.display!=='none')renderCatalogGrid()"> Hide full/waitlist</label>
       </div>
       <div id="cat-see-all-btn" style="display:none;margin-bottom:0.75rem"><button onclick="catClearEvent()" style="padding:7px 14px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap"><i class="ti ti-x"></i> Clear all filters</button></div>
+      <div id="cat-event-banner" style="display:none;margin-bottom:1.25rem;padding:13px 16px;background:var(--accent-light);border:1px solid var(--border2);border-radius:var(--radius-lg)">
+        <div id="cat-ev-name" style="font-size:20px;font-weight:700;font-family:Georgia,serif;color:var(--accent);line-height:1.2;margin-bottom:6px"></div>
+        <div style="display:flex;flex-direction:column;gap:3px;margin-bottom:10px">
+          <div id="cat-ev-date" style="font-size:13px;font-family:sans-serif;color:var(--text2);display:none;align-items:center;gap:5px"><i class="ti ti-calendar" style="font-size:13px"></i> <span></span></div>
+          <div id="cat-ev-time" style="font-size:13px;font-family:sans-serif;color:var(--text2);display:none;align-items:center;gap:5px"><i class="ti ti-clock" style="font-size:13px"></i> <span></span></div>
+          <div id="cat-ev-addr" style="font-size:13px;font-family:sans-serif;color:var(--text2);display:none;align-items:center;gap:5px"><i class="ti ti-map-pin" style="font-size:13px"></i> <span></span></div>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <a id="cat-ev-link" href="#" target="_blank" style="display:none;align-items:center;gap:5px;padding:6px 13px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg);font-size:13px;font-family:sans-serif;color:var(--accent);text-decoration:none;white-space:nowrap;font-weight:500"><i class="ti ti-info-circle"></i> Event info</a>
+          <a id="cat-ev-dir" href="#" target="_blank" style="display:none;align-items:center;gap:5px;padding:6px 13px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg);font-size:13px;font-family:sans-serif;color:var(--accent);text-decoration:none;white-space:nowrap;font-weight:500"><i class="ti ti-map"></i> Directions</a>
+        </div>
+      </div>
       <div id="cat-grid-wrap" style="display:none;margin-bottom:1.5rem">
         <div class="grid-wrap"><table class="sg" id="cat-grid-table"></table></div>
       </div>
@@ -426,10 +438,26 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         </div>
         <div class="form-full"><label class="form-label">Anything else the stewards should know?</label><textarea class="form-textarea" id="fc-no" style="min-height:60px" placeholder="Special requirements, equipment, scheduling notes, etc."></textarea></div>
         <div class="form-divider">Optional extras</div>
-        <div class="form-full"><label class="form-label">Class thumbnail image URL</label><input class="form-input" id="fc-img" type="url" placeholder="https://… paste a link to a hosted image"><span class="form-hint">Paste a link from Google Photos, Imgur, or your own site. Displays at the top of your class card.</span></div>
+        <div class="form-full">
+          <label class="form-label">Class thumbnail photo <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional, demo only)</span></label>
+          <input type="hidden" id="fc-img">
+          <label id="fc-img-label" style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:9px 12px;border:1px dashed var(--border2);border-radius:var(--radius);background:var(--bg2);font-family:sans-serif;font-size:13px;color:var(--text2);transition:border-color .15s" onmouseenter="this.style.borderColor='var(--accent-mid)'" onmouseleave="this.style.borderColor='var(--border2)'">
+            <i class="ti ti-photo" style="font-size:20px;color:var(--accent-mid);flex-shrink:0"></i>
+            <span id="fc-img-label-txt">Choose a photo…</span>
+            <input type="file" accept="image/*" style="display:none" onchange="handleThumbUpload(this)">
+          </label>
+          <div id="fc-img-preview" style="display:none;margin-top:8px;position:relative;width:fit-content">
+            <img id="fc-img-preview-img" src="" alt="" style="height:90px;border-radius:var(--radius);border:1px solid var(--border2);display:block;object-fit:cover">
+            <button type="button" onclick="clearThumbUpload()" style="position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:var(--text);color:#fff;border:none;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;line-height:1" title="Remove photo">×</button>
+          </div>
+          <span class="form-hint">Shows at the top of the class card. Not saved after refresh.</span>
+        </div>
         <div class="submit-row">
           <div class="submit-note"><i class="ti ti-info"></i> Goes to admin review before publishing</div>
-          <button class="submit-action" onclick="submitClass()"><i class="ti ti-send"></i> Submit class</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+            <button type="button" class="modal-cancel" onclick="previewCard()" style="display:flex;align-items:center;gap:6px"><i class="ti ti-eye"></i> Preview card</button>
+            <button class="submit-action" onclick="submitClass()"><i class="ti ti-send"></i> Submit class</button>
+          </div>
         </div>
       </div>
       <div id="submit-ok" style="display:none;text-align:center;padding:3rem 1.5rem;max-width:480px;margin:0 auto">
@@ -867,6 +895,17 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
   </div>
 </div>
 
+<!-- Card preview modal -->
+<div class="modal-bg" id="preview-modal" onclick="if(event.target===this)closeModal('preview-modal')">
+  <div class="modal" style="max-width:360px;padding:0;overflow:hidden">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:14px;font-weight:600;font-family:sans-serif;color:var(--text2)"><i class="ti ti-eye"></i> Card preview</div>
+      <button class="modal-cancel" style="padding:4px 10px;font-size:12px" onclick="closeModal('preview-modal')">Close</button>
+    </div>
+    <div id="preview-card-wrap" style="padding:0"></div>
+  </div>
+</div>
+
 <script>
 // ── Time select helper ──
 function makeTimeOptions(selected, startH=6, endH=22){
@@ -926,7 +965,7 @@ const APPS_SCRIPT_URL='YOUR_APPS_SCRIPT_URL_HERE';
 const IS_DEMO=APPS_SCRIPT_URL==='YOUR_APPS_SCRIPT_URL_HERE';
 const lockedEvent=new URLSearchParams(window.location.search).get('event');
 const dC=SEED_CLASSES.map(c=>({...c}));
-const dP=[{id:'p1',title:'Introduction to Heraldic Embroidery',teacher:'Brigid ingen Faeláin',email:'brigid@example.com',date:'',time:'',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'A hands-on introduction to embroidering heraldic devices onto fabric — perfect for decorating a banner, pouch, or garment. We will cover basic satin stitch and couching techniques using your own device or a provided sample design.',bring:'Nothing — needles, fabric, and thread provided. Bring your device blazon if you have one.',fee:'$2 materials',zoomLink:'',max:10,prereqs:'',bio:'Brigid has been doing needlework in the SCA for eight years, with a focus on Irish and early medieval embroidery traditions. This is her first time teaching at Collegium.',imageUrl:'',timepref:'Morning preferred — I am also helping with feast setup in the afternoon.',status:'pending',sessionNum:1,sessionTotal:1},{id:'p2',title:'Nalbinding for Beginners',teacherTitle:'Lord',teacher:'Gunnar Ivarsson',email:'gunnar@example.com',date:'',time:'',duration:120,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'Nalbinding is a pre-knitting textile technique used across the Norse and Byzantine world. Students will learn the Oslo stitch and start a small swatch to take home. No prior fiber arts experience needed.',bring:'Nothing — needles and wool provided.',fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:'Lord Gunnar has been practicing nalbinding for six years and researches Viking Age textile finds. He teaches regularly at West Kingdom events.',imageUrl:'',timepref:'Thu, Nov 5: 9:00 AM–12:00 PM · Fri, Nov 6: 9:00 AM–1:00 PM',status:'pending',sessionNum:1,sessionTotal:1}],dEv=[{name:'Collegium 2026',startDate:'2026-08-16',endDate:'2026-08-16',rooms:['Arts/History Rm 1','Fiber Arts','Cooking/Costuming','Grab Bag Rm 2','Grab Bag Rm 3','Field','Archery'],address:'Los Angeles County Fairplex, 1101 W McKinley Ave, Pomona CA 91768',url:'https://www.caid.sca.org/collegium',active:true,published:true},{name:'Great Western War 2026',startDate:'2026-11-05',endDate:'2026-11-08',rooms:['A&S Tent','List Field','Archery Range','Bardic Circle'],address:'Kern County Fairgrounds, 1142 South P St, Bakersfield CA 93307',url:'https://www.caid.sca.org/gww',active:true,published:true,daySchedule:[{date:'2026-11-05',start:'09:00',end:'18:00'},{date:'2026-11-06',start:'09:00',end:'18:00'},{date:'2026-11-07',start:'09:00',end:'18:00'},{date:'2026-11-08',start:'09:00',end:'14:00'}]}];
+const dP=[{id:'p1',title:'Introduction to Heraldic Embroidery',teacher:'Brigid ingen Faeláin',email:'brigid@example.com',date:'',time:'',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'A hands-on introduction to embroidering heraldic devices onto fabric — perfect for decorating a banner, pouch, or garment. We will cover basic satin stitch and couching techniques using your own device or a provided sample design.',bring:'Nothing — needles, fabric, and thread provided. Bring your device blazon if you have one.',fee:'$2 materials',zoomLink:'',max:10,prereqs:'',bio:'Brigid has been doing needlework in the SCA for eight years, with a focus on Irish and early medieval embroidery traditions. This is her first time teaching at Collegium.',imageUrl:'',timepref:'Morning preferred — I am also helping with feast setup in the afternoon.',status:'pending',sessionNum:1,sessionTotal:1},{id:'p2',title:'Nalbinding for Beginners',teacherTitle:'Lord',teacher:'Gunnar Ivarsson',email:'gunnar@example.com',date:'',time:'',duration:120,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'Nalbinding is a pre-knitting textile technique used across the Norse and Byzantine world. Students will learn the Oslo stitch and start a small swatch to take home. No prior fiber arts experience needed.',bring:'Nothing — needles and wool provided.',fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:'Lord Gunnar has been practicing nalbinding for six years and researches Viking Age textile finds. He teaches regularly at West Kingdom events.',imageUrl:'',timepref:'Thu, Nov 5: 9:00 AM–12:00 PM · Fri, Nov 6: 9:00 AM–1:00 PM',status:'pending',sessionNum:1,sessionTotal:1}],dEv=[{name:'Collegium 2026',startDate:'2026-08-16',endDate:'2026-08-16',rooms:['Arts/History Rm 1','Fiber Arts','Cooking/Costuming','Grab Bag Rm 2','Grab Bag Rm 3','Field','Archery'],address:'Los Angeles County Fairplex, 1101 W McKinley Ave, Pomona CA 91768',url:'http://places.sca-caid.org/caid/',active:true,published:true},{name:'Great Western War 2026',startDate:'2026-11-05',endDate:'2026-11-08',rooms:['A&S Tent','List Field','Archery Range','Bardic Circle'],address:'Kern County Fairgrounds, 1142 South P St, Bakersfield CA 93307',url:'https://places.sca-caid.org/gww/',active:true,published:true,daySchedule:[{date:'2026-11-05',start:'09:00',end:'18:00'},{date:'2026-11-06',start:'09:00',end:'18:00'},{date:'2026-11-07',start:'09:00',end:'18:00'},{date:'2026-11-08',start:'09:00',end:'14:00'}]}];
 const dRegs={
   '1':[
     {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
@@ -1176,7 +1215,7 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated May 30, 2026 · 8:02 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated May 30, 2026 · 9:30 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){allClasses=res.classes;await loadEvFilter();populateTopics();rC();}
@@ -1229,6 +1268,36 @@ function rC(){
   if(catGridBtn) catGridBtn.style.display=evSelected?'':'none';
   const anyFilter=!!(evSelected||q||(document.getElementById('ff')||{}).value||(document.getElementById('ft')||{}).value||document.getElementById('fl-level')?.value||document.getElementById('fl-aud')?.value||document.getElementById('fhc')?.checked||document.getElementById('fhw')?.checked);
   if(catSeeAll) catSeeAll.style.display=anyFilter?'':'none';
+  // Event info banner
+  const catEvBanner=document.getElementById('cat-event-banner');
+  if(catEvBanner){
+    if(evSelected){
+      const evObj=availEvents.find(e=>e.name===ev);
+      document.getElementById('cat-ev-name').textContent=ev;
+      const dateRow=document.getElementById('cat-ev-date');
+      const start=evObj&&evObj.startDate?fD(evObj.startDate):'';
+      const end=evObj&&evObj.endDate&&evObj.endDate!==evObj.startDate?fD(evObj.endDate):'';
+      if(start){dateRow.querySelector('span').textContent=start+(end?' \u2013 '+end:'');dateRow.style.display='flex';}
+      else dateRow.style.display='none';
+      const timeRow=document.getElementById('cat-ev-time');
+      const st=evObj&&evObj.startTime?fT(evObj.startTime):'';
+      const et=evObj&&evObj.endTime?fT(evObj.endTime):'';
+      if(st){timeRow.querySelector('span').textContent=st+(et?' \u2013 '+et:'');timeRow.style.display='flex';}
+      else timeRow.style.display='none';
+      const addrRow=document.getElementById('cat-ev-addr');
+      if(evObj&&evObj.address){addrRow.querySelector('span').textContent=evObj.address;addrRow.style.display='flex';}
+      else addrRow.style.display='none';
+      const linkEl=document.getElementById('cat-ev-link');
+      if(evObj&&evObj.url){linkEl.href=evObj.url;linkEl.style.display='inline-flex';}
+      else linkEl.style.display='none';
+      const dirEl=document.getElementById('cat-ev-dir');
+      if(evObj&&evObj.address){dirEl.href='https://maps.google.com/?q='+encodeURIComponent(evObj.address);dirEl.style.display='inline-flex';}
+      else dirEl.style.display='none';
+      catEvBanner.style.display='block';
+    } else {
+      catEvBanner.style.display='none';
+    }
+  }
   if(!evSelected&&catGridWrap&&catGridWrap.style.display!=='none'){
     catGridWrap.style.display='none';g.style.display='';
     if(catGridBtn)catGridBtn.innerHTML='<i class="ti ti-layout-grid"></i> Grid view';
@@ -1930,6 +1999,83 @@ function updateCharCount(id, max){
   counter.style.color=remaining<50?'#c0392b':remaining<100?'#e67e22':'';
 }
 function applySubmitTimeConstraints(){const ev=document.getElementById('fc-ev')?.value;const ti=document.getElementById('fc-ti');if(ti)applyEvTimeConstraints(ti,ev&&ev!=='__online__'&&ev!=='__inperson__'?ev:'');}
+function handleThumbUpload(input){
+  const file=input.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const dataUrl=e.target.result;
+    document.getElementById('fc-img').value=dataUrl;
+    document.getElementById('fc-img-preview-img').src=dataUrl;
+    document.getElementById('fc-img-preview').style.display='block';
+    document.getElementById('fc-img-label-txt').textContent=file.name;
+  };
+  reader.readAsDataURL(file);
+}
+function previewCard(){
+  const title=document.getElementById('fc-t').value.trim()||'Untitled class';
+  const teacherRaw=document.getElementById('fc-tc').value.trim()||'Your name';
+  const ttl=document.getElementById('fc-ttl')?.value.trim()||'';
+  const displayTeacher=(ttl?ttl+' ':'')+teacherRaw;
+  const desc=document.getElementById('fc-d').value.trim()||'<em style="opacity:.5">No description yet.</em>';
+  const topic=document.getElementById('fc-tp')?.value||'';
+  const fee=document.getElementById('fc-fe').value.trim();
+  const bring=document.getElementById('fc-br').value.trim();
+  const duration=document.getElementById('fc-du').value;
+  const max=document.getElementById('fc-mx').value;
+  const format=document.getElementById('fc-fm')?.value||'in-person';
+  const bio=document.getElementById('fc-bio').value.trim();
+  const imageUrl=document.getElementById('fc-img').value.trim();
+  const levelEl=document.getElementById('fc-level');
+  const levels=(levelEl&&levelEl.value)?levelEl.value.split(',').filter(Boolean):[];
+  const newcomer=document.getElementById('fc-aud-newcomer')?.checked;
+  const kids=document.getElementById('fc-aud-kids')?.checked;
+  const adults=document.getElementById('fc-aud-adults')?.checked;
+
+  const thumb=imageUrl?'<img style="width:100%;height:130px;object-fit:cover;display:block" src="'+imageUrl+'" alt="">':'';
+  const formatTag=format==='zoom'?'<span class="tag zoom">Online</span>':'<span class="tag in-person">In person</span>';
+  const fp=fee?'<span class="logistics-pill fee"><i class="ti ti-coin"></i> '+escH(fee)+'</span>':'<span class="logistics-pill free"><i class="ti ti-check"></i> Free</span>';
+  const bp=bring?'<span class="logistics-pill"><i class="ti ti-backpack"></i> Bring: '+escH(bring)+'</span>':'';
+  const duNum=parseInt(duration)||60;
+  const duPill='<span class="logistics-pill"><i class="ti ti-clock"></i> '+(duNum<60?duNum+'min':Math.floor(duNum/60)+(duNum%60?'.5':'')+'h')+'</span>';
+  const spotsPill=max?'<span class="logistics-pill"><i class="ti ti-users"></i> Max '+max+'</span>':'<span class="logistics-pill"><i class="ti ti-users"></i> Open enrollment</span>';
+  const topicPill=topic?'<span class="card-meta-topic" style="font-size:11px;font-family:sans-serif;padding:1px 8px;border-radius:10px;background:var(--bg2);border:1px solid var(--border2);color:var(--text2);width:fit-content">'+escH(topic)+'</span>':'';
+  const bioBtn=bio?'<button class="bio-btn" tabindex="0" aria-label="Teacher bio"><i class="ti ti-info-circle"></i><div class="bio-popover"><div class="bio-name">'+escH(displayTeacher)+'</div>'+escH(bio)+'</div></button>':'';
+  const tags=[];
+  levels.forEach(l=>tags.push('<span class="card-tag level">'+escH(l)+'</span>'));
+  if(newcomer)tags.push('<span class="card-tag newcomer"><i class="ti ti-star" style="font-size:10px"></i> Newcomers</span>');
+  if(kids)tags.push('<span class="card-tag kids">Kids welcome</span>');
+  if(adults)tags.push('<span class="card-tag adults">Adults only</span>');
+
+  const html=`<div class="class-card" style="border-radius:0;box-shadow:none;border:none;padding:0">
+    ${thumb}
+    <div style="padding:1.2rem 1.3rem">
+      <div class="card-top"><span class="card-title">${escH(title)}</span>${formatTag}</div>
+      <div class="card-meta">
+        <span class="meta-teacher"><i class="ti ti-user"></i> ${escH(displayTeacher)}${bioBtn}</span>
+        ${topicPill}
+      </div>
+      <div class="card-desc">${escH(desc)}</div>
+      ${tags.length?'<div class="card-tags">'+tags.join('')+'</div>':''}
+      <div class="card-logistics">${fp}${bp}${duPill}${spotsPill}</div>
+      <div class="card-footer">
+        <span class="spots">Preview only</span>
+        <button class="enroll-btn" disabled>Register</button>
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById('preview-card-wrap').innerHTML=html;
+  document.getElementById('preview-modal').classList.add('open');
+}
+function clearThumbUpload(){
+  document.getElementById('fc-img').value='';
+  document.getElementById('fc-img-preview-img').src='';
+  document.getElementById('fc-img-preview').style.display='none';
+  document.getElementById('fc-img-label-txt').textContent='Choose a photo…';
+  const fileInput=document.querySelector('#fc-img-label input[type=file]');
+  if(fileInput)fileInput.value='';
+}
 async function submitClass(){
   // Clear previous errors
   document.querySelectorAll('.field-error').forEach(el=>el.classList.remove('field-error'));
@@ -2011,6 +2157,7 @@ async function submitClass(){
 function resetSubmitForm(){
   document.querySelector('.submit-form').style.display='block';
   document.getElementById('submit-ok').style.display='none';
+  clearThumbUpload();
   renderTimePrefPicker(null);
   document.getElementById('fc-ev').value='';
   fcEvChange();
