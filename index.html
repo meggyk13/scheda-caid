@@ -687,7 +687,10 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
             <div class="admin-section-title"><i class="ti ti-door"></i> Rooms</div>
             <div id="room-editor" style="margin-bottom:1.25rem">
               <div id="room-list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px"></div>
-              <button class="approve-btn" onclick="addRoom()" style="font-size:12px"><i class="ti ti-plus"></i> Add room</button>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button class="approve-btn" onclick="addRoom()" style="font-size:12px"><i class="ti ti-plus"></i> Add room</button>
+                <button class="print-btn" onclick="printRoomSchedules()" style="font-size:12px"><i class="ti ti-printer"></i> Print room schedules</button>
+              </div>
             </div>
 
             <!-- 4. Share links — BOTTOM -->
@@ -1236,7 +1239,7 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated May 30, 2026 · 11:25 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:6px"><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:4px 12px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated May 30, 2026 · 11:50 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:6px"><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:4px 12px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){allClasses=res.classes;await loadEvFilter();populateTopics();rC();}
@@ -2527,21 +2530,32 @@ async function printRoster(classId){
   const meta = [cls.teacher, date, time, cls.room, cls.event].filter(Boolean).join(' · ');
   const dur = cls.duration ? (cls.duration>=60 ? Math.floor(cls.duration/60)+(cls.duration%60?'.5':'')+'h' : cls.duration+'min') : '';
 
+  const audienceLabels={'newcomer-friendly':'Good for Newcomers','kids-welcome':'Good for Kids','adults-only':'Adults Only'};
+  const audienceTags=(cls.audience||'').split(',').map(a=>a.trim()).filter(a=>audienceLabels[a]).map(a=>audienceLabels[a]);
+  const levelTags=(cls.level||'').split(',').map(l=>l.trim()).filter(Boolean);
+  const tagList=[...levelTags,...audienceTags];
+
   const rowStyle = 'border-bottom:1px solid #ccc;';
   const thStyle = 'text-align:left;padding:6px 8px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#555;border-bottom:2px solid #333;';
   const tdStyle = 'padding:8px;font-size:13px;vertical-align:top;border-bottom:1px solid #ddd;';
   const cbStyle = 'width:20px;height:20px;border:1.5px solid #555;border-radius:3px;display:inline-block;';
 
-  function buildRows(list, showPos){
-    if(!list.length) return '<tr><td colspan="4" style="padding:12px 8px;font-size:13px;color:#888;">None</td></tr>';
-    return list.map((x,i)=>
+  function buildRows(list, showPos, openSpots){
+    const blankRow='<tr style="'+rowStyle+'">'
+      +'<td style="'+tdStyle+'text-align:center;width:36px;"><span style="'+cbStyle+'"></span></td>'
+      +'<td style="'+tdStyle+'"></td>'
+      +'<td style="'+tdStyle+'font-size:12px;color:#555;"></td>'
+      +'</tr>';
+    if(!list.length && !openSpots) return '<tr><td colspan="3" style="padding:12px 8px;font-size:13px;color:#888;">None</td></tr>';
+    const filled = list.map((x,i)=>
       '<tr style="'+rowStyle+'">'
       +'<td style="'+tdStyle+'text-align:center;width:36px;">'+(showPos?'<span style="font-size:12px;color:#777;">#'+x.pos+'</span>':'<span style="'+cbStyle+'"></span>')+'</td>'
       +'<td style="'+tdStyle+'">'+(x.scaName||'')+'</td>'
       +'<td style="'+tdStyle+'font-size:12px;color:#555;">'+(x.email||'')+'</td>'
-      +'<td style="'+tdStyle+'font-size:12px;color:#555;">'+(x.barony||'')+'</td>'
       +'</tr>'
     ).join('');
+    const blanks = openSpots>0 ? blankRow.repeat(openSpots) : '';
+    return filled + blanks;
   }
 
   // Build roster HTML (works in-page on mobile; no popup needed)
@@ -2551,7 +2565,9 @@ async function printRoster(classId){
   <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:12px">
     <div>
       <h1 style="font-size:20px;margin-bottom:4px">${escH(cls.title)}</h1>
-      <div style="font-size:13px;color:#555;margin-bottom:4px;font-family:sans-serif">${escH(meta)}${dur?' · '+dur:''}</div>
+      <div style="font-size:13px;color:#555;margin-bottom:6px;font-family:sans-serif">${escH(meta)}${dur?' · '+dur:''}</div>
+      ${tagList.length?'<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px">'+tagList.map(t=>'<span style="font-size:11px;font-family:sans-serif;padding:2px 9px;border-radius:10px;border:1px solid #bbb;color:#444;background:#f4f4f4">'+escH(t)+'</span>').join('')+'</div>':''}
+      ${cls.desc?'<div style="font-size:13px;color:#333;font-family:sans-serif;line-height:1.55;margin-bottom:8px">'+escH(cls.desc)+'</div>':''}
       ${cls.fee?'<div style="font-size:12px;color:#666;font-family:sans-serif;font-style:italic">Fee: '+escH(cls.fee)+'</div>':''}
       ${cls.bring?'<div style="font-size:12px;color:#666;font-family:sans-serif;font-style:italic">Students bring: '+escH(cls.bring)+'</div>':''}
     </div>
@@ -2563,9 +2579,8 @@ async function printRoster(classId){
       <th style="${thStyle}text-align:center;width:36px;">✓</th>
       <th style="${thStyle}">SCA Name</th>
       <th style="${thStyle}">Email</th>
-      <th style="${thStyle}">Barony / Location</th>
     </tr></thead>
-    <tbody>${buildRows(rg, false)}</tbody>
+    <tbody>${buildRows(rg, false, cls.max ? Math.max(0, cls.max - rg.length) : 0)}</tbody>
   </table>
   ${wl.length ? `<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#444;font-family:sans-serif;margin-bottom:6px">Waitlist (${wl.length})</div>
   <table style="width:100%;border-collapse:collapse;margin-bottom:28px">
@@ -2573,7 +2588,6 @@ async function printRoster(classId){
       <th style="${thStyle}text-align:center;width:36px;">#</th>
       <th style="${thStyle}">SCA Name</th>
       <th style="${thStyle}">Email</th>
-      <th style="${thStyle}">Barony / Location</th>
     </tr></thead>
     <tbody>${buildRows(wl, true)}</tbody>
   </table>` : ''}
@@ -3512,6 +3526,64 @@ function getEmRoom(){
   const sel=document.getElementById('em-room-sel');
   return sel.value==='__other__'?document.getElementById('em-room').value.trim():sel.value;
 }
+function printRoomSchedules(){
+  const evName=document.getElementById('ev-picker').value;
+  const ev=availEvents.find(e=>e.name===evName);
+  if(!ev||!ev.rooms||!ev.rooms.length){alert('No rooms defined for this event.');return;}
+
+  const approved=dC.filter(c=>c.event===evName&&c.status==='approved'&&!c.cancelled);
+  const printDate=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+
+  const thS='text-align:left;padding:6px 8px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#555;border-bottom:2px solid #333;font-family:sans-serif;';
+  const tdS='padding:10px 8px;font-size:13px;vertical-align:top;border-bottom:1px solid #ddd;';
+
+  const pages=ev.rooms.map(room=>{
+    const classes=approved.filter(c=>c.room===room).sort((a,b)=>a.time>b.time?1:-1);
+    const rows=classes.length
+      ? classes.map(c=>{
+          const dur=c.duration?(c.duration>=60?Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h':c.duration+'min'):'';
+          const teacher=(c.teacherTitle?c.teacherTitle+' ':'')+c.teacher;
+          return '<tr>'
+            +'<td style="'+tdS+'font-family:sans-serif;font-weight:600;white-space:nowrap;width:70px;">'+escH(fT(c.time))+'</td>'
+            +'<td style="'+tdS+'">'
+              +'<div style="font-size:14px;font-weight:600;font-family:Georgia,serif;margin-bottom:2px">'+escH(c.title)+'</div>'
+              +'<div style="font-size:12px;color:#555;font-family:sans-serif;margin-bottom:4px">'+escH(teacher)+(dur?' · '+dur:'')+'</div>'
+              +(c.desc?'<div style="font-size:12px;color:#444;font-family:sans-serif;line-height:1.5;margin-bottom:4px">'+escH(c.desc)+'</div>':'')
+              +((()=>{const audienceLabels={'newcomer-friendly':'Good for Newcomers','kids-welcome':'Good for Kids','adults-only':'Adults Only'};const tgs=[...(c.level||'').split(',').map(l=>l.trim()).filter(Boolean),...(c.audience||'').split(',').map(a=>a.trim()).filter(a=>audienceLabels[a]).map(a=>audienceLabels[a])];return tgs.length?'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:2px">'+tgs.map(t=>'<span style="font-size:11px;font-family:sans-serif;padding:1px 8px;border-radius:10px;border:1px solid #bbb;color:#444;background:#f4f4f4">'+escH(t)+'</span>').join('')+'</div>':''})())
+            +'</td>'
+            +'</tr>';
+        }).join('')
+      : '<tr><td colspan="2" style="padding:16px 8px;font-size:13px;color:#888;font-family:sans-serif;">No classes scheduled.</td></tr>';
+
+    return `<div style="page-break-after:always;padding:1.5rem;font-family:Georgia,serif;color:#111">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px">
+    <div>
+      <div style="font-size:11px;font-family:sans-serif;text-transform:uppercase;letter-spacing:.07em;color:#777;margin-bottom:4px">${escH(evName)}</div>
+      <h1 style="font-size:24px;margin:0">${escH(room)}</h1>
+    </div>
+    <button onclick="window.print()" style="flex-shrink:0;padding:7px 16px;background:#1A3F7A;color:#fff;border:none;border-radius:5px;font-size:13px;cursor:pointer;font-family:sans-serif">🖨 Print</button>
+  </div>
+  <div style="font-size:12px;font-family:sans-serif;color:#777;margin-bottom:16px;border-bottom:2px solid #333;padding-bottom:10px">${classes.length} class${classes.length!==1?'es':''} scheduled</div>
+  <table style="width:100%;border-collapse:collapse">
+    <thead><tr>
+      <th style="${thS}width:70px;">Time</th>
+      <th style="${thS}">Class</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <div style="margin-top:24px;font-size:11px;color:#aaa;font-family:sans-serif;border-top:1px solid #ddd;padding-top:10px;display:flex;justify-content:space-between">
+    <span>Kingdom Class Registry — Caid</span>
+    <span>Printed ${printDate}</span>
+  </div>
+</div>`;
+  });
+
+  const layer=document.getElementById('print-layer');
+  layer.innerHTML=pages.join('');
+  window.print();
+  setTimeout(()=>layer.innerHTML='',500);
+}
+
 function printSchedule(){
   const email=scheduleEmail||'';
   const evHtml=document.getElementById('sched-events').innerHTML||'';
