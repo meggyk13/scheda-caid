@@ -272,9 +272,10 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 
 /* ── Print ── */
 @media print{
-  .topbar .nav,.filters,.enroll-btn,.remove-btn,.print-btn,.roster-toggle,.roster-list{display:none!important}
-  .panel{display:none!important}#panel-schedule{display:block!important}
-  body{background:#fff}.app{box-shadow:none}
+  /* Hide everything, show only the print layer */
+  body>*{display:none!important}
+  #print-layer{display:block!important}
+  body{background:#fff}
 }
 
 /* ── Mobile ── */
@@ -402,7 +403,10 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         <div class="form-full"><label class="form-label">Class description *</label><textarea class="form-textarea" id="fc-d" maxlength="600" oninput="updateCharCount('fc-d',600)" placeholder="What will attendees learn? What should they expect?"></textarea><span class="form-hint"><span id="fc-d-count">600</span> characters remaining</span></div>
         <div class="form-divider">About you</div>
         <div class="form-grid">
+          <div class="form-col"><label class="form-label">SCA title <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><input class="form-input" id="fc-ttl" type="text" placeholder="e.g. Lady, Lord, Master, Mistress"><span class="form-hint">Shown before your name in the catalog.</span></div>
           <div class="form-col"><label class="form-label">Your SCA name *</label><input class="form-input" id="fc-tc" type="text" placeholder="No titles — e.g. Alienor of Wakefield"></div>
+        </div>
+        <div class="form-grid">
           <div class="form-col"><label class="form-label">Your email (admin contact only) *</label><input class="form-input" id="fc-em" type="email" placeholder="not shown publicly"></div>
         </div>
         <div class="form-full"><label class="form-label">Phone (admin contact only) <span style="font-weight:400;text-transform:none;letter-spacing:0">optional</span></label><input class="form-input" id="fc-ph" type="tel" placeholder="Helps admin reach you quickly at events"></div>
@@ -691,6 +695,11 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
             <div class="link-gen">
               <div style="display:flex;flex-direction:column;gap:8px">
                 <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                  <span style="font-size:12.5px;font-family:sans-serif;color:var(--text2);min-width:140px"><i class="ti ti-menu-2"></i> Class catalog</span>
+                  <div class="lg-result" id="cat-link-result" style="display:block;margin:0;flex:1"></div>
+                  <button class="copy-btn" id="cat-link-copy" onclick="cpL(event, document.getElementById('cat-link-result').dataset.url)" style="white-space:nowrap"><i class="ti ti-copy"></i> Copy</button>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
                   <span style="font-size:12.5px;font-family:sans-serif;color:var(--text2);min-width:140px"><i class="ti ti-plus"></i> Teach a class</span>
                   <div class="lg-result" id="teach-link-result" style="display:block;margin:0;flex:1"></div>
                   <button class="copy-btn" id="teach-link-copy" onclick="cpL(event, document.getElementById('teach-link-result').dataset.url)" style="white-space:nowrap"><i class="ti ti-copy"></i> Copy</button>
@@ -887,6 +896,15 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 </div>
 
 <!-- Roster modal -->
+<div class="modal-bg" id="voter-modal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-title">Voter emails</div>
+    <div class="modal-sub" id="voter-modal-topic" style="margin-bottom:12px"></div>
+    <div id="voter-modal-list" style="max-height:260px;overflow-y:auto"></div>
+    <div class="modal-actions"><button class="modal-cancel" onclick="closeModal('voter-modal')">Close</button></div>
+  </div>
+</div>
+
 <div class="modal-bg" id="roster-modal">
   <div class="modal">
     <div class="modal-title" id="roM-title">Roster</div>
@@ -905,6 +923,9 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
     <div id="preview-card-wrap" style="padding:0"></div>
   </div>
 </div>
+
+<!-- Dedicated print-only layer for My Schedule -->
+<div id="print-layer" style="display:none"></div>
 
 <script>
 // ── Time select helper ──
@@ -1185,7 +1206,7 @@ function apiD(p){
   }
   if(action==='adminGetGrid')return{ok:true,approved:dC.filter(c=>!p.event||c.event===p.event),pending:dP.filter(c=>!p.event||c.event===p.event)};
   if(action==='submitRequest'){const id='r'+(dReqPid++);allRequests.push({id,topic:p.topic,topicTag:p.topicTag||'',event:p.event||'',level:p.level||'',format:p.format||'',notes:p.notes||'',submitter:p.submitter||'',hearts:0,ts:Date.now()});return{ok:true,id};}
-  if(action==='heartRequest'){const r=allRequests.find(x=>String(x.id)===String(p.id));if(r)r.hearts=Math.max(0,r.hearts+(p.dir==='up'?1:-1));return{ok:true};}
+  if(action==='heartRequest'){const r=allRequests.find(x=>String(x.id)===String(p.id));if(r){r.hearts=Math.max(0,r.hearts+(p.dir==='up'?1:-1));if(!r.voters)r.voters=[];if(p.dir==='up'&&p.email&&!r.voters.includes(p.email))r.voters.push(p.email);if(p.dir==='down'&&p.email)r.voters=r.voters.filter(e=>e!==p.email);}return{ok:true};}
   if(action==='getRequests')return{ok:true,requests:allRequests};
   if(action==='adminDeleteRequest'){const i=allRequests.findIndex(x=>String(x.id)===String(p.id));if(i>=0)allRequests.splice(i,1);return{ok:true};}
   if(action==='adminHideRequest'){const r=allRequests.find(x=>String(x.id)===String(p.id));if(r)r.hidden=p.hidden==='true';return{ok:true};}
@@ -1215,7 +1236,7 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated May 30, 2026 · 9:30 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:8px"><div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated May 30, 2026 · 11:25 PM PT</span></div><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:#1A3F7A;background:rgba(26,63,122,.12);border:1px solid rgba(26,63,122,.22);padding:3px 10px;border-radius:99px;text-decoration:none;white-space:nowrap;flex-shrink:0"><i class="ti ti-sparkles"></i> What\'s New</a></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){allClasses=res.classes;await loadEvFilter();populateTopics();rC();}
@@ -2476,6 +2497,7 @@ async function showRoster(classId){
     +'<table style="width:100%;border-collapse:collapse"><tr style="background:var(--bg2)"><th style="text-align:left;padding:5px 8px;font-size:12px">#</th><th style="text-align:left;padding:5px 8px;font-size:12px">SCA Name</th><th style="text-align:left;padding:5px 8px;font-size:12px">Email</th></tr>'
     +wl.map(x=>'<tr><td style="padding:5px 8px;font-size:12px;color:var(--accent-mid)">#'+x.pos+'</td><td style="padding:5px 8px;font-size:13px">'+x.scaName+'</td><td style="padding:5px 8px;font-size:12px;color:var(--text2)">'+x.email+'</td><td style="padding:3px 6px"><button class="reject-btn" style="padding:3px 8px;font-size:11px" onclick="adminRemoveStudent(\''+classId+'\',\''+x.email+'\',true)"><i class="ti ti-x"></i> Remove</button></td></tr>').join('')+'</table>';
   document.getElementById('roM-body').innerHTML=h;
+  document.getElementById('roM-print-btn').style.display='';
   document.getElementById('roster-modal').classList.add('open');
 }
 
@@ -2561,11 +2583,10 @@ async function printRoster(classId){
   </div>
 </div>`;
 
-  // Show in the existing roster modal body
-  document.getElementById('roM-title').textContent = 'Roster — ' + cls.title;
-  document.getElementById('roM-body').innerHTML = rosterHTML;
-  document.getElementById('roM-print-btn').style.display = 'none'; // print button is inline now
-  document.getElementById('roster-modal').classList.add('open');
+  const layer=document.getElementById('print-layer');
+  layer.innerHTML=rosterHTML;
+  window.print();
+  setTimeout(()=>layer.innerHTML='',500);
 }
 function showAdminTab(tab){
   ['events','classes','requests','topics'].forEach(t=>{
@@ -2744,7 +2765,7 @@ function renderGrid(cls,filterDate){
   });
   tbl.innerHTML=h;
 }
-['reg-modal','approve-modal','roster-modal','edit-modal'].forEach(id=>document.getElementById(id).addEventListener('click',function(e){if(e.target===this)closeModal(id);}));
+['reg-modal','approve-modal','roster-modal','edit-modal','voter-modal'].forEach(id=>document.getElementById(id).addEventListener('click',function(e){if(e.target===this)closeModal(id);}));
 
 let curEditId=null;
 function openEditClass(id){
@@ -2968,8 +2989,9 @@ function toggleReqForm(){
 }
 
 function isValidEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
-function getHeartEmail(){try{return localStorage.getItem('kcr_heart_email')||'';}catch{return '';}}
-function setHeartEmail(e){try{localStorage.setItem('kcr_heart_email',e);}catch{}}
+let sessionHeartEmail = '';
+function getHeartEmail(){return sessionHeartEmail;}
+function setHeartEmail(e){sessionHeartEmail=e;}
 
 async function submitRequest(){
   const topic = document.getElementById('rq-topic').value.trim();
@@ -2997,7 +3019,6 @@ async function submitRequest(){
   });
   btn.disabled=false; btn.innerHTML='<i class="ti ti-send"></i> Submit request';
   if(!res.ok){alert(res.error||'Submission failed.');return;}
-  setHeartEmail(email);
   document.getElementById('req-submit-ok').style.display='block';
   document.getElementById('rq-topic').value='';
   document.getElementById('rq-topic-sel').value='';
@@ -3009,9 +3030,27 @@ async function submitRequest(){
   renderRequests();
 }
 
+const sessionVoted = new Set();
+
+function showVoterEmails(id){
+  const r = allRequests.find(x=>String(x.id)===String(id));
+  if(!r) return;
+  const emails = r.voters||[];
+  const body = emails.length
+    ? emails.map(e=>'<div style="padding:5px 0;border-bottom:1px solid rgba(26,63,122,.08);font-family:sans-serif;font-size:13px"><a href="mailto:'+escH(e)+'" style="color:var(--accent)">'+escH(e)+'</a></div>').join('')
+    : '<div style="font-family:sans-serif;font-size:13px;color:var(--text2)">No emails recorded yet.</div>';
+  document.getElementById('voter-modal-topic').textContent = r.topic;
+  document.getElementById('voter-modal-list').innerHTML = body;
+  document.getElementById('voter-modal').classList.add('open');
+}
+
 async function toggleHeart(id){
   const hearted = hasHearted(id);
-  // If they haven't hearted it yet, make sure we have a valid email on file
+  // Block re-voting within the same session
+  if(!hearted && sessionVoted.has(String(id))){
+    alert('You already voted on this request this session.');return;
+  }
+  // Require a valid email before voting
   if(!hearted){
     let email = getHeartEmail();
     if(!email||!isValidEmail(email)){
@@ -3021,8 +3060,10 @@ async function toggleHeart(id){
     }
   }
   const dir = hearted ? 'down' : 'up';
+  const email = getHeartEmail();
+  if(!hearted) sessionVoted.add(String(id)); else sessionVoted.delete(String(id));
   if(hearted) removeHeart(id); else addHeart(id);
-  await api({action:'heartRequest', id:String(id), dir});
+  await api({action:'heartRequest', id:String(id), dir, email});
   renderRequests();
 }
 
@@ -3147,7 +3188,7 @@ function renderAdminRequests(){
         +(r.barony?'<span style="opacity:.5">·</span><span><i class="ti ti-map-pin"></i> '+escH(r.barony)+'</span>':'')
         +'</div>' : '';
     const hearterNote = (r.hearts||0) > 0
-      ? '<div style="margin-top:4px;font-size:11.5px;font-family:sans-serif;color:var(--text2);font-style:italic"><i class="ti ti-heart" style="color:#c0392b"></i> '+(r.hearts)+' additional people agreed &mdash; their emails are tracked server-side for notification.</div>'
+      ? '<div style="margin-top:4px;font-size:11.5px;font-family:sans-serif;color:var(--text2)"><i class="ti ti-heart" style="color:#c0392b"></i> '+(r.hearts)+' agreed &mdash; <button onclick="showVoterEmails(\''+escH(r.id)+'\')" style="background:none;border:none;padding:0;color:var(--accent);font-size:11.5px;cursor:pointer;font-family:sans-serif;text-decoration:underline">See emails</button></div>'
       : '';
     return '<div class="req-admin-card">'
     +'<div class="req-admin-topic">'+escH(r.topic)+(r.hidden?' <span style="font-size:10px;font-family:sans-serif;background:var(--bg3);color:var(--text2);padding:2px 6px;border-radius:8px;font-weight:600">Hidden</span>':'')+'</div>'
@@ -3201,10 +3242,13 @@ function loadEventPanel(){
   if(!evName){panel.style.display='none';empty.style.display='block';if(clearBtn)clearBtn.style.display='none';return;}
   panel.style.display='block';empty.style.display='none';
   if(clearBtn)clearBtn.style.display='inline-flex';
-  // Build both links
+  // Build all three links
   const base=window.location.origin+window.location.pathname;
+  const catUrl=base+'?event='+encodeURIComponent(evName)+'#catalog';
   const teachUrl=base+'?event='+encodeURIComponent(evName)+'#submit';
   const reqUrl=base+'?request='+encodeURIComponent(evName)+'#requests';
+  const cEl=document.getElementById('cat-link-result');
+  if(cEl){cEl.dataset.url=catUrl;cEl.innerHTML='<a href="'+catUrl+'" target="_blank">'+catUrl+'</a>';}
   const tEl=document.getElementById('teach-link-result');
   tEl.dataset.url=teachUrl;
   tEl.innerHTML='<a href="'+teachUrl+'" target="_blank">'+teachUrl+'</a>';
@@ -3473,14 +3517,16 @@ function printSchedule(){
   const evHtml=document.getElementById('sched-events').innerHTML||'';
   const schedHtml=document.getElementById('sl').innerHTML||'';
 
-  // Build a clean copy with interactive buttons removed
+  // Build a clean copy with interactive elements removed
   const wrap=document.createElement('div');
   wrap.innerHTML='<div>'+evHtml+'</div><div>'+schedHtml+'</div>';
   wrap.querySelectorAll('.remove-btn,.roster-toggle,.sched-zoom-btn,.print-btn').forEach(el=>el.remove());
+  // Also strip the lookup/filter UI that may bleed through
+  wrap.querySelectorAll('#sched-lookup,#sched-filters').forEach(el=>el.remove());
 
   const printDate=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
 
-  const body=`<div style="font-family:Georgia,serif;color:#0D1F3C;font-size:13px">
+  const body=`<div style="font-family:Georgia,serif;color:#0D1F3C;font-size:13px;padding:1rem">
   <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:12px">
     <div>
       <div style="font-size:20px;font-weight:600;margin-bottom:4px">My Schedule</div>
@@ -3495,10 +3541,11 @@ function printSchedule(){
   </div>
 </div>`;
 
-  document.getElementById('roM-title').textContent='My Schedule';
-  document.getElementById('roM-body').innerHTML=body;
-  document.getElementById('roM-print-btn').style.display='none';
-  document.getElementById('roster-modal').classList.add('open');
+  const layer=document.getElementById('print-layer');
+  layer.innerHTML=body;
+  window.print();
+  // Clean up after print dialog closes
+  setTimeout(()=>layer.innerHTML='',500);
 }
 
 </script>

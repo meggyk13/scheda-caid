@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What's New — Kingdom Class Registry</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:#F7F9FC;color:#0D1F3C;min-height:100vh;padding:32px 16px}
+a{color:#1A3F7A}
+.wrap{max-width:680px;margin:0 auto}
+
+.header{margin-bottom:32px}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.brand-icon{font-size:22px}
+.brand-name{font-size:20px;font-weight:700;color:#1A3F7A;letter-spacing:-.01em}
+.brand-sub{font-size:14px;color:#3A5278;margin-bottom:4px}
+.brand-note{font-size:12px;color:#8aa5c8;line-height:1.5}
+
+.back-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:#3D6DB5;text-decoration:none;margin-bottom:24px;font-family:sans-serif}
+.back-link:hover{text-decoration:underline}
+
+.intro-box{background:#E6EDF8;border:1px solid rgba(26,63,122,.18);border-radius:10px;padding:16px 18px;margin-bottom:28px;font-size:13px;line-height:1.7;color:#1A3F7A;font-family:sans-serif}
+.intro-box strong{font-weight:700}
+
+.entry{background:#fff;border:1px solid rgba(26,63,122,.13);border-radius:10px;overflow:hidden;margin-bottom:18px}
+.entry-header{padding:14px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(26,63,122,.10);cursor:pointer;user-select:none}
+.entry-header:hover{background:#F0F5FC}
+.version-badge{background:#1A3F7A;color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:99px;letter-spacing:.04em;font-family:sans-serif}
+.entry-date{font-weight:700;color:#1A3F7A;font-size:15px}
+.entry-count{background:#E6EDF8;color:#1A3F7A;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;font-family:sans-serif}
+.chevron{margin-left:auto;color:#3D6DB5;font-size:16px;transition:transform .2s}
+.chevron.open{transform:rotate(90deg)}
+
+.changes{display:none}
+.changes.open{display:block}
+.change-item{padding:14px 18px;border-bottom:1px solid rgba(26,63,122,.07)}
+.change-item:last-child{border-bottom:none}
+.change-what{font-weight:700;color:#0D1F3C;font-size:14px;margin-bottom:8px}
+.change-row{display:flex;gap:8px;margin-bottom:5px;font-size:13px;line-height:1.6;font-family:sans-serif}
+.change-row:last-child{margin-bottom:0}
+.change-label{font-weight:700;min-width:120px;flex-shrink:0}
+.label-why{color:#2A5FAD}
+.label-try{color:#2e7d4e}
+.change-body{color:#3A5278}
+
+.footer{text-align:center;color:#8aa5c8;font-size:12px;margin-top:24px;font-family:sans-serif;line-height:1.7}
+
+.explore{background:#fff;border:1px solid rgba(26,63,122,.13);border-radius:10px;overflow:hidden;margin-bottom:28px}
+.explore-header{padding:14px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(26,63,122,.10)}
+.explore-title{font-weight:700;color:#1A3F7A;font-size:15px}
+.explore-sub{font-size:12px;color:#8aa5c8;font-family:sans-serif;margin-left:auto}
+.explore-body{padding:4px 0}
+.explore-group{border-bottom:1px solid rgba(26,63,122,.07)}
+.explore-group:last-child{border-bottom:none}
+.explore-group-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#8aa5c8;font-family:sans-serif;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;margin-bottom:0}
+.explore-group-title:hover{background:#F0F5FC}
+.explore-group-items{padding:4px 18px 12px;display:block}
+.explore-group-items.collapsed{display:none}
+.group-chevron{color:#3D6DB5;font-size:14px;transition:transform .2s;flex-shrink:0}
+.group-chevron.open{transform:rotate(90deg)}
+.explore-item{display:flex;gap:10px;margin-bottom:10px;font-family:sans-serif;font-size:13px;line-height:1.5}
+.explore-item:last-child{margin-bottom:0}
+.explore-icon{color:#3D6DB5;flex-shrink:0;margin-top:1px}
+.explore-text{color:#3A5278}
+.explore-text strong{color:#0D1F3C;font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back-link" href="./index.html"><i class="ti ti-arrow-left"></i> Back to the demo</a>
+
+  <div class="header">
+    <div class="brand">
+      <span class="brand-icon">⚜️</span>
+      <span class="brand-name">Kingdom Class Registry</span>
+    </div>
+    <div class="brand-sub">What's New · Kingdom of Caid</div>
+    <div class="brand-note">Updated in sync with the demo · Last updated May 30, 2026 · 11:25 PM PT</div>
+  </div>
+
+  <div class="intro-box">
+    <strong>Thanks for testing!</strong> This page gives you a plain-English rundown of what changed and what to click on. You don't need any technical background — just try the things listed under "Give it a try" and let Rayhana know if anything feels off or confusing.
+  </div>
+
+  <!-- Explore the App -->
+  <div class="explore">
+    <div class="explore-header">
+      <span class="brand-icon" style="font-size:16px">⚜️</span>
+      <span class="explore-title">Explore the App</span>
+      <span class="explore-sub">Start here if you're new</span>
+    </div>
+    <div class="explore-body">
+
+      <div class="explore-group">
+        <div class="explore-group-title" onclick="toggleGroup(this)">As an attendee <i class="ti ti-chevron-right group-chevron"></i></div>
+        <div class="explore-group-items collapsed">
+        <div class="explore-item">
+          <i class="ti ti-search explore-icon"></i>
+          <span class="explore-text"><strong>Browse the catalog.</strong> Use the search bar or the dropdowns to filter by topic, format (in-person or online), or event. Do the results make sense?</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-circle-check explore-icon"></i>
+          <span class="explore-text"><strong>Register for a class.</strong> Click any class card and hit Register. You'll be asked for your name and email — this is how the system tracks your spot.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-clock explore-icon"></i>
+          <span class="explore-text"><strong>Try joining a full class.</strong> Find one that says "Full" or has a waitlist. You should be offered a waitlist spot and told your position.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-calendar explore-icon"></i>
+          <span class="explore-text"><strong>Check My Schedule.</strong> After registering for a couple of classes, click "My Schedule" in the top menu. Everything you signed up for should appear. Try the Print button.</span>
+        </div>
+        </div>
+      </div>
+
+      <div class="explore-group">
+        <div class="explore-group-title" onclick="toggleGroup(this)">As a teacher <i class="ti ti-chevron-right group-chevron"></i></div>
+        <div class="explore-group-items collapsed">
+        <div class="explore-item">
+          <i class="ti ti-plus explore-icon"></i>
+          <span class="explore-text"><strong>Submit a single-day class.</strong> Click "Teach a Class" and select <strong>Collegium</strong> as the event. Fill in a title, description, prerequisites, and a max class size. Submit it — then log into admin (password: admin123) and confirm it shows up under Pending with everything you entered.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-user explore-icon"></i>
+          <span class="explore-text"><strong>Add a teacher bio.</strong> While filling out the form, find the optional bio field and write a sentence or two about your background. After submitting, go to the catalog and find your class — hover over the teacher name. A small info bubble with your bio should appear.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-video explore-icon"></i>
+          <span class="explore-text"><strong>Submit an online class.</strong> Select <strong>Online / Zoom</strong> as the format. A field will appear asking for your Zoom link — paste any URL in there. Submit and check that the link shows up correctly on the class card in the catalog.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-copy explore-icon"></i>
+          <span class="explore-text"><strong>Teach the same class twice at Great Western War.</strong> Submit a class for <strong>Great Western War</strong> and use the day-by-day scheduler to pick your preferred days and times. Then submit the exact same class a second time. In admin, both pending entries should appear labeled <em>Session 1 of 2</em> and <em>Session 2 of 2</em> so the coordinator knows they go together.</span>
+        </div>
+        </div>
+      </div>
+
+      <div class="explore-group">
+        <div class="explore-group-title" onclick="toggleGroup(this)">As an admin or coordinator <i class="ti ti-chevron-right group-chevron"></i></div>
+        <div class="explore-group-items collapsed">
+        <div class="explore-item">
+          <i class="ti ti-settings explore-icon"></i>
+          <span class="explore-text"><strong>Log in.</strong> Click the ⚙️ gear icon in the top-right corner. Password is <strong>admin123</strong>. This is where the A&amp;S officer, Seneschal, or event coordinator would work.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-calendar-plus explore-icon"></i>
+          <span class="explore-text"><strong>Create an event.</strong> Go to Admin → Events → Create Event. Enter a name, dates, and a number of classrooms — the system will generate Room 1, Room 2, etc. automatically. You can rename them later. Does the form make sense?</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-eye explore-icon"></i>
+          <span class="explore-text"><strong>Publish and unpublish an event.</strong> Find the Published toggle on an event and turn it off. Go back to the catalog and confirm that event's classes disappear from public view. Turn it back on and confirm they return.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-circle-check explore-icon"></i>
+          <span class="explore-text"><strong>Approve a class.</strong> Go to Admin → Classes → Pending. Click Approve on any class and fill in the date, time, and room. Submit — then confirm the class moves to the published list and appears in the catalog.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-circle-x explore-icon"></i>
+          <span class="explore-text"><strong>Reject a class.</strong> From the Pending tab, reject a submission. Confirm it disappears from the queue.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-pencil explore-icon"></i>
+          <span class="explore-text"><strong>Edit an approved class.</strong> Find a published class and click the edit (pencil) button. Change the room or time and save. Confirm the update shows correctly in the catalog.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-ban explore-icon"></i>
+          <span class="explore-text"><strong>Cancel a class.</strong> Click the cancel button on a published class. Confirm it shows as Cancelled in the catalog and on any registered attendee's My Schedule.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-layout-grid explore-icon"></i>
+          <span class="explore-text"><strong>Check the schedule grid.</strong> After approving several classes, open the schedule grid view. Approve two classes into the same room at the same time — the grid should flag the conflict. For GWW, use the day tabs to switch between days.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-users explore-icon"></i>
+          <span class="explore-text"><strong>View a class roster.</strong> Click the roster icon on any approved class with registrations. You should see who's signed up. Try printing it.</span>
+        </div>
+        </div>
+      </div>
+
+      <div class="explore-group">
+        <div class="explore-group-title" onclick="toggleGroup(this)">Community features <i class="ti ti-chevron-right group-chevron"></i></div>
+        <div class="explore-group-items collapsed">
+        <div class="explore-item">
+          <i class="ti ti-users explore-icon"></i>
+          <span class="explore-text"><strong>See who's going.</strong> Register for a class, then open that class card again. Your name should appear in the attendee list. This is how members can see who else signed up.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-user-off explore-icon"></i>
+          <span class="explore-text"><strong>Register anonymously.</strong> When registering for a class, check the option to hide your name from the roster. Confirm your name appears as "Anonymous attendee" in the attendee list instead.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-heart explore-icon"></i>
+          <span class="explore-text"><strong>Upvote a wishlist request.</strong> Click the heart on a few wishlist items. The count should go up. Try voting on the same item twice with the same email — it should only count once.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-message-plus explore-icon"></i>
+          <span class="explore-text"><strong>Submit a class request.</strong> Add something to the wishlist. Try checking the option to hide your name, then find your request in the list and confirm it shows anonymously.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-x explore-icon"></i>
+          <span class="explore-text"><strong>Drop a class.</strong> Register for a class, then remove yourself from it. Confirm your spot is freed up and your name is gone from the roster.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-ban explore-icon"></i>
+          <span class="explore-text"><strong>See a cancelled class on your schedule.</strong> Register for a class, then have an admin cancel it. Go to My Schedule — the class should still be listed but marked with a red Cancelled badge.</span>
+        </div>
+        </div>
+      </div>
+
+      <div class="explore-group">
+        <div class="explore-group-title" onclick="toggleGroup(this)">General notes <i class="ti ti-chevron-right group-chevron"></i></div>
+        <div class="explore-group-items collapsed">
+        <div class="explore-item">
+          <i class="ti ti-refresh explore-icon"></i>
+          <span class="explore-text"><strong>Data resets on refresh.</strong> This is expected — the demo doesn't have a real database behind it. Anything you do (registrations, submissions, admin changes) is temporary and clears when you refresh the page.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-photo-off explore-icon"></i>
+          <span class="explore-text"><strong>Class photo upload doesn't fully work yet.</strong> You can choose a photo when submitting a class, but the demo has no place to store it — so the image is never actually saved. It won't appear in the admin panel or on the class card. This is a known limitation being worked on.</span>
+        </div>
+        <div class="explore-item">
+          <i class="ti ti-lock explore-icon"></i>
+          <span class="explore-text"><strong>Admin password is admin123.</strong> Click the ⚙️ gear icon in the top-right corner to log in.</span>
+        </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Entry: May 30 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="version-badge">May 30</span>
+      <span class="entry-date">Latest update</span>
+      <span class="entry-count">7 changes</span>
+      <i class="ti ti-chevron-right chevron open"></i>
+    </div>
+    <div class="changes open">
+
+      <div class="change-item">
+        <div class="change-what">Scheduling dates pre-fill correctly in the admin approval screen</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">When an admin approves a class, the date was showing today instead of the event date — admins had to fix it by hand every time. It now starts on the right day.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Log into admin (password: admin123), go to the Pending tab, click Approve on any class, and check that the date already shows the event's start date.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Time fields now only allow clean 15-minute steps</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Previously you could type in odd times like 10:07. Now every time picker in the app snaps to the quarter-hour — 9:00, 9:15, 9:30, 9:45 — so schedules stay consistent.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">In admin, open Create Event or the Approve screen and click on any time field — the options should step in 15-minute increments only.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Create Event form now shows hints inside each blank field</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">The form used to show empty boxes with no clue what to type. Now each field has light grey hint text inside it showing the expected format or an example.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Go to Admin → Events → Create Event. Before typing anything, read the grey text inside each box — does it make sense? Does anything still feel unclear?</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Event location links now go to the real SCA Caid places page</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Placeholder links were going nowhere. Now they point to the actual SCA Caid site so you can see how a real event link would behave.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Open any class in the catalog and look for the event or location link. Click it — it should open the SCA Caid website in a new tab.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Teachers can now add notes for the admin when submitting a class</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Before, there was no way for a teacher to flag special needs — like needing A/V equipment, a large room, or specific setup. Now there's a free-text notes box at the bottom of the submission form.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Click "Teach a Class" in the top menu, fill out the form, and look for the notes field near the bottom. Type something in it and submit — then log into admin and check if the note shows up on the pending class.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Wishlist voting now requires an email address</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Previously you could heart a request without identifying yourself at all. Now the first time you vote in a session, you'll be prompted for your email. It's used for admin contact only and never shown publicly.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Go to Class Requests and click the heart on any item. A prompt should appear asking for your email before the vote goes through.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Voter emails visible to admin per request</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Admins can now see who voted for a request and reach out when a matching class gets scheduled. In the real version this goes to Google Sheets; in the demo it shows in a popup.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Vote on a request, then log into admin and go to the Requests tab. Find that request and click "See emails" — your email should appear in the list.</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="version-badge">May 28</span>
+      <span class="entry-date">Earlier this week</span>
+      <span class="entry-count">2 changes</span>
+      <i class="ti ti-chevron-right chevron"></i>
+    </div>
+    <div class="changes">
+
+      <div class="change-item">
+        <div class="change-what">Demo is now live at a shareable link</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">The app moved from a file you'd open on your computer to a real URL anyone can visit in their browser — nothing to download or install.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">You're already here! If it loaded, it's working. Try opening it on your phone to see how it feels on a smaller screen.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Quick-approve shortcut temporarily disabled</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">A bug was found in the one-click approve button that could cause classes to be approved incorrectly. It's been flagged for a proper fix.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Use the full Approve &amp; Publish window (not the quick button) when testing class approvals for now.</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Entry: Initial -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="version-badge">Earlier</span>
+      <span class="entry-date">What the app does</span>
+      <span class="entry-count">7 features</span>
+      <i class="ti ti-chevron-right chevron"></i>
+    </div>
+    <div class="changes">
+
+      <div class="change-item">
+        <div class="change-what">Class catalog with search and filters</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Attendees can browse all available classes and narrow them down by topic, format (in-person or online), or event.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Use the search bar or dropdowns at the top of the catalog. Try filtering by topic and see if the right classes show up.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Class registration and waitlist</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Attendees can claim a seat in a class. If it's full, they can join the waitlist and see their position.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Click Register on a class. Then try one that's already full — you should be offered a waitlist spot.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">My Schedule tab</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Once registered, attendees have a personal view of everything they've signed up for, with a print option for bringing to the event.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Register for two or three classes, then click "My Schedule" in the top menu. Try the Print button.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Teach a Class form</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Teachers can submit a class proposal through a structured form. It goes to the admin for review before appearing in the catalog.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Click "Teach a Class" and fill out the form. Does it ask for everything you'd expect? Is anything confusing or missing?</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Admin panel</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">The Kingdom A&amp;S officer or event coordinator can create events, review submitted classes, approve or decline them, assign rooms, and spot scheduling conflicts.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Click the ⚙️ gear icon in the top right and enter password <strong>admin123</strong>. Explore the Events, Classes, and Requests tabs. Does it feel manageable?</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Class wishlist with voting</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Members can request topics they'd like to see taught and upvote existing requests. Admins can use this to recruit teachers for popular subjects.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Look for the wishlist — click the heart on a few items and see if the count goes up.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Demo mode with sample data pre-loaded</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">You can explore the app without setting anything up — sample classes and events are already in there. Everything resets when you refresh, so feel free to click around.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">You're already in demo mode. The blue banner at the top tells you so. Refresh the page and confirm everything resets.</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- General Notes -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="version-badge" style="background:#5a6a7e;">Notes</span>
+      <span class="entry-date">Good to know</span>
+      <i class="ti ti-chevron-right chevron open"></i>
+    </div>
+    <div class="changes open">
+
+      <div class="change-item">
+        <div class="change-what">Admin password</div>
+        <div class="change-row">
+          <span class="change-label" style="color:#5a6a7e;font-weight:700;min-width:120px;flex-shrink:0">Access</span>
+          <span class="change-body">Click the ⚙️ gear icon in the top-right corner of the demo. Password is <strong>admin123</strong>. This unlocks the Events, Classes, and Requests tabs.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Data resets when you refresh</div>
+        <div class="change-row">
+          <span class="change-label" style="color:#5a6a7e;font-weight:700;min-width:120px;flex-shrink:0">Known limitation</span>
+          <span class="change-body">This is expected behavior in the demo. Everything — registrations, submitted classes, admin changes — is temporary. Refreshing the page wipes it back to the starting state. The real version would save to a shared database.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Data may clear unexpectedly</div>
+        <div class="change-row">
+          <span class="change-label" style="color:#5a6a7e;font-weight:700;min-width:120px;flex-shrink:0">Known bug</span>
+          <span class="change-body">In some cases, data may disappear without a refresh — especially after a longer session or switching between tabs. If something you did seems to have vanished, that's likely why. Note what you were doing and let Rayhana know.</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    Questions or feedback? PM Rayhana.<br>
+    <a href="./index.html">← Back to the demo</a>
+  </div>
+
+</div>
+<script>
+function toggle(header){
+  const chevron=header.querySelector('.chevron');
+  const changes=header.nextElementSibling;
+  const isOpen=changes.classList.contains('open');
+  changes.classList.toggle('open',!isOpen);
+  chevron.classList.toggle('open',!isOpen);
+}
+function toggleGroup(header){
+  const chevron=header.querySelector('.group-chevron');
+  const items=header.nextElementSibling;
+  const isOpen=!items.classList.contains('collapsed');
+  items.classList.toggle('collapsed',isOpen);
+  chevron.classList.toggle('open',!isOpen);
+}
+</script>
+</body>
+</html>
