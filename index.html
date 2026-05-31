@@ -276,6 +276,8 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
   body>*{display:none!important}
   #print-layer{display:block!important}
   body{background:#fff}
+  /* Force background colors and images to print */
+  #print-layer *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
 }
 
 /* ── Mobile ── */
@@ -3606,7 +3608,7 @@ function printRoomSchedules(){
   const ev=availEvents.find(e=>e.name===evName);
   if(!ev||!ev.rooms||!ev.rooms.length){alert('No rooms defined for this event.');return;}
 
-  const approved=dC.filter(c=>c.event===evName&&c.status==='approved'&&!c.cancelled);
+  const approved=dC.filter(c=>c.event===evName&&(!c.status||c.status==='approved')&&!c.cancelled);
   const printDate=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   const evDateStr=ev.startDate?(ev.endDate&&ev.endDate!==ev.startDate?fD(ev.startDate)+' – '+fD(ev.endDate):fD(ev.startDate)):'';
   const audienceLabels={'newcomer-friendly':'Good for Newcomers','kids-welcome':'Good for Kids','adults-only':'Adults Only'};
