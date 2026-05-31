@@ -124,7 +124,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 
 /* ── Teach form ── */
 .ev-banner{padding:9px 13px;border-radius:var(--radius);background:var(--accent-light);color:var(--accent);font-size:13px;font-family:sans-serif;margin-bottom:1.1rem;display:flex;align-items:center;gap:7px;border:1px solid var(--border2)}
-.submit-form{max-width:640px}
+.submit-form{max-width:640px;padding-bottom:3rem}
 .form-section-title{font-size:19px;font-weight:600;font-family:Georgia,serif;margin-bottom:4px}
 .form-section-sub{font-size:13px;color:var(--text2);margin-bottom:1.25rem;font-family:sans-serif}
 .form-divider{font-size:15px;font-weight:700;font-family:Georgia,serif;color:var(--accent);margin:1.5rem 0 12px;border-top:2px solid var(--border2);padding-top:14px;letter-spacing:0;text-transform:none}
@@ -153,11 +153,25 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .admin-tab.active{color:var(--accent);border-right-color:var(--accent);font-weight:700;background:var(--accent-light)}
 .admin-tab-content{flex:1;min-width:0}
 @media(max-width:640px){
+  input,select,textarea{font-size:16px!important}
   .admin-layout{flex-direction:column}
   .admin-tabs{flex-direction:row;flex-wrap:wrap;min-width:0;width:100%;border-right:none;border-bottom:2px solid var(--border2);margin-right:0;margin-bottom:1rem;padding:0 0 4px}
   .admin-tab{border-right:none;border-bottom:2px solid transparent;margin-right:0;margin-bottom:-2px;border-radius:var(--radius) var(--radius) 0 0;padding:7px 10px;font-size:12px}
   .admin-tab.active{border-right-color:transparent;border-bottom-color:var(--accent)}
   .admin-tab-content{width:100%}
+  /* Catalog cards — larger for readability */
+  .card-title{font-size:17px}
+  .card-meta .meta-teacher{font-size:15px}
+  .card-desc{font-size:14px;line-height:1.65}
+  .logistics-pill{font-size:13px;padding:5px 11px}
+  .card-tag{font-size:12px}
+  .enroll-btn{font-size:14px;padding:8px 18px}
+  .spots{font-size:13px}
+  /* Schedule — larger for readability */
+  .sched-time{font-size:15px}
+  .sched-title{font-size:16px}
+  .sched-meta{font-size:14px}
+  .remove-btn{font-size:13px;padding:6px 12px}
 }
 
 /* ── Admin ── */
@@ -186,7 +200,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .admin-lock h3{font-family:Georgia,serif;font-size:18px;margin-bottom:8px}
 .admin-lock p{font-size:14px;color:var(--text2);margin-bottom:1.25rem;font-family:sans-serif}
 .lock-row{display:flex;gap:8px;justify-content:center}
-.lock-input{padding:8px 12px;border:1px solid var(--border2);border-radius:var(--radius);font-size:14px;background:var(--bg);color:var(--text);font-family:sans-serif;width:180px}
+.lock-input{padding:8px 12px;border:1px solid var(--border2);border-radius:var(--radius);font-size:16px;background:var(--bg);color:var(--text);font-family:sans-serif;width:180px}
 .lock-btn{padding:8px 18px;border-radius:var(--radius);background:var(--accent);color:#fff;border:none;font-size:13px;cursor:pointer;font-weight:600;font-family:sans-serif}
 .lock-err{font-size:12px;color:var(--red-text);margin-top:8px;display:none;font-family:sans-serif}
 .no-items{font-size:13px;color:var(--text2);padding:1rem 0;font-family:sans-serif}
@@ -372,6 +386,13 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
     </div>
     <div id="panel-submit" class="panel">
       <div class="submit-form">
+        <!-- Event card shown when an event is selected or locked -->
+        <div id="fc-event-card" style="display:none;margin-bottom:1.25rem;padding:13px 16px;background:var(--accent-light);border:1px solid var(--border2);border-radius:var(--radius-lg)">
+          <div id="fc-ev-card-name" style="font-size:18px;font-weight:700;font-family:Georgia,serif;color:var(--accent);margin-bottom:5px"></div>
+          <div style="display:flex;flex-direction:column;gap:3px" id="fc-ev-card-meta"></div>
+        </div>
+        <!-- Teacher message box shown when an event has a message set -->
+        <div id="fc-teacher-msg-box" style="display:none;margin-bottom:1.25rem;padding:11px 14px;background:#EAF3E8;border:1px solid #9CC49A;border-radius:var(--radius-lg);font-size:13px;font-family:sans-serif;color:#1A4D1A;line-height:1.65;white-space:pre-wrap"></div>
         <div id="ev-banner" class="ev-banner" style="display:none"><i class="ti ti-lock"></i> <span id="ev-banner-txt"></span></div>
         <div class="form-section-title">Submit a class</div>
         <div class="form-section-sub">Submissions go to admin review before appearing in the catalog.</div>
@@ -382,6 +403,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
             <option value="__inperson__">In person / standalone (not at an event)</option>
             <option value="__online__">Online / Zoom</option>
           </select>
+          <div id="ev-lock-pill" style="display:none;margin-top:6px;font-size:12px;font-family:sans-serif;color:var(--accent);align-items:center;gap:5px"><i class="ti ti-lock" style="font-size:12px"></i> <span id="ev-lock-pill-txt"></span></div>
           <span class="form-hint" id="fc-ev-hint"></span>
         </div>
         <input type="hidden" id="fc-fm" value="in-person">
@@ -430,7 +452,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
           </div>
         </div>
         <div id="sched-pf" style="display:none">
-          <div class="form-grid"><div class="form-col"><label class="form-label">How many times?</label><select class="form-select" id="fc-rp"><option value="once">Once</option><option value="twice">Twice</option><option value="three+">3+</option></select></div></div>
+          <div class="form-grid"><div class="form-col"><label class="form-label">How many times?</label><select class="form-select" id="fc-rp"><option value="once">Once</option><option value="twice">Twice</option><option value="three+">3 times</option></select></div></div>
           <div class="form-full"><label class="form-label">Time preferences <span style="font-weight:400;color:var(--text2);font-size:12px">(optional)</span></label><div id="fc-tpref-wrap" style="display:flex;flex-direction:column;gap:10px"></div><input type="hidden" id="fc-tpref"><span class="form-hint">Select the days and times that work for you. For multi-day events, at least one day is required.</span></div>
         </div>
         <div class="form-divider">Audience &amp; logistics</div>
@@ -677,6 +699,11 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
                     <label class="form-label" style="font-size:11px">Event info link</label>
                     <input class="lg-input" id="ev-url" type="url" placeholder="http://places.sca-caid.org/caid/" style="width:100%">
                   </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  <label class="form-label" style="font-size:11px">Message to teachers <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional — shown on the submission form)</span></label>
+                  <textarea class="lg-input" id="ev-teacher-msg" maxlength="600" oninput="updateCharCount('ev-teacher-msg',600)" style="min-height:80px;resize:vertical;font-family:sans-serif" placeholder="e.g. Thanks for volunteering to teach! Submissions are due by September 1st. Questions? Email the A&S officer at…"></textarea>
+                  <span style="font-size:11px;font-family:sans-serif;color:var(--text2);margin-top:1px"><span id="ev-teacher-msg-count">600</span> characters remaining</span>
                 </div>
                 <div style="display:flex;gap:8px;align-items:center">
                   <button class="lg-btn" onclick="saveEventDates()">Save changes</button>
@@ -991,7 +1018,7 @@ const APPS_SCRIPT_URL='YOUR_APPS_SCRIPT_URL_HERE';
 const IS_DEMO=APPS_SCRIPT_URL==='YOUR_APPS_SCRIPT_URL_HERE';
 const lockedEvent=new URLSearchParams(window.location.search).get('event');
 const dC=SEED_CLASSES.map(c=>({...c}));
-const dP=[{id:'p1',title:'Introduction to Heraldic Embroidery',teacher:'Brigid ingen Faeláin',email:'brigid@example.com',date:'',time:'',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'A hands-on introduction to embroidering heraldic devices onto fabric — perfect for decorating a banner, pouch, or garment. We will cover basic satin stitch and couching techniques using your own device or a provided sample design.',bring:'Nothing — needles, fabric, and thread provided. Bring your device blazon if you have one.',fee:'$2 materials',zoomLink:'',max:10,prereqs:'',bio:'Brigid has been doing needlework in the SCA for eight years, with a focus on Irish and early medieval embroidery traditions. This is her first time teaching at Collegium.',imageUrl:'',timepref:'Morning preferred — I am also helping with feast setup in the afternoon.',status:'pending',sessionNum:1,sessionTotal:1},{id:'p2',title:'Nalbinding for Beginners',teacherTitle:'Lord',teacher:'Gunnar Ivarsson',email:'gunnar@example.com',date:'',time:'',duration:120,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'Nalbinding is a pre-knitting textile technique used across the Norse and Byzantine world. Students will learn the Oslo stitch and start a small swatch to take home. No prior fiber arts experience needed.',bring:'Nothing — needles and wool provided.',fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:'Lord Gunnar has been practicing nalbinding for six years and researches Viking Age textile finds. He teaches regularly at West Kingdom events.',imageUrl:'',timepref:'Thu, Nov 5: 9:00 AM–12:00 PM · Fri, Nov 6: 9:00 AM–1:00 PM',status:'pending',sessionNum:1,sessionTotal:1}],dEv=[{name:'Collegium 2026',startDate:'2026-08-16',endDate:'2026-08-16',rooms:['Arts/History Rm 1','Fiber Arts','Cooking/Costuming','Grab Bag Rm 2','Grab Bag Rm 3','Field','Archery'],address:'Los Angeles County Fairplex, 1101 W McKinley Ave, Pomona CA 91768',url:'http://places.sca-caid.org/caid/',active:true,published:true},{name:'Great Western War 2026',startDate:'2026-11-05',endDate:'2026-11-08',rooms:['A&S Tent','List Field','Archery Range','Bardic Circle'],address:'Kern County Fairgrounds, 1142 South P St, Bakersfield CA 93307',url:'https://places.sca-caid.org/gww/',active:true,published:true,daySchedule:[{date:'2026-11-05',start:'09:00',end:'18:00'},{date:'2026-11-06',start:'09:00',end:'18:00'},{date:'2026-11-07',start:'09:00',end:'18:00'},{date:'2026-11-08',start:'09:00',end:'14:00'}]}];
+const dP=[{id:'p1',title:'Introduction to Heraldic Embroidery',teacher:'Brigid ingen Faeláin',email:'brigid@example.com',date:'',time:'',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'A hands-on introduction to embroidering heraldic devices onto fabric — perfect for decorating a banner, pouch, or garment. We will cover basic satin stitch and couching techniques using your own device or a provided sample design.',bring:'Nothing — needles, fabric, and thread provided. Bring your device blazon if you have one.',fee:'$2 materials',zoomLink:'',max:10,prereqs:'',bio:'Brigid has been doing needlework in the SCA for eight years, with a focus on Irish and early medieval embroidery traditions. This is her first time teaching at Collegium.',imageUrl:'',timepref:'Morning preferred — I am also helping with feast setup in the afternoon.',status:'pending',sessionNum:1,sessionTotal:1},{id:'p2',title:'Nalbinding for Beginners',teacherTitle:'Lord',teacher:'Gunnar Ivarsson',email:'gunnar@example.com',date:'',time:'',duration:120,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'Nalbinding is a pre-knitting textile technique used across the Norse and Byzantine world. Students will learn the Oslo stitch and start a small swatch to take home. No prior fiber arts experience needed.',bring:'Nothing — needles and wool provided.',fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:'Lord Gunnar has been practicing nalbinding for six years and researches Viking Age textile finds. He teaches regularly at West Kingdom events.',imageUrl:'',timepref:'Thu, Nov 5: 9:00 AM–12:00 PM · Fri, Nov 6: 9:00 AM–1:00 PM',status:'pending',sessionNum:1,sessionTotal:1}],dEv=[{name:'Collegium 2026',startDate:'2026-08-16',endDate:'2026-08-16',rooms:['Arts/History Rm 1','Fiber Arts','Cooking/Costuming','Grab Bag Rm 2','Grab Bag Rm 3','Field','Archery'],address:'Los Angeles County Fairplex, 1101 W McKinley Ave, Pomona CA 91768',url:'http://places.sca-caid.org/caid/',active:true,published:true},{name:'Great Western War 2026',startDate:'2026-11-05',endDate:'2026-11-08',rooms:['A&S Tent','List Field','Archery Range','Bardic Circle'],address:'Kern County Fairgrounds, 1142 South P St, Bakersfield CA 93307',url:'https://places.sca-caid.org/gww/',active:true,published:true,daySchedule:[{date:'2026-11-05',start:'09:00',end:'18:00'},{date:'2026-11-06',start:'09:00',end:'18:00'},{date:'2026-11-07',start:'09:00',end:'18:00'},{date:'2026-11-08',start:'09:00',end:'14:00'}],teacherMsg:'Thank you for volunteering to teach at Great Western War 2026! 🎉\n\nSubmissions are due by October 1st. If you need to cancel or make changes after submitting, please contact the A\u0026S officer directly.\n\nQuestions? Reach out to the class coordinator at as@sca-caid.org.'}];
 const dRegs={
   '1':[
     {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
@@ -1316,7 +1343,7 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 1, 2026 · 12:10 AM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:6px"><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:4px 12px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 1, 2026 · 7:55 AM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:6px"><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:4px 12px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){allClasses=res.classes;await loadEvFilter();populateTopics();rC();}
@@ -1909,16 +1936,23 @@ function togglePast(){
 function initSubmit(){
   populateAllTopicSelects();
   const lock=lockedEvent;
-  const banner=document.getElementById('ev-banner'),bannerTxt=document.getElementById('ev-banner-txt');
+  const banner=document.getElementById('ev-banner');
+  if(banner)banner.style.display='none';
+  const pill=document.getElementById('ev-lock-pill');
+  const pillTxt=document.getElementById('ev-lock-pill-txt');
   const evSel=document.getElementById('fc-ev');
-  // Rebuild options: keep online option, then add events
   evSel.innerHTML='<option value="">— Choose an event or format —</option><option value="__inperson__">In person / standalone (not at an event)</option><option value="__online__">Online / Zoom</option>';
   availEvents.forEach(ev=>{const o=document.createElement('option');o.value=ev.name;o.textContent=ev.name;evSel.appendChild(o);});
   if(lock){
-    banner.style.display='flex';bannerTxt.textContent='Submitting for: '+lock;
+    if(pill)pill.style.display='none';
     evSel.value=lock;evSel.disabled=true;
+    evSel.onclick=function(){
+      if(pill){pill.style.display='flex';pillTxt.textContent='Choose \u201cTeach a Class\u201d in the menu to submit for a different event.';}
+    };
   } else {
-    banner.style.display='none';evSel.disabled=false;
+    if(pill)pill.style.display='none';
+    evSel.onclick=null;
+    evSel.disabled=false;
   }
   fcEvChange();
 }
@@ -1948,6 +1982,35 @@ function fcEvChange(){
     if(isEvent)hint.textContent='Admin will assign your date and time. Share your preferences below.';
     else if(isOnline||isInperson)hint.textContent='You\'ll set your own date and time below.';
     else hint.textContent='';
+  }
+  // Event card + teacher message
+  const evName=lock||(!isOnline&&!isInperson?evVal:'');
+  const evCard=document.getElementById('fc-event-card');
+  const evCardName=document.getElementById('fc-ev-card-name');
+  const evCardMeta=document.getElementById('fc-ev-card-meta');
+  const msgBox=document.getElementById('fc-teacher-msg-box');
+  if(evName&&isEvent){
+    const evObj=availEvents.find(e=>e.name===evName);
+    evCard.style.display='block';
+    evCardName.textContent=evName;
+    const metaParts=[];
+    if(evObj){
+      if(evObj.startDate){
+        const ds=evObj.startDate===evObj.endDate||!evObj.endDate?fD(evObj.startDate):fD(evObj.startDate)+' \u2013 '+fD(evObj.endDate);
+        metaParts.push('<span style="font-size:13px;font-family:sans-serif;color:var(--text2);display:flex;align-items:center;gap:5px"><i class="ti ti-calendar" style="font-size:13px"></i> '+ds+'</span>');
+      }
+      if(evObj.address)metaParts.push('<span style="font-size:13px;font-family:sans-serif;color:var(--text2);display:flex;align-items:center;gap:5px"><i class="ti ti-map-pin" style="font-size:13px"></i> '+escH(evObj.address)+'</span>');
+    }
+    evCardMeta.innerHTML=metaParts.join('');
+    if(evObj&&evObj.teacherMsg){
+      msgBox.style.display='block';
+      msgBox.textContent=evObj.teacherMsg;
+    } else {
+      msgBox.style.display='none';
+    }
+  } else {
+    evCard.style.display='none';
+    msgBox.style.display='none';
   }
 }
 function toggleEmLevelPill(btn){
@@ -2118,7 +2181,8 @@ function previewCard(){
   const teacherRaw=document.getElementById('fc-tc').value.trim()||'Your name';
   const ttl=document.getElementById('fc-ttl')?.value.trim()||'';
   const displayTeacher=(ttl?ttl+' ':'')+teacherRaw;
-  const desc=document.getElementById('fc-d').value.trim()||'<em style="opacity:.5">No description yet.</em>';
+  const descRaw=document.getElementById('fc-d').value.trim();
+  const desc=descRaw?escH(descRaw):'<em style="opacity:.5">No description yet.</em>';
   const topic=document.getElementById('fc-tp')?.value||'';
   const fee=document.getElementById('fc-fe').value.trim();
   const bring=document.getElementById('fc-br').value.trim();
@@ -2156,7 +2220,7 @@ function previewCard(){
         <span class="meta-teacher"><i class="ti ti-user"></i> ${escH(displayTeacher)}${bioBtn}</span>
         ${topicPill}
       </div>
-      <div class="card-desc">${escH(desc)}</div>
+      <div class="card-desc">${desc}</div>
       ${tags.length?'<div class="card-tags">'+tags.join('')+'</div>':''}
       <div class="card-logistics">${fp}${bp}${duPill}${spotsPill}</div>
       <div class="card-footer">
@@ -2565,7 +2629,7 @@ async function doRemove(id){
 async function showRoster(classId){
   const res=await api({action:'adminGetRoster',token:adminToken,classId:String(classId)});
   if(!res.ok){alert('Could not load roster.');return;}
-  const cls=allClasses.find(c=>String(c.id)===String(classId));
+  const cls=allAdminClasses.find(c=>String(c.id)===String(classId))||allClasses.find(c=>String(c.id)===String(classId));
   window.roM_currentId=classId;
   document.getElementById('roM-title').textContent='Roster: '+(cls?cls.title:classId);
   const rg=res.roster||[],wl=res.waitlist||[];
@@ -2599,7 +2663,7 @@ async function adminRemoveStudent(classId,email,fromWaitlist){
 async function printRoster(classId){
   const res = await api({action:'adminGetRoster', token:adminToken, classId:String(classId)});
   if(!res.ok){alert('Could not load roster.');return;}
-  const cls = allClasses.find(c=>String(c.id)===String(classId));
+  const cls = allAdminClasses.find(c=>String(c.id)===String(classId)) || allClasses.find(c=>String(c.id)===String(classId));
   if(!cls)return;
   const rg = res.roster||[], wl = res.waitlist||[];
   const date = cls.date ? fD(cls.date) : '';
@@ -3356,6 +3420,8 @@ function loadEventPanel(){
   renderDaySchedule(evObj);
   document.getElementById('ev-address').value = evObj&&evObj.address ? evObj.address : '';
   document.getElementById('ev-url').value = evObj&&evObj.url ? evObj.url : '';
+  document.getElementById('ev-teacher-msg').value = evObj&&evObj.teacherMsg ? evObj.teacherMsg : '';
+  updateCharCount('ev-teacher-msg',600);
   document.getElementById('ev-date-saved').style.display='none';
   // Published toggle
   const pubCb=document.getElementById('ev-published');
@@ -3421,6 +3487,8 @@ function saveEventDates(){
   const devEv2=dEv.find(e=>e.name===evName);if(devEv2){devEv2.startDate=start;devEv2.endDate=end;devEv2.daySchedule=schedule;}
   evObj.address = document.getElementById('ev-address').value.trim();
   evObj.url = document.getElementById('ev-url').value.trim();
+  evObj.teacherMsg = document.getElementById('ev-teacher-msg').value.trim();
+  const devEv3=dEv.find(e=>e.name===evName);if(devEv3)devEv3.teacherMsg=evObj.teacherMsg;
   const saved = document.getElementById('ev-date-saved');
   saved.style.display='inline';
   setTimeout(()=>saved.style.display='none', 2500);
