@@ -53,11 +53,20 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .card-title{font-size:15px;font-weight:600;line-height:1.4;font-family:Georgia,serif;color:var(--text)}
 .tag{font-size:11px;padding:3px 9px;border-radius:10px;white-space:nowrap;font-family:sans-serif;font-weight:600;flex-shrink:0}
 .tag.zoom{background:#E3EDF8;color:#1B5EA0}.tag.in-person{background:var(--green-bg);color:var(--green-text)}
-.card-meta{font-size:12.5px;color:var(--text2);margin-bottom:9px;font-family:sans-serif;display:flex;flex-direction:column;gap:4px}
+.card-meta{font-size:12.5px;color:var(--text2);margin-bottom:8px;font-family:sans-serif;display:flex;flex-direction:column;gap:3px}
 .card-meta span{display:flex;align-items:center;gap:6px}
-.card-desc{font-size:13.5px;color:var(--text2);line-height:1.6;margin-bottom:10px;font-family:sans-serif}
+.card-meta .meta-teacher{font-size:13px;font-weight:600;color:var(--text)}
+.card-meta .meta-topic{font-size:11px;font-family:sans-serif;padding:1px 8px;border-radius:10px;background:var(--bg2);border:1px solid var(--border2);color:var(--text2);width:fit-content}
+.card-desc{font-size:13px;color:var(--text2);line-height:1.55;margin-bottom:10px;font-family:sans-serif}
+.card-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.card-tag{font-size:11px;font-family:sans-serif;padding:2px 8px;border-radius:10px;border:1px solid var(--border2);color:var(--text2);background:var(--bg2);display:inline-flex;align-items:center;gap:4px;line-height:1.6}
+.card-tag.level{background:var(--accent-light);color:var(--accent);border-color:var(--border2)}
+.card-tag.newcomer{background:#E8F5E9;color:#2E7D32;border-color:#A5D6A7}
+.card-tag.kids{background:#FFF8E1;color:#F57F17;border-color:#FFE082}
+.card-tag.adults{background:#FCE4EC;color:#880E4F;border-color:#F48FB1}
+.card-tag.session{background:var(--gold-light);color:var(--gold);border-color:var(--gold-mid);font-weight:700}
 .card-logistics{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.logistics-pill{font-size:11.5px;font-family:sans-serif;padding:4px 10px;border-radius:10px;border:1px solid var(--border2);color:var(--text2);display:flex;align-items:center;gap:5px}
+.logistics-pill{font-size:11.5px;font-family:sans-serif;padding:4px 10px;border-radius:10px;border:1px solid var(--border2);color:var(--text2);display:inline-flex;align-items:center;gap:5px;line-height:1.4}
 .logistics-pill.fee{background:var(--gold-light);color:var(--accent);border-color:var(--gold-mid);font-weight:600}
 .logistics-pill.free{background:var(--green-bg);color:var(--green-text);border-color:var(--green-border)}
 .card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--border)}
@@ -118,7 +127,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .submit-form{max-width:640px}
 .form-section-title{font-size:19px;font-weight:600;font-family:Georgia,serif;margin-bottom:4px}
 .form-section-sub{font-size:13px;color:var(--text2);margin-bottom:1.25rem;font-family:sans-serif}
-.form-divider{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text2);font-family:sans-serif;margin:1.25rem 0 10px;border-top:1px solid var(--border);padding-top:12px}
+.form-divider{font-size:15px;font-weight:700;font-family:Georgia,serif;color:var(--accent);margin:1.5rem 0 12px;border-top:2px solid var(--border2);padding-top:14px;letter-spacing:0;text-transform:none}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:13px}
 .form-col{display:flex;flex-direction:column;gap:4px}
 .form-full{margin-bottom:13px;display:flex;flex-direction:column;gap:4px}
@@ -285,6 +294,9 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
   .approved-row-btns{gap:5px}
   .approved-row .a-roster-btn,.approved-row .a-remove-btn{padding:3px 8px}
 }
+
+.level-pill{padding:5px 13px;border-radius:20px;border:1px solid var(--border2);background:var(--bg2);font-size:12px;font-family:sans-serif;cursor:pointer;color:var(--text2);transition:all .15s}
+.level-pill.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -306,19 +318,24 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
     <div id="panel-catalog" class="panel active">
       <div id="api-banner" class="api-banner demo" style="display:none"></div>
       <div id="ev-picker-row" style="display:flex;align-items:center;gap:10px;margin-bottom:1.25rem;flex-wrap:wrap">
-        <select class="filter-select" onchange="rC()" id="fe" style="flex:1;min-width:200px;font-size:14px;padding:9px 12px;font-family:Georgia,serif;font-weight:600;color:var(--accent)"><option value="">— Choose an event —</option></select>
+        <select class="filter-select" onchange="rC()" id="fe" style="flex:1;min-width:200px;font-size:14px;padding:9px 12px;font-family:Georgia,serif;font-weight:600;color:var(--accent)"><option value="">Choose an event…</option></select>
         <button class="print-btn" id="cat-grid-btn" onclick="toggleCatalogGrid()" style="display:none;white-space:nowrap"><i class="ti ti-layout-grid"></i> Grid view</button>
       </div>
-      <div class="filters" id="cat-secondary-filters">
-        <input class="search-input" type="text" placeholder="Search classes, teachers&#x2026;" oninput="rC()" id="si">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+        <input class="search-input" type="text" placeholder="Search classes, teachers&#x2026;" oninput="rC()" id="si" style="flex:1;min-width:180px">
+        <div class="req-sort"><span>Sort:</span><select id="fs" onchange="rC()"><option value="date">Date</option><option value="title">Title A–Z</option><option value="teacher">Teacher A–Z</option></select></div>
+        <button id="cat-filter-toggle" onclick="toggleCatFilters()" style="padding:7px 12px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap;display:flex;align-items:center;gap:5px"><i class="ti ti-adjustments-horizontal"></i> Filters <span id="cat-filter-badge" style="display:none;background:var(--accent);color:#fff;border-radius:8px;font-size:11px;padding:0 5px;font-weight:700"></span></button>
+      </div>
+      <div class="filters" id="cat-secondary-filters" style="display:none;margin-bottom:1rem">
         <select class="filter-select" onchange="rC()" id="ff"><option value="">All formats</option><option value="zoom">Online</option><option value="in-person">In person</option></select>
         <select class="filter-select" onchange="rC()" id="ft"><option value="">All topics</option></select>
+        <select class="filter-select" onchange="rC()" id="fl-level"><option value="">All levels</option><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+        <select class="filter-select" onchange="rC()" id="fl-aud"><option value="">All audiences</option><option value="newcomer-friendly">Good for Newcomers</option><option value="kids-welcome">Good for Kids</option><option value="adults-only">Adults Only</option></select>
         <select class="filter-select" onchange="rC()" id="fmy" style="display:none"><option value="">All classes</option><option value="mine">My events only</option></select>
-        <select class="filter-select" onchange="rC()" id="fs"><option value="date">Sort: Date</option><option value="title">Sort: Title</option></select>
         <label class="cb-row" style="margin-bottom:0;font-size:13px;white-space:nowrap"><input type="checkbox" id="fhc" onchange="rC();if(document.getElementById('cat-grid-wrap').style.display!=='none')renderCatalogGrid()"> Hide cancelled</label>
         <label class="cb-row" style="margin-bottom:0;font-size:13px;white-space:nowrap"><input type="checkbox" id="fhw" onchange="rC();if(document.getElementById('cat-grid-wrap').style.display!=='none')renderCatalogGrid()"> Hide full/waitlist</label>
-        <button id="cat-see-all-btn" onclick="catClearEvent()" style="display:none;padding:7px 14px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap"><i class="ti ti-x"></i> Clear filters</button>
       </div>
+      <div id="cat-see-all-btn" style="display:none;margin-bottom:0.75rem"><button onclick="catClearEvent()" style="padding:7px 14px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap"><i class="ti ti-x"></i> Clear all filters</button></div>
       <div id="cat-grid-wrap" style="display:none;margin-bottom:1.5rem">
         <div class="grid-wrap"><table class="sg" id="cat-grid-table"></table></div>
       </div>
@@ -361,35 +378,51 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
           <div class="form-col"><label class="form-label">Topic</label>
             <select class="form-select" id="fc-tp"></select>
           </div>
-          <div class="form-col"><label class="form-label">Level / who is this for?</label><input class="form-input" id="fc-pr" type="text" placeholder="e.g. Beginners welcome, or No prereqs"></div>
+          <div class="form-col"><label class="form-label">Skill level <span style="font-weight:400;font-size:11px;color:var(--text2)">(optional, multi-select)</span></label>
+            <div id="fc-level-pills" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">
+              <button type="button" class="level-pill" data-val="Beginner" onclick="toggleLevelPill(this)">Beginner</button>
+              <button type="button" class="level-pill" data-val="Intermediate" onclick="toggleLevelPill(this)">Intermediate</button>
+              <button type="button" class="level-pill" data-val="Advanced" onclick="toggleLevelPill(this)">Advanced</button>
+            </div>
+            <input type="hidden" id="fc-level">
+          </div>
         </div>
-        <div class="form-full"><label class="form-label">Class description *</label><textarea class="form-textarea" id="fc-d" placeholder="What will attendees learn? What should they expect?"></textarea></div>
+        <div class="form-full"><label class="form-label">Class description *</label><textarea class="form-textarea" id="fc-d" maxlength="600" oninput="updateCharCount('fc-d',600)" placeholder="What will attendees learn? What should they expect?"></textarea><span class="form-hint"><span id="fc-d-count">600</span> characters remaining</span></div>
         <div class="form-divider">About you</div>
         <div class="form-grid">
-          <div class="form-col"><label class="form-label">Your SCA name *</label><input class="form-input" id="fc-tc" type="text"></div>
+          <div class="form-col"><label class="form-label">Your SCA name *</label><input class="form-input" id="fc-tc" type="text" placeholder="No titles — e.g. Alienor of Wakefield"></div>
           <div class="form-col"><label class="form-label">Your email (admin contact only) *</label><input class="form-input" id="fc-em" type="email" placeholder="not shown publicly"></div>
         </div>
         <div class="form-full"><label class="form-label">Phone (admin contact only) <span style="font-weight:400;text-transform:none;letter-spacing:0">optional</span></label><input class="form-input" id="fc-ph" type="tel" placeholder="Helps admin reach you quickly at events"></div>
-        <div class="form-full"><label class="form-label">Teacher bio <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional, shown publicly)</span></label><textarea class="form-textarea" id="fc-bio" style="min-height:70px" placeholder="A sentence or two about your background with this topic. Shown as a hover tooltip on your name in the class catalog."></textarea></div>
+        <div class="form-full"><label class="form-label">Teacher bio <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional, shown publicly)</span></label><textarea class="form-textarea" id="fc-bio" maxlength="300" oninput="updateCharCount('fc-bio',300)" style="min-height:70px" placeholder="A sentence or two about your background with this topic. Shown as a hover tooltip on your name in the class catalog."></textarea><span class="form-hint"><span id="fc-bio-count">300</span> characters remaining</span></div>
         <div class="form-divider">Logistics</div>
         <div class="form-grid">
           <div class="form-col"><label class="form-label">Duration</label><select class="form-select" id="fc-du"><option value="30">30 min</option><option value="60" selected>1 hour</option><option value="90">90 min</option><option value="120">2 hours</option><option value="180">3 hours</option></select></div>
           <div class="form-col"><label class="form-label">Max attendees (blank = unlimited)</label><input class="form-input" id="fc-mx" type="number" min="1"></div>
         </div>
         <div class="form-grid">
-          <div class="form-col"><label class="form-label">Class fee</label><input class="form-input" id="fc-fe" type="text" placeholder="e.g. $5 materials — blank if free"></div>
+          <div class="form-col"><label class="form-label">Materials fee</label><input class="form-input" id="fc-fe" type="text" placeholder="e.g. $5 — blank if free" oninput="this.value=this.value.replace(/[^\d$.]/g,'')"></div>
           <div class="form-col"><label class="form-label">What should students bring?</label><input class="form-input" id="fc-br" type="text" placeholder="Leave blank if nothing needed"></div>
         </div>
         <div class="form-divider" id="sched-lbl">Scheduling</div>
         <div id="sched-dt">
           <div class="form-grid">
             <div class="form-col"><label class="form-label">Date *</label><input class="form-input" id="fc-da" type="date"></div>
-            <div class="form-col"><label class="form-label">Time *</label><input class="form-input" id="fc-ti" type="time" step="900"></div>
+            <div class="form-col"><label class="form-label">Time *</label><select class="form-input" id="fc-ti"></select><span class="form-hint">All times Pacific (PT)</span></div>
           </div>
         </div>
         <div id="sched-pf" style="display:none">
           <div class="form-grid"><div class="form-col"><label class="form-label">How many times?</label><select class="form-select" id="fc-rp"><option value="once">Once</option><option value="twice">Twice</option><option value="three+">3+</option></select></div></div>
-          <div class="form-full"><label class="form-label">Time preferences</label><textarea class="form-textarea" id="fc-tpref" style="min-height:60px" placeholder="e.g. Friday afternoon preferred, avoid Saturday evening"></textarea><span class="form-hint">Organizer assigns the final slot.</span></div>
+          <div class="form-full"><label class="form-label">Time preferences <span style="font-weight:400;color:var(--text2);font-size:12px">(optional)</span></label><div id="fc-tpref-wrap" style="display:flex;flex-direction:column;gap:10px"></div><input type="hidden" id="fc-tpref"><span class="form-hint">Select the days and times that work for you. For multi-day events, at least one day is required.</span></div>
+        </div>
+        <div class="form-divider">Audience &amp; logistics</div>
+        <div class="form-full"><label class="form-label">Who is this class for? <span style="font-weight:400;font-size:11px;color:var(--text2)">(optional)</span></label>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px;font-family:sans-serif;font-size:13px;color:var(--text)">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="fc-aud-newcomer" style="width:16px;height:16px;accent-color:var(--accent)"> Good for Newcomers</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="fc-aud-kids" onchange="if(this.checked)document.getElementById('fc-aud-adults').checked=false" style="width:16px;height:16px;accent-color:var(--accent)"> Good for Kids</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="fc-aud-adults" onchange="if(this.checked)document.getElementById('fc-aud-kids').checked=false" style="width:16px;height:16px;accent-color:var(--accent)"> Adults Only</label>
+            <div id="fc-elec-row" style="display:none;padding-top:4px;border-top:1px solid var(--border);margin-top:2px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="fc-elec" style="width:16px;height:16px;accent-color:var(--accent)"> Needs electricity / power access</label><span class="form-hint" style="margin-top:4px;display:block">Only visible to organizers.</span></div>
+          </div>
         </div>
         <div class="form-full"><label class="form-label">Anything else the stewards should know?</label><textarea class="form-textarea" id="fc-no" style="min-height:60px" placeholder="Special requirements, equipment, scheduling notes, etc."></textarea></div>
         <div class="form-divider">Optional extras</div>
@@ -433,7 +466,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
           </div>
         </div>
         <div class="form-grid">
-          <div class="form-col"><label class="form-label">Your SCA name *</label><input class="form-input" id="rq-name" type="text" placeholder="Required"></div>
+          <div class="form-col"><label class="form-label">Your SCA name *</label><input class="form-input" id="rq-name" type="text" placeholder="No titles — e.g. Alienor of Wakefield"></div>
           <div class="form-col"><label class="form-label">Barony / Location <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><input class="form-input" id="rq-barony" type="text" placeholder="e.g. Dreiburgen or San Diego"></div>
         </div>
         <div class="form-grid">
@@ -463,17 +496,18 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
       </div>
 
       <!-- Filters -->
-      <div class="req-filters">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
         <input class="search-input" type="text" id="rq-search" placeholder="Search requests…" oninput="renderRequests()" style="flex:1;min-width:180px">
+        <div class="req-sort"><span>Sort:</span><select id="rq-sort" onchange="renderRequests()"><option value="hearts">Most ♥</option><option value="newest">Newest</option></select></div>
+        <button onclick="toggleReqFilters()" id="rq-filter-toggle" style="padding:7px 12px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap;display:flex;align-items:center;gap:5px"><i class="ti ti-adjustments-horizontal"></i> Filters <span id="rq-filter-badge" style="display:none;background:var(--accent);color:#fff;border-radius:8px;font-size:11px;padding:0 5px;font-weight:700"></span></button>
+      </div>
+      <div class="req-filters" id="rq-secondary-filters" style="display:none;margin-bottom:1rem">
         <select class="filter-select" id="rq-filter-ev" onchange="renderRequests()"><option value="">All events</option><option value="__general__">General only</option></select>
         <select class="filter-select" id="rq-filter-topic" onchange="renderRequests()"><option value="">All topics</option></select>
         <select class="filter-select" id="rq-filter-level" onchange="renderRequests()"><option value="">All levels</option><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
         <select class="filter-select" id="rq-filter-format" onchange="renderRequests()"><option value="">All formats</option><option value="In person">In person</option><option value="Online / Zoom">Online</option></select>
-        <div class="req-sort"><span>Sort:</span>
-          <select id="rq-sort" onchange="renderRequests()"><option value="hearts">Most ♥</option><option value="newest">Newest</option></select>
-        </div>
-        <button id="rq-clear-btn" onclick="clearReqFilters()" style="display:none;padding:7px 14px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap"><i class="ti ti-x"></i> Clear filters</button>
       </div>
+      <div id="rq-clear-wrap" style="display:none;margin-bottom:0.75rem"><button onclick="clearReqFilters()" style="padding:7px 14px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap"><i class="ti ti-x"></i> Clear filters</button></div>
 
       <div class="req-grid" id="req-grid"></div>
     </div>
@@ -527,8 +561,8 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
                     <input class="lg-input" id="lg-start" type="date" style="max-width:150px">
                   </div>
                   <div style="display:flex;flex-direction:column;gap:4px">
-                    <label class="form-label" style="font-size:11px">Start time (optional)</label>
-                    <input class="lg-input" id="lg-start-time" type="time" step="900" style="max-width:120px">
+                    <label class="form-label" style="font-size:11px">Start time PT (optional)</label>
+                    <select class="lg-input" id="lg-start-time" style="max-width:120px"></select>
                   </div>
                   <span style="font-size:12px;font-family:sans-serif;color:var(--text2);white-space:nowrap;align-self:flex-end;padding-bottom:9px">to</span>
                   <div style="display:flex;flex-direction:column;gap:4px">
@@ -536,8 +570,8 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
                     <input class="lg-input" id="lg-end" type="date" style="max-width:150px">
                   </div>
                   <div style="display:flex;flex-direction:column;gap:4px">
-                    <label class="form-label" style="font-size:11px">End time (optional)</label>
-                    <input class="lg-input" id="lg-end-time" type="time" step="900" style="max-width:120px">
+                    <label class="form-label" style="font-size:11px">End time PT (optional)</label>
+                    <select class="lg-input" id="lg-end-time" style="max-width:120px"></select>
                   </div>
                 </div>
                 <!-- Row 3: Rooms -->
@@ -674,12 +708,16 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
             </div>
             <div class="grid-wrap"><table class="sg" id="grid-table"></table></div>
           </div>
-          <div class="filters" style="margin-bottom:1.25rem">
-            <input class="search-input" type="text" id="acf-q" placeholder="Search title, teacher…" oninput="renderPending();renderApproved()">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+            <input class="search-input" type="text" id="acf-q" placeholder="Search title, teacher…" oninput="renderPending();renderApproved()" style="flex:1;min-width:180px">
+            <select class="filter-select" id="acf-so" onchange="renderApproved()" style="min-width:0"><option value="date">Sort: Date</option><option value="title">Sort: A–Z Title</option><option value="teacher">Sort: Teacher</option><option value="regs">Sort: Most registered</option></select>
+            <button onclick="toggleAdminClassFilters()" id="acf-filter-toggle" style="padding:7px 12px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap;display:flex;align-items:center;gap:5px"><i class="ti ti-adjustments-horizontal"></i> Filters <span id="acf-filter-badge" style="display:none;background:var(--accent);color:#fff;border-radius:8px;font-size:11px;padding:0 5px;font-weight:700"></span></button>
+          </div>
+          <div class="filters" id="acf-secondary-filters" style="display:none;margin-bottom:1rem">
             <select class="filter-select" id="acf-tp" onchange="renderPending();renderApproved()"><option value="">All topics</option></select>
             <select class="filter-select" id="acf-fm" onchange="renderPending();renderApproved()"><option value="">All formats</option><option value="in-person">In person</option><option value="zoom">Online</option></select>
-            <select class="filter-select" id="acf-so" onchange="renderApproved()"><option value="date">Sort: Date</option><option value="title">Sort: A–Z Title</option><option value="teacher">Sort: Teacher</option><option value="regs">Sort: Most registered</option></select>
           </div>
+          <div id="acf-clear-wrap" style="display:none;margin-bottom:0.75rem"><button onclick="clearAdminClassFilters()" style="padding:7px 14px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap"><i class="ti ti-x"></i> Clear filters</button></div>
           <div class="admin-section-title"><i class="ti ti-clock"></i> Pending submissions <span class="badge" id="pending-count" style="background:var(--accent-mid)">0</span></div>
           <div id="pending-list"></div>
           <div class="admin-section-title"><i class="ti ti-check"></i> Published classes</div>
@@ -687,11 +725,15 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         </div>
         <!-- REQUESTS ADMIN TAB -->
         <div id="admin-tab-requests" style="display:none">
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:1rem">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
+            <div class="req-sort"><span>Sort:</span><select id="req-admin-sort" onchange="renderAdminRequests()"><option value="hearts">Most ♥</option><option value="newest">Newest</option><option value="oldest">Oldest</option></select></div>
+            <button onclick="toggleAdminReqFilters()" id="req-admin-filter-toggle" style="padding:7px 12px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap;display:flex;align-items:center;gap:5px"><i class="ti ti-adjustments-horizontal"></i> Filters <span id="req-admin-filter-badge" style="display:none;background:var(--accent);color:#fff;border-radius:8px;font-size:11px;padding:0 5px;font-weight:700"></span></button>
+          </div>
+          <div class="filters" id="req-admin-secondary-filters" style="display:none;margin-bottom:1rem">
             <select class="filter-select" id="req-admin-filter" onchange="renderAdminRequests()"><option value="">All events</option><option value="__general__">General only</option></select>
             <select class="filter-select" id="req-admin-topic" onchange="renderAdminRequests()"><option value="">All topics</option></select>
-            <select class="filter-select" id="req-admin-sort" onchange="renderAdminRequests()"><option value="hearts">Sort: Most ♥</option><option value="newest">Sort: Newest</option><option value="oldest">Sort: Oldest</option></select>
           </div>
+          <div id="req-admin-clear-wrap" style="display:none;margin-bottom:0.75rem"><button onclick="clearAdminReqFilters()" style="padding:7px 14px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap"><i class="ti ti-x"></i> Clear filters</button></div>
           <div class="admin-section-title"><i class="ti ti-chart-bar"></i> Topic tally</div>
           <div id="req-tally"></div>
           <div class="admin-section-title"><i class="ti ti-list"></i> All requests</div>
@@ -722,7 +764,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
     <div class="modal-note mn-wl" id="rm-wl" style="display:none"><i class="ti ti-clock"></i> This class is full. You'll be added to the waitlist.</div>
     <div class="modal-note mn-ov" id="rm-ov" style="display:none"></div>
     <div class="modal-note mn-fee" id="rm-fee" style="display:none"><i class="ti ti-coin"></i> <span id="rm-fee-txt"></span></div>
-    <div class="modal-field"><label class="modal-label">Your SCA name *</label><input class="modal-input" id="rm-sca" type="text" placeholder="As you wish it to appear on the roster"></div>
+    <div class="modal-field"><label class="modal-label">Your SCA name *</label><input class="modal-input" id="rm-sca" type="text" placeholder="No titles — e.g. Alienor of Wakefield"></div>
     <div class="modal-field"><label class="modal-label">Email (for admin contact only) *</label><input class="modal-input" id="rm-email" type="email" placeholder="Not shown publicly"><div style="font-size:11px;color:var(--text2);font-family:sans-serif;margin-top:4px;font-style:italic"><i class="ti ti-info" style="font-size:11px"></i> Registering someone else? Use <strong>their</strong> email address so their schedule stays separate from yours.</div></div>
     <label class="cb-row"><input type="checkbox" id="rm-hide"> List me as anonymous on the public roster</label>
     <div class="modal-actions">
@@ -739,10 +781,11 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
     <div class="modal-title">Approve &amp; schedule</div>
     <div class="modal-sub" id="am-sub"></div>
     <div class="modal-note mn-info" id="am-pref" style="display:none"></div>
+    <div id="am-session-note" style="display:none;font-size:11px;font-family:sans-serif;font-weight:700;padding:3px 10px;border-radius:10px;background:var(--gold-light);color:var(--gold);border:1px solid var(--gold-mid);margin-bottom:6px"></div>
     <div class="modal-field"><label class="modal-label">Event</label><select class="modal-select" id="am-event" onchange="amEventChange()"><option value="">— No event / standalone —</option></select></div>
     <div class="modal-grid">
       <div class="modal-field"><label class="modal-label">Date *</label><input class="modal-input" id="am-date" type="date" onchange="amDateChange()"></div>
-      <div class="modal-field"><label class="modal-label">Time *</label><input class="modal-input" id="am-time" type="time" step="900"></div>
+      <div class="modal-field"><label class="modal-label">Time * <span style="font-weight:400;font-size:11px;opacity:.7">(PT)</span></label><select class="modal-input" id="am-time"></select></div>
     </div>
     <div class="modal-field"><label class="modal-label">Room / location</label>
       <select class="modal-select" id="am-room-sel" onchange="amRoomSelChange()"><option value="">— select room —</option></select>
@@ -763,7 +806,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
     <div class="modal-field"><label class="modal-label">Title</label><input class="modal-input" id="em-title" type="text"></div>
     <div class="modal-grid">
       <div class="modal-field"><label class="modal-label">Date</label><input class="modal-input" id="em-date" type="date"></div>
-      <div class="modal-field"><label class="modal-label">Time</label><input class="modal-input" id="em-time" type="time" step="900"></div>
+      <div class="modal-field"><label class="modal-label">Time <span style="font-weight:400;font-size:11px;opacity:.7">(PT)</span></label><select class="modal-input" id="em-time"></select></div>
     </div>
     <div class="modal-field"><label class="modal-label">Room / location</label>
       <select class="modal-select" id="em-room-sel" onchange="emRoomSelChange()"><option value="">— select room —</option></select>
@@ -783,9 +826,26 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
       </div>
       <div class="modal-field"><label class="modal-label">Max attendees (blank = unlimited)</label><input class="modal-input" id="em-max" type="number" min="1"></div>
     </div>
-    <div class="modal-field"><label class="modal-label">Fee (blank if free)</label><input class="modal-input" id="em-fee" type="text"></div>
+    <div class="modal-field"><label class="modal-label">Materials fee (blank if free)</label><input class="modal-input" id="em-fee" type="text" oninput="this.value=this.value.replace(/[^\d$.]/g,'')"></div>
     <div class="modal-field"><label class="modal-label">What to bring</label><input class="modal-input" id="em-bring" type="text"></div>
-    <div class="modal-field"><label class="modal-label">Prerequisites</label><input class="modal-input" id="em-prereqs" type="text" placeholder="Leave blank if none"></div>
+    <div class="modal-field"><label class="modal-label">Skill level</label>
+      <div id="em-level-pills" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">
+        <button type="button" class="level-pill" data-val="Beginner" onclick="toggleEmLevelPill(this)">Beginner</button>
+        <button type="button" class="level-pill" data-val="Intermediate" onclick="toggleEmLevelPill(this)">Intermediate</button>
+        <button type="button" class="level-pill" data-val="Advanced" onclick="toggleEmLevelPill(this)">Advanced</button>
+      </div>
+      <input type="hidden" id="em-level">
+    </div>
+    <div class="modal-field"><label class="modal-label">Audience</label>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;font-family:sans-serif;font-size:13px;margin-top:4px">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="em-aud-newcomer" style="accent-color:var(--accent)"> Good for Newcomers</label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="em-aud-kids" onchange="if(this.checked)document.getElementById('em-aud-adults').checked=false" style="accent-color:var(--accent)"> Good for Kids</label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="em-aud-adults" onchange="if(this.checked)document.getElementById('em-aud-kids').checked=false" style="accent-color:var(--accent)"> Adults Only</label>
+      </div>
+    </div>
+    <div class="modal-field"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-family:sans-serif;font-size:13px">
+      <input type="checkbox" id="em-elec" style="accent-color:var(--accent)"> Needs electricity</label>
+    </div>
     <div class="modal-field"><label class="modal-label">Description</label><textarea class="modal-input" id="em-desc" style="min-height:80px;resize:vertical"></textarea></div>
     <div class="modal-field"><label class="modal-label">Teacher bio <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><textarea class="modal-input" id="em-bio" style="min-height:60px;resize:vertical"></textarea></div>
     <div class="modal-field"><label class="modal-label">Thumbnail image URL <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><input class="modal-input" id="em-img" type="url" placeholder="https://…"></div>
@@ -807,26 +867,59 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 </div>
 
 <script>
+// ── Time select helper ──
+function makeTimeOptions(selected, startH=6, endH=22){
+  const opts=[];
+  for(let h=startH;h<=endH;h++){
+    for(let m=0;m<60;m+=15){
+      if(h===endH&&m>0)break;
+      const val=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+      const ampm=h<12?'am':h===12?'pm':'pm';
+      const h12=h===0?12:h>12?h-12:h;
+      const label=h12+':'+String(m).padStart(2,'0')+ampm;
+      opts.push('<option value="'+val+'"'+(val===selected?' selected':'')+'>'+label+'</option>');
+    }
+  }
+  return opts.join('');
+}
+function makeTimeSelect(cls, style, selected){
+  return '<select class="'+cls+'" style="'+style+'">'+makeTimeOptions(selected)+'</select>';
+}
+function populateTimeSelect(id, selected){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.innerHTML=makeTimeOptions(selected||el.getAttribute('data-value')||'');
+  if(selected)el.value=selected;
+}
+function setTimeSelectValue(id, val){
+  const el=document.getElementById(id);
+  if(!el)return;
+  // If option doesn't exist yet, rebuild
+  if(![...el.options].some(o=>o.value===val))el.innerHTML=makeTimeOptions(val);
+  el.value=val;
+}
+
 const SEED_CLASSES=[
-  {id:'1',title:`The Art of the Illuminated Initial`,teacher:`Mistress Alienor of Wakefield`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Arts/History Rm 1`,desc:`Learn the basics of painting illuminated initials in the style of 12th-century English manuscripts. We'll cover gilding, pigment mixing, and letterform. Beginners welcome.`,bring:`Small brush if you have one; supplies provided.`,fee:'',zoomLink:'',max:12,prereqs:'',bio:`Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'2',title:`Introduction to Tablet Weaving`,teacher:`Lady Aelswith of Mercia`,date:'2026-08-16',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,desc:`An entry-level class covering warping, turning sequences, and reading simple patterns. You'll leave with a small band in progress.`,bring:`Nothing — cards, warp, and loom provided.`,fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'1',title:`The Art of the Illuminated Initial`,teacher:`Alienor of Wakefield`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Arts/History Rm 1`,level:'Beginner',audience:'newcomer-friendly',desc:`Learn the basics of painting illuminated initials in the style of 12th-century English manuscripts. We'll cover gilding, pigment mixing, and letterform. Beginners welcome.`,bring:`Small brush if you have one; supplies provided.`,fee:'',zoomLink:'',max:12,prereqs:'',bio:`Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'2',title:`Introduction to Tablet Weaving`,teacher:`Aelswith of Mercia`,date:'2026-08-16',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,level:'Beginner',audience:'newcomer-friendly,kids-welcome',sessionNum:1,sessionTotal:2,desc:`An entry-level class covering warping, turning sequences, and reading simple patterns. You'll leave with a small band in progress.`,bring:`Nothing — cards, warp, and loom provided.`,fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'2b',title:`Introduction to Tablet Weaving`,teacher:`Aelswith of Mercia`,date:'2026-08-16',time:'14:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,level:'Beginner',audience:'newcomer-friendly,kids-welcome',sessionNum:2,sessionTotal:2,desc:`An entry-level class covering warping, turning sequences, and reading simple patterns. You'll leave with a small band in progress.`,bring:`Nothing — cards, warp, and loom provided.`,fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'3',title:`Ottoman Garb Basics`,teacher:`Rayhana bint Estafanos al-Ábbas`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Cooking/Costuming`,desc:`This class walks through the basics of period-appropriate mid-16th century Ottoman clothing, with practical guidance on layers, silhouettes, and accessible starting points for creating garb.`,bring:`N/a`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'4',title:`Heraldic Charges: A Visual Survey`,cancelled:true,teacher:`Lord Seamus mac Neill`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Heraldry',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`A fast-paced tour through common and uncommon charges in period heraldry, with examples from the Rolls of Arms. Great for new heralds or anyone designing devices.`,bring:`Ideas for your own device if you have them.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Lord Seamus is a pursuivant with Caid's College of Heralds and has been consulting on device submissions for eight years. He enjoys the obscure corners of the heraldic menagerie.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'4',title:`Heraldic Charges: A Visual Survey`,cancelled:true,teacher:`Seamus mac Neill`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Heraldry',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`A fast-paced tour through common and uncommon charges in period heraldry, with examples from the Rolls of Arms. Great for new heralds or anyone designing devices.`,bring:`Ideas for your own device if you have them.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Lord Seamus is a pursuivant with Caid's College of Heralds and has been consulting on device submissions for eight years. He enjoys the obscure corners of the heraldic menagerie.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'5',title:`Simple Iron Gall Ink`,teacher:`Fiachra an Doire`,email:'margery@example.com',date:'2026-08-16',time:'12:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`Learn to make an easy, effective iron gall ink based on a late 14th or early 15th century English recipe. Students take home a small vial.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Fiachra is a scribe and calligrapher with a particular interest in medieval ink recipes and writing materials. He has been recreating period inks for over eight years.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'6',title:`Intro to SCA Rapier`,teacher:`Don Rodrigo de Castilla`,date:'2026-08-16',time:'14:00',duration:90,format:'in-person',topic:'Combat',event:'Collegium 2026',room:`Field - Martial Class, all types`,desc:`An overview of rapier combat in the SCA: rules, equipment, and basic footwork and guards. Loaner gear available for new fighters to try.`,bring:`Comfortable clothes you can move in.`,fee:'',zoomLink:'',max:20,prereqs:'',bio:`Don Rodrigo holds the rank of Don in Caid's rapier community and has been teaching introductory fencing for over a decade. He specializes in Italian rapier styles of the late 16th century.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'7',title:`Cooking from the Forme of Cury`,teacher:`Mistress Gwenllian ferch Caradog`,date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Collegium 2026',room:`Grab Bag Rm 3`,desc:`We'll work through two recipes from the 14th-century English cookbook, adapting them for modern kitchens. Tasting included.`,bring:`Any food allergies to share.`,fee:'',zoomLink:'',max:16,prereqs:'',bio:`Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery. She has cooked multiple SCA feasts from period sources and written extensively on redaction methodology.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'6',title:`Intro to SCA Rapier`,teacher:`Rodrigo de Castilla`,date:'2026-08-16',time:'14:00',duration:90,format:'in-person',topic:'Combat',event:'Collegium 2026',room:`Field - Martial Class, all types`,level:'Beginner',audience:'newcomer-friendly,adults-only',desc:`An overview of rapier combat in the SCA: rules, equipment, and basic footwork and guards. Loaner gear available for new fighters to try.`,bring:`Comfortable clothes you can move in.`,fee:'',zoomLink:'',max:20,prereqs:'',bio:`Don Rodrigo holds the rank of Don in Caid's rapier community and has been teaching introductory fencing for over a decade. He specializes in Italian rapier styles of the late 16th century.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'7',title:`Cooking from the Forme of Cury`,teacher:`Gwenllian ferch Caradog`,date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Collegium 2026',room:`Grab Bag Rm 3`,level:'Beginner',audience:'newcomer-friendly,kids-welcome',desc:`We'll work through two recipes from the 14th-century English cookbook, adapting them for modern kitchens. Tasting included.`,bring:`Any food allergies to share.`,fee:'',zoomLink:'',max:16,prereqs:'',bio:`Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery. She has cooked multiple SCA feasts from period sources and written extensively on redaction methodology.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'8',title:`Arrow Dynamics`,teacher:`Gideon the Genuine`,date:'2026-08-16',time:'15:00',duration:60,format:'in-person',topic:'Archery',event:'Collegium 2026',room:`Archery`,desc:`This class covers the dynamics of what happens when an arrow is shot from a bow: release, flex, and flight. Physics made accessible.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Gideon has been shooting in the SCA for eighteen years and holds multiple Royal Round records. He brings a background in physics to his teaching of archery mechanics.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'9',title:`Weeknight Zoom: Period Dance Q&A`,teacher:`Lady Isabeau de Bretagne`,date:'2026-09-10',time:'19:00',duration:60,format:'zoom',topic:'Dance',event:'',room:``,desc:`An informal Zoom session to answer questions about period dance, recommend resources, and maybe walk through a basse danse or two together.`,bring:``,fee:'',zoomLink:'https://zoom.us/j/example',max:null,prereqs:'',bio:`Lady Isabeau has been dancing and teaching period dance in the SCA for seven years, with a focus on 15th and 16th century French and Italian forms.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'9',title:`Weeknight Zoom: Period Dance Q&A`,teacher:`Isabeau de Bretagne`,date:'2026-09-10',time:'19:00',duration:60,format:'zoom',topic:'Dance',event:'',room:``,desc:`An informal Zoom session to answer questions about period dance, recommend resources, and maybe walk through a basse danse or two together.`,bring:``,fee:'',zoomLink:'https://zoom.us/j/example',max:null,prereqs:'',bio:`Lady Isabeau has been dancing and teaching period dance in the SCA for seven years, with a focus on 15th and 16th century French and Italian forms.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'10',title:`Thread Woven Buttons`,teacher:`Rayhana bint Estafanos al-Ábbas`,date:'2026-08-16',time:'16:00',duration:60,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,desc:`Learn to create thread-covered wooden buttons common in 16th-century tailoring. Students practice wrapping and stitching on wooden bead cores. Kit included.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   // ── Great Western War 2026 ──
-  {id:'11',title:`Dyeing with Natural Pigments`,teacher:`Mistress Sorcha inghean Uí Fhaoláin`,date:'2026-11-05',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`An introduction to natural dyeing using madder, weld, and woad. We'll discuss mordanting, color modifiers, and period dye recipes. Hands-on dyeing of small wool samples included.`,bring:`Old clothes you don't mind staining.`,fee:'$4 materials',zoomLink:'',max:14,prereqs:'',bio:`Mistress Sorcha is a Pelican with twenty years of experience in natural dyeing and fiber arts. She has taught at events across the Known World and maintains a dye garden at home.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'12',title:`Reading a Medieval Recipe`,teacher:`Mistress Gwenllian ferch Caradog`,date:'2026-11-05',time:'13:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Great Western War 2026',room:`A&S Tent`,desc:`How do you turn a cryptic 14th-century recipe into something you can actually cook? This class walks through the redaction process step by step, with examples from multiple sources.`,bring:`Nothing needed.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery. She has cooked multiple SCA feasts from period sources and written extensively on redaction methodology.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'13',title:`Sprang: The Lost Textile Art`,teacher:`Lady Aelswith of Mercia`,date:'2026-11-06',time:'10:00',duration:120,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`Sprang is an ancient textile technique that predates knitting by millennia — elastic, strong, and used across medieval Europe. This class introduces the basic structure and gets students started on a small piece.`,bring:`Nothing — frames and thread provided.`,fee:'$5 materials',zoomLink:'',max:10,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'14',title:`Illuminating a Scroll: Full Workflow`,teacher:`Mistress Alienor of Wakefield`,date:'2026-11-06',time:'14:00',duration:90,format:'in-person',topic:'Scribal Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`From blank vellum to finished scroll — this class covers layout, ruling, calligraphy placement, and illumination in sequence. We'll use a 13th-century English charter as our model.`,bring:`Small brush if you have one; all other supplies provided.`,fee:'$3 materials',zoomLink:'',max:10,prereqs:'Some calligraphy experience helpful but not required.',bio:`Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'15',title:`Period Perfume and Scent`,teacher:`Lord Tariq ibn Mahmoud`,date:'2026-11-07',time:'10:00',duration:60,format:'in-person',topic:'Crafts',event:'Great Western War 2026',room:`A&S Tent`,desc:`An exploration of medieval and Renaissance perfumery: the ingredients, blending methods, and social context of scent in period Europe and the Islamic world. Students blend a small take-home mixture.`,bring:`Nothing needed.`,fee:'$3 materials',zoomLink:'',max:20,prereqs:'',bio:`Lord Tariq has been researching medieval Islamic material culture for eight years, with a particular interest in al-Andalus. He is currently working toward a Laurel in historical craft research.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'16',title:`Armored Combat for Newcomers`,teacher:`Sir Baldwin of Ashford`,date:'2026-11-07',time:'14:00',duration:90,format:'in-person',topic:'Combat',event:'Great Western War 2026',room:`List Field`,desc:`Never held a sword? This class covers SCA heavy combat basics: rules, safety, how to get authorized, and what loaner gear is available. Includes time in armor with experienced fighters.`,bring:`Comfortable clothes you can move in.`,fee:'',zoomLink:'',max:16,prereqs:'',bio:`Sir Baldwin is a knight in the West/Caid chivalry and has been fighting and teaching heavy combat for over twenty years. He runs newcomer fighter practices in the greater Los Angeles area.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'11',title:`Dyeing with Natural Pigments`,teacher:`Sorcha inghean Uí Fhaoláin`,date:'2026-11-05',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`An introduction to natural dyeing using madder, weld, and woad. We'll discuss mordanting, color modifiers, and period dye recipes. Hands-on dyeing of small wool samples included.`,bring:`Old clothes you don't mind staining.`,fee:'$4 materials',zoomLink:'',max:14,prereqs:'',bio:`Mistress Sorcha is a Pelican with twenty years of experience in natural dyeing and fiber arts. She has taught at events across the Known World and maintains a dye garden at home.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'12',title:`Reading a Medieval Recipe`,teacher:`Gwenllian ferch Caradog`,date:'2026-11-05',time:'13:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Great Western War 2026',room:`A&S Tent`,level:'Beginner',audience:'newcomer-friendly',desc:`How do you turn a cryptic 14th-century recipe into something you can actually cook? This class walks through the redaction process step by step, with examples from multiple sources.`,bring:`Nothing needed.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery. She has cooked multiple SCA feasts from period sources and written extensively on redaction methodology.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'13',title:`Sprang: The Lost Textile Art`,teacher:`Aelswith of Mercia`,date:'2026-11-06',time:'10:00',duration:120,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`Sprang is an ancient textile technique that predates knitting by millennia — elastic, strong, and used across medieval Europe. This class introduces the basic structure and gets students started on a small piece.`,bring:`Nothing — frames and thread provided.`,fee:'$5 materials',zoomLink:'',max:10,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'14',title:`Illuminating a Scroll: Full Workflow`,teacher:`Alienor of Wakefield`,date:'2026-11-06',time:'14:00',duration:90,format:'in-person',topic:'Scribal Arts',event:'Great Western War 2026',room:`A&S Tent`,level:'Intermediate',audience:'',desc:`From blank vellum to finished scroll — this class covers layout, ruling, calligraphy placement, and illumination in sequence. We'll use a 13th-century English charter as our model.`,bring:`Small brush if you have one; all other supplies provided.`,fee:'$3 materials',zoomLink:'',max:10,prereqs:'',bio:`Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'15',title:`Period Perfume and Scent`,teacher:`Tariq ibn Mahmoud`,date:'2026-11-07',time:'10:00',duration:60,format:'in-person',topic:'Crafts',event:'Great Western War 2026',room:`A&S Tent`,desc:`An exploration of medieval and Renaissance perfumery: the ingredients, blending methods, and social context of scent in period Europe and the Islamic world. Students blend a small take-home mixture.`,bring:`Nothing needed.`,fee:'$3 materials',zoomLink:'',max:20,prereqs:'',bio:`Lord Tariq has been researching medieval Islamic material culture for eight years, with a particular interest in al-Andalus. He is currently working toward a Laurel in historical craft research.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'16',title:`Armored Combat for Newcomers`,teacher:`Baldwin of Ashford`,date:'2026-11-07',time:'14:00',duration:90,format:'in-person',topic:'Combat',event:'Great Western War 2026',room:`List Field`,level:'Beginner',audience:'newcomer-friendly,adults-only',desc:`Never held a sword? This class covers SCA heavy combat basics: rules, safety, how to get authorized, and what loaner gear is available. Includes time in armor with experienced fighters.`,bring:`Comfortable clothes you can move in.`,fee:'',zoomLink:'',max:16,prereqs:'',bio:`Sir Baldwin is a knight in the West/Caid chivalry and has been fighting and teaching heavy combat for over twenty years. He runs newcomer fighter practices in the greater Los Angeles area.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'17',title:`Blackwork Embroidery Fundamentals`,teacher:`Rayhana bint Estafanos al-Ábbas`,date:'2026-11-08',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`Blackwork is the elegant counted embroidery seen on Tudor portraits — geometric, reversible, and endlessly adaptable. This class teaches the basic double-running stitch and three starter patterns.`,bring:`Nothing — needles, fabric, and thread provided.`,fee:'$2 materials',zoomLink:'',max:12,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'18',title:`Heraldry Office Hours`,teacher:`Lord Seamus mac Neill`,date:'2026-11-08',time:'13:00',duration:60,format:'in-person',topic:'Heraldry',event:'Great Western War 2026',room:`A&S Tent`,desc:`Bring your device ideas, name questions, or just your curiosity. This is an open consulting session — Lord Seamus will work through submissions and questions one-on-one with anyone who stops by.`,bring:`Any sketches or notes you have on your device or name.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Lord Seamus is a pursuivant with Caid's College of Heralds and has been consulting on device submissions for eight years. He enjoys the obscure corners of the heraldic menagerie.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]}
+  {id:'18',title:`Heraldry Office Hours`,teacher:`Seamus mac Neill`,date:'2026-11-08',time:'13:00',duration:60,format:'in-person',topic:'Heraldry',event:'Great Western War 2026',room:`A&S Tent`,desc:`Bring your device ideas, name questions, or just your curiosity. This is an open consulting session — Lord Seamus will work through submissions and questions one-on-one with anyone who stops by.`,bring:`Any sketches or notes you have on your device or name.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Lord Seamus is a pursuivant with Caid's College of Heralds and has been consulting on device submissions for eight years. He enjoys the obscure corners of the heraldic menagerie.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]}
 ];
 const APPS_SCRIPT_URL='YOUR_APPS_SCRIPT_URL_HERE';
 const IS_DEMO=APPS_SCRIPT_URL==='YOUR_APPS_SCRIPT_URL_HERE';
@@ -838,9 +931,9 @@ const dRegs={
     {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
     {scaName:'Margery la Rousse',email:'margery@example.com',barony:'Angels',hidden:false},
     {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',barony:'Gyldenholt',hidden:false},
-    {scaName:'Brother Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
     {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',barony:'Lyondemere',hidden:false},
-    {scaName:'Countess Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
     {scaName:'Philippa of Rouen',email:'anon1@example.com',barony:'Dreiburgen',hidden:true},
     {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',barony:'Naevehjem',hidden:false},
     {scaName:'Cecilia de Montfort',email:'cecilia@example.com',barony:'Angels',hidden:false},
@@ -856,7 +949,7 @@ const dRegs={
     {scaName:'Leofric the Just',email:'leofric@example.com',barony:'Lyondemere',hidden:false},
     {scaName:'Constance of Hartwood',email:'constance@example.com',barony:'Naevehjem',hidden:false},
     {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',barony:'Calafia',hidden:false},
-    {scaName:'Countess Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
   ],
   '3':[
     {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
@@ -879,21 +972,21 @@ const dRegs={
     {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
     {scaName:'Haakon Sigurdsson',email:'anon2@example.com',barony:'Calafia',hidden:true},
     {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',barony:'Angels',hidden:false},
-    {scaName:'Brother Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
     {scaName:'Constance of Hartwood',email:'constance@example.com',barony:'Naevehjem',hidden:false},
     {scaName:'Rosamund of the Dales',email:'rosamund@example.com',barony:'Gyldenholt',hidden:false},
     {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',barony:'Dreiburgen',hidden:false},
     {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',barony:'Lyondemere',hidden:false},
-    {scaName:'Countess Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
     {scaName:'Cecilia de Montfort',email:'cecilia@example.com',barony:'Angels',hidden:false},
   ],
   '7':[
     {scaName:'Margery la Rousse',email:'margery@example.com',barony:'Angels',hidden:false},
     {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',barony:'Gyldenholt',hidden:false},
     {scaName:'Cecilia de Montfort',email:'cecilia@example.com',barony:'Angels',hidden:false},
-    {scaName:'Countess Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
     {scaName:'Constance of Hartwood',email:'constance@example.com',barony:'Naevehjem',hidden:false},
-    {scaName:'Brother Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
     {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',barony:'Dreiburgen',hidden:false},
     {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',barony:'Lyondemere',hidden:false},
     {scaName:'Rosamund of the Dales',email:'rosamund@example.com',barony:'Gyldenholt',hidden:false},
@@ -908,9 +1001,9 @@ const dRegs={
     {scaName:'Constance of Hartwood',email:'constance@example.com',barony:'Naevehjem',hidden:false},
     {scaName:'Margery la Rousse',email:'margery@example.com',barony:'Angels',hidden:false},
     {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',barony:'Angels',hidden:false},
-    {scaName:'Countess Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
     {scaName:'Thorvald Eiriksson',email:'anon4@example.com',barony:'Gyldenholt',hidden:true},
-    {scaName:'Brother Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
     {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',barony:'Lyondemere',hidden:false},
     {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',barony:'Calafia',hidden:false},
     {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',barony:'Dreiburgen',hidden:false},
@@ -936,6 +1029,12 @@ if(window.location.hash==='#submit')setTimeout(()=>showPanel('submit',document.g
 if(window.location.hash==='#requests')setTimeout(()=>showPanel('requests',document.getElementById('nav-requests')),50);
 updateAdminNavBtn();
 loadClasses();
+// Populate static time selects
+populateTimeSelect('fc-ti','09:00');
+populateTimeSelect('lg-start-time','09:00');
+populateTimeSelect('lg-end-time','17:00');
+populateTimeSelect('am-time','09:00');
+populateTimeSelect('em-time','09:00');
 
 async function api(p){
   if(IS_DEMO)return apiD(p);
@@ -965,7 +1064,17 @@ function apiD(p){
     })};
   }
   if(action==='getEvents')return{ok:true,events:dEv};
-  if(action==='submitClass'){const id='d'+(dPid++);dP.push({...p,id,status:'pending'});return{ok:true,id};}
+  if(action==='submitClass'){
+    const repeatMap={'once':1,'twice':2,'three+':3};
+    const total=repeatMap[p.repeat||'once']||1;
+    const ids=[];
+    for(let i=1;i<=total;i++){
+      const id='d'+(dPid++);
+      dP.push({...p,id,status:'pending',sessionNum:i,sessionTotal:total});
+      ids.push(id);
+    }
+    return{ok:true,id:ids[0]};
+  }
   if(action==='register'){
     const{classId,scaName,email,hideFromRoster,override}=p;
     const cls=dC.find(c=>String(c.id)===String(classId));
@@ -1012,6 +1121,9 @@ function apiD(p){
     c.bring=p.bring!==undefined?p.bring:c.bring;c.desc=p.desc||c.desc;
     c.max=p.max?Number(p.max):null;
     if(p.prereqs!==undefined)c.prereqs=p.prereqs;
+    if(p.level!==undefined)c.level=p.level;
+    if(p.audience!==undefined)c.audience=p.audience;
+    if(p.electricity!==undefined)c.electricity=p.electricity;
     if(p.bio!==undefined)c.bio=p.bio;
     if(p.imageUrl!==undefined)c.imageUrl=p.imageUrl;
     if(p.zoomLink!==undefined)c.zoomLink=p.zoomLink;
@@ -1042,7 +1154,7 @@ function apiD(p){
 
 function t2m(t){if(!t)return 0;const p=String(t).split(':');return parseInt(p[0])*60+parseInt(p[1]||0);}
 function fD(d){if(!d)return'';const[y,m,dy]=String(d).split('-');return new Date(y,m-1,dy).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
-function fT(t){if(!t)return'';const p=String(t).split(':');const h=parseInt(p[0]);return(h>12?h-12:h||12)+':'+(p[1]||'00')+'\u202f'+(h>=12?'PM':'AM');}
+function fT(t){if(!t)return'';const p=String(t).split(':');const h=parseInt(p[0]);return(h>12?h-12:h||12)+':'+(p[1]||'00')+'\u202f'+(h>=12?'PM':'AM')+'\u202fPT';}
 function isReg(c){return!!myRegs[c.id]&&!myRegs[c.id].waitlisted;}
 function isWL(c){return!!myRegs[c.id]&&myRegs[c.id].waitlisted;}
 function isFull(c){return c.max&&c.registrationCount>=c.max;}
@@ -1063,7 +1175,7 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated May 30, 2026 · 9:00 AM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated May 30, 2026 · 7:10 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){allClasses=res.classes;await loadEvFilter();populateTopics();rC();}
@@ -1074,7 +1186,7 @@ async function loadEvFilter(){
   if(!res.ok)return;
   availEvents=res.events||[];
   const s=document.getElementById('fe');
-  s.innerHTML='<option value="">All events</option>';
+  s.innerHTML='<option value="" disabled selected>Choose an event…</option><option value="">All events</option>';
   availEvents.filter(ev=>ev.published!==false).forEach(ev=>{const o=document.createElement('option');o.value=ev.name;o.textContent=ev.name;s.appendChild(o);});
   if(lockedEvent){s.value=lockedEvent;s.disabled=true;}
 }
@@ -1086,18 +1198,27 @@ function rC(){
   const fm=document.getElementById('ff').value,tp=document.getElementById('ft').value,ev=document.getElementById('fe').value,so=document.getElementById('fs').value;
   const fmy=document.getElementById('fmy')?.value||'';
   const fav=document.getElementById('fav')?.value||'';
+  const flLevel=document.getElementById('fl-level')?.value||'';
+  const flAud=document.getElementById('fl-aud')?.value||'';
   let fl=allClasses.filter(c=>{
     if(fm&&c.format!==fm)return false;
     if(tp&&c.topic!==tp)return false;
     if(ev&&c.event!==ev)return false;
     if(fmy==='mine'&&!myRegs[c.id])return false;
+    if(flLevel&&!(c.level||'').split(',').map(s=>s.trim()).includes(flLevel))return false;
+    if(flAud&&!(c.audience||'').includes(flAud))return false;
     if(document.getElementById('fhc')?.checked&&c.cancelled)return false;
     if(document.getElementById('fhw')?.checked&&isFull(c))return false;
     if(q&&!c.title.toLowerCase().includes(q)&&!c.teacher.toLowerCase().includes(q)&&!c.desc.toLowerCase().includes(q))return false;
     return true;
   });
+  // Update filter badge count
+  const activeFilters=[fm,tp,flLevel,flAud,document.getElementById('fhc')?.checked,document.getElementById('fhw')?.checked].filter(Boolean).length;
+  const badge=document.getElementById('cat-filter-badge');
+  if(badge){badge.textContent=activeFilters||'';badge.style.display=activeFilters?'inline':'none';}
   if(so==='date')fl=[...fl].sort((a,b)=>(String(a.date)+String(a.time)).localeCompare(String(b.date)+String(b.time)));
   else if(so==='title')fl=[...fl].sort((a,b)=>a.title.localeCompare(b.title));
+  else if(so==='teacher')fl=[...fl].sort((a,b)=>(a.teacher||'').localeCompare(b.teacher||''));
   const g=document.getElementById('cg');
   // Show/hide grid toggle button and re-render grid if open
   const catGridBtn=document.getElementById('cat-grid-btn');
@@ -1105,7 +1226,7 @@ function rC(){
   const catSeeAll=document.getElementById('cat-see-all-btn');
   const evSelected=!!(document.getElementById('fe').value);
   if(catGridBtn) catGridBtn.style.display=evSelected?'':'none';
-  const anyFilter=!!(evSelected||q||(document.getElementById('ff')||{}).value||(document.getElementById('ft')||{}).value||document.getElementById('fhc')?.checked||document.getElementById('fhw')?.checked);
+  const anyFilter=!!(evSelected||q||(document.getElementById('ff')||{}).value||(document.getElementById('ft')||{}).value||document.getElementById('fl-level')?.value||document.getElementById('fl-aud')?.value||document.getElementById('fhc')?.checked||document.getElementById('fhw')?.checked);
   if(catSeeAll) catSeeAll.style.display=anyFilter?'':'none';
   if(!evSelected&&catGridWrap&&catGridWrap.style.display!=='none'){
     catGridWrap.style.display='none';g.style.display='';
@@ -1131,32 +1252,105 @@ function rC(){
     const duPill=c.duration?'<span class="logistics-pill"><i class="ti ti-clock"></i> '+(c.duration<60?c.duration+'min':Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h')+'</span>':'';
     const thumb=c.imageUrl?'<img class="card-thumb" src="'+c.imageUrl+'" alt="" onerror="this.style.display=\'none\'">':'';
     const bioBtn=c.bio?'<button class="bio-btn" tabindex="0" aria-label="Teacher bio"><i class="ti ti-info-circle"></i><div class="bio-popover"><div class="bio-name">'+c.teacher+'</div>'+c.bio+'</div></button>':'';
-    return '<div class="class-card'+(reg?' registered':'')+(cancelled?' cancelled-card':'')+'">'+thumb+'<div class="card-top"><div class="card-title">'+c.title+'</div><span class="tag '+c.format+'">'+(c.format==='zoom'?'Online':'In person')+'</span></div>'
-      +'<div class="card-meta"><span><i class="ti ti-user"></i> '+c.teacher+bioBtn+'</span>'
-      +(c.date?'<span><i class="ti ti-calendar"></i> '+fD(c.date)+' \u00b7 '+fT(c.time)+'</span>':'')
-      +((c.event||c.room)?'<span><i class="ti ti-location"></i> '+(()=>{
-        const evObj=availEvents.find(e=>e.name===c.event);
-        const evCancelled=evObj&&evObj.cancelled;
-        const evDisplay=evCancelled?'<s>'+escH(c.event)+'</s> <span style="color:var(--red-text);font-size:11px;font-weight:600">Cancelled</span>':escH(c.event||'');
-        if(cancelled){return c.event?evDisplay:escH(c.room);}
-        return (c.event?evDisplay:'')+(c.event&&c.room?' · ':'')+escH(c.room);
-      })()+'</span>':'')
-      +(c.topic?'<span><i class="ti ti-tag"></i> '+c.topic+'</span>':'')
+    // Consolidated tag row
+    const allTags=[];
+    if(c.level)c.level.split(',').forEach(l=>allTags.push('<span class="card-tag level">'+l+'</span>'));
+    if(c.audience){
+      if(c.audience.includes('newcomer-friendly'))allTags.push('<span class="card-tag newcomer">★ Newcomers</span>');
+      if(c.audience.includes('kids-welcome'))allTags.push('<span class="card-tag kids">Kids welcome</span>');
+      if(c.audience.includes('adults-only'))allTags.push('<span class="card-tag adults">18+ only</span>');
+    }
+    if(c.sessionTotal>1){
+      allTags.push('<span class="card-tag session">Session '+c.sessionNum+' of '+c.sessionTotal+'</span>');
+      allTags.push('<button class="see-more-times card-tag" data-title="'+escH(c.title)+'" style="background:none;border:none;color:var(--accent);cursor:pointer;text-decoration:underline;font-size:11px;font-family:sans-serif;padding:2px 6px;border-radius:10px">More times</button>');
+    }
+    const tagRow=allTags.length?'<div class="card-tags">'+allTags.join('')+'</div>':'';
+    const evObjC=availEvents.find(e=>e.name===c.event);
+    const evCancelledC=evObjC&&evObjC.cancelled;
+    const evDisplayC=evCancelledC?'<s>'+escH(c.event)+'</s> <span style="color:var(--red-text);font-size:10px;font-weight:600">Cancelled</span>':escH(c.event||'');
+    const locationStr=cancelled?(c.event?evDisplayC:escH(c.room)):(c.event?evDisplayC:'')+(c.event&&c.room?' · ':'')+escH(c.room||'');
+    return '<div class="class-card'+(reg?' registered':'')+(cancelled?' cancelled-card':'')+'">'  +thumb
+      +'<div class="card-top"><div class="card-title">'+c.title+'</div><span class="tag '+c.format+'">'+(c.format==='zoom'?'Online':'In person')+'</span></div>'
+      +'<div class="card-meta">'
+      +'<span class="meta-teacher"><i class="ti ti-user" style="color:var(--accent-mid)"></i> '+c.teacher+bioBtn+'</span>'
+      +(c.date?'<span><i class="ti ti-calendar"></i> '+fD(c.date)+' · '+fT(c.time)+'</span>':'')
+      +(locationStr?'<span><i class="ti ti-map-pin"></i> '+locationStr+'</span>':'')
+      +(c.topic?'<span class="meta-topic"><i class="ti ti-tag" style="font-size:10px"></i> '+c.topic+'</span>':'')
       +'</div>'
+      +tagRow
       +cancelledBanner
       +(!cancelled?(
-          (c.prereqs?'<div style="font-size:11px;color:var(--accent);font-family:sans-serif;margin-bottom:6px"><i class="ti ti-info"></i> Prereq: '+c.prereqs+'</div>':'')
-          +'<div class="card-desc">'+c.desc+'</div>'
-          +'<div class="card-logistics">'+duPill+fp+bp+'</div>'
+          '<div class="card-desc">'+c.desc+'</div>'
+          +'<div class="card-logistics">'+duPill+fp+'</div>'
+          +(bp?'<div style="margin-bottom:10px;display:flex">'+bp+'</div>':'')
           +(c.zoomLink&&reg?'<a class="sched-zoom-btn" href="'+c.zoomLink+'" target="_blank" style="margin-bottom:8px"><i class="ti ti-video"></i> Join online</a>':'')
-          +(c.format!=='zoom'&&c.event?(()=>{const evObj=availEvents.find(e=>e.name===c.event);return evObj&&evObj.url?'<a class="sched-zoom-btn" href="'+evObj.url+'" target="_blank" style="margin-bottom:8px"><i class="ti ti-info-circle"></i> Event details</a>':''})():'')
-          +'<div class="card-footer"><button class="'+bc+'" onclick="handleEnroll(\''+c.id+'\')">'+bt+'</button>'+sp+'</div>'+ro
+          +(c.format!=='zoom'&&c.event?(()=>{const evObj=availEvents.find(e=>e.name===c.event);return evObj&&evObj.url?'<a class="sched-zoom-btn" href="'+evObj.url+'" target="_blank" style="margin-bottom:8px;font-size:11.5px;padding:4px 11px"><i class="ti ti-info-circle"></i> Event details</a>':''})():'')
+          +'<div class="card-footer"><button class="'+bc+'" onclick="handleEnroll(\''+c.id+'\')">'  +bt+'</button>'+sp+'</div>'+ro
         ):(
           '<div class="card-desc" style="opacity:.6">'+c.desc+'</div>'
           +'<div class="card-footer"><button class="'+bc+'" disabled style="opacity:.4;cursor:not-allowed">'+bt+'</button></div>'
         ))
       +'</div>';
   }).join('');
+}
+document.getElementById('cg').addEventListener('click',function(e){
+  const btn=e.target.closest('.see-more-times');
+  if(btn)searchByTitle(btn.dataset.title);
+});
+function searchByTitle(title){
+  const si=document.getElementById('si');
+  if(si){si.value=title;si.dispatchEvent(new Event('input'));}
+  // Make sure filters panel is visible so user sees the search is active
+  const panel=document.getElementById('cat-secondary-filters');
+  if(panel&&panel.style.display==='none')toggleCatFilters();
+  // Scroll to top of catalog
+  document.getElementById('cg')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function toggleReqFilters(){
+  const panel=document.getElementById('rq-secondary-filters');
+  const btn=document.getElementById('rq-filter-toggle');
+  const open=panel.style.display!=='none';
+  panel.style.display=open?'none':'flex';
+  btn.style.background=open?'var(--bg2)':'var(--accent-light)';
+  btn.style.borderColor=open?'var(--border2)':'var(--accent)';
+  btn.style.color=open?'var(--text2)':'var(--accent)';
+}
+function toggleAdminClassFilters(){
+  const panel=document.getElementById('acf-secondary-filters');
+  const btn=document.getElementById('acf-filter-toggle');
+  const open=panel.style.display!=='none';
+  panel.style.display=open?'none':'flex';
+  btn.style.background=open?'var(--bg2)':'var(--accent-light)';
+  btn.style.borderColor=open?'var(--border2)':'var(--accent)';
+  btn.style.color=open?'var(--text2)':'var(--accent)';
+}
+function toggleAdminReqFilters(){
+  const panel=document.getElementById('req-admin-secondary-filters');
+  const btn=document.getElementById('req-admin-filter-toggle');
+  const open=panel.style.display!=='none';
+  panel.style.display=open?'none':'flex';
+  btn.style.background=open?'var(--bg2)':'var(--accent-light)';
+  btn.style.borderColor=open?'var(--border2)':'var(--accent)';
+  btn.style.color=open?'var(--text2)':'var(--accent)';
+}
+function clearAdminClassFilters(){
+  ['acf-q','acf-tp','acf-fm'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=el.tagName==='INPUT'?'':el.options[0].value;});
+  const so=document.getElementById('acf-so');if(so)so.value='date';
+  renderPending();renderApproved();
+}
+function clearAdminReqFilters(){
+  ['req-admin-filter','req-admin-topic'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  const so=document.getElementById('req-admin-sort');if(so)so.value='hearts';
+  renderAdminRequests();
+}
+function toggleCatFilters(){
+  const panel=document.getElementById('cat-secondary-filters');
+  const btn=document.getElementById('cat-filter-toggle');
+  const open=panel.style.display!=='none';
+  panel.style.display=open?'none':'flex';
+  btn.style.background=open?'var(--bg2)':'var(--accent-light)';
+  btn.style.borderColor=open?'var(--border2)':'var(--accent)';
+  btn.style.color=open?'var(--text2)':'var(--accent)';
 }
 function toggleR(id){const e=document.getElementById(id);if(e)e.classList.toggle('open');}
 function focusCatalogCard(id){
@@ -1182,7 +1376,7 @@ function focusCatalogCard(id){
 }
 
 function catClearEvent(){
-  const ids=['fe','ff','ft','fmy','fs','si'];
+  const ids=['fe','ff','ft','fl-level','fl-aud','fmy','fs','si'];
   ids.forEach(id=>{const el=document.getElementById(id);if(!el)return;el.tagName==='INPUT'?el.value='':el.value=el.options[0].value;});
   ['fhc','fhw'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=false;});
   const fs=document.getElementById('fs');if(fs)fs.value='date';
@@ -1510,7 +1704,6 @@ function renderSchedule(){
       +(c.cancelled?'<div style="font-size:12px;font-family:sans-serif;color:var(--red-text);font-weight:700;margin-top:3px"><i class="ti ti-ban"></i> CANCELLED</div>':'')
       +(c.fee?'<div class="sched-meta" style="color:var(--accent-mid);margin-top:2px"><i class="ti ti-coin"></i> '+c.fee+'</div>':'')
       +(c.bring&&!teaching?'<div class="sched-meta" style="margin-top:2px"><i class="ti ti-backpack"></i> Bring: '+c.bring+'</div>':'')
-      +(c.prereqs?'<div class="sched-meta" style="margin-top:2px"><i class="ti ti-info-circle"></i> Prereq: '+c.prereqs+'</div>':'')
       +(isZoom&&c.zoomLink?'<a class="sched-zoom-btn" href="'+c.zoomLink+'" target="_blank"><i class="ti ti-video"></i> '+(teaching?'Your meeting link':'Join online')+'</a>':'')
       +'</div>'
       +removeBtn
@@ -1565,6 +1758,7 @@ function fcEvChange(){
   const isEvent=!!(lock||(evVal&&!isOnline&&!isInperson));
   const fmEl=document.getElementById('fc-fm');
   if(fmEl)fmEl.value=isOnline?'zoom':'in-person';
+  populateTimeSelect('fc-ti',isOnline?'19:30':'09:00');
   document.getElementById('zf').style.display=isOnline?'block':'none';
   document.getElementById('af').style.display=isInperson?'block':'none';
   const schedDt=document.getElementById('sched-dt');
@@ -1573,6 +1767,9 @@ function fcEvChange(){
   schedDt.style.display=isEvent?'none':'block';
   schedPf.style.display=isEvent?'block':'none';
   schedLbl.textContent=isEvent?'Scheduling preferences':'Scheduling';
+  renderTimePrefPicker(isEvent ? (lock || evVal) : null);
+  const elecRow=document.getElementById('fc-elec-row');
+  if(elecRow){elecRow.style.display=isEvent?'block':'none';if(!isEvent)document.getElementById('fc-elec').checked=false;}
   const hint=document.getElementById('fc-ev-hint');
   if(hint){
     if(isEvent)hint.textContent='Admin will assign your date and time. Share your preferences below.';
@@ -1580,7 +1777,155 @@ function fcEvChange(){
     else hint.textContent='';
   }
 }
+function toggleEmLevelPill(btn){
+  btn.classList.toggle('active');
+  const vals=[...document.querySelectorAll('#em-level-pills .level-pill.active')].map(b=>b.dataset.val);
+  document.getElementById('em-level').value=vals.join(',');
+}
+function toggleLevelPill(btn){
+  btn.classList.toggle('active');
+  const vals=[...document.querySelectorAll('#fc-level-pills .level-pill.active')].map(b=>b.dataset.val);
+  document.getElementById('fc-level').value=vals.join(',');
+}
+function getAudience(){
+  const tags=[];
+  if(document.getElementById('fc-aud-newcomer')?.checked)tags.push('newcomer-friendly');
+  if(document.getElementById('fc-aud-kids')?.checked)tags.push('kids-welcome');
+  if(document.getElementById('fc-aud-adults')?.checked)tags.push('adults-only');
+  return tags.join(',');
+}
 document.getElementById('fc-da').min=new Date().toISOString().slice(0,10);
+
+function renderTimePrefPicker(evName){
+  const wrap=document.getElementById('fc-tpref-wrap');
+  const hidden=document.getElementById('fc-tpref');
+  if(!wrap||!hidden)return;
+  if(!evName){wrap.innerHTML='';hidden.value='';return;}
+  const ev=availEvents.find(e=>e.name===evName);
+  const sched=ev&&ev.daySchedule&&ev.daySchedule.length?ev.daySchedule.filter(d=>d.start&&d.end):null;
+  if(!sched||!sched.length){
+    wrap.innerHTML='<textarea id="fc-tpref-text" class="form-textarea" style="min-height:60px;width:100%" placeholder="e.g. Friday afternoon preferred, avoid Saturday morning"></textarea>';
+    const ta=wrap.querySelector('#fc-tpref-text');
+    ta.addEventListener('input',()=>hidden.value=ta.value.trim());
+    hidden.value='';
+    return;
+  }
+
+  function toMins(t){const[h,m]=t.split(':').map(Number);return h*60+(m||0);}
+  function fmt12(mins){
+    const h=Math.floor(mins/60),m=mins%60;
+    const ampm=h<12?'am':'pm';
+    const h12=h===0?12:h>12?h-12:h;
+    return m?h12+':'+String(m).padStart(2,'0')+ampm:h12+ampm;
+  }
+
+  function syncHidden(){
+    const parts=[];
+    wrap.querySelectorAll('.tpref-day-row').forEach(row=>{
+      const cb=row.querySelector('.tpref-cb');
+      if(!cb||!cb.checked)return;
+      const dayLabel=row.dataset.label;
+      const startMins=parseInt(row.dataset.startMins);
+      const lo=parseInt(row.querySelector('.tpref-lo').value);
+      const hi=parseInt(row.querySelector('.tpref-hi').value);
+      parts.push(dayLabel+': '+fmt12(startMins+lo)+'\u2013'+fmt12(startMins+hi));
+    });
+    hidden.value=parts.join(' \u00b7 ');
+  }
+
+  const maxTotalMins=Math.max(...sched.map(d=>toMins(d.end)-toMins(d.start)));
+  wrap.innerHTML=sched.map((day,i)=>{
+    const d=new Date(day.date+'T00:00:00');
+    const dayLabel=d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+    const startMins=toMins(day.start);
+    const endMins=toMins(day.end);
+    const totalMins=endMins-startMins;
+    const trackPct=Math.round(totalMins/maxTotalMins*100);
+    return `<div class="tpref-day-row" data-date="${day.date}" data-label="${dayLabel}" data-start-mins="${startMins}" data-end-mins="${endMins}" style="display:flex;flex-direction:column;gap:8px;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2)">
+  <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-family:sans-serif;font-size:13px;font-weight:600;color:var(--text)">
+    <input type="checkbox" class="tpref-cb" style="width:16px;height:16px;accent-color:var(--accent);cursor:pointer">
+    ${dayLabel}
+    <span class="tpref-range-label" style="margin-left:auto;font-size:12px;font-weight:400;color:var(--text2);font-style:italic">&mdash; not available</span>
+  </label>
+  <div class="tpref-slider-wrap" style="display:none;flex-direction:column;gap:6px;padding:0 4px">
+    <div style="position:relative;height:36px">
+      <div style="position:absolute;top:50%;left:0;width:${trackPct}%;height:6px;background:var(--bg3);border-radius:3px;transform:translateY(-50%)"></div>
+      <div class="tpref-fill" style="position:absolute;top:50%;height:6px;background:var(--accent);border-radius:3px;transform:translateY(-50%);left:0%;right:${100-trackPct}%"></div>
+      <input type="range" class="tpref-lo" min="0" max="${totalMins}" step="30" value="0"
+        style="position:absolute;width:${trackPct}%;top:50%;transform:translateY(-50%);appearance:none;-webkit-appearance:none;background:transparent;pointer-events:none;height:36px;margin:0">
+      <input type="range" class="tpref-hi" min="0" max="${totalMins}" step="30" value="${totalMins}"
+        style="position:absolute;width:${trackPct}%;top:50%;transform:translateY(-50%);appearance:none;-webkit-appearance:none;background:transparent;pointer-events:none;height:36px;margin:0">
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;font-family:sans-serif;color:var(--text2);width:${trackPct}%">
+      <span>${fmt12(startMins)}</span><span>${fmt12(endMins)}</span>
+    </div>
+  </div>
+</div>`;
+  }).join('');
+
+  if(!document.getElementById('tpref-thumb-style')){
+    const s=document.createElement('style');
+    s.id='tpref-thumb-style';
+    s.textContent=`.tpref-lo::-webkit-slider-thumb,.tpref-hi::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--accent);border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3);pointer-events:all;cursor:grab}.tpref-lo::-moz-range-thumb,.tpref-hi::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--accent);border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3);pointer-events:all;cursor:grab;border:2px solid #fff}`;
+    document.head.appendChild(s);
+  }
+
+  wrap.querySelectorAll('.tpref-day-row').forEach(row=>{
+    const cb=row.querySelector('.tpref-cb');
+    const sliderWrap=row.querySelector('.tpref-slider-wrap');
+    const lo=row.querySelector('.tpref-lo');
+    const hi=row.querySelector('.tpref-hi');
+    const fill=row.querySelector('.tpref-fill');
+    const rangeLabel=row.querySelector('.tpref-range-label');
+    const startMins=parseInt(row.dataset.startMins);
+    const endMins=parseInt(row.dataset.endMins);
+    const totalMins=endMins-startMins;
+    const minWindow=Math.min(240,totalMins);
+
+    const trackFrac=totalMins/maxTotalMins;
+    function updateFill(){
+      const loVal=parseInt(lo.value),hiVal=parseInt(hi.value);
+      fill.style.left=(loVal/maxTotalMins*100)+'%';
+      fill.style.right=(100-(hiVal/maxTotalMins*100))+'%';
+      rangeLabel.textContent=fmt12(startMins+loVal)+'\u2013'+fmt12(startMins+hiVal);
+      lo.style.zIndex=loVal>=totalMins-minWindow?'3':'2';
+    }
+
+    lo.addEventListener('input',()=>{
+      if(parseInt(lo.value)>parseInt(hi.value)-minWindow)lo.value=parseInt(hi.value)-minWindow;
+      updateFill();syncHidden();
+    });
+    hi.addEventListener('input',()=>{
+      if(parseInt(hi.value)<parseInt(lo.value)+minWindow)hi.value=parseInt(lo.value)+minWindow;
+      updateFill();syncHidden();
+    });
+    cb.addEventListener('change',()=>{
+      sliderWrap.style.display=cb.checked?'flex':'none';
+      if(cb.checked)updateFill();
+      else rangeLabel.textContent='\u2014 not available';
+      syncHidden();
+    });
+
+    // Single-day event: auto-check and open the slider
+    if(sched.length===1){
+      cb.checked=true;
+      cb.closest('label').style.pointerEvents='none';
+      sliderWrap.style.display='flex';
+      updateFill();
+      syncHidden();
+    } else {
+      updateFill();
+    }
+  });
+}
+function updateCharCount(id, max){
+  const el=document.getElementById(id);
+  const counter=document.getElementById(id+'-count');
+  if(!el||!counter)return;
+  const remaining=max-el.value.length;
+  counter.textContent=remaining;
+  counter.style.color=remaining<50?'#c0392b':remaining<100?'#e67e22':'';
+}
 function applySubmitTimeConstraints(){const ev=document.getElementById('fc-ev')?.value;const ti=document.getElementById('fc-ti');if(ti)applyEvTimeConstraints(ti,ev&&ev!=='__online__'&&ev!=='__inperson__'?ev:'');}
 async function submitClass(){
   // Clear previous errors
@@ -1608,6 +1953,21 @@ async function submitClass(){
   if(!tc){markErr('fc-tc');hasErr=true;}
   if(!t){markErr('fc-t');hasErr=true;}
   if(!evRaw&&!lock){markErr('fc-ev');hasErr=true;}
+  const feeVal=document.getElementById('fc-fe').value.trim();
+  if(feeVal&&!/^\$?[\d]+(\.\d{1,2})?$/.test(feeVal)){markErr('fc-fe');hasErr=true;}
+  // For multi-day events, require at least one day selected
+  const tprefWrap=document.getElementById('fc-tpref-wrap');
+  const dayRows=tprefWrap?tprefWrap.querySelectorAll('.tpref-day-row'):[];
+  if(dayRows.length>1){
+    const anyChecked=[...dayRows].some(r=>r.querySelector('.tpref-cb')?.checked);
+    if(!anyChecked){
+      tprefWrap.style.outline='2px solid #c0392b';
+      tprefWrap.style.borderRadius='var(--radius)';
+      tprefWrap.scrollIntoView({behavior:'smooth',block:'center'});
+      tprefWrap.addEventListener('change',()=>{tprefWrap.style.outline='';},{once:true});
+      hasErr=true;
+    }
+  }
   if(hasErr)return;
   const isOnline=evRaw==='__online__';
   const isInperson=evRaw==='__inperson__';
@@ -1628,22 +1988,29 @@ async function submitClass(){
     topic:document.getElementById('fc-tp').value,format:document.getElementById('fc-fm')?.value||'in-person',
     max:document.getElementById('fc-mx').value||'',fee:document.getElementById('fc-fe').value.trim(),
     duration:document.getElementById('fc-du').value,bring:document.getElementById('fc-br').value.trim(),
-    desc:document.getElementById('fc-d').value.trim(),prereqs:document.getElementById('fc-pr').value.trim(),
+    desc:document.getElementById('fc-d').value.trim(),level:document.getElementById('fc-level').value,audience:getAudience(),electricity:document.getElementById('fc-elec').checked?'1':'',
     zoomLink:document.getElementById('fc-zl')?document.getElementById('fc-zl').value.trim():'',
     address:document.getElementById('fc-addr')?document.getElementById('fc-addr').value.trim():'',
     date:da,time:ti,event:lock||evVal,
     timepref:document.getElementById('fc-tpref')?document.getElementById('fc-tpref').value.trim():'',
+    repeat:document.getElementById('fc-rp')?document.getElementById('fc-rp').value:'',
     notes:document.getElementById('fc-no').value.trim()
   });
   btn.disabled=false;btn.innerHTML='<i class="ti ti-send"></i> Submit class';
   if(!res.ok){alert(res.error||'Submission failed.');return;}
   document.querySelector('.submit-form').style.display='none';
   document.getElementById('submit-ok').style.display='block';
-  ['fc-t','fc-tc','fc-em','fc-ph','fc-bio','fc-img','fc-d','fc-pr','fc-fe','fc-br','fc-da','fc-ti','fc-no'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['fc-t','fc-tc','fc-em','fc-ph','fc-bio','fc-img','fc-d','fc-fe','fc-br','fc-da','fc-ti','fc-no'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.querySelectorAll('#fc-level-pills .level-pill').forEach(b=>b.classList.remove('active'));
+  document.getElementById('fc-level').value='';
+  ['fc-aud-newcomer','fc-aud-kids','fc-aud-adults','fc-elec'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=false;});
 }
 function resetSubmitForm(){
   document.querySelector('.submit-form').style.display='block';
   document.getElementById('submit-ok').style.display='none';
+  renderTimePrefPicker(null);
+  document.getElementById('fc-ev').value='';
+  fcEvChange();
 }
 
 function initAdmin(){
@@ -1744,7 +2111,9 @@ function renderPending(){
   l.innerHTML=filtered.map(c=>{
     const hasDatetime=c.date&&c.time;
     return '<div class="pending-card">'
-      +'<div class="pending-header"><div class="pending-title">'+c.title+'</div></div>'
+      +'<div class="pending-header"><div class="pending-title">'+c.title+'</div>'
+      +(c.sessionTotal>1?'<span style="font-size:11px;font-family:sans-serif;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--gold-light);color:var(--gold);border:1px solid var(--gold-mid);white-space:nowrap">Session '+c.sessionNum+' of '+c.sessionTotal+'</span>':'')
+      +'</div>'
       +'<div class="pending-teacher">'+c.teacher+(c.email?' \u00b7 '+c.email:'')+(c.phone?' \u00b7 <i class="ti ti-phone" style="font-size:11px"></i> '+c.phone:'')+'</div>'
       +(c.desc?'<div class="pending-desc">'+c.desc+'</div>':'')
       +'<div class="pending-meta">'
@@ -1756,6 +2125,14 @@ function renderPending(){
       +(hasDatetime?'<span><i class="ti ti-calendar"></i>'+fD(c.date)+' '+fT(c.time)+'</span>':'')
       +(c.event?'<span><i class="ti ti-star"></i>'+c.event+'</span>':'')
       +'</div>'
+      +(c.level||c.audience||c.electricity?'<div class="card-tags">'
+        +(c.level?c.level.split(',').map(l=>'<span class="card-tag level">'+l+'</span>').join(''):'')
+        +(c.audience&&c.audience.includes('newcomer-friendly')?'<span class="card-tag newcomer">★ Newcomers</span>':'')
+        +(c.audience&&c.audience.includes('kids-welcome')?'<span class="card-tag kids">Kids welcome</span>':'')
+        +(c.audience&&c.audience.includes('adults-only')?'<span class="card-tag adults">18+ only</span>':'')
+        +(c.electricity?'<span class="card-tag" style="background:#FFF3E0;color:#E65100;border-color:#FFCC80"><i class="ti ti-bolt"></i> Electricity</span>':'')
+        +'</div>':'')
+      +(c.repeat&&c.repeat!=='once'?'<div style="font-size:12px;color:var(--text2);margin-bottom:6px;font-family:sans-serif"><i class="ti ti-repeat"></i> Wants to teach '+c.repeat+'</div>':'')
       +(c.timepref?'<div class="pending-pref"><i class="ti ti-clock"></i> Scheduling preference: '+c.timepref+'</div>':'')
       +(c.bring?'<div style="font-size:12px;color:var(--text2);margin-bottom:8px;font-family:sans-serif"><i class="ti ti-backpack"></i> Bring: '+c.bring+'</div>':'')
       +(c.notes?'<div style="font-size:12px;color:var(--text2);margin-bottom:8px;font-family:sans-serif"><i class="ti ti-note"></i> '+c.notes+'</div>':'')
@@ -1767,6 +2144,10 @@ function renderPending(){
 }
 function renderApproved(){
   const f=getAdminClassFilters();
+  const acfBadge=document.getElementById('acf-filter-badge');
+  const acfActive=[f.tp,f.fm].filter(Boolean).length;
+  if(acfBadge){acfBadge.textContent=acfActive||'';acfBadge.style.display=acfActive?'inline':'none';}
+  const acfClear=document.getElementById('acf-clear-wrap');if(acfClear)acfClear.style.display=acfActive?'block':'none';
   const adminGridBtn=document.getElementById('admin-grid-btn');
   if(adminGridBtn)adminGridBtn.style.display=f.ev?'':'none';
   const so=(document.getElementById('acf-so')||{}).value||'date';
@@ -1784,8 +2165,20 @@ function renderApproved(){
       return '<div class="approved-row"'+(unpub?' style="border-left:4px solid var(--gold-mid)"':'')+'>'
     +'<div class="approved-row-top"><div>'
     +(unpub?'<div style="font-size:11px;font-family:sans-serif;font-weight:700;color:var(--accent-mid);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px"><i class="ti ti-eye-off"></i> Unpublished event</div>':'')
-    +'<div class="approved-name">'+c.title+'</div>'
-    +'<div class="approved-sub">'+c.teacher+(c.email?' · '+c.email:'')+(c.phone?' · ☎ '+c.phone:'')+' · '+fD(c.date)+' · '+fT(c.time)+(c.event?' · '+c.event:'')+(c.room?' · '+c.room:'')+'</div>'
+    +'<div class="approved-name">'+c.title+(c.sessionTotal>1?' <span class="card-tag session" style="font-size:10px;vertical-align:middle">'+c.sessionNum+'/'+c.sessionTotal+'</span>':'')+'</div>'
+    +'<div class="approved-sub" style="display:flex;flex-direction:column;gap:2px">'
+    +'<span style="font-weight:600;color:var(--text)">'+c.teacher+(c.email?' <span style="font-weight:400;color:var(--text2)">· '+c.email+'</span>':'')+(c.phone?' <span style="font-weight:400;color:var(--text2)">· '+c.phone+'</span>':'')+'</span>'
+    +(c.date?'<span><i class="ti ti-calendar" style="font-size:11px"></i> '+fD(c.date)+' · '+fT(c.time)+'</span>':'')
+    +((c.event||c.room)?'<span><i class="ti ti-map-pin" style="font-size:11px"></i> '+(c.event||'')+(c.event&&c.room?' · ':'')+( c.room||'')+'</span>':'')
+    +(c.topic?'<span><span class="card-tag" style="font-size:10px;padding:1px 6px">'+c.topic+'</span></span>':'')
+    +(c.level||c.audience?'<div class="card-tags" style="margin-top:2px;margin-bottom:0">'
+      +(c.level?c.level.split(',').map(l=>'<span class="card-tag level">'+l+'</span>').join(''):'')
+      +(c.audience&&c.audience.includes('newcomer-friendly')?'<span class="card-tag newcomer">★ Newcomers</span>':'')
+      +(c.audience&&c.audience.includes('kids-welcome')?'<span class="card-tag kids">Kids welcome</span>':'')
+      +(c.audience&&c.audience.includes('adults-only')?'<span class="card-tag adults">18+ only</span>':'')
+      +(c.electricity?'<span class="card-tag" style="background:#FFF3E0;color:#E65100;border-color:#FFCC80"><i class="ti ti-bolt"></i> Electricity</span>':'')
+      +'</div>':'')
+    +'</div>'
     +(c.waitlistCount?'<div class="wl-detail"><i class="ti ti-clock"></i> '+c.waitlistCount+' on waitlist</div>':'')
     +'</div><div class="reg-count">'+c.registrationCount+(c.max?' / '+c.max:'')+' reg</div></div>'
     +'<div class="approved-row-btns">'
@@ -1815,30 +2208,30 @@ function renderDaySchedule(evObj){
     const label=isSingle?'Class hours':fD(date);
     return '<div class="day-sched-row" data-date="'+date+'" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">'
       +'<span style="font-size:12px;font-family:sans-serif;color:var(--text2);min-width:90px">'+label+'</span>'
-      +'<input class="lg-input ds-start" type="time" step="900" style="max-width:110px" value="'+(ex.start||'')+'" placeholder="Start">'
+      +makeTimeSelect("lg-input ds-start","max-width:110px",ex.start||'09:00')
       +'<span style="font-size:12px;font-family:sans-serif;color:var(--text2)">to</span>'
-      +'<input class="lg-input ds-end" type="time" step="900" style="max-width:110px" value="'+(ex.end||'')+'" placeholder="End">'
+      +makeTimeSelect("lg-input ds-end","max-width:110px",ex.end||'17:00')
       +'</div>';
   }).join('');
 }
 
 function applyEvTimeConstraints(timeEl, evName, date){
+  // Works for both <select> (custom time picker) and legacy <input type=time>
   const ev=evName?availEvents.find(e=>e.name===evName):null;
-  if(!ev){timeEl.removeAttribute('min');timeEl.removeAttribute('max');return;}
-  // Try per-day schedule first
-  const sched=ev.daySchedule&&date?ev.daySchedule.find(x=>x.date===date):null;
-  if(sched){
-    if(sched.start)timeEl.setAttribute('min',sched.start);else timeEl.removeAttribute('min');
-    if(sched.end)timeEl.setAttribute('max',sched.end);else timeEl.removeAttribute('max');
+  const sched=ev&&ev.daySchedule&&date?ev.daySchedule.find(x=>x.date===date):null;
+  const dayOne=ev&&ev.daySchedule&&ev.daySchedule[0];
+  const start=(sched&&sched.start)||(dayOne&&dayOne.start)||null;
+  const end=(sched&&sched.end)||(dayOne&&dayOne.end)||null;
+  if(timeEl.tagName==='SELECT'){
+    const cur=timeEl.value;
+    timeEl.innerHTML=makeTimeOptions(cur,
+      start?parseInt(start.split(':')[0]):6,
+      end?parseInt(end.split(':')[0]):22
+    );
+    if(cur)timeEl.value=cur;
   } else {
-    // Fall back to event-level times (single day)
-    const dayOne=ev.daySchedule&&ev.daySchedule[0];
-    if(dayOne){
-      if(dayOne.start)timeEl.setAttribute('min',dayOne.start);else timeEl.removeAttribute('min');
-      if(dayOne.end)timeEl.setAttribute('max',dayOne.end);else timeEl.removeAttribute('max');
-    } else {
-      timeEl.removeAttribute('min');timeEl.removeAttribute('max');
-    }
+    if(start)timeEl.setAttribute('min',start);else timeEl.removeAttribute('min');
+    if(end)timeEl.setAttribute('max',end);else timeEl.removeAttribute('max');
   }
 }
 
@@ -1848,6 +2241,11 @@ function openApprove(id){
   document.getElementById('am-sub').textContent=(c||{title:id}).title;
   const pn=document.getElementById('am-pref');
   if(c&&c.timepref){pn.style.display='block';pn.innerHTML='<i class="ti ti-clock"></i> Teacher preference: '+c.timepref;}
+  const sessionNote=document.getElementById('am-session-note');
+  if(sessionNote){
+    if(c&&c.sessionTotal>1){sessionNote.style.display='block';sessionNote.textContent='Session '+c.sessionNum+' of '+c.sessionTotal;}
+    else{sessionNote.style.display='none';}
+  }
   else pn.style.display='none';
   // Populate event dropdown
   const evSel=document.getElementById('am-event');
@@ -1876,7 +2274,7 @@ function openApprove(id){
 
 function amDateChange(){
   const evName=document.getElementById('am-event').value;
-  applyEvTimeConstraints(document.getElementById('am-time'),evName,document.getElementById('am-date').value||'');
+  populateTimeSelect('am-time', document.getElementById('am-time').value||'09:00');
 }
 function amEventChange(){
   const evName=document.getElementById('am-event').value;
@@ -1888,7 +2286,7 @@ function amEventChange(){
     if(ev.endDate)dateEl.setAttribute('max',ev.endDate);
     if(ev.startDate&&ev.startDate===ev.endDate)dateEl.value=ev.startDate;
   }
-  applyEvTimeConstraints(document.getElementById('am-time'),evName,document.getElementById('am-date').value||'');
+  populateTimeSelect('am-time', document.getElementById('am-time').value||'09:00');
   populateRoomDropdown('am-room-sel',evName,'');
 }
 async function confirmApprove(){
@@ -1972,58 +2370,50 @@ async function printRoster(classId){
     ).join('');
   }
 
-  const win = window.open('','_blank','width=850,height=1100');
-  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
-<title>Roster — ${escH(cls.title)}</title>
-<style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:Georgia,serif;color:#111;padding:32px 40px;font-size:14px}
-  h1{font-size:22px;margin-bottom:4px}
-  .meta{font-size:13px;color:#555;margin-bottom:6px;font-family:sans-serif}
-  .desc{font-size:12px;color:#666;margin-bottom:20px;font-family:sans-serif;font-style:italic}
-  table{width:100%;border-collapse:collapse;margin-bottom:28px}
-  .section-head{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#444;font-family:sans-serif;margin-bottom:6px;padding-top:4px}
-  .footer{margin-top:32px;font-size:11px;color:#aaa;font-family:sans-serif;border-top:1px solid #ddd;padding-top:10px;display:flex;justify-content:space-between}
-  @media print{body{padding:18px 24px}button{display:none!important}.no-print{display:none!important}}
-</style></head><body>
-<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px">
-  <div>
-    <h1>${escH(cls.title)}</h1>
-    <div class="meta">${escH(meta)}${dur?' · '+dur:''}</div>
-    ${cls.fee?'<div class="desc">Fee: '+escH(cls.fee)+'</div>':''}
-    ${cls.bring?'<div class="desc">Students bring: '+escH(cls.bring)+'</div>':''}
+  // Build roster HTML (works in-page on mobile; no popup needed)
+  const printDate = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  const rosterHTML = `
+<div style="font-family:Georgia,serif;color:#111;font-size:14px">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:12px">
+    <div>
+      <h1 style="font-size:20px;margin-bottom:4px">${escH(cls.title)}</h1>
+      <div style="font-size:13px;color:#555;margin-bottom:4px;font-family:sans-serif">${escH(meta)}${dur?' · '+dur:''}</div>
+      ${cls.fee?'<div style="font-size:12px;color:#666;font-family:sans-serif;font-style:italic">Fee: '+escH(cls.fee)+'</div>':''}
+      ${cls.bring?'<div style="font-size:12px;color:#666;font-family:sans-serif;font-style:italic">Students bring: '+escH(cls.bring)+'</div>':''}
+    </div>
+    <button onclick="window.print()" style="flex-shrink:0;padding:7px 16px;background:#1A3F7A;color:#fff;border:none;border-radius:5px;font-size:13px;cursor:pointer;font-family:sans-serif">🖨 Print</button>
   </div>
-  <button class="no-print" onclick="window.print()" style="padding:7px 16px;background:#1A3F7A;color:#fff;border:none;border-radius:5px;font-size:13px;cursor:pointer;font-family:sans-serif;margin-top:4px">&#x1F5A8; Print</button>
-</div>
+  <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#444;font-family:sans-serif;margin-bottom:6px">Registered (${rg.length}${cls.max?' of '+cls.max:''})</div>
+  <table style="width:100%;border-collapse:collapse;margin-bottom:28px">
+    <thead><tr>
+      <th style="${thStyle}text-align:center;width:36px;">✓</th>
+      <th style="${thStyle}">SCA Name</th>
+      <th style="${thStyle}">Email</th>
+      <th style="${thStyle}">Barony / Location</th>
+    </tr></thead>
+    <tbody>${buildRows(rg, false)}</tbody>
+  </table>
+  ${wl.length ? `<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#444;font-family:sans-serif;margin-bottom:6px">Waitlist (${wl.length})</div>
+  <table style="width:100%;border-collapse:collapse;margin-bottom:28px">
+    <thead><tr>
+      <th style="${thStyle}text-align:center;width:36px;">#</th>
+      <th style="${thStyle}">SCA Name</th>
+      <th style="${thStyle}">Email</th>
+      <th style="${thStyle}">Barony / Location</th>
+    </tr></thead>
+    <tbody>${buildRows(wl, true)}</tbody>
+  </table>` : ''}
+  <div style="margin-top:24px;font-size:11px;color:#aaa;font-family:sans-serif;border-top:1px solid #ddd;padding-top:10px;display:flex;justify-content:space-between">
+    <span>Kingdom Class Registry — Caid</span>
+    <span>Printed ${printDate}</span>
+  </div>
+</div>`;
 
-<div class="section-head">Registered (${rg.length}${cls.max?' of '+cls.max:''})</div>
-<table>
-  <thead><tr>
-    <th style="${thStyle}text-align:center;width:36px;">✓</th>
-    <th style="${thStyle}">SCA Name</th>
-    <th style="${thStyle}">Email</th>
-    <th style="${thStyle}">Barony / Location</th>
-  </tr></thead>
-  <tbody>${buildRows(rg, false)}</tbody>
-</table>
-
-${wl.length ? `<div class="section-head">Waitlist (${wl.length})</div>
-<table>
-  <thead><tr>
-    <th style="${thStyle}text-align:center;width:36px;">#</th>
-    <th style="${thStyle}">SCA Name</th>
-    <th style="${thStyle}">Email</th>
-    <th style="${thStyle}">Barony / Location</th>
-  </tr></thead>
-  <tbody>${buildRows(wl, true)}</tbody>
-</table>` : ''}
-
-<div class="footer">
-  <span>Kingdom Class Registry — Caid</span>
-  <span>Printed ${new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}</span>
-</div>
-</body></html>`);
-  win.document.close();
+  // Show in the existing roster modal body
+  document.getElementById('roM-title').textContent = 'Roster — ' + cls.title;
+  document.getElementById('roM-body').innerHTML = rosterHTML;
+  document.getElementById('roM-print-btn').style.display = 'none'; // print button is inline now
+  document.getElementById('roster-modal').classList.add('open');
 }
 function showAdminTab(tab){
   ['events','classes','requests','topics'].forEach(t=>{
@@ -2212,13 +2602,22 @@ function openEditClass(id){
   document.getElementById('em-sub').textContent=c.title;
   document.getElementById('em-title').value=c.title||'';
   document.getElementById('em-date').value=c.date||'';
-  document.getElementById('em-time').value=c.time||'';
-  applyEvTimeConstraints(document.getElementById('em-time'),c.event||'',c.date||'');
+  populateTimeSelect('em-time', c.time||'09:00');
   document.getElementById('em-max').value=c.max||'';
   document.getElementById('em-fee').value=c.fee||'';
   document.getElementById('em-bring').value=c.bring||'';
   document.getElementById('em-desc').value=c.desc||'';
-  document.getElementById('em-prereqs').value=c.prereqs||'';
+  // Level pills
+  const emLvls=(c.level||'').split(',').map(s=>s.trim()).filter(Boolean);
+  document.querySelectorAll('#em-level-pills .level-pill').forEach(b=>{
+    b.classList.toggle('active',emLvls.includes(b.dataset.val));
+  });
+  document.getElementById('em-level').value=c.level||'';
+  // Audience
+  document.getElementById('em-aud-newcomer').checked=(c.audience||'').includes('newcomer-friendly');
+  document.getElementById('em-aud-kids').checked=(c.audience||'').includes('kids-welcome');
+  document.getElementById('em-aud-adults').checked=(c.audience||'').includes('adults-only');
+  document.getElementById('em-elec').checked=!!(c.electricity);
   document.getElementById('em-bio').value=c.bio||'';
   document.getElementById('em-img').value=c.imageUrl||'';
   document.getElementById('em-zoom').value=c.zoomLink||'';
@@ -2241,7 +2640,9 @@ async function confirmEditClass(){
     fee:document.getElementById('em-fee').value.trim(),
     bring:document.getElementById('em-bring').value.trim(),
     desc:document.getElementById('em-desc').value.trim(),
-    prereqs:document.getElementById('em-prereqs').value.trim(),
+    level:document.getElementById('em-level').value,
+    audience:(()=>{const tags=[];if(document.getElementById('em-aud-newcomer').checked)tags.push('newcomer-friendly');if(document.getElementById('em-aud-kids').checked)tags.push('kids-welcome');if(document.getElementById('em-aud-adults').checked)tags.push('adults-only');return tags.join(',');})(),
+    electricity:document.getElementById('em-elec').checked?'1':'',
     bio:document.getElementById('em-bio').value.trim(),
     imageUrl:document.getElementById('em-img').value.trim(),
     zoomLink:document.getElementById('em-zoom').value.trim(),
@@ -2270,7 +2671,7 @@ async function doCancelClass(id){
 
 // ── Requests data ──
 const dReqStore = [
-  {id:'r1', topic:'Natural dyeing with woad and madder', topicTag:'Fiber Arts', event:'', level:'Intermediate', format:'In person', notes:'Especially interested in period mordanting techniques.', submitter:'Lady Áine ingen Briain', hearts:4, ts: Date.now()-8e6},
+  {id:'r1', topic:'Natural dyeing with woad and madder', topicTag:'Fiber Arts', event:'', level:'Intermediate', format:'In person', notes:'Especially interested in period mordanting techniques.', submitter:'Áine ingen Briain', hearts:4, ts: Date.now()-8e6},
   {id:'r2', topic:'14th-century Italian cooking', topicTag:'Cooking & Brewing', event:'Collegium 2026', level:'Beginner', format:'', notes:'', submitter:'', hearts:7, ts: Date.now()-4e6},
   {id:'r3', topic:'Court etiquette and ceremony for newcomers', topicTag:'Society Skills', event:'Collegium 2026', level:'Beginner', format:'In person', notes:'Good intro for people new to the SCA.', submitter:'Tomas de Burgos', hearts:3, ts: Date.now()-2e6},
   {id:'r4', topic:'Period perfume and scent — ingredients and blending', topicTag:'Crafts', event:'', level:'', format:'', notes:'', submitter:'', hearts:2, ts: Date.now()-1e7},
@@ -2299,7 +2700,8 @@ function getVisibleTopics(){return managedTopics.filter(t=>!t.hidden).map(t=>t.n
 function populateTopicSelect(selId, includeBlank, includeOther, currentVal){
   const sel=document.getElementById(selId);if(!sel)return;
   const visible=getVisibleTopics();
-  sel.innerHTML=(includeBlank?'<option value="">All topics</option>':'')
+  const blankOpt=selId==='fc-tp'?'<option value="" disabled selected>Choose a topic…</option>':(includeBlank?'<option value="">All topics</option>':'');
+  sel.innerHTML=blankOpt
     +visible.map(t=>'<option value="'+escH(t)+'"'+(t===currentVal?' selected':'')+'>'+escH(t)+'</option>').join('');
   if(includeOther&&!visible.includes('Other'))sel.innerHTML+='<option value="Other">Other</option>';
 }
@@ -2476,6 +2878,7 @@ function clearReqFilters(){
   document.getElementById('rq-filter-topic').value='';
   document.getElementById('rq-filter-level').value='';
   const fmtEl=document.getElementById('rq-filter-format');if(fmtEl)fmtEl.value='';
+  const sortEl=document.getElementById('rq-sort');if(sortEl)sortEl.value='hearts';
   renderRequests();
 }
 function renderRequests(){
@@ -2486,8 +2889,11 @@ function renderRequests(){
   const fmF = document.getElementById('rq-filter-format')?.value||'';
   const sort = document.getElementById('rq-sort').value;
   const hasFilter=!!(q||evF||lvF||tpF||fmF);
-  const clearBtn=document.getElementById('rq-clear-btn');
-  if(clearBtn)clearBtn.style.display=hasFilter?'inline-block':'none';
+  const clearBtn=document.getElementById('rq-clear-wrap');
+  if(clearBtn)clearBtn.style.display=hasFilter?'block':'none';
+  const activeCount=[evF,lvF,tpF,fmF].filter(Boolean).length;
+  const rqBadge=document.getElementById('rq-filter-badge');
+  if(rqBadge){rqBadge.textContent=activeCount||'';rqBadge.style.display=activeCount?'inline':'none';}
   let list = allRequests.filter(r=>{
     if(r.hidden) return false;
     if(evF==='__general__' && r.event) return false;
@@ -2540,6 +2946,10 @@ function renderAdminRequests(){
   const evF = document.getElementById('req-admin-filter').value;
   const tpF = document.getElementById('req-admin-topic')?.value||'';
   const sort = document.getElementById('req-admin-sort')?.value||'hearts';
+  const arBadge=document.getElementById('req-admin-filter-badge');
+  const arActive=[evF,tpF].filter(Boolean).length;
+  if(arBadge){arBadge.textContent=arActive||'';arBadge.style.display=arActive?'inline':'none';}
+  const arClear=document.getElementById('req-admin-clear-wrap');if(arClear)arClear.style.display=arActive?'block':'none';
   let list = allRequests.filter(r=>{
     if(evF==='__general__' && r.event) return false;
     if(evF && evF!=='__general__' && r.event!==evF) return false;
@@ -2766,7 +3176,7 @@ async function createEvent(){
   const res=await api({action:'adminCreateEvent',token:adminToken,name,startDate,startTime,endDate,endTime,rooms:rooms.join(','),address,url});
   if(!res.ok){alert(res.error||'Failed to create event.');return;}
   // Clear and close create form
-  document.getElementById('lg-name').value='';document.getElementById('lg-start').value='';document.getElementById('lg-start-time').value='';document.getElementById('lg-end').value='';document.getElementById('lg-end-time').value='';document.getElementById('lg-rooms').value='';document.getElementById('lg-address').value='';document.getElementById('lg-url').value='';
+  document.getElementById('lg-name').value='';document.getElementById('lg-start').value='';populateTimeSelect('lg-start-time','09:00');document.getElementById('lg-end').value='';populateTimeSelect('lg-end-time','17:00');document.getElementById('lg-rooms').value='';document.getElementById('lg-address').value='';document.getElementById('lg-url').value='';
   document.getElementById('lg-result').style.display='none';
   toggleCreateEvent();
   // Add to all dropdowns
@@ -2915,41 +3325,33 @@ function printSchedule(){
   const email=scheduleEmail||'';
   const evHtml=document.getElementById('sched-events').innerHTML||'';
   const schedHtml=document.getElementById('sl').innerHTML||'';
-  const win=window.open('','_blank');
-  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
-<title>My Schedule</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Georgia,serif;color:#0D1F3C;padding:1.5rem;font-size:13px}
-h1{font-size:20px;font-weight:600;margin-bottom:4px}
-.sub{font-size:13px;color:#3A5278;font-family:sans-serif;margin-bottom:1.25rem}
-.ev-block{background:#E6EDF8;border:1px solid rgba(26,63,122,.26);border-radius:6px;padding:9px 13px;margin-bottom:1rem;font-family:sans-serif;font-size:13px;color:#1A3F7A}
-.ev-block strong{font-weight:600}
-.sched-item{display:grid;grid-template-columns:90px 1fr;gap:12px;align-items:start;padding:.85rem 1rem;border:1px solid #d9e5f5;border-radius:8px;margin-bottom:8px}
-.sched-item-teach{border-left:4px solid #3D6DB5}
-.sched-item-wl{border-left:4px solid #4A7EC7;opacity:.8}
-.sched-time{font-size:12px;color:#3D6DB5;font-family:sans-serif;font-weight:600}
-.sched-title{font-size:14px;font-weight:600;margin-bottom:2px}
-.sched-meta{font-size:12px;color:#3A5278;font-family:sans-serif}
-.banner{font-size:11px;font-family:sans-serif;font-weight:600;padding:4px 8px;border-radius:4px;margin-bottom:5px;display:inline-block}
-.banner-teach{background:#E6EDF8;color:#1A3F7A}
-.banner-wl{background:#D6E4F5;color:#2A5FAD}
-.section-head{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#3A5278;font-family:sans-serif;margin:1.25rem 0 8px;border-top:1px solid #d9e5f5;padding-top:10px}
-.remove-btn,.roster-toggle,.sched-zoom-btn{display:none}
-@media print{body{padding:.5rem}}
-</style></head><body>
-<h1>My Schedule</h1>
-<div class="sub">${email}</div>
-<div id="ev">${evHtml}</div>
-<div id="sl">${schedHtml}</div>
-<script>
-// Strip interactive elements not needed in print
-document.querySelectorAll('.remove-btn,.roster-toggle,.sched-zoom-btn').forEach(el=>el.remove());
-// Strip inline gold/blue backgrounds from banners that don't match print styles
-window.onload=()=>window.print();
-<\/script>
-</body></html>`);
-  win.document.close();
+
+  // Build a clean copy with interactive buttons removed
+  const wrap=document.createElement('div');
+  wrap.innerHTML='<div>'+evHtml+'</div><div>'+schedHtml+'</div>';
+  wrap.querySelectorAll('.remove-btn,.roster-toggle,.sched-zoom-btn,.print-btn').forEach(el=>el.remove());
+
+  const printDate=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+
+  const body=`<div style="font-family:Georgia,serif;color:#0D1F3C;font-size:13px">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:12px">
+    <div>
+      <div style="font-size:20px;font-weight:600;margin-bottom:4px">My Schedule</div>
+      ${email?'<div style="font-size:13px;color:#3A5278;font-family:sans-serif">'+escH(email)+'</div>':''}
+    </div>
+    <button onclick="window.print()" style="flex-shrink:0;padding:7px 16px;background:#1A3F7A;color:#fff;border:none;border-radius:5px;font-size:13px;cursor:pointer;font-family:sans-serif">🖨 Print</button>
+  </div>
+  ${wrap.innerHTML}
+  <div style="margin-top:24px;font-size:11px;color:#aaa;font-family:sans-serif;border-top:1px solid #d9e5f5;padding-top:10px;display:flex;justify-content:space-between">
+    <span>Kingdom Class Registry — Caid</span>
+    <span>Printed ${printDate}</span>
+  </div>
+</div>`;
+
+  document.getElementById('roM-title').textContent='My Schedule';
+  document.getElementById('roM-body').innerHTML=body;
+  document.getElementById('roM-print-btn').style.display='none';
+  document.getElementById('roster-modal').classList.add('open');
 }
 
 </script>
