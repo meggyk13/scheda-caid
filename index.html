@@ -50,7 +50,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .class-card:hover{border-color:var(--border2);box-shadow:0 4px 14px rgba(10,30,80,.13)}
 .class-card.registered{border-left:4px solid var(--accent-mid);padding-left:calc(1.3rem - 3px)}
 .card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}
-.card-title{font-size:15px;font-weight:600;line-height:1.4;font-family:Georgia,serif;color:var(--text)}
+.card-title{font-size:15px;font-weight:600;line-height:1.4;font-family:Georgia,serif;color:var(--accent)}
 .tag{font-size:11px;padding:3px 9px;border-radius:10px;white-space:nowrap;font-family:sans-serif;font-weight:600;flex-shrink:0}
 .tag.zoom{background:#E3EDF8;color:#1B5EA0}.tag.in-person{background:var(--green-bg);color:var(--green-text)}
 .card-meta{font-size:12.5px;color:var(--text2);margin-bottom:8px;font-family:sans-serif;display:flex;flex-direction:column;gap:3px}
@@ -1175,7 +1175,7 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated May 30, 2026 · 7:28 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated May 30, 2026 · 7:36 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){allClasses=res.classes;await loadEvFilter();populateTopics();rC();}
@@ -3253,24 +3253,17 @@ function removeRoom(evName,idx){
   const ev=availEvents.find(e=>e.name===evName);
   if(!ev||!ev.rooms)return;
   const roomName=ev.rooms[idx];
-  if(!confirm('Remove room "'+roomName+'"? Any classes assigned to this room will be moved back to pending.'))return;
+  const affected=dC.filter(c=>c.event===evName&&c.room===roomName&&c.status==='approved').length;
+  const affectedMsg=affected>0?' '+affected+' approved class'+(affected!==1?'es':'')+' will be moved back to pending.':' No classes are currently assigned to this room.';
+  if(!confirm('Remove room "'+roomName+'"?'+affectedMsg))return;
   ev.rooms.splice(idx,1);
-  // Move affected approved classes back to pending
-  let affected=0;
-  allClasses.forEach(c=>{
-    if(c.event===evName&&c.room===roomName&&c.status==='approved'){
-      c.status='pending';
-      c.room='';
-      affected++;
-    }
-  });
   dC.forEach(c=>{
     if(c.event===evName&&c.room===roomName&&c.status==='approved'){
       c.status='pending';
       c.room='';
     }
   });
-  if(affected>0)showToast(affected+' class'+(affected>1?' classes were':' was')+' moved back to pending.');
+  if(affected>0)showToast(affected+' class'+(affected!==1?'es were':' was')+' moved back to pending.');
   renderRoomList(evName);
   renderPending();
   renderApproved();
