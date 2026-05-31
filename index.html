@@ -992,96 +992,171 @@ const dC=SEED_CLASSES.map(c=>({...c}));
 const dP=[{id:'p1',title:'Introduction to Heraldic Embroidery',teacher:'Brigid ingen Faeláin',email:'brigid@example.com',date:'',time:'',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'A hands-on introduction to embroidering heraldic devices onto fabric — perfect for decorating a banner, pouch, or garment. We will cover basic satin stitch and couching techniques using your own device or a provided sample design.',bring:'Nothing — needles, fabric, and thread provided. Bring your device blazon if you have one.',fee:'$2 materials',zoomLink:'',max:10,prereqs:'',bio:'Brigid has been doing needlework in the SCA for eight years, with a focus on Irish and early medieval embroidery traditions. This is her first time teaching at Collegium.',imageUrl:'',timepref:'Morning preferred — I am also helping with feast setup in the afternoon.',status:'pending',sessionNum:1,sessionTotal:1},{id:'p2',title:'Nalbinding for Beginners',teacherTitle:'Lord',teacher:'Gunnar Ivarsson',email:'gunnar@example.com',date:'',time:'',duration:120,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'Nalbinding is a pre-knitting textile technique used across the Norse and Byzantine world. Students will learn the Oslo stitch and start a small swatch to take home. No prior fiber arts experience needed.',bring:'Nothing — needles and wool provided.',fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:'Lord Gunnar has been practicing nalbinding for six years and researches Viking Age textile finds. He teaches regularly at West Kingdom events.',imageUrl:'',timepref:'Thu, Nov 5: 9:00 AM–12:00 PM · Fri, Nov 6: 9:00 AM–1:00 PM',status:'pending',sessionNum:1,sessionTotal:1}],dEv=[{name:'Collegium 2026',startDate:'2026-08-16',endDate:'2026-08-16',rooms:['Arts/History Rm 1','Fiber Arts','Cooking/Costuming','Grab Bag Rm 2','Grab Bag Rm 3','Field','Archery'],address:'Los Angeles County Fairplex, 1101 W McKinley Ave, Pomona CA 91768',url:'http://places.sca-caid.org/caid/',active:true,published:true},{name:'Great Western War 2026',startDate:'2026-11-05',endDate:'2026-11-08',rooms:['A&S Tent','List Field','Archery Range','Bardic Circle'],address:'Kern County Fairgrounds, 1142 South P St, Bakersfield CA 93307',url:'https://places.sca-caid.org/gww/',active:true,published:true,daySchedule:[{date:'2026-11-05',start:'09:00',end:'18:00'},{date:'2026-11-06',start:'09:00',end:'18:00'},{date:'2026-11-07',start:'09:00',end:'18:00'},{date:'2026-11-08',start:'09:00',end:'14:00'}]}];
 const dRegs={
   '1':[
-    {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
-    {scaName:'Margery la Rousse',email:'margery@example.com',barony:'Angels',hidden:false},
-    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',barony:'Gyldenholt',hidden:false},
-    {scaName:'Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
-    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',barony:'Lyondemere',hidden:false},
-    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
-    {scaName:'Philippa of Rouen',email:'anon1@example.com',barony:'Dreiburgen',hidden:true},
-    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',barony:'Naevehjem',hidden:false},
-    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',barony:'Angels',hidden:false},
-    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',barony:'Angels',hidden:false},
-    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',barony:'Calafia',hidden:false},
-    {scaName:'Leofric the Just',email:'leofric@example.com',barony:'Lyondemere',hidden:false},
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
+    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
+    {scaName:'Philippa of Rouen',email:'anon1@example.com',hidden:true},
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
+    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
   ],
   '2':[
-    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',barony:'Gyldenholt',hidden:false},
-    {scaName:'Finn Eriksson',email:'finn@example.com',barony:'Calafia',hidden:false},
-    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',barony:'Dreiburgen',hidden:false},
-    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',barony:'Angels',hidden:false},
-    {scaName:'Leofric the Just',email:'leofric@example.com',barony:'Lyondemere',hidden:false},
-    {scaName:'Constance of Hartwood',email:'constance@example.com',barony:'Naevehjem',hidden:false},
-    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',barony:'Calafia',hidden:false},
-    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
+    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',hidden:false},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
+    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
+    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
   ],
   '3':[
-    {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
-    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',barony:'Gyldenholt',hidden:false},
-    {scaName:'Margery la Rousse',email:'margery@example.com',barony:'Angels',hidden:false},
-    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',barony:'Gyldenholt',hidden:false},
-    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',barony:'Calafia',hidden:false},
-    {scaName:'Constance of Hartwood',email:'constance@example.com',barony:'Naevehjem',hidden:false},
-    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',barony:'Lyondemere',hidden:false},
-    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',barony:'Naevehjem',hidden:false},
-    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',barony:'Angels',hidden:false},
-    {scaName:'Finn Eriksson',email:'finn@example.com',barony:'Calafia',hidden:false},
-    {scaName:'Leofric the Just',email:'leofric@example.com',barony:'Lyondemere',hidden:false},
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
+    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
+    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
+    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
+  ],
+  '4':[
+    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
   ],
   '6':[
-    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',barony:'Naevehjem',hidden:false},
-    {scaName:'Leofric the Just',email:'leofric@example.com',barony:'Lyondemere',hidden:false},
-    {scaName:'Finn Eriksson',email:'finn@example.com',barony:'Calafia',hidden:false},
-    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',barony:'Calafia',hidden:false},
-    {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
-    {scaName:'Haakon Sigurdsson',email:'anon2@example.com',barony:'Calafia',hidden:true},
-    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',barony:'Angels',hidden:false},
-    {scaName:'Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
-    {scaName:'Constance of Hartwood',email:'constance@example.com',barony:'Naevehjem',hidden:false},
-    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',barony:'Gyldenholt',hidden:false},
-    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',barony:'Dreiburgen',hidden:false},
-    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',barony:'Lyondemere',hidden:false},
-    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
-    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',barony:'Angels',hidden:false},
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
+    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
+    {scaName:'Haakon Sigurdsson',email:'anon2@example.com',hidden:true},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
+    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
+    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
   ],
   '7':[
-    {scaName:'Margery la Rousse',email:'margery@example.com',barony:'Angels',hidden:false},
-    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',barony:'Gyldenholt',hidden:false},
-    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',barony:'Angels',hidden:false},
-    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
-    {scaName:'Constance of Hartwood',email:'constance@example.com',barony:'Naevehjem',hidden:false},
-    {scaName:'Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
-    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',barony:'Dreiburgen',hidden:false},
-    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',barony:'Lyondemere',hidden:false},
-    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',barony:'Gyldenholt',hidden:false},
-    {scaName:'Alienor de Vaux',email:'anon3@example.com',barony:'Angels',hidden:true},
-    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',barony:'Angels',hidden:false},
-    {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
+    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
+    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
+    {scaName:'Alienor de Vaux',email:'anon3@example.com',hidden:true},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
   ],
   '11':[
-    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',barony:'Gyldenholt',hidden:false},
-    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',barony:'Gyldenholt',hidden:false},
-    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',barony:'Angels',hidden:false},
-    {scaName:'Constance of Hartwood',email:'constance@example.com',barony:'Naevehjem',hidden:false},
-    {scaName:'Margery la Rousse',email:'margery@example.com',barony:'Angels',hidden:false},
-    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',barony:'Angels',hidden:false},
-    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',barony:'Dreiburgen',hidden:false},
-    {scaName:'Thorvald Eiriksson',email:'anon4@example.com',barony:'Gyldenholt',hidden:true},
-    {scaName:'Thomas of Ely',email:'bthomas@example.com',barony:'Calafia',hidden:false},
-    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',barony:'Lyondemere',hidden:false},
-    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',barony:'Calafia',hidden:false},
-    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',barony:'Dreiburgen',hidden:false},
-    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',barony:'Naevehjem',hidden:false},
-    {scaName:'Aelric of Thornwood',email:'aelric@example.com',barony:'Dreiburgen',hidden:false},
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
+    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
+    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
+    {scaName:'Thorvald Eiriksson',email:'anon4@example.com',hidden:true},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
+    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',hidden:false},
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
+  ],
+  '12':[
+    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
+  ],
+  '13':[
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
+    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
+    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
+    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',hidden:false},
+    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
+  ],
+  '14':[
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
+  ],
+  '15':[
+    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
+    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
+    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
+  ],
+  '16':[
+    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
+    {scaName:'Haakon Sigurdsson',email:'anon2@example.com',hidden:true},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
+  ],
+  '17':[
+    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
+    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
+    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',hidden:false},
+    {scaName:'Thorvald Eiriksson',email:'anon4@example.com',hidden:true},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
   ],
 },
 dWL={
-  '1':[],
   '2':[
-    {scaName:'Margery la Rousse',email:'margery@example.com',barony:'Angels',hidden:false},
+    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
   ],
   '11':[
-    {scaName:'Finn Eriksson',email:'finn@example.com',barony:'Calafia',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
+  ],
+  '13':[
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
   ],
 };
 let dPid=1000,allClasses=[],allAdminClasses=[],myRegs={},scheduleEmail='';
@@ -1239,7 +1314,7 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated May 30, 2026 · 11:50 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:6px"><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:4px 12px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 1, 2026 · 12:10 AM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:6px"><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:4px 12px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){allClasses=res.classes;await loadEvFilter();populateTopics();rC();}
@@ -3533,45 +3608,46 @@ function printRoomSchedules(){
 
   const approved=dC.filter(c=>c.event===evName&&c.status==='approved'&&!c.cancelled);
   const printDate=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-
-  const thS='text-align:left;padding:6px 8px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#555;border-bottom:2px solid #333;font-family:sans-serif;';
-  const tdS='padding:10px 8px;font-size:13px;vertical-align:top;border-bottom:1px solid #ddd;';
+  const evDateStr=ev.startDate?(ev.endDate&&ev.endDate!==ev.startDate?fD(ev.startDate)+' – '+fD(ev.endDate):fD(ev.startDate)):'';
+  const audienceLabels={'newcomer-friendly':'Good for Newcomers','kids-welcome':'Good for Kids','adults-only':'Adults Only'};
 
   const pages=ev.rooms.map(room=>{
     const classes=approved.filter(c=>c.room===room).sort((a,b)=>a.time>b.time?1:-1);
-    const rows=classes.length
-      ? classes.map(c=>{
-          const dur=c.duration?(c.duration>=60?Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h':c.duration+'min'):'';
-          const teacher=(c.teacherTitle?c.teacherTitle+' ':'')+c.teacher;
-          return '<tr>'
-            +'<td style="'+tdS+'font-family:sans-serif;font-weight:600;white-space:nowrap;width:70px;">'+escH(fT(c.time))+'</td>'
-            +'<td style="'+tdS+'">'
-              +'<div style="font-size:14px;font-weight:600;font-family:Georgia,serif;margin-bottom:2px">'+escH(c.title)+'</div>'
-              +'<div style="font-size:12px;color:#555;font-family:sans-serif;margin-bottom:4px">'+escH(teacher)+(dur?' · '+dur:'')+'</div>'
-              +(c.desc?'<div style="font-size:12px;color:#444;font-family:sans-serif;line-height:1.5;margin-bottom:4px">'+escH(c.desc)+'</div>':'')
-              +((()=>{const audienceLabels={'newcomer-friendly':'Good for Newcomers','kids-welcome':'Good for Kids','adults-only':'Adults Only'};const tgs=[...(c.level||'').split(',').map(l=>l.trim()).filter(Boolean),...(c.audience||'').split(',').map(a=>a.trim()).filter(a=>audienceLabels[a]).map(a=>audienceLabels[a])];return tgs.length?'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:2px">'+tgs.map(t=>'<span style="font-size:11px;font-family:sans-serif;padding:1px 8px;border-radius:10px;border:1px solid #bbb;color:#444;background:#f4f4f4">'+escH(t)+'</span>').join('')+'</div>':''})())
-            +'</td>'
-            +'</tr>';
-        }).join('')
-      : '<tr><td colspan="2" style="padding:16px 8px;font-size:13px;color:#888;font-family:sans-serif;">No classes scheduled.</td></tr>';
 
-    return `<div style="page-break-after:always;padding:1.5rem;font-family:Georgia,serif;color:#111">
-  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px">
-    <div>
-      <div style="font-size:11px;font-family:sans-serif;text-transform:uppercase;letter-spacing:.07em;color:#777;margin-bottom:4px">${escH(evName)}</div>
-      <h1 style="font-size:24px;margin:0">${escH(room)}</h1>
-    </div>
-    <button onclick="window.print()" style="flex-shrink:0;padding:7px 16px;background:#1A3F7A;color:#fff;border:none;border-radius:5px;font-size:13px;cursor:pointer;font-family:sans-serif">🖨 Print</button>
+    const rows=classes.length ? classes.map((c,i)=>{
+      const dur=c.duration?(c.duration>=60?Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h':c.duration+'min'):'';
+      const teacher=(c.teacherTitle?c.teacherTitle+' ':'')+c.teacher;
+      const tgs=[...(c.level||'').split(',').map(l=>l.trim()).filter(Boolean),...(c.audience||'').split(',').map(a=>a.trim()).filter(a=>audienceLabels[a]).map(a=>audienceLabels[a])];
+      const tags=tgs.length?'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:7px">'+tgs.map(t=>'<span style="font-size:10px;font-family:sans-serif;padding:2px 9px;border-radius:99px;border:1px solid #c8d4e8;color:#1A3F7A;background:#e8eef8">'+escH(t)+'</span>').join('')+'</div>':'';
+      const bg=i%2===0?'#fafbfd':'#fff';
+      return `<tr style="background:${bg}">
+        <td style="padding:16px 20px 16px 0;font-family:sans-serif;font-size:14px;font-weight:700;color:#1A3F7A;white-space:nowrap;vertical-align:top;width:80px;border-bottom:1px solid #e4eaf4">${escH(fT(c.time))}</td>
+        <td style="padding:16px 0;vertical-align:top;border-bottom:1px solid #e4eaf4">
+          <div style="font-size:16px;font-weight:700;font-family:Georgia,serif;color:#0D1F3C;margin-bottom:3px">${escH(c.title)}</div>
+          <div style="font-size:12px;font-family:sans-serif;color:#5a7aaa;margin-bottom:6px">${escH(teacher)}${dur?' &nbsp;·&nbsp; <span style="color:#aaa">'+dur+'</span>':''}</div>
+          ${c.desc?'<div style="font-size:12px;font-family:sans-serif;color:#444;line-height:1.6">'+escH(c.desc)+'</div>':''}
+          ${tags}
+        </td>
+      </tr>`;
+    }).join('')
+    : `<tr><td colspan="2" style="padding:32px 0;font-size:13px;color:#bbb;font-family:sans-serif;text-align:center;font-style:italic;">No classes scheduled for this room.</td></tr>`;
+
+    return `<div style="page-break-after:always;font-family:Georgia,serif;color:#0D1F3C">
+  <div style="background:#1A3F7A;padding:28px 36px 24px">
+    <div style="font-size:10px;font-family:sans-serif;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.6);margin-bottom:8px">${escH(evName)}${evDateStr?' &nbsp;·&nbsp; '+evDateStr:''}</div>
+    <div style="font-size:36px;font-weight:700;font-family:Georgia,serif;color:#fff;line-height:1.1;margin-bottom:10px">${escH(room)}</div>
+    <div style="display:inline-block;font-size:11px;font-family:sans-serif;color:rgba(255,255,255,.7);background:rgba(255,255,255,.12);border-radius:99px;padding:3px 12px">${classes.length} class${classes.length!==1?'es':''} scheduled</div>
   </div>
-  <div style="font-size:12px;font-family:sans-serif;color:#777;margin-bottom:16px;border-bottom:2px solid #333;padding-bottom:10px">${classes.length} class${classes.length!==1?'es':''} scheduled</div>
-  <table style="width:100%;border-collapse:collapse">
-    <thead><tr>
-      <th style="${thS}width:70px;">Time</th>
-      <th style="${thS}">Class</th>
-    </tr></thead>
-    <tbody>${rows}</tbody>
-  </table>
-  <div style="margin-top:24px;font-size:11px;color:#aaa;font-family:sans-serif;border-top:1px solid #ddd;padding-top:10px;display:flex;justify-content:space-between">
+  <div style="padding:28px 36px">
+    <table style="width:100%;border-collapse:collapse">
+      <thead><tr style="border-bottom:2px solid #1A3F7A">
+        <th style="text-align:left;padding:0 0 10px;font-size:10px;font-family:sans-serif;text-transform:uppercase;letter-spacing:.1em;color:#1A3F7A;width:80px">Time</th>
+        <th style="text-align:left;padding:0 0 10px;font-size:10px;font-family:sans-serif;text-transform:uppercase;letter-spacing:.1em;color:#1A3F7A">Class</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>
+  <div style="padding:0 36px 24px;font-size:10px;color:#bbb;font-family:sans-serif;display:flex;justify-content:space-between;border-top:1px solid #e4eaf4;padding-top:12px;margin-top:4px">
     <span>Kingdom Class Registry — Caid</span>
     <span>Printed ${printDate}</span>
   </div>
