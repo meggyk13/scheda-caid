@@ -227,6 +227,53 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* ── Submit form teacher lookup ── */
+.submit-layout{display:flex;gap:0;position:relative;transition:gap .3s}
+.submit-layout.panel-open{gap:1.5rem}
+.submit-main{flex:1;min-width:0;transition:max-width .3s}
+.teacher-history-panel{width:0;overflow:hidden;flex-shrink:0;transition:width .35s cubic-bezier(.4,0,.2,1),opacity .25s;opacity:0;pointer-events:none}
+.teacher-history-panel.open{width:300px;opacity:1;pointer-events:auto}
+@media(max-width:700px){
+  .submit-layout.panel-open{flex-direction:column;gap:1rem}
+  .teacher-history-panel.open{width:100%}
+}
+.thp-inner{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:14px 16px;height:100%}
+.thp-title{font-weight:700;font-size:14px;color:var(--text);margin-bottom:3px}
+.thp-sub{font-size:12px;color:var(--text2);font-family:sans-serif;margin-bottom:12px;line-height:1.5}
+.thp-class{padding:10px 0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:5px}
+.thp-class:last-child{border-bottom:none}
+.thp-class-title{font-size:13px;font-weight:600;color:var(--text);line-height:1.3}
+.thp-class-meta{font-size:11px;color:var(--text2);font-family:sans-serif}
+.teach-again-btn{font-size:11px;padding:4px 10px;background:var(--accent);color:#fff;border:none;border-radius:99px;cursor:pointer;font-family:sans-serif;font-weight:600;align-self:flex-start;transition:background .15s}
+.teach-again-btn:hover{background:var(--accent-mid)}
+.lookup-wrap{max-width:480px;margin-bottom:1.5rem;padding:14px 16px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-lg)}
+.lookup-matched{display:flex;align-items:center;gap:8px;font-family:sans-serif;font-size:13px;color:var(--text);margin-top:8px}
+/* ── Reports ── */
+.rpt-table{width:100%;border-collapse:collapse;font-family:sans-serif;font-size:13px}
+.rpt-table th{background:var(--accent);color:#fff;padding:8px 10px;text-align:left;font-weight:600;font-size:12px;letter-spacing:.03em;white-space:nowrap}
+.rpt-table td{padding:7px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+.rpt-table tr:last-child td{border-bottom:none}
+.rpt-table tr:nth-child(even) td{background:var(--bg2)}
+.rpt-num{text-align:right;font-weight:600;color:var(--accent-mid)}
+.rpt-wrap{background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius-lg);overflow:hidden}
+/* ── Teacher directory ── */
+.teacher-card{background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.teacher-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.teacher-name{font-weight:700;font-size:15px;color:var(--text)}
+.teacher-meta{font-size:12px;color:var(--text2);font-family:sans-serif;margin-top:2px}
+.teacher-badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px}
+.peerage-badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:700;font-family:sans-serif;color:#fff;letter-spacing:.03em}
+.badge-chivalry{background:#8B0000}
+.badge-laurel{background:#2e7d4e}
+.badge-pelican{background:#1A3F7A}
+.badge-masterofdefense{background:#4a4a4a}
+.badge-orderofthemark{background:#7a5c1e}
+.badge-royalpeer{background:#6a5acd}
+.badge-sittingroyalty{background:#b8860b}
+.teacher-history{font-size:12px;font-family:sans-serif;color:var(--text2);border-top:1px solid var(--border2);padding-top:8px;margin-top:2px}
+.teacher-history-title{font-weight:700;color:var(--text);margin-bottom:4px;font-size:12px}
+.teacher-history-item{padding:3px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:baseline}
+.teacher-history-item:last-child{border-bottom:none}
 /* ── Teacher bio popover ── */
 .bio-btn{background:none;border:none;padding:0;cursor:pointer;color:var(--accent-mid);font-size:13px;line-height:1;vertical-align:middle;margin-left:4px;position:relative;display:inline-flex;align-items:center}
 .bio-btn:hover{color:var(--accent)}
@@ -394,6 +441,20 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         <!-- Teacher message box shown when an event has a message set -->
         <div id="fc-teacher-msg-box" style="display:none;margin-bottom:1.25rem;padding:11px 14px;background:#EAF3E8;border:1px solid #9CC49A;border-radius:var(--radius-lg);font-size:13px;font-family:sans-serif;color:#1A4D1A;line-height:1.65;white-space:pre-wrap"></div>
         <div id="ev-banner" class="ev-banner" style="display:none"><i class="ti ti-lock"></i> <span id="ev-banner-txt"></span></div>
+
+        <!-- Email lookup -->
+        <div class="lookup-wrap" id="fc-lookup-wrap">
+          <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:3px">Have you taught with us before?</div>
+          <div style="font-size:12px;color:var(--text2);font-family:sans-serif;margin-bottom:10px;line-height:1.5">Enter your email to load your profile and past classes, or skip to fill in the form below.</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <input class="form-input" type="email" id="fc-lookup-email" placeholder="your@email.com" style="flex:1;min-width:180px" onkeydown="if(event.key==='Enter')lookupTeacher()">
+            <button class="submit-action" type="button" style="font-size:13px;padding:8px 16px;white-space:nowrap" onclick="lookupTeacher()"><i class="ti ti-search"></i> Look up</button>
+          </div>
+          <div id="fc-lookup-result" style="display:none;margin-top:10px"></div>
+        </div>
+
+        <div class="submit-layout" id="submit-layout">
+          <div class="submit-main">
         <div class="form-section-title">Submit a class</div>
         <div class="form-section-sub">Submissions go to admin review before appearing in the catalog.</div>
         <div class="form-full">
@@ -432,8 +493,19 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         </div>
         <div class="form-grid">
           <div class="form-col"><label class="form-label">Your email (admin contact only) *</label><input class="form-input" id="fc-em" type="email" placeholder="not shown publicly"></div>
+          <div class="form-col"><label class="form-label">Barony or territory <span style="font-weight:400;text-transform:none;letter-spacing:0">(admin only, optional)</span></label><input class="form-input" id="fc-bt" type="text" placeholder="e.g. Gyldenholt, Dreiburgen"><span class="form-hint">Not shown publicly — helps admin coordinate.</span></div>
         </div>
         <div class="form-full"><label class="form-label">Phone (admin contact only) <span style="font-weight:400;text-transform:none;letter-spacing:0">optional</span></label><input class="form-input" id="fc-ph" type="tel" placeholder="Helps admin reach you quickly at events"></div>
+        <div class="form-full"><label class="form-label">Peerages <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional — admin will confirm)</span></label>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:6px;font-family:sans-serif;font-size:13px;color:var(--text)">
+            <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="fc-p-chivalry" style="accent-color:#8B0000"> Chivalry</label>
+            <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="fc-p-laurel" style="accent-color:#2e7d4e"> Laurel</label>
+            <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="fc-p-pelican" style="accent-color:#1A3F7A"> Pelican</label>
+            <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="fc-p-masterofdefense" style="accent-color:#4a4a4a"> Master of Defense</label>
+            <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="fc-p-orderofthemark" style="accent-color:#7a5c1e"> Order of the Mark</label>
+          </div>
+          <span class="form-hint">Peerages are confirmed by admin and shown as badges on your teacher profile.</span>
+        </div>
         <div class="form-full"><label class="form-label">Teacher bio <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional, shown publicly)</span></label><textarea class="form-textarea" id="fc-bio" maxlength="300" oninput="updateCharCount('fc-bio',300)" style="min-height:70px" placeholder="A sentence or two about your background with this topic. Shown as a hover tooltip on your name in the class catalog."></textarea><span class="form-hint"><span id="fc-bio-count">300</span> characters remaining</span></div>
         <div class="form-divider">Logistics</div>
         <div class="form-grid">
@@ -487,6 +559,17 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
             <button class="submit-action" onclick="submitClass()"><i class="ti ti-send"></i> Submit class</button>
           </div>
         </div>
+          </div><!-- /submit-main -->
+
+          <!-- Teacher history panel (slides in from right) -->
+          <div class="teacher-history-panel" id="teacher-history-panel">
+            <div class="thp-inner">
+              <div class="thp-title" id="thp-name"></div>
+              <div class="thp-sub" id="thp-sub">Your past classes are shown below. Hit "Teach again" to pre-fill the form.</div>
+              <div id="thp-classes"></div>
+            </div>
+          </div>
+        </div><!-- /submit-layout -->
       </div>
       <div id="submit-ok" style="display:none;text-align:center;padding:3rem 1.5rem;max-width:480px;margin:0 auto">
         <div style="font-size:48px;margin-bottom:1rem">✅</div>
@@ -584,6 +667,8 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
           <button class="admin-tab" id="atab-events" onclick="showAdminTab('events')"><i class="ti ti-calendar-event"></i> Events</button>
           <button class="admin-tab" id="atab-requests" onclick="showAdminTab('requests')"><i class="ti ti-heart"></i> Requests</button>
           <button class="admin-tab" id="atab-topics" onclick="showAdminTab('topics')"><i class="ti ti-tag"></i> Topics</button>
+          <button class="admin-tab" id="atab-teachers" onclick="showAdminTab('teachers')"><i class="ti ti-users"></i> Teachers</button>
+          <button class="admin-tab" id="atab-reports" onclick="showAdminTab('reports')"><i class="ti ti-chart-bar"></i> Reports</button>
         </div>
         <div class="admin-tab-content">
           <div id="admin-tab-empty" style="color:var(--text2);font-size:13px;font-family:sans-serif;padding:.5rem 0">Select a section from the menu to get started.</div>
@@ -818,9 +903,94 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
           </div>
           <div id="topics-list" style="display:flex;flex-direction:column;gap:6px"></div>
         </div>
+        <div id="admin-tab-teachers" style="display:none">
+          <div style="display:flex;gap:10px;align-items:center;margin-bottom:1.2rem;flex-wrap:wrap">
+            <input class="search-input" type="text" id="teacher-search" placeholder="Search by name, email, or barony…" style="flex:1;min-width:200px" oninput="renderTeacherList()">
+            <select class="form-select" id="teacher-filter-peerage" onchange="renderTeacherList()" style="font-size:13px;padding:7px 10px;min-width:160px">
+              <option value="">All peerages</option>
+              <option value="chivalry">Chivalry</option>
+              <option value="laurel">Laurel</option>
+              <option value="pelican">Pelican</option>
+              <option value="masterofdefense">Master of Defense</option>
+              <option value="orderofthemark">Order of the Mark</option>
+              <option value="royalpeer">Royal Peer</option>
+              <option value="sittingroyalty">Sitting Royalty</option>
+            </select>
+          </div>
+          <div id="teacher-list" style="display:flex;flex-direction:column;gap:10px"></div>
+        </div>
+
+        <div id="admin-tab-reports" style="display:none">
+          <div style="display:flex;gap:10px;align-items:center;margin-bottom:1.2rem;flex-wrap:wrap">
+            <select class="form-select" id="rpt-ev" onchange="renderReports()" style="font-size:13px;padding:7px 10px;min-width:200px">
+              <option value="">All events</option>
+            </select>
+          </div>
+
+          <!-- Registration summary -->
+          <div style="margin-bottom:1.8rem">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:.8rem">
+              <div style="font-weight:700;font-size:14px;color:var(--text)"><i class="ti ti-users" style="color:var(--accent-mid)"></i> Registration Summary</div>
+              <div style="display:flex;gap:8px">
+                <button class="approve-btn" style="font-size:12px" onclick="exportCSV('registrations')"><i class="ti ti-download"></i> CSV</button>
+                <button class="approve-btn" style="font-size:12px" onclick="exportSheets('registrations')"><i class="ti ti-table"></i> Open in Sheets</button>
+              </div>
+            </div>
+            <div id="rpt-reg-table"></div>
+          </div>
+
+          <!-- Teacher roster -->
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:.8rem">
+              <div style="font-weight:700;font-size:14px;color:var(--text)"><i class="ti ti-chalkboard" style="color:var(--accent-mid)"></i> Teacher Roster</div>
+              <div style="display:flex;gap:8px">
+                <button class="approve-btn" style="font-size:12px" onclick="exportCSV('teachers')"><i class="ti ti-download"></i> CSV</button>
+                <button class="approve-btn" style="font-size:12px" onclick="exportSheets('teachers')"><i class="ti ti-table"></i> Open in Sheets</button>
+              </div>
+            </div>
+            <div id="rpt-teacher-table"></div>
+          </div>
+        </div>
+
         </div><!-- /admin-tab-content -->
         </div><!-- /admin-layout -->
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Teacher edit modal -->
+<div class="modal-bg" id="teacher-modal">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-title">Teacher profile</div>
+    <div id="tm-email-display" style="font-size:12px;color:var(--text2);font-family:sans-serif;margin-bottom:1rem"></div>
+    <div class="modal-field"><label class="modal-label">SCA name</label><input class="modal-input" id="tm-name" type="text"></div>
+    <div class="modal-field"><label class="modal-label">Title <span style="font-weight:400;font-size:12px">(optional)</span></label><input class="modal-input" id="tm-title" type="text" placeholder="e.g. Lady, Lord, Mistress, Sir"></div>
+    <div class="modal-field"><label class="modal-label">Barony or territory</label><input class="modal-input" id="tm-barony" type="text" placeholder="e.g. Gyldenholt, Dreiburgen"></div>
+    <div class="modal-field"><label class="modal-label">Phone <span style="font-weight:400;font-size:12px">(admin only)</span></label><input class="modal-input" id="tm-phone" type="tel"></div>
+    <div class="modal-field"><label class="modal-label">Bio <span style="font-weight:400;font-size:12px">(shown publicly on class cards)</span></label><textarea class="modal-input" id="tm-bio" style="min-height:70px;resize:vertical"></textarea></div>
+    <div class="modal-field">
+      <label class="modal-label">Peerages <span style="font-weight:400;font-size:12px">(admin confirms)</span></label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-family:sans-serif;font-size:13px" id="tm-peerages">
+        <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="tm-p-chivalry" style="accent-color:#8B0000"> Chivalry</label>
+        <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="tm-p-laurel" style="accent-color:#2e7d4e"> Laurel</label>
+        <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="tm-p-pelican" style="accent-color:#1A3F7A"> Pelican</label>
+        <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="tm-p-masterofdefense" style="accent-color:#4a4a4a"> Master of Defense</label>
+        <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="tm-p-orderofthemark" style="accent-color:#7a5c1e"> Order of the Mark</label>
+      </div>
+    </div>
+    <div class="modal-field" style="display:flex;gap:1.5rem;font-family:sans-serif;font-size:13px">
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="tm-royalpeer" style="accent-color:var(--accent)"> Royal Peer (Duke/Count etc.)</label>
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="tm-sittingroyalty" style="accent-color:#b8860b" onchange="toggleStepDownField()"> Sitting Royalty</label>
+    </div>
+    <div id="tm-stepdown-wrap" style="display:none">
+      <label class="modal-label">Step-down date <span style="color:var(--red-text)">*</span></label>
+      <input class="modal-input" id="tm-stepdown" type="date" style="max-width:200px">
+      <div style="font-size:11px;color:var(--text2);font-family:sans-serif;margin-top:4px">Sitting Royalty flag will be automatically cleared after this date.</div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('teacher-modal')">Cancel</button>
+      <button class="modal-confirm mc-gold" id="tm-confirm" onclick="saveTeacher()"><i class="ti ti-device-floppy"></i> Save</button>
     </div>
   </div>
 </div>
@@ -993,32 +1163,48 @@ function setTimeSelectValue(id, val){
 }
 
 const SEED_CLASSES=[
-  {id:'1',title:`The Art of the Illuminated Initial`,teacherTitle:'Mistress',teacher:`Alienor of Wakefield`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Arts/History Rm 1`,level:'Beginner',audience:'newcomer-friendly',desc:`Learn the basics of painting illuminated initials in the style of 12th-century English manuscripts. We'll cover gilding, pigment mixing, and letterform. Beginners welcome.`,bring:`Small brush if you have one; supplies provided.`,fee:'',zoomLink:'',max:12,prereqs:'',bio:`Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'2',title:`Introduction to Tablet Weaving`,teacherTitle:'Lady',teacher:`Aelswith of Mercia`,date:'2026-08-16',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,level:'Beginner',audience:'newcomer-friendly,kids-welcome',sessionNum:1,sessionTotal:2,desc:`An entry-level class covering warping, turning sequences, and reading simple patterns. You'll leave with a small band in progress.`,bring:`Nothing — cards, warp, and loom provided.`,fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'2b',title:`Introduction to Tablet Weaving`,teacherTitle:'Lady',teacher:`Aelswith of Mercia`,date:'2026-08-16',time:'14:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,level:'Beginner',audience:'newcomer-friendly,kids-welcome',sessionNum:2,sessionTotal:2,desc:`An entry-level class covering warping, turning sequences, and reading simple patterns. You'll leave with a small band in progress.`,bring:`Nothing — cards, warp, and loom provided.`,fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'3',title:`Ottoman Garb Basics`,teacher:`Rayhana bint Estafanos al-Ábbas`,date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Cooking/Costuming`,desc:`This class walks through the basics of period-appropriate mid-16th century Ottoman clothing, with practical guidance on layers, silhouettes, and accessible starting points for creating garb.`,bring:`N/a`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'4',title:`Heraldic Charges: A Visual Survey`,cancelled:true,teacher:`Seamus mac Neill`,date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Heraldry',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`A fast-paced tour through common and uncommon charges in period heraldry, with examples from the Rolls of Arms. Great for new heralds or anyone designing devices.`,bring:`Ideas for your own device if you have them.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Lord Seamus is a pursuivant with Caid's College of Heralds and has been consulting on device submissions for eight years. He enjoys the obscure corners of the heraldic menagerie.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'1',title:`The Art of the Illuminated Initial`,teacherTitle:'Mistress',teacher:`Alienor of Wakefield`,email:'alienor@example.com',date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Arts/History Rm 1`,level:'Beginner',audience:'newcomer-friendly',desc:`Learn the basics of painting illuminated initials in the style of 12th-century English manuscripts. We'll cover gilding, pigment mixing, and letterform. Beginners welcome.`,bring:`Small brush if you have one; supplies provided.`,fee:'',zoomLink:'',max:12,prereqs:'',bio:`Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'2',title:`Introduction to Tablet Weaving`,teacherTitle:'Lady',teacher:`Aelswith of Mercia`,email:'aelswith@example.com',date:'2026-08-16',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,level:'Beginner',audience:'newcomer-friendly,kids-welcome',sessionNum:1,sessionTotal:2,desc:`An entry-level class covering warping, turning sequences, and reading simple patterns. You'll leave with a small band in progress.`,bring:`Nothing — cards, warp, and loom provided.`,fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'2b',title:`Introduction to Tablet Weaving`,teacherTitle:'Lady',teacher:`Aelswith of Mercia`,email:'aelswith@example.com',date:'2026-08-16',time:'14:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,level:'Beginner',audience:'newcomer-friendly,kids-welcome',sessionNum:2,sessionTotal:2,desc:`An entry-level class covering warping, turning sequences, and reading simple patterns. You'll leave with a small band in progress.`,bring:`Nothing — cards, warp, and loom provided.`,fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'3',title:`Ottoman Garb Basics`,teacher:`Rayhana bint Estafanos al-Ábbas`,email:'rayhana@example.com',date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Cooking/Costuming`,desc:`This class walks through the basics of period-appropriate mid-16th century Ottoman clothing, with practical guidance on layers, silhouettes, and accessible starting points for creating garb.`,bring:`N/a`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'4',title:`Heraldic Charges: A Visual Survey`,cancelled:true,teacher:`Seamus mac Neill`,email:'seamus@example.com',date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Heraldry',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`A fast-paced tour through common and uncommon charges in period heraldry, with examples from the Rolls of Arms. Great for new heralds or anyone designing devices.`,bring:`Ideas for your own device if you have them.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Lord Seamus is a pursuivant with Caid's College of Heralds and has been consulting on device submissions for eight years. He enjoys the obscure corners of the heraldic menagerie.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'5',title:`Simple Iron Gall Ink`,teacher:`Fiachra an Doire`,email:'margery@example.com',date:'2026-08-16',time:'12:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`Learn to make an easy, effective iron gall ink based on a late 14th or early 15th century English recipe. Students take home a small vial.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Fiachra is a scribe and calligrapher with a particular interest in medieval ink recipes and writing materials. He has been recreating period inks for over eight years.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'6',title:`Intro to SCA Rapier`,teacher:`Rodrigo de Castilla`,date:'2026-08-16',time:'14:00',duration:90,format:'in-person',topic:'Combat',event:'Collegium 2026',room:`Field - Martial Class, all types`,level:'Beginner',audience:'newcomer-friendly,adults-only',desc:`An overview of rapier combat in the SCA: rules, equipment, and basic footwork and guards. Loaner gear available for new fighters to try.`,bring:`Comfortable clothes you can move in.`,fee:'',zoomLink:'',max:20,prereqs:'',bio:`Don Rodrigo holds the rank of Don in Caid's rapier community and has been teaching introductory fencing for over a decade. He specializes in Italian rapier styles of the late 16th century.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'7',title:`Cooking from the Forme of Cury`,teacher:`Gwenllian ferch Caradog`,date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Collegium 2026',room:`Grab Bag Rm 3`,level:'Beginner',audience:'newcomer-friendly,kids-welcome',desc:`We'll work through two recipes from the 14th-century English cookbook, adapting them for modern kitchens. Tasting included.`,bring:`Any food allergies to share.`,fee:'',zoomLink:'',max:16,prereqs:'',bio:`Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery. She has cooked multiple SCA feasts from period sources and written extensively on redaction methodology.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'8',title:`Arrow Dynamics`,teacher:`Gideon the Genuine`,date:'2026-08-16',time:'15:00',duration:60,format:'in-person',topic:'Archery',event:'Collegium 2026',room:`Archery`,desc:`This class covers the dynamics of what happens when an arrow is shot from a bow: release, flex, and flight. Physics made accessible.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Gideon has been shooting in the SCA for eighteen years and holds multiple Royal Round records. He brings a background in physics to his teaching of archery mechanics.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'9',title:`Weeknight Zoom: Period Dance Q&A`,teacher:`Isabeau de Bretagne`,date:'2026-09-10',time:'19:00',duration:60,format:'zoom',topic:'Dance',event:'',room:``,desc:`An informal Zoom session to answer questions about period dance, recommend resources, and maybe walk through a basse danse or two together.`,bring:``,fee:'',zoomLink:'https://zoom.us/j/example',max:null,prereqs:'',bio:`Lady Isabeau has been dancing and teaching period dance in the SCA for seven years, with a focus on 15th and 16th century French and Italian forms.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'10',title:`Thread Woven Buttons`,teacher:`Rayhana bint Estafanos al-Ábbas`,date:'2026-08-16',time:'16:00',duration:60,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,desc:`Learn to create thread-covered wooden buttons common in 16th-century tailoring. Students practice wrapping and stitching on wooden bead cores. Kit included.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'6',title:`Intro to SCA Rapier`,teacher:`Rodrigo de Castilla`,email:'rodrigo@example.com',date:'2026-08-16',time:'14:00',duration:90,format:'in-person',topic:'Combat',event:'Collegium 2026',room:`Field - Martial Class, all types`,level:'Beginner',audience:'newcomer-friendly,adults-only',desc:`An overview of rapier combat in the SCA: rules, equipment, and basic footwork and guards. Loaner gear available for new fighters to try.`,bring:`Comfortable clothes you can move in.`,fee:'',zoomLink:'',max:20,prereqs:'',bio:`Don Rodrigo holds the rank of Don in Caid's rapier community and has been teaching introductory fencing for over a decade. He specializes in Italian rapier styles of the late 16th century.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'7',title:`Cooking from the Forme of Cury`,teacher:`Gwenllian ferch Caradog`,email:'gwenllian@example.com',date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Collegium 2026',room:`Grab Bag Rm 3`,level:'Beginner',audience:'newcomer-friendly,kids-welcome',desc:`We'll work through two recipes from the 14th-century English cookbook, adapting them for modern kitchens. Tasting included.`,bring:`Any food allergies to share.`,fee:'',zoomLink:'',max:16,prereqs:'',bio:`Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery. She has cooked multiple SCA feasts from period sources and written extensively on redaction methodology.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'8',title:`Arrow Dynamics`,teacher:`Gideon the Genuine`,email:'gideon@example.com',date:'2026-08-16',time:'15:00',duration:60,format:'in-person',topic:'Archery',event:'Collegium 2026',room:`Archery`,desc:`This class covers the dynamics of what happens when an arrow is shot from a bow: release, flex, and flight. Physics made accessible.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Gideon has been shooting in the SCA for eighteen years and holds multiple Royal Round records. He brings a background in physics to his teaching of archery mechanics.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'9',title:`Weeknight Zoom: Period Dance Q&A`,teacher:`Isabeau de Bretagne`,email:'isabeau@example.com',date:'2026-09-10',time:'19:00',duration:60,format:'zoom',topic:'Dance',event:'',room:``,desc:`An informal Zoom session to answer questions about period dance, recommend resources, and maybe walk through a basse danse or two together.`,bring:``,fee:'',zoomLink:'https://zoom.us/j/example',max:null,prereqs:'',bio:`Lady Isabeau has been dancing and teaching period dance in the SCA for seven years, with a focus on 15th and 16th century French and Italian forms.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'10',title:`Thread Woven Buttons`,teacher:`Rayhana bint Estafanos al-Ábbas`,email:'rayhana@example.com',date:'2026-08-16',time:'16:00',duration:60,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,desc:`Learn to create thread-covered wooden buttons common in 16th-century tailoring. Students practice wrapping and stitching on wooden bead cores. Kit included.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   // ── Great Western War 2026 ──
-  {id:'11',title:`Dyeing with Natural Pigments`,teacher:`Sorcha inghean Uí Fhaoláin`,date:'2026-11-05',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`An introduction to natural dyeing using madder, weld, and woad. We'll discuss mordanting, color modifiers, and period dye recipes. Hands-on dyeing of small wool samples included.`,bring:`Old clothes you don't mind staining.`,fee:'$4 materials',zoomLink:'',max:14,prereqs:'',bio:`Mistress Sorcha is a Pelican with twenty years of experience in natural dyeing and fiber arts. She has taught at events across the Known World and maintains a dye garden at home.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'12',title:`Reading a Medieval Recipe`,teacher:`Gwenllian ferch Caradog`,date:'2026-11-05',time:'13:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Great Western War 2026',room:`A&S Tent`,level:'Beginner',audience:'newcomer-friendly',desc:`How do you turn a cryptic 14th-century recipe into something you can actually cook? This class walks through the redaction process step by step, with examples from multiple sources.`,bring:`Nothing needed.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery. She has cooked multiple SCA feasts from period sources and written extensively on redaction methodology.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'13',title:`Sprang: The Lost Textile Art`,teacher:`Aelswith of Mercia`,date:'2026-11-06',time:'10:00',duration:120,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`Sprang is an ancient textile technique that predates knitting by millennia — elastic, strong, and used across medieval Europe. This class introduces the basic structure and gets students started on a small piece.`,bring:`Nothing — frames and thread provided.`,fee:'$5 materials',zoomLink:'',max:10,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'14',title:`Illuminating a Scroll: Full Workflow`,teacherTitle:'Mistress',teacher:`Alienor of Wakefield`,date:'2026-11-06',time:'14:00',duration:90,format:'in-person',topic:'Scribal Arts',event:'Great Western War 2026',room:`A&S Tent`,level:'Intermediate',audience:'',desc:`From blank vellum to finished scroll — this class covers layout, ruling, calligraphy placement, and illumination in sequence. We'll use a 13th-century English charter as our model.`,bring:`Small brush if you have one; all other supplies provided.`,fee:'$3 materials',zoomLink:'',max:10,prereqs:'',bio:`Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'15',title:`Period Perfume and Scent`,teacher:`Tariq ibn Mahmoud`,date:'2026-11-07',time:'10:00',duration:60,format:'in-person',topic:'Crafts',event:'Great Western War 2026',room:`A&S Tent`,desc:`An exploration of medieval and Renaissance perfumery: the ingredients, blending methods, and social context of scent in period Europe and the Islamic world. Students blend a small take-home mixture.`,bring:`Nothing needed.`,fee:'$3 materials',zoomLink:'',max:20,prereqs:'',bio:`Lord Tariq has been researching medieval Islamic material culture for eight years, with a particular interest in al-Andalus. He is currently working toward a Laurel in historical craft research.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'16',title:`Armored Combat for Newcomers`,teacher:`Baldwin of Ashford`,date:'2026-11-07',time:'14:00',duration:90,format:'in-person',topic:'Combat',event:'Great Western War 2026',room:`List Field`,level:'Beginner',audience:'newcomer-friendly,adults-only',desc:`Never held a sword? This class covers SCA heavy combat basics: rules, safety, how to get authorized, and what loaner gear is available. Includes time in armor with experienced fighters.`,bring:`Comfortable clothes you can move in.`,fee:'',zoomLink:'',max:16,prereqs:'',bio:`Sir Baldwin is a knight in the West/Caid chivalry and has been fighting and teaching heavy combat for over twenty years. He runs newcomer fighter practices in the greater Los Angeles area.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'17',title:`Blackwork Embroidery Fundamentals`,teacherTitle:'',teacher:`Rayhana bint Estafanos al-Ábbas`,date:'2026-11-08',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`Blackwork is the elegant counted embroidery seen on Tudor portraits — geometric, reversible, and endlessly adaptable. This class teaches the basic double-running stitch and three starter patterns.`,bring:`Nothing — needles, fabric, and thread provided.`,fee:'$2 materials',zoomLink:'',max:12,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'18',title:`Heraldry Office Hours`,teacher:`Seamus mac Neill`,date:'2026-11-08',time:'13:00',duration:60,format:'in-person',topic:'Heraldry',event:'Great Western War 2026',room:`A&S Tent`,desc:`Bring your device ideas, name questions, or just your curiosity. This is an open consulting session — Lord Seamus will work through submissions and questions one-on-one with anyone who stops by.`,bring:`Any sketches or notes you have on your device or name.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Lord Seamus is a pursuivant with Caid's College of Heralds and has been consulting on device submissions for eight years. He enjoys the obscure corners of the heraldic menagerie.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]}
+  {id:'11',title:`Dyeing with Natural Pigments`,teacher:`Sorcha inghean Uí Fhaoláin`,email:'sorcha@example.com',date:'2026-11-05',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`An introduction to natural dyeing using madder, weld, and woad. We'll discuss mordanting, color modifiers, and period dye recipes. Hands-on dyeing of small wool samples included.`,bring:`Old clothes you don't mind staining.`,fee:'$4 materials',zoomLink:'',max:14,prereqs:'',bio:`Mistress Sorcha is a Pelican with twenty years of experience in natural dyeing and fiber arts. She has taught at events across the Known World and maintains a dye garden at home.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'12',title:`Reading a Medieval Recipe`,teacher:`Gwenllian ferch Caradog`,email:'gwenllian@example.com',date:'2026-11-05',time:'13:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Great Western War 2026',room:`A&S Tent`,level:'Beginner',audience:'newcomer-friendly',desc:`How do you turn a cryptic 14th-century recipe into something you can actually cook? This class walks through the redaction process step by step, with examples from multiple sources.`,bring:`Nothing needed.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery. She has cooked multiple SCA feasts from period sources and written extensively on redaction methodology.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'13',title:`Sprang: The Lost Textile Art`,teacher:`Aelswith of Mercia`,email:'aelswith@example.com',date:'2026-11-06',time:'10:00',duration:120,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`Sprang is an ancient textile technique that predates knitting by millennia — elastic, strong, and used across medieval Europe. This class introduces the basic structure and gets students started on a small piece.`,bring:`Nothing — frames and thread provided.`,fee:'$5 materials',zoomLink:'',max:10,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'14',title:`Illuminating a Scroll: Full Workflow`,teacherTitle:'Mistress',teacher:`Alienor of Wakefield`,email:'alienor@example.com',date:'2026-11-06',time:'14:00',duration:90,format:'in-person',topic:'Scribal Arts',event:'Great Western War 2026',room:`A&S Tent`,level:'Intermediate',audience:'',desc:`From blank vellum to finished scroll — this class covers layout, ruling, calligraphy placement, and illumination in sequence. We'll use a 13th-century English charter as our model.`,bring:`Small brush if you have one; all other supplies provided.`,fee:'$3 materials',zoomLink:'',max:10,prereqs:'',bio:`Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'15',title:`Period Perfume and Scent`,teacher:`Tariq ibn Mahmoud`,email:'tariq@example.com',date:'2026-11-07',time:'10:00',duration:60,format:'in-person',topic:'Crafts',event:'Great Western War 2026',room:`A&S Tent`,desc:`An exploration of medieval and Renaissance perfumery: the ingredients, blending methods, and social context of scent in period Europe and the Islamic world. Students blend a small take-home mixture.`,bring:`Nothing needed.`,fee:'$3 materials',zoomLink:'',max:20,prereqs:'',bio:`Lord Tariq has been researching medieval Islamic material culture for eight years, with a particular interest in al-Andalus. He is currently working toward a Laurel in historical craft research.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'16',title:`Armored Combat for Newcomers`,teacher:`Baldwin of Ashford`,email:'baldwin@example.com',date:'2026-11-07',time:'14:00',duration:90,format:'in-person',topic:'Combat',event:'Great Western War 2026',room:`List Field`,level:'Beginner',audience:'newcomer-friendly,adults-only',desc:`Never held a sword? This class covers SCA heavy combat basics: rules, safety, how to get authorized, and what loaner gear is available. Includes time in armor with experienced fighters.`,bring:`Comfortable clothes you can move in.`,fee:'',zoomLink:'',max:16,prereqs:'',bio:`Sir Baldwin is a knight in the West/Caid chivalry and has been fighting and teaching heavy combat for over twenty years. He runs newcomer fighter practices in the greater Los Angeles area.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'17',title:`Blackwork Embroidery Fundamentals`,teacherTitle:'',teacher:`Rayhana bint Estafanos al-Ábbas`,email:'rayhana@example.com',date:'2026-11-08',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`Blackwork is the elegant counted embroidery seen on Tudor portraits — geometric, reversible, and endlessly adaptable. This class teaches the basic double-running stitch and three starter patterns.`,bring:`Nothing — needles, fabric, and thread provided.`,fee:'$2 materials',zoomLink:'',max:12,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'18',title:`Heraldry Office Hours`,teacher:`Seamus mac Neill`,email:'seamus@example.com',date:'2026-11-08',time:'13:00',duration:60,format:'in-person',topic:'Heraldry',event:'Great Western War 2026',room:`A&S Tent`,desc:`Bring your device ideas, name questions, or just your curiosity. This is an open consulting session — Lord Seamus will work through submissions and questions one-on-one with anyone who stops by.`,bring:`Any sketches or notes you have on your device or name.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Lord Seamus is a pursuivant with Caid's College of Heralds and has been consulting on device submissions for eight years. He enjoys the obscure corners of the heraldic menagerie.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'19',title:`Building Your SCA Group Website`,teacherTitle:'Lord',teacher:`Liam Mor MacGregor`,email:'liam@example.com',date:'2026-08-16',time:'13:00',duration:60,format:'in-person',topic:'Arts & Administration',event:'Collegium 2026',room:`Grab Bag Rm 3`,level:'Beginner',audience:'newcomer-friendly',desc:`A practical walkthrough of setting up and maintaining a group website on the Caid web network. Covers the official WordPress framework, required pages, officer contacts, and keeping your site current. Great for new seneschals, webwrights, and officers.`,bring:`Laptop if you have one — not required.`,fee:'',zoomLink:'',max:20,prereqs:'',bio:`Lord Liam Mor MacGregor is the current Kingdom Webwright for Caid and has been building and maintaining SCA websites for over twelve years.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]}
 ];
 const APPS_SCRIPT_URL='YOUR_APPS_SCRIPT_URL_HERE';
 const IS_DEMO=APPS_SCRIPT_URL==='YOUR_APPS_SCRIPT_URL_HERE';
 const lockedEvent=new URLSearchParams(window.location.search).get('event');
 const dC=SEED_CLASSES.map(c=>({...c}));
 const dP=[{id:'p1',title:'Introduction to Heraldic Embroidery',teacher:'Brigid ingen Faeláin',email:'brigid@example.com',date:'',time:'',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'A hands-on introduction to embroidering heraldic devices onto fabric — perfect for decorating a banner, pouch, or garment. We will cover basic satin stitch and couching techniques using your own device or a provided sample design.',bring:'Nothing — needles, fabric, and thread provided. Bring your device blazon if you have one.',fee:'$2 materials',zoomLink:'',max:10,prereqs:'',bio:'Brigid has been doing needlework in the SCA for eight years, with a focus on Irish and early medieval embroidery traditions. This is her first time teaching at Collegium.',imageUrl:'',timepref:'Morning preferred — I am also helping with feast setup in the afternoon.',status:'pending',sessionNum:1,sessionTotal:1},{id:'p2',title:'Nalbinding for Beginners',teacherTitle:'Lord',teacher:'Gunnar Ivarsson',email:'gunnar@example.com',date:'',time:'',duration:120,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'Nalbinding is a pre-knitting textile technique used across the Norse and Byzantine world. Students will learn the Oslo stitch and start a small swatch to take home. No prior fiber arts experience needed.',bring:'Nothing — needles and wool provided.',fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:'Lord Gunnar has been practicing nalbinding for six years and researches Viking Age textile finds. He teaches regularly at West Kingdom events.',imageUrl:'',timepref:'Thu, Nov 5: 9:00 AM–12:00 PM · Fri, Nov 6: 9:00 AM–1:00 PM',status:'pending',sessionNum:1,sessionTotal:1}],dEv=[{name:'Collegium 2026',startDate:'2026-08-16',endDate:'2026-08-16',rooms:['Arts/History Rm 1','Fiber Arts','Cooking/Costuming','Grab Bag Rm 2','Grab Bag Rm 3','Field','Archery'],address:'Los Angeles County Fairplex, 1101 W McKinley Ave, Pomona CA 91768',url:'http://places.sca-caid.org/caid/',active:true,published:true},{name:'Great Western War 2026',startDate:'2026-11-05',endDate:'2026-11-08',rooms:['A&S Tent','List Field','Archery Range','Bardic Circle'],address:'Kern County Fairgrounds, 1142 South P St, Bakersfield CA 93307',url:'https://places.sca-caid.org/gww/',active:true,published:true,daySchedule:[{date:'2026-11-05',start:'09:00',end:'18:00'},{date:'2026-11-06',start:'09:00',end:'18:00'},{date:'2026-11-07',start:'09:00',end:'18:00'},{date:'2026-11-08',start:'09:00',end:'14:00'}],teacherMsg:'Thank you for volunteering to teach at Great Western War 2026! 🎉\n\nSubmissions are due by October 1st. If you need to cancel or make changes after submitting, please contact the A\u0026S officer directly.\n\nQuestions? Reach out to the class coordinator at as@sca-caid.org.'}];
+const dTeachers=[
+  {email:'alienor@example.com',name:'Alienor of Wakefield',title:'Mistress',barony:'Calafia',phone:'',bio:'Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.',peerages:['laurel'],royalPeer:true,sittingRoyalty:false,stepDownDate:''},
+  {email:'aelswith@example.com',name:'Aelswith of Mercia',title:'Lady',barony:'Dreiburgen',phone:'',bio:'Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns.',peerages:['laurel'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'rayhana@example.com',name:'Rayhana bint Estafanos al-Ábbas',title:'',barony:'Gyldenholt',phone:'',bio:'Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'seamus@example.com',name:'Seamus mac Neill',title:'Lord',barony:'Lyondemere',phone:'',bio:'Lord Seamus is a pursuivant with Caid’s College of Heralds and has been consulting on device submissions for eight years.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'gwenllian@example.com',name:'Gwenllian ferch Caradog',title:'Mistress',barony:'Calafia',phone:'',bio:'Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery.',peerages:['pelican'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'sorcha@example.com',name:'Sorcha inghean Uí Fhaoláin',title:'Mistress',barony:'Dun Or',phone:'',bio:'Mistress Sorcha is a Pelican with twenty years of experience in natural dyeing and fiber arts.',peerages:['pelican'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'baldwin@example.com',name:'Baldwin of Ashford',title:'Sir',barony:'Angels',phone:'',bio:'Sir Baldwin is a knight in the West/Caid chivalry and has been fighting and teaching heavy combat for over twenty years.',peerages:['chivalry'],royalPeer:true,sittingRoyalty:false,stepDownDate:''},
+  {email:'rodrigo@example.com',name:'Rodrigo de Castilla',title:'Don',barony:'Calafia',phone:'',bio:'Don Rodrigo holds the rank of Don in Caid’s rapier community and has been teaching introductory fencing for over a decade.',peerages:['masterofdefense'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'tariq@example.com',name:'Tariq ibn Mahmoud',title:'Lord',barony:'Lyondemere',phone:'',bio:'Lord Tariq has been researching medieval Islamic material culture for eight years, with a particular interest in al-Andalus.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'margery@example.com',name:'Fiachra an Doire',title:'',barony:'Dreiburgen',phone:'',bio:'Fiachra is a scribe and calligrapher with a particular interest in medieval ink recipes and writing materials.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'gideon@example.com',name:'Gideon the Genuine',title:'',barony:'Dun Or',phone:'',bio:'Gideon has been shooting in the SCA for eighteen years and holds multiple Royal Round records.',peerages:['orderofthemark'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'isabeau@example.com',name:'Isabeau de Bretagne',title:'Lady',barony:'Lyondemere',phone:'',bio:'Lady Isabeau has been dancing and teaching period dance in the SCA for seven years, with a focus on 15th and 16th century French and Italian forms.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'liam@example.com',name:'Liam Mor MacGregor',title:'Lord',barony:'Dreiburgen',phone:'',bio:'Lord Liam Mor MacGregor is the current Kingdom Webwright for Caid and has been building and maintaining SCA websites for over twelve years. He teaches web tools and digital skills for SCA groups.',peerages:[],royalPeer:false,sittingRoyalty:true,stepDownDate:'2027-05-01'}
+];
 const dRegs={
   '1':[
     {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
@@ -1189,6 +1375,40 @@ dWL={
   ],
 };
 let dPid=1000,allClasses=[],allAdminClasses=[],myRegs={},scheduleEmail='';
+let allTeachers={};
+
+const PEERAGES=[
+  {key:'chivalry',label:'Chivalry',abbr:'K/MA',color:'#8B0000'},
+  {key:'laurel',label:'Laurel',abbr:'Laurel',color:'#2e7d4e'},
+  {key:'pelican',label:'Pelican',abbr:'Pelican',color:'#1A3F7A'},
+  {key:'masterofdefense',label:'Master of Defense',abbr:'MoD',color:'#4a4a4a'},
+  {key:'orderofthemark',label:'Order of the Mark',abbr:'Mark',color:'#7a5c1e'}
+];
+
+function buildTeacherRecord(c){
+  return {name:c.teacher||'',title:c.teacherTitle||'',email:c.email||'',phone:c.phone||'',barony:c.barony||'',bio:c.bio||'',peerages:[],royalPeer:false,sittingRoyalty:false,topics:[],classes:[]};
+}
+function upsertTeacher(c){
+  const key=(c.email||'').toLowerCase().trim();
+  if(!key)return;
+  if(!allTeachers[key])allTeachers[key]=buildTeacherRecord(c);
+  const t=allTeachers[key];
+  if(c.teacher)t.name=c.teacher;
+  if(c.teacherTitle)t.title=c.teacherTitle;
+  if(c.phone)t.phone=c.phone;
+  if(c.barony)t.barony=c.barony;
+  if(c.bio)t.bio=c.bio;
+  // Store self-reported peerages as 'pending' — admin confirms in Teachers tab
+  if(c.peerages&&typeof c.peerages==='string'){
+    c.peerages.split(',').filter(Boolean).forEach(pk=>{
+      if(!t.peerages.includes(pk))t.peerages_pending=(t.peerages_pending||[]).concat(pk);
+    });
+  }
+  const alreadyIn=t.classes.some(x=>String(x.id)===String(c.id));
+  if(!alreadyIn)t.classes.push({id:c.id,title:c.title,event:c.event||'',date:c.date||'',topic:c.topic||''});
+  if(!t.topics)t.topics=[];
+  if(c.topic&&!t.topics.includes(c.topic))t.topics.push(c.topic);
+}
 let adminToken=sessionStorage.getItem('aT')||null,pendingClasses=[],availEvents=[];
 let curModalId=null,curModalWL=false,curApprovingId=null;
 
@@ -1197,6 +1417,7 @@ if(window.location.hash==='#submit')setTimeout(()=>showPanel('submit',document.g
 if(window.location.hash==='#requests')setTimeout(()=>showPanel('requests',document.getElementById('nav-requests')),50);
 updateAdminNavBtn();
 loadClasses();
+clearExpiredRoyalty();
 // Populate static time selects
 populateTimeSelect('fc-ti','09:00');
 populateTimeSelect('lg-start-time','09:00');
@@ -1343,10 +1564,16 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 1, 2026 · 7:55 AM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:6px"><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:4px 12px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 1, 2026 · 8:40 AM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:6px"><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:4px 12px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
   try{
     const res=await api({action:'getClasses'});
-    if(res.ok){allClasses=res.classes;await loadEvFilter();populateTopics();rC();}
+    if(res.ok){
+      allClasses=res.classes;
+      // Seed from dTeachers first (has emails+peerages), then overlay class data
+      if(typeof dTeachers!=='undefined')dTeachers.forEach(t=>{const key=t.email.toLowerCase();allTeachers[key]={...t,classes:[],topics:t.topics||[]};});
+      allClasses.forEach(upsertTeacher);
+      await loadEvFilter();populateTopics();rC();
+    }
   }catch(e){b.style.display='flex';b.className='api-banner err';b.innerHTML='<i class="ti ti-alert-circle"></i> Could not load classes.';}
 }
 async function loadEvFilter(){
@@ -1449,8 +1676,16 @@ function rC(){
     const du='';
     const duPill=c.duration?'<span class="logistics-pill"><i class="ti ti-clock"></i> '+(c.duration<60?c.duration+'min':Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h')+'</span>':'';
     const thumb=c.imageUrl?'<img class="card-thumb" src="'+c.imageUrl+'" alt="" onerror="this.style.display=\'none\'">':'';
+    const tRecord=allTeachers[(c.email||'').toLowerCase()];
+    const royaltyPrefix=(tRecord&&tRecord.sittingRoyalty?'<span style="font-size:15px;vertical-align:middle;margin-right:3px" title="Sitting Royalty'+(tRecord.stepDownDate?' · steps down '+tRecord.stepDownDate:'')+'">👑</span>':'');
     const displayTeacher=(c.teacherTitle?c.teacherTitle+' ':'')+c.teacher;
-    const bioBtn=c.bio?'<button class="bio-btn" tabindex="0" aria-label="Teacher bio"><i class="ti ti-info-circle"></i><div class="bio-popover"><div class="bio-name">'+displayTeacher+'</div>'+c.bio+'</div></button>':'';
+    const pBadges=tRecord?[
+      ...(tRecord.peerages||[]).map(p=>{const pd=PEERAGES.find(x=>x.key===p);return pd?'<span class="peerage-badge badge-'+p+'" style="font-size:10px;padding:1px 7px">'+pd.label+'</span>':'';}),
+      tRecord.royalPeer?'<span class="peerage-badge badge-royalpeer" style="font-size:10px;padding:1px 7px">Royal Peer</span>':'',
+      tRecord.sittingRoyalty?'<span class="peerage-badge badge-sittingroyalty" style="font-size:13px;padding:1px 6px;background:none;color:#b8860b" title="Sitting Royalty'+(tRecord.stepDownDate?' · steps down '+tRecord.stepDownDate:'')+'">👑</span>':''
+    ].filter(Boolean).join(''):'';
+    const pBadgeHtml=pBadges?'<div style="display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 6px">'+pBadges+'</div>':'';
+    const bioBtn=c.bio||pBadges?'<button class="bio-btn" tabindex="0" aria-label="Teacher bio"><i class="ti ti-info-circle"></i><div class="bio-popover"><div class="bio-name">'+displayTeacher+'</div>'+pBadgeHtml+(c.bio||'')+'</div></button>':'';
     // Consolidated tag row
     const allTags=[];
     if(c.level)c.level.split(',').forEach(l=>allTags.push('<span class="card-tag level">'+l+'</span>'));
@@ -1471,7 +1706,7 @@ function rC(){
     return '<div class="class-card'+(reg?' registered':'')+(cancelled?' cancelled-card':'')+'">'  +thumb
       +'<div class="card-top"><div class="card-title">'+c.title+'</div><span class="tag '+c.format+'">'+(c.format==='zoom'?'Online':'In person')+'</span></div>'
       +'<div class="card-meta">'
-      +'<span class="meta-teacher"><i class="ti ti-user" style="color:var(--accent-mid)"></i> '+displayTeacher+bioBtn+'</span>'
+      +'<span class="meta-teacher"><i class="ti ti-user" style="color:var(--accent-mid)"></i> '+royaltyPrefix+displayTeacher+bioBtn+'</span>'
       +(c.date?'<span><i class="ti ti-calendar"></i> '+fD(c.date)+' · '+fT(c.time)+'</span>':'')
       +(locationStr?'<span><i class="ti ti-map-pin"></i> '+locationStr+'</span>':'')
       +(c.topic?'<span class="meta-topic"><i class="ti ti-tag" style="font-size:10px"></i> '+c.topic+'</span>':'')
@@ -2241,6 +2476,93 @@ function clearThumbUpload(){
   const fileInput=document.querySelector('#fc-img-label input[type=file]');
   if(fileInput)fileInput.value='';
 }
+
+function lookupTeacher(){
+  const email=(document.getElementById('fc-lookup-email')?.value||'').toLowerCase().trim();
+  const result=document.getElementById('fc-lookup-result');
+  if(!result)return;
+  if(!email){result.style.display='none';closeHistoryPanel();return;}
+
+  const t=allTeachers[email];
+  result.style.display='block';
+
+  if(t){
+    // Pre-fill About You
+    if(t.title)document.getElementById('fc-ttl').value=t.title;
+    if(t.name)document.getElementById('fc-tc').value=t.name;
+    document.getElementById('fc-em').value=email;
+    if(t.barony)document.getElementById('fc-bt').value=t.barony;
+    if(t.phone)document.getElementById('fc-ph').value=t.phone;
+    if(t.bio)document.getElementById('fc-bio').value=t.bio;
+    PEERAGES.forEach(p=>{const cb=document.getElementById('fc-p-'+p.key);if(cb)cb.checked=(t.peerages||[]).includes(p.key);});
+
+    const displayName=(t.title?t.title+' ':'')+t.name;
+    result.innerHTML='<div class="lookup-matched"><i class="ti ti-circle-check" style="color:#2e7d4e;font-size:16px"></i> Welcome back, <strong style="margin-left:3px">'+escH(displayName)+'</strong>! Your profile has been loaded.</div>';
+    openHistoryPanel(t);
+  } else {
+    result.innerHTML='<div class="lookup-matched" style="color:var(--text2)"><i class="ti ti-info-circle" style="font-size:16px"></i> No profile found — fill in the form below to get started.</div>';
+    // Pre-fill email into the form field
+    document.getElementById('fc-em').value=email;
+    closeHistoryPanel();
+  }
+}
+
+function openHistoryPanel(t){
+  const panel=document.getElementById('teacher-history-panel');
+  const layout=document.getElementById('submit-layout');
+  if(!panel||!layout)return;
+  const displayName=(t.title?t.title+' ':'')+t.name;
+  document.getElementById('thp-name').textContent=displayName;
+  const classes=t.classes||[];
+  if(!classes.length){
+    document.getElementById('thp-classes').innerHTML='<div style="font-size:12px;font-family:sans-serif;color:var(--text2);padding-top:6px;font-style:italic">No class history yet.</div>';
+  } else {
+    document.getElementById('thp-classes').innerHTML=classes.map((cls,i)=>`
+      <div class="thp-class">
+        <div class="thp-class-title">${escH(cls.title)}</div>
+        <div class="thp-class-meta">${[cls.topic,cls.event,cls.date].filter(Boolean).map(escH).join(' · ')}</div>
+        <button class="teach-again-btn" onclick="teachAgain(${i},'${escH(t.email||'')}')"><i class="ti ti-refresh" style="font-size:11px"></i> Teach again</button>
+      </div>`).join('');
+  }
+  panel.classList.add('open');
+  layout.classList.add('panel-open');
+}
+
+function closeHistoryPanel(){
+  document.getElementById('teacher-history-panel')?.classList.remove('open');
+  document.getElementById('submit-layout')?.classList.remove('panel-open');
+}
+
+function teachAgain(idx,email){
+  const t=allTeachers[email.toLowerCase()];
+  if(!t)return;
+  const cls=allAdminClasses.concat(allClasses).find(c=>String(c.id)===String((t.classes[idx]||{}).id));
+  if(!cls)return;
+  // Fill class fields — skip event/date/time/room/zoomLink/notes
+  if(cls.title)document.getElementById('fc-t').value=cls.title;
+  if(cls.topic)populateTopicSelect('fc-tp',false,true,cls.topic);
+  if(cls.desc)document.getElementById('fc-d').value=cls.desc;
+  if(cls.bio)document.getElementById('fc-bio').value=cls.bio;
+  if(cls.fee)document.getElementById('fc-fe').value=cls.fee;
+  if(cls.bring)document.getElementById('fc-br').value=cls.bring;
+  if(cls.max)document.getElementById('fc-mx').value=cls.max;
+  if(cls.duration)document.getElementById('fc-du').value=String(cls.duration);
+  // Level pills
+  document.querySelectorAll('#fc-level-pills .level-pill').forEach(b=>b.classList.remove('active'));
+  document.getElementById('fc-level').value='';
+  if(cls.level){(cls.level.split?cls.level.split(','):[cls.level]).forEach(lv=>{const b=document.querySelector('#fc-level-pills .level-pill[data-val="'+lv.trim()+'"]');if(b){b.classList.add('active');const hid=document.getElementById('fc-level');hid.value=(hid.value?hid.value+',':'')+lv.trim();}});}
+  // Audience
+  document.getElementById('fc-aud-newcomer').checked=(cls.audience||'').includes('newcomer-friendly');
+  document.getElementById('fc-aud-kids').checked=(cls.audience||'').includes('kids-welcome');
+  document.getElementById('fc-aud-adults').checked=(cls.audience||'').includes('adults-only');
+  // Scroll to form top
+  document.getElementById('fc-t').scrollIntoView({behavior:'smooth',block:'center'});
+  // Flash the title field briefly
+  const tf=document.getElementById('fc-t');
+  tf.style.transition='background .3s';tf.style.background='var(--accent-light)';
+  setTimeout(()=>{tf.style.background='';},800);
+}
+
 async function submitClass(){
   // Clear previous errors
   document.querySelectorAll('.field-error').forEach(el=>el.classList.remove('field-error'));
@@ -2296,7 +2618,9 @@ async function submitClass(){
   const btn=document.querySelector('.submit-action');btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Submitting...';
   const res=await api({
     action:'submitClass',title:t,teacher:tc,teacherTitle:(document.getElementById('fc-ttl')?document.getElementById('fc-ttl').value.trim():''),email:document.getElementById('fc-em').value.trim(),
+    barony:document.getElementById('fc-bt')?document.getElementById('fc-bt').value.trim():'',
     phone:document.getElementById('fc-ph').value.trim(),
+    peerages:PEERAGES.map(p=>p.key).filter(k=>{const cb=document.getElementById('fc-p-'+k);return cb&&cb.checked;}).join(','),
     bio:document.getElementById('fc-bio').value.trim(),
     imageUrl:document.getElementById('fc-img').value.trim(),
     topic:document.getElementById('fc-tp').value,format:document.getElementById('fc-fm')?.value||'in-person',
@@ -2314,7 +2638,8 @@ async function submitClass(){
   if(!res.ok){alert(res.error||'Submission failed.');return;}
   document.querySelector('.submit-form').style.display='none';
   document.getElementById('submit-ok').style.display='block';
-  ['fc-t','fc-tc','fc-ttl','fc-em','fc-ph','fc-bio','fc-img','fc-d','fc-fe','fc-br','fc-da','fc-ti','fc-no'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['fc-t','fc-tc','fc-ttl','fc-em','fc-bt','fc-ph','fc-bio','fc-img','fc-d','fc-fe','fc-br','fc-da','fc-ti','fc-no'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  PEERAGES.forEach(p=>{const cb=document.getElementById('fc-p-'+p.key);if(cb)cb.checked=false;});
   document.querySelectorAll('#fc-level-pills .level-pill').forEach(b=>b.classList.remove('active'));
   document.getElementById('fc-level').value='';
   ['fc-aud-newcomer','fc-aud-kids','fc-aud-adults','fc-elec'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=false;});
@@ -2326,6 +2651,10 @@ function resetSubmitForm(){
   renderTimePrefPicker(null);
   document.getElementById('fc-ev').value='';
   fcEvChange();
+  // Reset lookup
+  const le=document.getElementById('fc-lookup-email');if(le)le.value='';
+  const lr=document.getElementById('fc-lookup-result');if(lr){lr.style.display='none';lr.innerHTML='';}
+  closeHistoryPanel();
 }
 
 function initAdmin(){
@@ -2385,12 +2714,13 @@ async function loadAdmin(){
   const res=await api({action:'adminGetPending',token:adminToken});
   if(!res.ok)return;
   pendingClasses=res.pending||[];
+  pendingClasses.forEach(upsertTeacher);
   document.getElementById('pending-count').textContent=pendingClasses.length;
   const acRes=await api({action:'adminGetClasses',token:adminToken});
-  if(acRes.ok)allAdminClasses=acRes.classes;
+  if(acRes.ok){allAdminClasses=acRes.classes;allAdminClasses.forEach(upsertTeacher);}
   renderPending();renderApproved();
   // Populate ev-picker and grid-ev
-  ['ev-picker','acf-ev'].forEach(sid=>{
+  ['ev-picker','acf-ev','rpt-ev'].forEach(sid=>{
     const gs=document.getElementById(sid);if(!gs)return;
     const cur=gs.value;
     gs.innerHTML=sid==='ev-picker'?'<option value="">— select an event to manage —</option>':'<option value="">Select event\u2026</option>';
@@ -2744,7 +3074,7 @@ async function printRoster(classId){
   setTimeout(()=>layer.innerHTML='',500);
 }
 function showAdminTab(tab){
-  ['events','classes','requests','topics'].forEach(t=>{
+  ['events','classes','requests','topics','teachers','reports'].forEach(t=>{
     document.getElementById('admin-tab-'+t).style.display=t===tab?'block':'none';
     document.getElementById('atab-'+t).classList.toggle('active',t===tab);
   });
@@ -2752,6 +3082,231 @@ function showAdminTab(tab){
   if(empty)empty.style.display='none';
   if(tab==='requests')renderAdminRequests();
   if(tab==='topics'){renderTopicsList();populateAllTopicSelects();}
+  if(tab==='teachers'){clearExpiredRoyalty();renderTeacherList();}
+  if(tab==='reports')renderReports();
+}
+
+function renderTeacherList(){
+  const q=(document.getElementById('teacher-search')?.value||'').toLowerCase();
+  const pf=document.getElementById('teacher-filter-peerage')?.value||'';
+  const wrap=document.getElementById('teacher-list');
+  if(!wrap)return;
+  let teachers=Object.values(allTeachers);
+  if(q)teachers=teachers.filter(t=>(t.name+t.email+t.barony+(t.topics||[]).join(' ')).toLowerCase().includes(q));
+  if(pf==='royalpeer')teachers=teachers.filter(t=>t.royalPeer);
+  else if(pf==='sittingroyalty')teachers=teachers.filter(t=>t.sittingRoyalty);
+  else if(pf)teachers=teachers.filter(t=>(t.peerages||[]).includes(pf));
+  teachers.sort((a,b)=>a.name.localeCompare(b.name));
+  if(!teachers.length){wrap.innerHTML='<div style="color:var(--text2);font-family:sans-serif;font-size:13px;padding:.5rem 0">No teachers found.</div>';return;}
+  wrap.innerHTML=teachers.map(t=>{
+    const displayName=(t.title?t.title+' ':'')+t.name;
+    const badges=[
+      ...(t.peerages||[]).map(p=>{const pd=PEERAGES.find(x=>x.key===p);return pd?'<span class="peerage-badge badge-'+p+'">'+pd.label+'</span>':'';}),
+      t.royalPeer?'<span class="peerage-badge badge-royalpeer">Royal Peer</span>':'',
+      t.sittingRoyalty?'<span style="font-size:16px" title="Sitting Royalty'+(t.stepDownDate?' · steps down '+t.stepDownDate:'')+'">👑</span>':''
+    ].filter(Boolean).join('');
+    const meta=[t.barony,t.email,t.phone].filter(Boolean).join(' · ');
+    const topicTags=(t.topics||[]).map(tp=>'<span style="background:var(--bg2);border:1px solid var(--border2);border-radius:99px;font-size:11px;font-family:sans-serif;padding:1px 8px;color:var(--text2)">'+escH(tp)+'</span>').join('');
+    const history=t.classes.length
+      ?'<div class="teacher-history"><div class="teacher-history-title">Teaching history ('+t.classes.length+' class'+(t.classes.length!==1?'es':'')+')</div>'
+        +t.classes.map(c=>'<div class="teacher-history-item"><span style="color:var(--text);font-weight:600;flex:1">'+escH(c.title)+'</span><span style="color:var(--text2);white-space:nowrap">'+(c.event?escH(c.event):'')+(c.date?' · '+c.date:'')+'</span><span style="color:var(--accent-mid);white-space:nowrap;margin-left:6px">'+(c.topic?escH(c.topic):'')+'</span></div>').join('')
+        +'</div>'
+      :'<div style="font-size:12px;font-family:sans-serif;color:var(--text2);font-style:italic">No class history yet.</div>';
+    return '<div class="teacher-card">'
+      +'<div class="teacher-card-top">'
+        +'<div><div class="teacher-name">'+escH(displayName)+'</div>'
+          +(meta?'<div class="teacher-meta">'+escH(meta)+'</div>':'')
+          +(topicTags?'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px">'+topicTags+'</div>':'')
+          +(badges?'<div class="teacher-badges">'+badges+'</div>':'')
+        +'</div>'
+        +'<button class="approve-btn" style="font-size:12px;white-space:nowrap;flex-shrink:0" data-email="'+escH(t.email||'')+'" onclick="openTeacherModal(this.dataset.email)">'
+          +'<i class="ti ti-pencil"></i> Edit</button>'
+      +'</div>'
+      +(t.bio?'<div style="font-size:13px;color:var(--text2);font-family:sans-serif;line-height:1.55">'+escH(t.bio)+'</div>':'')
+      +history
+    +'</div>';
+  }).join('');
+}
+
+let curTeacherEmail=null;
+
+function toggleStepDownField(){
+  const checked=document.getElementById('tm-sittingroyalty')?.checked;
+  const wrap=document.getElementById('tm-stepdown-wrap');
+  if(wrap)wrap.style.display=checked?'block':'none';
+  if(!checked){const d=document.getElementById('tm-stepdown');if(d)d.value='';}
+}
+
+function clearExpiredRoyalty(){
+  const today=new Date().toISOString().slice(0,10);
+  Object.values(allTeachers).forEach(t=>{
+    if(t.sittingRoyalty&&t.stepDownDate&&t.stepDownDate<today){
+      t.sittingRoyalty=false;
+      t.stepDownDate='';
+    }
+  });
+}
+
+function openTeacherModal(email){
+  const key=email.toLowerCase();
+  const t=allTeachers[key];
+  if(!t)return;
+  curTeacherEmail=key;
+  document.getElementById('tm-email-display').textContent=email;
+  document.getElementById('tm-name').value=t.name||'';
+  document.getElementById('tm-title').value=t.title||'';
+  document.getElementById('tm-barony').value=t.barony||'';
+  document.getElementById('tm-phone').value=t.phone||'';
+  document.getElementById('tm-bio').value=t.bio||'';
+  PEERAGES.forEach(p=>{ const cb=document.getElementById('tm-p-'+p.key); if(cb)cb.checked=(t.peerages||[]).includes(p.key); });
+  document.getElementById('tm-royalpeer').checked=!!t.royalPeer;
+  document.getElementById('tm-sittingroyalty').checked=!!t.sittingRoyalty;
+  const sdWrap=document.getElementById('tm-stepdown-wrap');
+  if(sdWrap)sdWrap.style.display=t.sittingRoyalty?'block':'none';
+  const sdInput=document.getElementById('tm-stepdown');
+  if(sdInput)sdInput.value=t.stepDownDate||'';
+  document.getElementById('teacher-modal').classList.add('open');
+}
+
+function getRptClasses(){
+  const evf=document.getElementById('rpt-ev')?.value||'';
+  const src=allAdminClasses.length?allAdminClasses:allClasses;
+  return evf?src.filter(x=>x.event===evf):src;
+}
+
+function renderReports(){
+  // Populate rpt-ev if empty
+  const rptEv=document.getElementById('rpt-ev');
+  if(rptEv&&rptEv.options.length<=1){
+    availEvents.forEach(ev=>{const o=document.createElement('option');o.value=ev.name;o.textContent=ev.name;rptEv.appendChild(o);});
+  }
+  renderRegTable();
+  renderTeacherRosterTable();
+}
+
+function renderRegTable(){
+  const wrap=document.getElementById('rpt-reg-table');
+  if(!wrap)return;
+  const classes=getRptClasses().filter(c=>!c.cancelled);
+  if(!classes.length){wrap.innerHTML='<div style="color:var(--text2);font-family:sans-serif;font-size:13px;padding:.5rem 0">No classes found.</div>';return;}
+  const rows=classes.map(c=>{
+    const reg=c.registrationCount??0;
+    const wl=c.waitlistCount??0;
+    const max=c.max??'';
+    const pct=max?Math.round(reg/max*100)+'%':'—';
+    return [escH(c.event||''),escH(c.title),escH((c.teacherTitle?c.teacherTitle+' ':'')+c.teacher),escH(c.topic||''),c.date||'',c.time||'',String(reg),String(max||'Unlimited'),String(wl),pct];
+  });
+  wrap.innerHTML='<div class="rpt-wrap"><table class="rpt-table"><thead><tr>'
+    +'<th>Event</th><th>Class</th><th>Teacher</th><th>Topic</th><th>Date</th><th>Time</th>'
+    +'<th class="rpt-num">Registered</th><th class="rpt-num">Cap</th><th class="rpt-num">Waitlist</th><th class="rpt-num">Fill %</th>'
+    +'</tr></thead><tbody>'
+    +rows.map(r=>'<tr>'+r.map((v,i)=>'<td'+(i>=6?' class="rpt-num"':'')+'>'+v+'</td>').join('')+'</tr>').join('')
+    +'</tbody></table></div>';
+}
+
+function renderTeacherRosterTable(){
+  const wrap=document.getElementById('rpt-teacher-table');
+  if(!wrap)return;
+  const classes=getRptClasses().filter(c=>!c.cancelled);
+  // Group by teacher email then name
+  const map={};
+  classes.forEach(c=>{
+    const key=(c.email||c.teacher||'').toLowerCase();
+    if(!map[key])map[key]={name:(c.teacherTitle?c.teacherTitle+' ':'')+c.teacher,email:c.email||'',barony:c.barony||'',classes:[]};
+    map[key].classes.push(c);
+    // Fill barony from allTeachers if available
+    const td=allTeachers[(c.email||'').toLowerCase()];
+    if(td&&td.barony&&!map[key].barony)map[key].barony=td.barony;
+  });
+  const rows=Object.values(map).sort((a,b)=>a.name.localeCompare(b.name));
+  if(!rows.length){wrap.innerHTML='<div style="color:var(--text2);font-family:sans-serif;font-size:13px;padding:.5rem 0">No teachers found.</div>';return;}
+  wrap.innerHTML='<div class="rpt-wrap"><table class="rpt-table"><thead><tr>'
+    +'<th>Teacher</th><th>Email</th><th>Barony</th><th>Classes</th><th>Topics</th><th class="rpt-num">Total Registrations</th>'
+    +'</tr></thead><tbody>'
+    +rows.map(r=>{
+      const titles=r.classes.map(c=>escH(c.title)).join(', ');
+      const topics=[...new Set(r.classes.map(c=>c.topic||'').filter(Boolean))].map(escH).join(', ');
+      const totalReg=r.classes.reduce((s,c)=>s+(c.registrationCount??0),0);
+      return '<tr>'
+        +'<td>'+escH(r.name)+'</td>'
+        +'<td style="color:var(--text2)">'+escH(r.email)+'</td>'
+        +'<td style="color:var(--text2)">'+escH(r.barony)+'</td>'
+        +'<td>'+titles+'</td>'
+        +'<td style="color:var(--text2)">'+topics+'</td>'
+        +'<td class="rpt-num">'+totalReg+'</td>'
+        +'</tr>';
+    }).join('')
+    +'</tbody></table></div>';
+}
+
+function buildRegCSV(){
+  const classes=getRptClasses().filter(c=>!c.cancelled);
+  const hdr=['Event','Class','Teacher','Topic','Date','Time','Registered','Cap','Waitlist','Fill %'];
+  const rows=classes.map(c=>{
+    const reg=c.registrationCount??0,wl=c.waitlistCount??0,max=c.max??'';
+    return [c.event||'',c.title,(c.teacherTitle?c.teacherTitle+' ':'')+c.teacher,c.topic||'',c.date||'',c.time||'',reg,max||'Unlimited',wl,max?Math.round(reg/max*100)+'%':'—'];
+  });
+  return [hdr,...rows].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+}
+
+function buildTeacherCSV(){
+  const classes=getRptClasses().filter(c=>!c.cancelled);
+  const map={};
+  classes.forEach(c=>{
+    const key=(c.email||c.teacher||'').toLowerCase();
+    if(!map[key])map[key]={name:(c.teacherTitle?c.teacherTitle+' ':'')+c.teacher,email:c.email||'',barony:c.barony||'',classes:[]};
+    map[key].classes.push(c);
+    const td=allTeachers[(c.email||'').toLowerCase()];
+    if(td&&td.barony&&!map[key].barony)map[key].barony=td.barony;
+  });
+  const hdr=['Teacher','Email','Barony','Classes','Topics','Total Registrations'];
+  const rows=Object.values(map).sort((a,b)=>a.name.localeCompare(b.name)).map(r=>{
+    const titles=r.classes.map(c=>c.title).join('; ');
+    const topics=[...new Set(r.classes.map(c=>c.topic||'').filter(Boolean))].join('; ');
+    const totalReg=r.classes.reduce((s,c)=>s+(c.registrationCount??0),0);
+    return [r.name,r.email,r.barony,titles,topics,totalReg];
+  });
+  return [hdr,...rows].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+}
+
+function exportCSV(type){
+  const csv=type==='registrations'?buildRegCSV():buildTeacherCSV();
+  const evf=document.getElementById('rpt-ev')?.value||'all';
+  const fname=(type==='registrations'?'registrations':'teachers')+'-'+evf.replace(/\s+/g,'-').toLowerCase()+'.csv';
+  const blob=new Blob([csv],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fname;a.click();
+}
+
+function exportSheets(type){
+  const csv=type==='registrations'?buildRegCSV():buildTeacherCSV();
+  const encoded=encodeURIComponent(csv);
+  // Google Sheets import via data URI isn't directly supported; open CSV download then guide user
+  exportCSV(type);
+  setTimeout(()=>alert('CSV downloaded. In Google Sheets, go to File → Import and select the downloaded file to open it.'),200);
+}
+
+function saveTeacher(){
+  if(!curTeacherEmail)return;
+  const t=allTeachers[curTeacherEmail];
+  if(!t)return;
+  t.name=document.getElementById('tm-name').value.trim();
+  t.title=document.getElementById('tm-title').value.trim();
+  t.barony=document.getElementById('tm-barony').value.trim();
+  t.phone=document.getElementById('tm-phone').value.trim();
+  t.bio=document.getElementById('tm-bio').value.trim();
+  t.peerages=PEERAGES.map(p=>p.key).filter(k=>{const cb=document.getElementById('tm-p-'+k);return cb&&cb.checked;});
+  t.royalPeer=document.getElementById('tm-royalpeer').checked;
+  const sittingRoyalty=document.getElementById('tm-sittingroyalty').checked;
+  const stepDownDate=document.getElementById('tm-stepdown')?.value||'';
+  if(sittingRoyalty&&!stepDownDate){
+    alert('Please enter a step-down date for Sitting Royalty.');
+    return;
+  }
+  t.sittingRoyalty=sittingRoyalty;
+  t.stepDownDate=sittingRoyalty?stepDownDate:'';
+
+  closeModal('teacher-modal');
+  renderTeacherList();
 }
 
 function cpL(ev,u){navigator.clipboard.writeText(u).then(()=>{const b=ev.target.closest('button');b.textContent='\u2713 Copied';setTimeout(()=>b.innerHTML='<i class="ti ti-copy"></i> Copy',2000);});}
@@ -3024,6 +3579,7 @@ let managedTopics = [
   {name:'Archery',hidden:false},
   {name:'Heraldry',hidden:false},
   {name:'Crafts',hidden:false},
+  {name:'Arts & Administration',hidden:false},
   {name:'Other',hidden:false},
 ];
 function getVisibleTopics(){return managedTopics.filter(t=>!t.hidden).map(t=>t.name);}
