@@ -78,7 +78,7 @@ a{color:#1A3F7A}
       <span class="brand-name">Kingdom Class Registry</span>
     </div>
     <div class="brand-sub">What's New · Kingdom of Caid</div>
-    <div class="brand-note">Updated in sync with the demo · Last updated June 1, 2026 · 7:55 AM PT</div>
+    <div class="brand-note">Updated in sync with the demo · Last updated June 1, 2026 · 9:25 AM PT</div>
   </div>
 
   <div class="intro-box">
@@ -236,7 +236,7 @@ a{color:#1A3F7A}
     <div class="entry-header" onclick="toggle(this)">
       <span class="version-badge">June 1</span>
       <span class="entry-date">Latest update</span>
-      <span class="entry-count">15 changes</span>
+      <span class="entry-count">16 changes</span>
       <i class="ti ti-chevron-right chevron open"></i>
     </div>
     <div class="changes open">
@@ -293,11 +293,11 @@ a{color:#1A3F7A}
         <div class="change-what">Teacher directory (Admin → Teachers tab)</div>
         <div class="change-row">
           <span class="change-label label-why">Why it matters</span>
-          <span class="change-body">A new Teachers tab in admin shows every teacher who has submitted a class, searchable by name, email, barony, or topic. Each record shows contact info, peerage badges, teaching history, and the topics they cover. Admin can edit any field and confirm peerages.</span>
+          <span class="change-body">A new Teachers tab in admin shows every teacher who has submitted a class, searchable by name, email, barony, or topic. Each record shows contact info, peerage badges, teaching history, and topics covered. Admin can edit any field and confirm peerages.</span>
         </div>
         <div class="change-row">
           <span class="change-label label-try">Give it a try</span>
-          <span class="change-body">Log into admin and click Teachers. Search "Fiber Arts" to see teachers tagged with that topic. Click Edit on any teacher to update their profile or confirm a peerage. Try filtering by peerage using the dropdown.</span>
+          <span class="change-body">Log into admin and click Teachers. Search "Fiber Arts" to see teachers tagged with that topic. Click Edit on any teacher to update their profile or confirm a peerage. Filter by peerage using the dropdown.</span>
         </div>
       </div>
 
@@ -309,19 +309,19 @@ a{color:#1A3F7A}
         </div>
         <div class="change-row">
           <span class="change-label label-try">Give it a try</span>
-          <span class="change-body">Log into admin, go to Reports, and select an event from the dropdown. Check that both tables populate. Hit CSV on either report — a file should download. The "Open in Sheets" button downloads the CSV and tells you how to import it.</span>
+          <span class="change-body">Log into admin, go to Reports, and select an event. Check that both tables populate. Hit CSV on either report — a file should download.</span>
         </div>
       </div>
 
       <div class="change-item">
-        <div class="change-what">Peerage badges on teacher profiles and class cards</div>
+        <div class="change-what">Peerage emoji badges on teacher profiles and class cards</div>
         <div class="change-row">
           <span class="change-label label-why">Why it matters</span>
-          <span class="change-body">Teachers with confirmed peerages now show colored badges (Chivalry, Laurel, Pelican, Master of Defense, Order of the Mark) in the Teachers directory and inside the bio popover on class cards. Sitting Royalty shows a 👑 crown before the teacher name on the card itself.</span>
+          <span class="change-body">Teachers with confirmed peerages now show emoji badges — 🛡️ Chivalry, 🌿 Laurel, 🦢 Pelican, ⚔️ Master of Defense, 🎯 Order of the Mark. Tap any badge to see its label in a small tooltip. Sitting Royalty shows a 👑 crown before the teacher name on class cards; tapping shows the step-down date.</span>
         </div>
         <div class="change-row">
           <span class="change-label label-try">Give it a try</span>
-          <span class="change-body">Browse the catalog and hover the ⓘ icon on Mistress Alienor's class — Laurel badge should appear above her bio. Find Lord Liam Mor MacGregor's webwright class — a crown should appear before his name. Hover the crown to see his step-down date.</span>
+          <span class="change-body">Browse the catalog and hover (or tap on mobile) the ⓘ on Mistress Alienor's class — a 🌿 badge should appear above her bio. Tap it to see the label. Find Lord Liam Mor MacGregor's webwright class — tap the 👑 crown to see his step-down date.</span>
         </div>
       </div>
 
@@ -329,11 +329,11 @@ a{color:#1A3F7A}
         <div class="change-what">Sitting Royalty requires a step-down date and auto-clears</div>
         <div class="change-row">
           <span class="change-label label-why">Why it matters</span>
-          <span class="change-body">When admin marks a teacher as Sitting Royalty, a required step-down date must be entered. The crown badge is automatically removed after that date — no manual cleanup needed. The date shows on rollover of the crown.</span>
+          <span class="change-body">When admin marks a teacher as Sitting Royalty, a required step-down date must be entered. The crown is automatically removed after that date — no manual cleanup needed.</span>
         </div>
         <div class="change-row">
           <span class="change-label label-try">Give it a try</span>
-          <span class="change-body">In Admin → Teachers, find Lord Liam Mor MacGregor and click Edit. The Sitting Royalty box is checked and a step-down date is set. Try unchecking and saving — the crown disappears from his cards. Try checking it without a date — it should block save with a prompt.</span>
+          <span class="change-body">In Admin → Teachers, find Lord Liam Mor MacGregor and click Edit. Try checking Sitting Royalty without a date — it should block save. Try setting a past date, save, and refresh — the crown should be gone.</span>
         </div>
       </div>
 
@@ -341,23 +341,35 @@ a{color:#1A3F7A}
         <div class="change-what">Teacher lookup and history panel on the submission form</div>
         <div class="change-row">
           <span class="change-label label-why">Why it matters</span>
-          <span class="change-body">Returning teachers can now enter their email at the top of the Teach a Class form to load their profile and see their past classes. A history panel slides in from the right, and each past class has a "Teach again" button that pre-fills the form — title, description, topic, duration, fee, bio, and more — while leaving event and scheduling fields blank.</span>
+          <span class="change-body">Returning teachers can enter their email at the top of the Teach a Class form to load their profile and see their past classes in a panel that slides in from the right. Each past class has a "Teach again" button that pre-fills the form while leaving event and scheduling fields blank. The panel shows 5 classes per page, sorted most recent first, and collapses when a class is selected.</span>
         </div>
         <div class="change-row">
           <span class="change-label label-try">Give it a try</span>
-          <span class="change-body">Click Teach a Class and enter <strong>alienor@example.com</strong> in the lookup field. Her profile should load, About You fields should pre-fill, and the history panel should slide in showing her two past classes. Hit "Teach again" on either one and watch the form fill.</span>
+          <span class="change-body">Click Teach a Class and enter <strong>alienor@example.com</strong> in the lookup field. Her profile loads, About You pre-fills, and the history panel slides in. Hit "Teach again" on either class — the form fills and the panel collapses. Click "Show class history" to expand it again.</span>
         </div>
       </div>
 
       <div class="change-item">
-        <div class="change-what">Barony/territory field on teacher submission form</div>
+        <div class="change-what">Barony/territory and peerages added to teacher submission form</div>
         <div class="change-row">
           <span class="change-label label-why">Why it matters</span>
-          <span class="change-body">Teachers can now optionally enter their barony or territory when submitting a class. Admin-only — never shown publicly — helps the coordinator know where teachers are coming from.</span>
+          <span class="change-body">Teachers can now optionally enter their barony or territory and self-report peerages when submitting a class. Barony is admin-only. Peerages are marked as pending until admin confirms them in the Teachers tab.</span>
         </div>
         <div class="change-row">
           <span class="change-label label-try">Give it a try</span>
-          <span class="change-body">Click Teach a Class, scroll to About You, and fill in the barony field. After submitting, check the pending queue in admin — the barony should appear next to the teacher's contact info.</span>
+          <span class="change-body">Click Teach a Class, scroll to About You, and fill in the barony field and check a peerage. After submitting, check the pending queue in admin — the barony should appear next to the teacher's contact info.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">New demo teacher and class: Lord Liam Mor MacGregor</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Added a webwright class — "Building Your SCA Group Website" — taught by Lord Liam Mor MacGregor (Kingdom Webwright, Sitting Royalty) at Collegium 2026. Good demo of the royalty badge and the Arts &amp; Administration topic.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Filter the catalog by "Arts &amp; Administration" or search "Liam" — his class should appear with the 👑 crown before his name.</span>
         </div>
       </div>
 

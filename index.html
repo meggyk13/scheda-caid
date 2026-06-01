@@ -256,6 +256,10 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .rpt-table tr:nth-child(even) td{background:var(--bg2)}
 .rpt-num{text-align:right;font-weight:600;color:var(--accent-mid)}
 .rpt-wrap{background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius-lg);overflow:hidden}
+/* ── Badge click tooltip ── */
+.badge-tip{position:fixed;z-index:9999;background:var(--text);color:#fff;font-size:12px;font-family:sans-serif;padding:5px 10px;border-radius:var(--radius);pointer-events:none;white-space:nowrap;opacity:0;transition:opacity .15s;box-shadow:var(--shadow-lg)}
+.badge-tip.show{opacity:1}
+.badge-emoji{font-size:18px;cursor:pointer;vertical-align:middle;line-height:1;display:inline-block;padding:1px 3px}
 /* ── Teacher directory ── */
 .teacher-card{background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:14px 16px;display:flex;flex-direction:column;gap:8px}
 .teacher-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
@@ -564,9 +568,13 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
           <!-- Teacher history panel (slides in from right) -->
           <div class="teacher-history-panel" id="teacher-history-panel">
             <div class="thp-inner">
-              <div class="thp-title" id="thp-name"></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
+                <div class="thp-title" id="thp-name"></div>
+                <button onclick="collapseHistoryPanel()" title="Collapse" style="background:none;border:none;cursor:pointer;color:var(--text2);font-size:16px;padding:2px 4px;line-height:1" aria-label="Collapse history"><i class="ti ti-layout-sidebar-right-collapse"></i></button>
+              </div>
               <div class="thp-sub" id="thp-sub">Your past classes are shown below. Hit "Teach again" to pre-fill the form.</div>
               <div id="thp-classes"></div>
+              <div id="thp-pagination" style="display:flex;gap:6px;align-items:center;margin-top:10px;font-family:sans-serif;font-size:12px"></div>
             </div>
           </div>
         </div><!-- /submit-layout -->
@@ -1377,12 +1385,34 @@ dWL={
 let dPid=1000,allClasses=[],allAdminClasses=[],myRegs={},scheduleEmail='';
 let allTeachers={};
 
+function showBadgeTip(el,label){
+  const tip=document.getElementById('badge-tip');
+  if(!tip)return;
+  // Toggle: if already showing for this element, hide it
+  if(tip._el===el&&tip.classList.contains('show')){tip.classList.remove('show');tip._el=null;return;}
+  tip._el=el;
+  tip.textContent=label;
+  tip.classList.add('show');
+  const r=el.getBoundingClientRect();
+  tip.style.left=Math.min(r.left+r.width/2-tip.offsetWidth/2,window.innerWidth-tip.offsetWidth-8)+'px';
+  tip.style.top=(r.top-tip.offsetHeight-6+window.scrollY)+'px';
+  // Auto-hide after 2.5s or on next outside click
+  clearTimeout(tip._t);
+  tip._t=setTimeout(()=>{tip.classList.remove('show');tip._el=null;},2500);
+}
+document.addEventListener('click',e=>{
+  const tip=document.getElementById('badge-tip');
+  if(tip&&!e.target.closest('.badge-emoji')&&!e.target.closest('#badge-tip')){
+    tip.classList.remove('show');tip._el=null;
+  }
+});
+
 const PEERAGES=[
-  {key:'chivalry',label:'Chivalry',abbr:'K/MA',color:'#8B0000'},
-  {key:'laurel',label:'Laurel',abbr:'Laurel',color:'#2e7d4e'},
-  {key:'pelican',label:'Pelican',abbr:'Pelican',color:'#1A3F7A'},
-  {key:'masterofdefense',label:'Master of Defense',abbr:'MoD',color:'#4a4a4a'},
-  {key:'orderofthemark',label:'Order of the Mark',abbr:'Mark',color:'#7a5c1e'}
+  {key:'chivalry',label:'Chivalry',abbr:'K/MA',color:'#8B0000',emoji:'\u{1F6E1}'},
+  {key:'laurel',label:'Laurel',abbr:'Laurel',color:'#2e7d4e',emoji:'\u{1F33F}'},
+  {key:'pelican',label:'Pelican',abbr:'Pelican',color:'#1A3F7A',emoji:'\u{1F9A2}'},
+  {key:'masterofdefense',label:'Master of Defense',abbr:'MoD',color:'#4a4a4a',emoji:'\u2694\uFE0F'},
+  {key:'orderofthemark',label:'Order of the Mark',abbr:'Mark',color:'#7a5c1e',emoji:'\u{1F3AF}'}
 ];
 
 function buildTeacherRecord(c){
@@ -1564,7 +1594,7 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 1, 2026 · 8:40 AM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:6px"><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:4px 12px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 1, 2026 · 9:25 AM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:6px"><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:4px 12px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){
@@ -1677,12 +1707,12 @@ function rC(){
     const duPill=c.duration?'<span class="logistics-pill"><i class="ti ti-clock"></i> '+(c.duration<60?c.duration+'min':Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h')+'</span>':'';
     const thumb=c.imageUrl?'<img class="card-thumb" src="'+c.imageUrl+'" alt="" onerror="this.style.display=\'none\'">':'';
     const tRecord=allTeachers[(c.email||'').toLowerCase()];
-    const royaltyPrefix=(tRecord&&tRecord.sittingRoyalty?'<span style="font-size:15px;vertical-align:middle;margin-right:3px" title="Sitting Royalty'+(tRecord.stepDownDate?' · steps down '+tRecord.stepDownDate:'')+'">👑</span>':'');
+    const royaltyPrefix=(tRecord&&tRecord.sittingRoyalty?'<span class="badge-emoji" style="margin-right:3px" onclick="showBadgeTip(this,\'Sitting Royalty'+(tRecord.stepDownDate?' · steps down '+tRecord.stepDownDate:'')+'\')" >👑</span>':'');
     const displayTeacher=(c.teacherTitle?c.teacherTitle+' ':'')+c.teacher;
     const pBadges=tRecord?[
-      ...(tRecord.peerages||[]).map(p=>{const pd=PEERAGES.find(x=>x.key===p);return pd?'<span class="peerage-badge badge-'+p+'" style="font-size:10px;padding:1px 7px">'+pd.label+'</span>':'';}),
-      tRecord.royalPeer?'<span class="peerage-badge badge-royalpeer" style="font-size:10px;padding:1px 7px">Royal Peer</span>':'',
-      tRecord.sittingRoyalty?'<span class="peerage-badge badge-sittingroyalty" style="font-size:13px;padding:1px 6px;background:none;color:#b8860b" title="Sitting Royalty'+(tRecord.stepDownDate?' · steps down '+tRecord.stepDownDate:'')+'">👑</span>':''
+      ...(tRecord.peerages||[]).map(p=>{const pd=PEERAGES.find(x=>x.key===p);return pd?'<span class="badge-emoji" onclick="showBadgeTip(this,\''+pd.label+'\')">'+pd.emoji+'</span>':'';}),
+      tRecord.royalPeer?'<span class="badge-emoji" onclick="showBadgeTip(this,\'Royal Peer\')">👑</span>':'',
+      tRecord.sittingRoyalty?'<span class="badge-emoji" onclick="showBadgeTip(this,\'Sitting Royalty'+(tRecord.stepDownDate?' · steps down '+tRecord.stepDownDate:'')+'\'" >👑</span>':''
     ].filter(Boolean).join(''):'';
     const pBadgeHtml=pBadges?'<div style="display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 6px">'+pBadges+'</div>':'';
     const bioBtn=c.bio||pBadges?'<button class="bio-btn" tabindex="0" aria-label="Teacher bio"><i class="ti ti-info-circle"></i><div class="bio-popover"><div class="bio-name">'+displayTeacher+'</div>'+pBadgeHtml+(c.bio||'')+'</div></button>':'';
@@ -2507,30 +2537,84 @@ function lookupTeacher(){
   }
 }
 
+let _thpEmail='',_thpPage=0;
+const THP_PAGE_SIZE=5;
+
 function openHistoryPanel(t){
   const panel=document.getElementById('teacher-history-panel');
   const layout=document.getElementById('submit-layout');
   if(!panel||!layout)return;
+  _thpEmail=(t.email||'').toLowerCase();
+  _thpPage=0;
   const displayName=(t.title?t.title+' ':'')+t.name;
   document.getElementById('thp-name').textContent=displayName;
-  const classes=t.classes||[];
-  if(!classes.length){
-    document.getElementById('thp-classes').innerHTML='<div style="font-size:12px;font-family:sans-serif;color:var(--text2);padding-top:6px;font-style:italic">No class history yet.</div>';
-  } else {
-    document.getElementById('thp-classes').innerHTML=classes.map((cls,i)=>`
-      <div class="thp-class">
-        <div class="thp-class-title">${escH(cls.title)}</div>
-        <div class="thp-class-meta">${[cls.topic,cls.event,cls.date].filter(Boolean).map(escH).join(' · ')}</div>
-        <button class="teach-again-btn" onclick="teachAgain(${i},'${escH(t.email||'')}')"><i class="ti ti-refresh" style="font-size:11px"></i> Teach again</button>
-      </div>`).join('');
-  }
+  renderThpPage();
   panel.classList.add('open');
   layout.classList.add('panel-open');
+  // Remove any re-expand button
+  document.getElementById('thp-reopen-btn')?.remove();
+}
+
+function renderThpPage(){
+  const t=allTeachers[_thpEmail];
+  if(!t)return;
+  // Sort most recent first by date, fallback to original order
+  const sorted=[...(t.classes||[])].sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const total=sorted.length;
+  const totalPages=Math.ceil(total/THP_PAGE_SIZE);
+  const page=sorted.slice(_thpPage*THP_PAGE_SIZE,(_thpPage+1)*THP_PAGE_SIZE);
+  const wrap=document.getElementById('thp-classes');
+  const pag=document.getElementById('thp-pagination');
+  if(!total){
+    wrap.innerHTML='<div style="font-size:12px;font-family:sans-serif;color:var(--text2);padding-top:6px;font-style:italic">No class history yet.</div>';
+    if(pag)pag.innerHTML='';
+    return;
+  }
+  // Find original indices for teachAgain
+  wrap.innerHTML=page.map(cls=>{
+    const origIdx=(t.classes||[]).findIndex(x=>String(x.id)===String(cls.id));
+    return `<div class="thp-class">
+      <div class="thp-class-title">${escH(cls.title)}</div>
+      <div class="thp-class-meta">${[cls.topic,cls.event,cls.date].filter(Boolean).map(escH).join(' · ')}</div>
+      <button class="teach-again-btn" onclick="teachAgain(${origIdx},'${escH(_thpEmail)}')"><i class="ti ti-refresh" style="font-size:11px"></i> Teach again</button>
+    </div>`;
+  }).join('');
+  // Pagination
+  if(pag){
+    if(totalPages<=1){pag.innerHTML='';return;}
+    const prev=_thpPage>0?`<button onclick="_thpPage--;renderThpPage()" style="background:none;border:1px solid var(--border2);border-radius:var(--radius);padding:2px 8px;font-size:11px;cursor:pointer;font-family:sans-serif">← Prev</button>`:'<span></span>';
+    const next=_thpPage<totalPages-1?`<button onclick="_thpPage++;renderThpPage()" style="background:none;border:1px solid var(--border2);border-radius:var(--radius);padding:2px 8px;font-size:11px;cursor:pointer;font-family:sans-serif">Next →</button>`:'<span></span>';
+    pag.innerHTML=prev+`<span style="color:var(--text2);flex:1;text-align:center">${_thpPage+1} / ${totalPages}</span>`+next;
+  }
+}
+
+function collapseHistoryPanel(){
+  const panel=document.getElementById('teacher-history-panel');
+  const layout=document.getElementById('submit-layout');
+  if(panel)panel.classList.remove('open');
+  if(layout)layout.classList.remove('panel-open');
+  // Show re-expand button near lookup result
+  const result=document.getElementById('fc-lookup-result');
+  if(result&&!document.getElementById('thp-reopen-btn')){
+    const btn=document.createElement('button');
+    btn.id='thp-reopen-btn';
+    btn.className='teach-again-btn';
+    btn.style.cssText='margin-top:8px;display:inline-flex;align-items:center;gap:5px';
+    btn.innerHTML='<i class="ti ti-layout-sidebar-right-expand" style="font-size:11px"></i> Show class history';
+    btn.onclick=()=>{
+      panel.classList.add('open');
+      layout.classList.add('panel-open');
+      btn.remove();
+    };
+    result.appendChild(btn);
+  }
 }
 
 function closeHistoryPanel(){
   document.getElementById('teacher-history-panel')?.classList.remove('open');
   document.getElementById('submit-layout')?.classList.remove('panel-open');
+  document.getElementById('thp-reopen-btn')?.remove();
+  _thpEmail='';_thpPage=0;
 }
 
 function teachAgain(idx,email){
@@ -2538,7 +2622,6 @@ function teachAgain(idx,email){
   if(!t)return;
   const cls=allAdminClasses.concat(allClasses).find(c=>String(c.id)===String((t.classes[idx]||{}).id));
   if(!cls)return;
-  // Fill class fields — skip event/date/time/room/zoomLink/notes
   if(cls.title)document.getElementById('fc-t').value=cls.title;
   if(cls.topic)populateTopicSelect('fc-tp',false,true,cls.topic);
   if(cls.desc)document.getElementById('fc-d').value=cls.desc;
@@ -2547,17 +2630,16 @@ function teachAgain(idx,email){
   if(cls.bring)document.getElementById('fc-br').value=cls.bring;
   if(cls.max)document.getElementById('fc-mx').value=cls.max;
   if(cls.duration)document.getElementById('fc-du').value=String(cls.duration);
-  // Level pills
   document.querySelectorAll('#fc-level-pills .level-pill').forEach(b=>b.classList.remove('active'));
   document.getElementById('fc-level').value='';
   if(cls.level){(cls.level.split?cls.level.split(','):[cls.level]).forEach(lv=>{const b=document.querySelector('#fc-level-pills .level-pill[data-val="'+lv.trim()+'"]');if(b){b.classList.add('active');const hid=document.getElementById('fc-level');hid.value=(hid.value?hid.value+',':'')+lv.trim();}});}
-  // Audience
   document.getElementById('fc-aud-newcomer').checked=(cls.audience||'').includes('newcomer-friendly');
   document.getElementById('fc-aud-kids').checked=(cls.audience||'').includes('kids-welcome');
   document.getElementById('fc-aud-adults').checked=(cls.audience||'').includes('adults-only');
-  // Scroll to form top
+  // Collapse panel
+  collapseHistoryPanel();
+  // Scroll and flash title
   document.getElementById('fc-t').scrollIntoView({behavior:'smooth',block:'center'});
-  // Flash the title field briefly
   const tf=document.getElementById('fc-t');
   tf.style.transition='background .3s';tf.style.background='var(--accent-light)';
   setTimeout(()=>{tf.style.background='';},800);
@@ -3101,9 +3183,9 @@ function renderTeacherList(){
   wrap.innerHTML=teachers.map(t=>{
     const displayName=(t.title?t.title+' ':'')+t.name;
     const badges=[
-      ...(t.peerages||[]).map(p=>{const pd=PEERAGES.find(x=>x.key===p);return pd?'<span class="peerage-badge badge-'+p+'">'+pd.label+'</span>':'';}),
-      t.royalPeer?'<span class="peerage-badge badge-royalpeer">Royal Peer</span>':'',
-      t.sittingRoyalty?'<span style="font-size:16px" title="Sitting Royalty'+(t.stepDownDate?' · steps down '+t.stepDownDate:'')+'">👑</span>':''
+      ...(t.peerages||[]).map(p=>{const pd=PEERAGES.find(x=>x.key===p);return pd?'<span class="badge-emoji" onclick="showBadgeTip(this,\''+pd.label+'\')">'+pd.emoji+'</span>':'';}),
+      t.royalPeer?'<span class="badge-emoji" onclick="showBadgeTip(this,\'Royal Peer\')">👑</span>':'',
+      t.sittingRoyalty?'<span class="badge-emoji" onclick="showBadgeTip(this,\'Sitting Royalty'+(t.stepDownDate?' · steps down '+t.stepDownDate:'')+'\'" >👑</span>':''
     ].filter(Boolean).join('');
     const meta=[t.barony,t.email,t.phone].filter(Boolean).join(' · ');
     const topicTags=(t.topics||[]).map(tp=>'<span style="background:var(--bg2);border:1px solid var(--border2);border-radius:99px;font-size:11px;font-family:sans-serif;padding:1px 8px;color:var(--text2)">'+escH(tp)+'</span>').join('');
@@ -4323,5 +4405,6 @@ function printSchedule(){
 }
 
 </script>
+<div class="badge-tip" id="badge-tip"></div>
 </body>
 </html>
