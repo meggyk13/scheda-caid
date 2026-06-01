@@ -78,7 +78,7 @@ a{color:#1A3F7A}
       <span class="brand-name">Kingdom Class Registry</span>
     </div>
     <div class="brand-sub">What's New · Kingdom of Caid</div>
-    <div class="brand-note">Updated in sync with the demo · Last updated June 1, 2026 · 9:25 AM PT</div>
+    <div class="brand-note">Updated in sync with the demo · Last updated June 1, 2026 · 11:35 AM PT</div>
   </div>
 
   <div class="intro-box">
@@ -236,58 +236,10 @@ a{color:#1A3F7A}
     <div class="entry-header" onclick="toggle(this)">
       <span class="version-badge">June 1</span>
       <span class="entry-date">Latest update</span>
-      <span class="entry-count">16 changes</span>
+      <span class="entry-count">22 changes</span>
       <i class="ti ti-chevron-right chevron open"></i>
     </div>
     <div class="changes open">
-
-      <div class="change-item">
-        <div class="change-what">Event message for teachers on the submission form</div>
-        <div class="change-row">
-          <span class="change-label label-why">Why it matters</span>
-          <span class="change-body">Event organizers can now write a message — up to 600 characters — that teachers see at the top of the Teach a Class form when that event is selected or linked. Good for thank-you notes, deadlines, contact info, or anything else teachers should know before submitting.</span>
-        </div>
-        <div class="change-row">
-          <span class="change-label label-try">Give it a try</span>
-          <span class="change-body">Log into admin, go to Events, select Great Western War 2026 — there's already a sample message in the "Message to teachers" field. Save it, then click Teach a Class and select Great Western War from the dropdown. The green message box should appear at the top of the form.</span>
-        </div>
-      </div>
-
-      <div class="change-item">
-        <div class="change-what">Event card shown at the top of the submission form</div>
-        <div class="change-row">
-          <span class="change-label label-why">Why it matters</span>
-          <span class="change-body">When a teacher selects an event — or arrives via a share link locked to one — the event name, dates, and venue now appear as a card at the top of the form, so it's clear at a glance what they're submitting for.</span>
-        </div>
-        <div class="change-row">
-          <span class="change-label label-try">Give it a try</span>
-          <span class="change-body">Click Teach a Class and select any event from the dropdown. A card with the event details should appear above the form. Then try the locked share link from admin — the card should appear there too.</span>
-        </div>
-      </div>
-
-      <div class="change-item">
-        <div class="change-what">Larger text on mobile for class cards and schedule</div>
-        <div class="change-row">
-          <span class="change-label label-why">Why it matters</span>
-          <span class="change-body">On smaller screens the class titles, teacher names, descriptions, times, and buttons are now noticeably larger — easier to read without zooming in. Admin views are unchanged on desktop.</span>
-        </div>
-        <div class="change-row">
-          <span class="change-label label-try">Give it a try</span>
-          <span class="change-body">Open the app on your phone and browse the catalog and My Schedule. Does the text feel comfortable to read without squinting or zooming?</span>
-        </div>
-      </div>
-
-      <div class="change-item">
-        <div class="change-what">Preview your class card before submitting</div>
-        <div class="change-row">
-          <span class="change-label label-why">Why it matters</span>
-          <span class="change-body">Teachers can now see exactly how their class will look in the catalog before hitting Submit — title, description, teacher name, logistics pills, and audience tags all render as a real card.</span>
-        </div>
-        <div class="change-row">
-          <span class="change-label label-try">Give it a try</span>
-          <span class="change-body">Click Teach a Class, fill in a title and description, then click the "Preview card" button at the bottom of the form. A popup should show your card as it would appear in the catalog.</span>
-        </div>
-      </div>
 
       <div class="change-item">
         <div class="change-what">Teacher directory (Admin → Teachers tab)</div>
@@ -310,6 +262,42 @@ a{color:#1A3F7A}
         <div class="change-row">
           <span class="change-label label-try">Give it a try</span>
           <span class="change-body">Log into admin, go to Reports, and select an event. Check that both tables populate. Hit CSV on either report — a file should download.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Teach a Class form — progressive reveal</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">On load, the Teach a Class form now shows only the email lookup and event selector. The full form body stays hidden until an event is chosen or "Teach again" is clicked. Keeps the first impression clean and guides teachers through the right steps before filling in class details.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Click Teach a Class — only the lookup box and event dropdown should be visible. Select an event from the dropdown and watch the full form appear below. Try it again via a direct event share link from admin — the form should be visible immediately.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Teacher lookup and history panel on the submission form</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Returning teachers can enter their email at the top of the Teach a Class form to load their profile and see their past classes in a panel that slides in from the right. Each past class has a "Teach again" button that pre-fills the form while leaving event and scheduling fields blank. The panel shows 5 classes per page, sorted most recent first, and collapses when a class is selected.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Click Teach a Class and enter <strong>alienor@example.com</strong> in the lookup field. Her profile loads, About You pre-fills, and the history panel slides in. Hit "Teach again" on either class — the form fills and the panel collapses. Click "Show class history" to expand it again.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Teacher history panel redesigned as inline panel</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">The "Teach again" history panel was a side drawer — it now appears inline directly under the email lookup box. Cleaner layout, works better on mobile, and no longer competes with the form. Shows a 🎉 welcome banner on match, a friendly first-timer message if no profile is found.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Click Teach a Class and enter <strong>alienor@example.com</strong>. A green welcome banner should appear with her name, followed by her past classes. Hit "Teach again" — the panel collapses and the form fills. A "↺ Show past classes" button appears to re-expand.</span>
         </div>
       </div>
 
@@ -338,14 +326,14 @@ a{color:#1A3F7A}
       </div>
 
       <div class="change-item">
-        <div class="change-what">Teacher lookup and history panel on the submission form</div>
+        <div class="change-what">Event card and teacher message moved below event selector</div>
         <div class="change-row">
           <span class="change-label label-why">Why it matters</span>
-          <span class="change-body">Returning teachers can enter their email at the top of the Teach a Class form to load their profile and see their past classes in a panel that slides in from the right. Each past class has a "Teach again" button that pre-fills the form while leaving event and scheduling fields blank. The panel shows 5 classes per page, sorted most recent first, and collapses when a class is selected.</span>
+          <span class="change-body">The event details card and organizer message now appear directly under the event dropdown after an event is selected, rather than floating above the form. The flow now reads naturally: pick event → see event details → fill in the class.</span>
         </div>
         <div class="change-row">
           <span class="change-label label-try">Give it a try</span>
-          <span class="change-body">Click Teach a Class and enter <strong>alienor@example.com</strong> in the lookup field. Her profile loads, About You pre-fills, and the history panel slides in. Hit "Teach again" on either class — the form fills and the panel collapses. Click "Show class history" to expand it again.</span>
+          <span class="change-body">Click Teach a Class, select Great Western War 2026 — the event card and the green organizer message should appear right below the dropdown before anything else.</span>
         </div>
       </div>
 
@@ -362,6 +350,66 @@ a{color:#1A3F7A}
       </div>
 
       <div class="change-item">
+        <div class="change-what">Preview your class card before submitting</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Teachers can now see exactly how their class will look in the catalog before hitting Submit — title, description, teacher name, logistics pills, and audience tags all render as a real card.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Click Teach a Class, fill in a title and description, then click the "Preview card" button at the bottom of the form. A popup should show your card as it would appear in the catalog.</span>
+        </div>
+      </div>
+
+            <div class="change-item">
+        <div class="change-what">Event message for teachers on the submission form</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Event organizers can now write a message — up to 600 characters — that teachers see at the top of the Teach a Class form when that event is selected or linked. Good for thank-you notes, deadlines, contact info, or anything else teachers should know before submitting.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Log into admin, go to Events, select Great Western War 2026 — there's already a sample message in the "Message to teachers" field. Save it, then click Teach a Class and select Great Western War from the dropdown. The green message box should appear at the top of the form.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Event card shown at the top of the submission form</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">When a teacher selects an event — or arrives via a share link locked to one — the event name, dates, and venue now appear as a card at the top of the form, so it's clear at a glance what they're submitting for.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Click Teach a Class and select any event from the dropdown. A card with the event details should appear above the form. Then try the locked share link from admin — the card should appear there too.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Peerage emoji badges — click tooltips and placement</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Peerage badges now use a delegated click-to-tooltip system instead of hover titles, so they work correctly on mobile. Badges appear in the bio popover (under the teacher name, above the bio text) and in the Teachers admin tab. The 👑 crown replaces the person icon on class cards for sitting royalty.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Tap the ⓘ on Mistress Alienor's class — badges should appear under her name. Tap 🌿 to see the "Laurel" tooltip. Find Lord Liam's class — 👑 should replace the person icon. Tap it to see his step-down date.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Teacher-specific fields removed from class edit modal</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Teacher honorific and bio are no longer editable in the admin class edit modal — those fields now live exclusively in the Teachers tab. Keeps class editing focused on class details.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Log into admin, open any class and click Edit — the teacher honorific and bio fields should be gone. Edit them instead via Admin → Teachers.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
         <div class="change-what">New demo teacher and class: Lord Liam Mor MacGregor</div>
         <div class="change-row">
           <span class="change-label label-why">Why it matters</span>
@@ -374,6 +422,18 @@ a{color:#1A3F7A}
       </div>
 
       <div class="change-item">
+        <div class="change-what">Larger text on mobile for class cards and schedule</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">On smaller screens the class titles, teacher names, descriptions, times, and buttons are now noticeably larger — easier to read without zooming in. Admin views are unchanged on desktop.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Open the app on your phone and browse the catalog and My Schedule. Does the text feel comfortable to read without squinting or zooming?</span>
+        </div>
+      </div>
+
+      <div class="change-item">
         <div class="change-what">Minor fixes</div>
         <div class="change-row">
           <span class="change-label label-why">Also fixed</span>
@@ -382,8 +442,6 @@ a{color:#1A3F7A}
       </div>
 
     </div>
-  </div>
-
   <!-- Entry: May 30 -->
   <div class="entry">
     <div class="entry-header" onclick="toggle(this)">
