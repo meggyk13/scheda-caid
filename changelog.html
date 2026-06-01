@@ -78,7 +78,7 @@ a{color:#1A3F7A}
       <span class="brand-name">Kingdom Class Registry</span>
     </div>
     <div class="brand-sub">What's New · Kingdom of Caid</div>
-    <div class="brand-note">Updated in sync with the demo · Last updated June 1, 2026 · 12:15 PM PT</div>
+    <div class="brand-note">Updated in sync with the demo · Last updated June 1, 2026 · 1:00 PM PT</div>
   </div>
 
   <div class="intro-box">
@@ -236,10 +236,46 @@ a{color:#1A3F7A}
     <div class="entry-header" onclick="toggle(this)">
       <span class="version-badge">June 1</span>
       <span class="entry-date">Latest update</span>
-      <span class="entry-count">28 changes</span>
+      <span class="entry-count">32 changes</span>
       <i class="ti ti-chevron-right chevron open"></i>
     </div>
     <div class="changes open">
+
+      <div class="change-item">
+        <div class="change-what">Admin → Teachers — card redesign</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Teacher cards in the admin Teachers tab have been rebuilt for clarity. Each card now has a blue left accent border consistent with other admin cards. Barony, email, and phone each get their own labeled row with an icon instead of being crammed onto one line. Peerage badges sit prominently below the name, with a gold "Unconfirmed" note for any self-reported peerages that haven't been confirmed yet — visible at a glance without opening the edit modal. The bio now appears in its own shaded strip at the bottom. Teaching history rows show event name, formatted date, and registration count (e.g. "8/12") on the right, with title and topic on the left. The history header summarizes total classes and total registrations across all events.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Log into admin and go to the Teachers tab. Find Sir Baldwin — his card should show the Chivalry 🛡️ badge, his barony and email on separate lines, and his class history with registration counts. Find Mistress Gwenllian — Pelican 🦢 badge should be visible. Submit a new class with a self-reported peerage and check that teacher's card — a gold "Unconfirmed" note should appear without needing to open Edit.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Approve modal — "Adjust before publishing" panel</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Admin can now fix small issues with a submission right in the approve step, without a separate edit pass afterward. Clicking "Adjust before publishing" expands a panel with title, topic, duration, max attendees, and fee — all pre-filled from the submission. The panel starts collapsed so the modal stays clean for simple approvals.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Log into admin, go to Pending, and click Approve on any class. Click "Adjust before publishing" — the panel should expand with the submission's values pre-filled. Change the topic or max size, approve, and confirm the update shows on the class card in the catalog.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Approve modal — peerage confirmation</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">If a teacher self-reported peerages on their submission, those now appear as pre-checked checkboxes in the approve modal so admin can confirm or uncheck them in the same step as approving the class. Previously they were only visible later in the Teachers tab.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Click Teach a Class, check a peerage (e.g. Laurel), and submit. Log into admin and approve the class — a peerage section should appear with the checkbox pre-checked. Approve with it checked, then go to Admin → Teachers and confirm the badge shows on that teacher.</span>
+        </div>
+      </div>
 
       <div class="change-item">
         <div class="change-what">Peerage badges — tooltip positioning fixed</div>
