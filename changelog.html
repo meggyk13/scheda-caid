@@ -78,7 +78,7 @@ a{color:#1A3F7A}
       <span class="brand-name">Kingdom Class Registry</span>
     </div>
     <div class="brand-sub">What's New · Kingdom of Caid</div>
-    <div class="brand-note">Updated in sync with the demo · Last updated June 1, 2026 · 1:00 PM PT</div>
+    <div class="brand-note">Updated in sync with the demo · Last updated June 1, 2026 · 1:20 PM PT</div>
   </div>
 
   <div class="intro-box">
@@ -236,10 +236,46 @@ a{color:#1A3F7A}
     <div class="entry-header" onclick="toggle(this)">
       <span class="version-badge">June 1</span>
       <span class="entry-date">Latest update</span>
-      <span class="entry-count">32 changes</span>
+      <span class="entry-count">35 changes</span>
       <i class="ti ti-chevron-right chevron open"></i>
     </div>
     <div class="changes open">
+
+      <div class="change-item">
+        <div class="change-what">Sitting Royalty and Royal Peer are now fully independent</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Checking Sitting Royalty no longer auto-checks Royal Peer. Someone in their first reign isn't a Royal Peer yet — they earn that when they step down. The boxes are now independent on the way in. Auto-promotion to Royal Peer still happens automatically when Sitting Royalty is removed (manually or by step-down date expiry).</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">In Admin → Teachers, find any teacher without Royal Peer and check Sitting Royalty — Royal Peer should stay unchecked. Then uncheck Sitting Royalty and save — Royal Peer should now be checked automatically.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Royal Peer added to peerage lists everywhere</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Royal Peer (🌼) is now a full entry in the peerage system rather than a separate standalone checkbox. It appears in the Teach a Class form, the teacher edit modal, and the approve modal alongside Chivalry, Laurel, Pelican, Master of Defense, and Order of the Mark. Teachers can self-report it; admin confirms it. The old separate Royal Peer checkbox in the teacher modal has been removed.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Click Teach a Class — Royal Peer should appear in the peerage checkboxes. In Admin → Teachers, click Edit on any teacher — Royal Peer should be in the peerage list, not a separate field.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">New demo pending class with self-reported peerage</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Added "Period Calligraphy Hands: Foundational Strokes" by Duke Cormac mac Aoidh to the pending queue for Collegium 2026, with Laurel and Royal Peer self-reported. Good for demoing the peerage confirmation flow in the approve modal.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Log into admin, go to Pending, and find Duke Cormac's class. Click Approve — the peerage section should show Laurel and Royal Peer pre-checked for confirmation.</span>
+        </div>
+      </div>
 
       <div class="change-item">
         <div class="change-what">Admin → Teachers — card redesign</div>

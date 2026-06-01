@@ -521,6 +521,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
             <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="fc-p-pelican" style="accent-color:#1A3F7A"> Pelican</label>
             <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="fc-p-masterofdefense" style="accent-color:#4a4a4a"> Master of Defense</label>
             <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="fc-p-orderofthemark" style="accent-color:#7a5c1e"> Order of the Mark</label>
+            <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="fc-p-royalpeer" style="accent-color:#5a4a9a"> Royal Peer</label>
           </div>
           <span class="form-hint">Peerages are confirmed by admin and shown as badges on your teacher profile.</span>
         </div>
@@ -986,12 +987,12 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="tm-p-pelican" style="accent-color:#1A3F7A"> Pelican</label>
         <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="tm-p-masterofdefense" style="accent-color:#4a4a4a"> Master of Defense</label>
         <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="tm-p-orderofthemark" style="accent-color:#7a5c1e"> Order of the Mark</label>
+        <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="tm-p-royalpeer" style="accent-color:#5a4a9a"> Royal Peer</label>
       </div>
       <div id="tm-peerages-note" style="display:none;margin-top:6px;font-size:12px;font-family:sans-serif;padding:5px 9px;background:var(--gold-light);color:var(--accent);border-radius:var(--radius);border:1px solid var(--gold-mid)"></div>
     </div>
     <div class="modal-field" style="display:flex;gap:1.5rem;font-family:sans-serif;font-size:13px">
-      <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="tm-royalpeer" style="accent-color:var(--accent)"> Royal Peer (Duke/Count etc.)</label>
-      <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="tm-sittingroyalty" style="accent-color:#b8860b" onchange="toggleStepDownField();if(this.checked)document.getElementById('tm-royalpeer').checked=true;"> Sitting Royalty</label>
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="tm-sittingroyalty" style="accent-color:#b8860b" onchange="toggleStepDownField()"> Sitting Royalty</label>
     </div>
     <div id="tm-stepdown-wrap" style="display:none">
       <label class="modal-label">Step-down date <span style="color:var(--red-text)">*</span></label>
@@ -1216,15 +1217,16 @@ const APPS_SCRIPT_URL='YOUR_APPS_SCRIPT_URL_HERE';
 const IS_DEMO=APPS_SCRIPT_URL==='YOUR_APPS_SCRIPT_URL_HERE';
 const lockedEvent=new URLSearchParams(window.location.search).get('event');
 const dC=SEED_CLASSES.map(c=>({...c}));
-const dP=[{id:'p1',title:'Introduction to Heraldic Embroidery',teacher:'Brigid ingen Faeláin',email:'brigid@example.com',date:'',time:'',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'A hands-on introduction to embroidering heraldic devices onto fabric — perfect for decorating a banner, pouch, or garment. We will cover basic satin stitch and couching techniques using your own device or a provided sample design.',bring:'Nothing — needles, fabric, and thread provided. Bring your device blazon if you have one.',fee:'$2 materials',zoomLink:'',max:10,prereqs:'',bio:'Brigid has been doing needlework in the SCA for eight years, with a focus on Irish and early medieval embroidery traditions. This is her first time teaching at Collegium.',imageUrl:'',timepref:'Morning preferred — I am also helping with feast setup in the afternoon.',status:'pending',sessionNum:1,sessionTotal:1},{id:'p2',title:'Nalbinding for Beginners',teacherTitle:'Lord',teacher:'Gunnar Ivarsson',email:'gunnar@example.com',date:'',time:'',duration:120,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'Nalbinding is a pre-knitting textile technique used across the Norse and Byzantine world. Students will learn the Oslo stitch and start a small swatch to take home. No prior fiber arts experience needed.',bring:'Nothing — needles and wool provided.',fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:'Lord Gunnar has been practicing nalbinding for six years and researches Viking Age textile finds. He teaches regularly at West Kingdom events.',imageUrl:'',timepref:'Thu, Nov 5: 9:00 AM–12:00 PM · Fri, Nov 6: 9:00 AM–1:00 PM',status:'pending',sessionNum:1,sessionTotal:1}],dEv=[{name:'Collegium 2026',startDate:'2026-08-16',endDate:'2026-08-16',rooms:['Arts/History Rm 1','Fiber Arts','Cooking/Costuming','Grab Bag Rm 2','Grab Bag Rm 3','Field','Archery'],address:'Los Angeles County Fairplex, 1101 W McKinley Ave, Pomona CA 91768',url:'http://places.sca-caid.org/caid/',active:true,published:true},{name:'Great Western War 2026',startDate:'2026-11-05',endDate:'2026-11-08',rooms:['A&S Tent','List Field','Archery Range','Bardic Circle'],address:'Kern County Fairgrounds, 1142 South P St, Bakersfield CA 93307',url:'https://places.sca-caid.org/gww/',active:true,published:true,daySchedule:[{date:'2026-11-05',start:'09:00',end:'18:00'},{date:'2026-11-06',start:'09:00',end:'18:00'},{date:'2026-11-07',start:'09:00',end:'18:00'},{date:'2026-11-08',start:'09:00',end:'14:00'}],teacherMsg:'Thank you for volunteering to teach at Great Western War 2026! 🎉\n\nSubmissions are due by October 1st. If you need to cancel or make changes after submitting, please contact the A\u0026S officer directly.\n\nQuestions? Reach out to the class coordinator at as@sca-caid.org.'}];
+const dP=[{id:'p1',title:'Introduction to Heraldic Embroidery',teacher:'Brigid ingen Faeláin',email:'brigid@example.com',date:'',time:'',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'A hands-on introduction to embroidering heraldic devices onto fabric — perfect for decorating a banner, pouch, or garment. We will cover basic satin stitch and couching techniques using your own device or a provided sample design.',bring:'Nothing — needles, fabric, and thread provided. Bring your device blazon if you have one.',fee:'$2 materials',zoomLink:'',max:10,prereqs:'',bio:'Brigid has been doing needlework in the SCA for eight years, with a focus on Irish and early medieval embroidery traditions. This is her first time teaching at Collegium.',imageUrl:'',timepref:'Morning preferred — I am also helping with feast setup in the afternoon.',status:'pending',sessionNum:1,sessionTotal:1},{id:'p2',title:'Nalbinding for Beginners',teacherTitle:'Lord',teacher:'Gunnar Ivarsson',email:'gunnar@example.com',date:'',time:'',duration:120,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'Nalbinding is a pre-knitting textile technique used across the Norse and Byzantine world. Students will learn the Oslo stitch and start a small swatch to take home. No prior fiber arts experience needed.',bring:'Nothing — needles and wool provided.',fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:'Lord Gunnar has been practicing nalbinding for six years and researches Viking Age textile finds. He teaches regularly at West Kingdom events.',imageUrl:'',timepref:'Thu, Nov 5: 9:00 AM–12:00 PM · Fri, Nov 6: 9:00 AM–1:00 PM',status:'pending',sessionNum:1,sessionTotal:1},
+  {id:'p3',title:'Period Calligraphy Hands: Foundational Strokes',teacherTitle:'Duke',teacher:'Cormac mac Aoidh',email:'cormac@example.com',date:'',time:'',duration:90,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'An introduction to three foundational period scripts — Caroline minuscule, Gothic textura, and Italic — with guided practice on each. Students leave with a reference sheet and a starter exemplar.',bring:'Nothing — all materials provided.',fee:'$3 materials',zoomLink:'',max:14,prereqs:'',bio:'Duke Cormac has been studying and teaching period scripts for over twenty years. He holds a Laurel for his work in calligraphy and manuscript studies and has served as Kingdom Signet.',imageUrl:'',peerages:'laurel,royalpeer',timepref:'Morning preferred.',status:'pending',sessionNum:1,sessionTotal:1}],dEv=[{name:'Collegium 2026',startDate:'2026-08-16',endDate:'2026-08-16',rooms:['Arts/History Rm 1','Fiber Arts','Cooking/Costuming','Grab Bag Rm 2','Grab Bag Rm 3','Field','Archery'],address:'Los Angeles County Fairplex, 1101 W McKinley Ave, Pomona CA 91768',url:'http://places.sca-caid.org/caid/',active:true,published:true},{name:'Great Western War 2026',startDate:'2026-11-05',endDate:'2026-11-08',rooms:['A&S Tent','List Field','Archery Range','Bardic Circle'],address:'Kern County Fairgrounds, 1142 South P St, Bakersfield CA 93307',url:'https://places.sca-caid.org/gww/',active:true,published:true,daySchedule:[{date:'2026-11-05',start:'09:00',end:'18:00'},{date:'2026-11-06',start:'09:00',end:'18:00'},{date:'2026-11-07',start:'09:00',end:'18:00'},{date:'2026-11-08',start:'09:00',end:'14:00'}],teacherMsg:'Thank you for volunteering to teach at Great Western War 2026! 🎉\n\nSubmissions are due by October 1st. If you need to cancel or make changes after submitting, please contact the A\u0026S officer directly.\n\nQuestions? Reach out to the class coordinator at as@sca-caid.org.'}];
 const dTeachers=[
-  {email:'alienor@example.com',name:'Alienor of Wakefield',title:'Mistress',barony:'Calafia',phone:'',bio:'Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.',peerages:['laurel'],royalPeer:true,sittingRoyalty:false,stepDownDate:''},
+  {email:'alienor@example.com',name:'Alienor of Wakefield',title:'Mistress',barony:'Calafia',phone:'',bio:'Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.',peerages:['laurel','royalpeer'],royalPeer:true,sittingRoyalty:false,stepDownDate:''},
   {email:'aelswith@example.com',name:'Aelswith of Mercia',title:'Lady',barony:'Dreiburgen',phone:'',bio:'Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns.',peerages:['laurel'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
   {email:'rayhana@example.com',name:'Rayhana bint Estafanos al-Ábbas',title:'',barony:'Gyldenholt',phone:'',bio:'Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
   {email:'seamus@example.com',name:'Seamus mac Neill',title:'Lord',barony:'Lyondemere',phone:'',bio:'Lord Seamus is a pursuivant with Caid’s College of Heralds and has been consulting on device submissions for eight years.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
   {email:'gwenllian@example.com',name:'Gwenllian ferch Caradog',title:'Mistress',barony:'Calafia',phone:'',bio:'Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery.',peerages:['pelican'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
   {email:'sorcha@example.com',name:'Sorcha inghean Uí Fhaoláin',title:'Mistress',barony:'Dun Or',phone:'',bio:'Mistress Sorcha is a Pelican with twenty years of experience in natural dyeing and fiber arts.',peerages:['pelican'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
-  {email:'baldwin@example.com',name:'Baldwin of Ashford',title:'Sir',barony:'Angels',phone:'',bio:'Sir Baldwin is a knight in the West/Caid chivalry and has been fighting and teaching heavy combat for over twenty years.',peerages:['chivalry'],royalPeer:true,sittingRoyalty:false,stepDownDate:''},
+  {email:'baldwin@example.com',name:'Baldwin of Ashford',title:'Sir',barony:'Angels',phone:'',bio:'Sir Baldwin is a knight in the West/Caid chivalry and has been fighting and teaching heavy combat for over twenty years.',peerages:['chivalry','royalpeer'],royalPeer:true,sittingRoyalty:false,stepDownDate:''},
   {email:'rodrigo@example.com',name:'Rodrigo de Castilla',title:'Don',barony:'Calafia',phone:'',bio:'Don Rodrigo holds the rank of Don in Caid’s rapier community and has been teaching introductory fencing for over a decade.',peerages:['masterofdefense'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
   {email:'tariq@example.com',name:'Tariq ibn Mahmoud',title:'Lord',barony:'Lyondemere',phone:'',bio:'Lord Tariq has been researching medieval Islamic material culture for eight years, with a particular interest in al-Andalus.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
   {email:'margery@example.com',name:'Fiachra an Doire',title:'',barony:'Dreiburgen',phone:'',bio:'Fiachra is a scribe and calligrapher with a particular interest in medieval ink recipes and writing materials.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
@@ -1433,7 +1435,8 @@ const PEERAGES=[
   {key:'laurel',label:'Laurel',abbr:'Laurel',color:'#2e7d4e',emoji:'\u{1F33F}'},
   {key:'pelican',label:'Pelican',abbr:'Pelican',color:'#1A3F7A',emoji:'\u{1F9A2}'},
   {key:'masterofdefense',label:'Master of Defense',abbr:'MoD',color:'#4a4a4a',emoji:'\u2694\uFE0F'},
-  {key:'orderofthemark',label:'Order of the Mark',abbr:'Mark',color:'#7a5c1e',emoji:'\u{1F3AF}'}
+  {key:'orderofthemark',label:'Order of the Mark',abbr:'Mark',color:'#7a5c1e',emoji:'\u{1F3AF}'},
+  {key:'royalpeer',label:'Royal Peer',abbr:'Royal Peer',color:'#5a4a9a',emoji:'\uD83C\uDF3C'}
 ];
 
 function buildTeacherRecord(c){
@@ -1625,7 +1628,7 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 1, 2026 · 1:00 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:6px"><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:4px 12px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 1, 2026 · 1:20 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:6px"><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:4px 12px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){
@@ -1742,7 +1745,6 @@ function rC(){
     const displayTeacher=(c.teacherTitle?c.teacherTitle+' ':'')+c.teacher;
     const pBadges=tRecord?[
       ...(tRecord.peerages||[]).map(p=>{const pd=PEERAGES.find(x=>x.key===p);return pd?'<span class="badge-emoji" data-tip="'+pd.label+'">'+pd.emoji+'</span>':'';}),
-      tRecord.royalPeer?'<span class="badge-emoji" data-tip="Royal Peer">🌼</span>':'',
       tRecord.sittingRoyalty?'<span class="badge-emoji" data-tip="'+royaltyTip+'">👑</span>':''
     ].filter(Boolean).join(''):'';
     const pBadgeHtml=pBadges?'<div style="display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 6px">'+pBadges+'</div>':'';
@@ -3250,7 +3252,7 @@ function renderTeacherList(){
   if(!wrap)return;
   let teachers=Object.values(allTeachers);
   if(q)teachers=teachers.filter(t=>(t.name+t.email+t.barony+(t.topics||[]).join(' ')).toLowerCase().includes(q));
-  if(pf==='royalpeer')teachers=teachers.filter(t=>t.royalPeer);
+  if(pf==='royalpeer')teachers=teachers.filter(t=>(t.peerages||[]).includes('royalpeer')||t.royalPeer);
   else if(pf==='sittingroyalty')teachers=teachers.filter(t=>t.sittingRoyalty);
   else if(pf)teachers=teachers.filter(t=>(t.peerages||[]).includes(pf));
   teachers.sort((a,b)=>a.name.localeCompare(b.name));
@@ -3259,7 +3261,6 @@ function renderTeacherList(){
     const displayName=(t.title?t.title+' ':'')+t.name;
     const badges=[
       ...(t.peerages||[]).map(p=>{const pd=PEERAGES.find(x=>x.key===p);return pd?'<span class="badge-emoji" data-tip="'+pd.label+'">'+pd.emoji+'</span>':'';}),
-      t.royalPeer?'<span class="badge-emoji" data-tip="Royal Peer">🌼</span>':'',
       t.sittingRoyalty?'<span class="badge-emoji" data-tip="Sitting Royalty'+(t.stepDownDate?' · steps down '+t.stepDownDate:'')+'">👑</span>':""
     ].filter(Boolean).join('');
     const pending=(t.peerages_pending||[]).filter(pk=>!(t.peerages||[]).includes(pk));
@@ -3319,6 +3320,8 @@ function clearExpiredRoyalty(){
       t.sittingRoyalty=false;
       t.stepDownDate='';
       t.royalPeer=true;
+      if(!t.peerages)t.peerages=[];
+      if(!t.peerages.includes('royalpeer'))t.peerages.push('royalpeer');
     }
   });
 }
@@ -3335,6 +3338,9 @@ function openTeacherModal(email){
   document.getElementById('tm-phone').value=t.phone||'';
   document.getElementById('tm-bio').value=t.bio||'';
   PEERAGES.forEach(p=>{ const cb=document.getElementById('tm-p-'+p.key); if(cb)cb.checked=(t.peerages||[]).includes(p.key); });
+  // Sync royalPeer boolean → royalpeer checkbox
+  const rpCb=document.getElementById('tm-p-royalpeer');
+  if(rpCb&&t.royalPeer)rpCb.checked=true;
   // Show self-reported (pending) peerages note if any haven't been confirmed yet
   const pending=(t.peerages_pending||[]).filter(pk=>!(t.peerages||[]).includes(pk));
   const tmNote=document.getElementById('tm-peerages-note');
@@ -3347,7 +3353,6 @@ function openTeacherModal(email){
       tmNote.style.display='none';
     }
   }
-  document.getElementById('tm-royalpeer').checked=!!t.royalPeer;
   document.getElementById('tm-sittingroyalty').checked=!!t.sittingRoyalty;
   const sdWrap=document.getElementById('tm-stepdown-wrap');
   if(sdWrap)sdWrap.style.display=t.sittingRoyalty?'block':'none';
@@ -3488,9 +3493,12 @@ function saveTeacher(){
   const sittingRoyalty=document.getElementById('tm-sittingroyalty').checked;
   // If removing sitting royalty, auto-promote to Royal Peer
   if(t.sittingRoyalty&&!sittingRoyalty){
-    document.getElementById('tm-royalpeer').checked=true;
+    const rpCb=document.getElementById('tm-p-royalpeer');
+    if(rpCb)rpCb.checked=true;
+    if(!t.peerages.includes('royalpeer'))t.peerages.push('royalpeer');
   }
-  t.royalPeer=document.getElementById('tm-royalpeer').checked;
+  // Sync royalpeer checkbox → royalPeer boolean
+  t.royalPeer=t.peerages.includes('royalpeer');
   const stepDownDate=document.getElementById('tm-stepdown')?.value||'';
   if(sittingRoyalty&&!stepDownDate){
     alert('Please enter a step-down date for Sitting Royalty.');
