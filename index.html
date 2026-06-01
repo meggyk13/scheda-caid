@@ -287,7 +287,7 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 /* ── Teacher bio popover ── */
 .bio-btn{background:none;border:none;padding:0;cursor:pointer;color:var(--accent-mid);font-size:13px;line-height:1;vertical-align:middle;margin-left:4px;position:relative;display:inline-flex;align-items:center}
 .bio-btn:hover{color:var(--accent)}
-.bio-popover{display:none;position:absolute;z-index:50;left:50%;transform:translateX(-50%);bottom:calc(100% + 6px);width:220px;background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:10px 12px;box-shadow:var(--shadow-lg);font-size:12.5px;font-family:sans-serif;color:var(--text2);line-height:1.55;text-align:left;pointer-events:none}
+.bio-popover{display:none;position:absolute;z-index:50;left:50%;transform:translateX(-50%);bottom:calc(100% + 6px);width:220px;background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:10px 12px;box-shadow:var(--shadow-lg);font-size:12.5px;font-family:sans-serif;color:var(--text2);line-height:1.55;text-align:left}
 .bio-popover::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--border2)}
 .bio-popover::before{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--bg);z-index:1;margin-top:-1px}
 .bio-btn:hover .bio-popover,.bio-btn:focus .bio-popover{display:block}
@@ -988,10 +988,11 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="tm-p-masterofdefense" style="accent-color:#4a4a4a"> Master of Defense</label>
         <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="tm-p-orderofthemark" style="accent-color:#7a5c1e"> Order of the Mark</label>
       </div>
+      <div id="tm-peerages-note" style="display:none;margin-top:6px;font-size:12px;font-family:sans-serif;padding:5px 9px;background:var(--gold-light);color:var(--accent);border-radius:var(--radius);border:1px solid var(--gold-mid)"></div>
     </div>
     <div class="modal-field" style="display:flex;gap:1.5rem;font-family:sans-serif;font-size:13px">
       <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="tm-royalpeer" style="accent-color:var(--accent)"> Royal Peer (Duke/Count etc.)</label>
-      <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="tm-sittingroyalty" style="accent-color:#b8860b" onchange="toggleStepDownField()"> Sitting Royalty</label>
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="tm-sittingroyalty" style="accent-color:#b8860b" onchange="toggleStepDownField();if(this.checked)document.getElementById('tm-royalpeer').checked=true;"> Sitting Royalty</label>
     </div>
     <div id="tm-stepdown-wrap" style="display:none">
       <label class="modal-label">Step-down date <span style="color:var(--red-text)">*</span></label>
@@ -1393,9 +1394,12 @@ function showBadgeTip(el,label){
   tip._el=el;
   tip.textContent=label;
   tip.classList.add('show');
-  const r=el.getBoundingClientRect();
-  tip.style.left=Math.min(r.left+r.width/2-tip.offsetWidth/2,window.innerWidth-tip.offsetWidth-8)+'px';
-  tip.style.top=(r.top-tip.offsetHeight-6+window.scrollY)+'px';
+  // Position after browser has measured the updated text width
+  requestAnimationFrame(()=>{
+    const r=el.getBoundingClientRect();
+    tip.style.left=Math.min(r.left+r.width/2-tip.offsetWidth/2,window.innerWidth-tip.offsetWidth-8)+'px';
+    tip.style.top=(r.top-tip.offsetHeight-6+window.scrollY)+'px';
+  });
   clearTimeout(tip._t);
   tip._t=setTimeout(()=>{tip.classList.remove('show');tip._el=null;},2500);
 }
@@ -1595,7 +1599,7 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 1, 2026 · 11:35 AM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:6px"><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:4px 12px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 1, 2026 · 12:15 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:6px"><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:4px 12px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){
@@ -1709,11 +1713,10 @@ function rC(){
     const thumb=c.imageUrl?'<img class="card-thumb" src="'+c.imageUrl+'" alt="" onerror="this.style.display=\'none\'">':'';
     const tRecord=allTeachers[(c.email||'').toLowerCase()];
     const royaltyTip='Sitting Royalty'+(tRecord&&tRecord.stepDownDate?' · steps down '+tRecord.stepDownDate:'');
-    const royaltyPrefix=(tRecord&&tRecord.sittingRoyalty?'<span class="badge-emoji" data-tip="'+royaltyTip+'" style="margin-right:3px">👑</span>':'');
     const displayTeacher=(c.teacherTitle?c.teacherTitle+' ':'')+c.teacher;
     const pBadges=tRecord?[
       ...(tRecord.peerages||[]).map(p=>{const pd=PEERAGES.find(x=>x.key===p);return pd?'<span class="badge-emoji" data-tip="'+pd.label+'">'+pd.emoji+'</span>':'';}),
-      tRecord.royalPeer?'<span class="badge-emoji" data-tip="Royal Peer">👑</span>':'',
+      tRecord.royalPeer?'<span class="badge-emoji" data-tip="Royal Peer">🌼</span>':'',
       tRecord.sittingRoyalty?'<span class="badge-emoji" data-tip="'+royaltyTip+'">👑</span>':''
     ].filter(Boolean).join(''):'';
     const pBadgeHtml=pBadges?'<div style="display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 6px">'+pBadges+'</div>':'';
@@ -3184,8 +3187,7 @@ function renderTeacherList(){
     const displayName=(t.title?t.title+' ':'')+t.name;
     const badges=[
       ...(t.peerages||[]).map(p=>{const pd=PEERAGES.find(x=>x.key===p);return pd?'<span class="badge-emoji" data-tip="'+pd.label+'">'+pd.emoji+'</span>':'';}),
-      t.royalPeer?'<span class="badge-emoji" data-tip="Royal Peer">👑</span>':'',
-      t.royalPeer?'<span class="badge-emoji" onclick="showBadgeTip(this,\'Royal Peer\')">👑</span>':'',
+      t.royalPeer?'<span class="badge-emoji" data-tip="Royal Peer">🌼</span>':'',
       t.sittingRoyalty?'<span class="badge-emoji" data-tip="Sitting Royalty'+(t.stepDownDate?' · steps down '+t.stepDownDate:'')+'">👑</span>':""
     ].filter(Boolean).join('');
     const meta=[t.barony,t.email,t.phone].filter(Boolean).join(' · ');
@@ -3226,6 +3228,7 @@ function clearExpiredRoyalty(){
     if(t.sittingRoyalty&&t.stepDownDate&&t.stepDownDate<today){
       t.sittingRoyalty=false;
       t.stepDownDate='';
+      t.royalPeer=true;
     }
   });
 }
@@ -3242,6 +3245,18 @@ function openTeacherModal(email){
   document.getElementById('tm-phone').value=t.phone||'';
   document.getElementById('tm-bio').value=t.bio||'';
   PEERAGES.forEach(p=>{ const cb=document.getElementById('tm-p-'+p.key); if(cb)cb.checked=(t.peerages||[]).includes(p.key); });
+  // Show self-reported (pending) peerages note if any haven't been confirmed yet
+  const pending=(t.peerages_pending||[]).filter(pk=>!(t.peerages||[]).includes(pk));
+  const tmNote=document.getElementById('tm-peerages-note');
+  if(tmNote){
+    if(pending.length){
+      const labels=pending.map(pk=>{const pd=PEERAGES.find(x=>x.key===pk);return pd?pd.label:pk;});
+      tmNote.innerHTML='<i class="ti ti-alert-circle" style="font-size:12px"></i> Self-reported (unconfirmed): '+labels.join(', ');
+      tmNote.style.display='block';
+    } else {
+      tmNote.style.display='none';
+    }
+  }
   document.getElementById('tm-royalpeer').checked=!!t.royalPeer;
   document.getElementById('tm-sittingroyalty').checked=!!t.sittingRoyalty;
   const sdWrap=document.getElementById('tm-stepdown-wrap');
@@ -3378,8 +3393,14 @@ function saveTeacher(){
   t.phone=document.getElementById('tm-phone').value.trim();
   t.bio=document.getElementById('tm-bio').value.trim();
   t.peerages=PEERAGES.map(p=>p.key).filter(k=>{const cb=document.getElementById('tm-p-'+k);return cb&&cb.checked;});
-  t.royalPeer=document.getElementById('tm-royalpeer').checked;
+  // Clear pending list for any now-confirmed peerages
+  if(t.peerages_pending)t.peerages_pending=t.peerages_pending.filter(pk=>!t.peerages.includes(pk));
   const sittingRoyalty=document.getElementById('tm-sittingroyalty').checked;
+  // If removing sitting royalty, auto-promote to Royal Peer
+  if(t.sittingRoyalty&&!sittingRoyalty){
+    document.getElementById('tm-royalpeer').checked=true;
+  }
+  t.royalPeer=document.getElementById('tm-royalpeer').checked;
   const stepDownDate=document.getElementById('tm-stepdown')?.value||'';
   if(sittingRoyalty&&!stepDownDate){
     alert('Please enter a step-down date for Sitting Royalty.');

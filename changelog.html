@@ -78,7 +78,7 @@ a{color:#1A3F7A}
       <span class="brand-name">Kingdom Class Registry</span>
     </div>
     <div class="brand-sub">What's New · Kingdom of Caid</div>
-    <div class="brand-note">Updated in sync with the demo · Last updated June 1, 2026 · 11:35 AM PT</div>
+    <div class="brand-note">Updated in sync with the demo · Last updated June 1, 2026 · 12:15 PM PT</div>
   </div>
 
   <div class="intro-box">
@@ -236,10 +236,78 @@ a{color:#1A3F7A}
     <div class="entry-header" onclick="toggle(this)">
       <span class="version-badge">June 1</span>
       <span class="entry-date">Latest update</span>
-      <span class="entry-count">22 changes</span>
+      <span class="entry-count">28 changes</span>
       <i class="ti ti-chevron-right chevron open"></i>
     </div>
     <div class="changes open">
+
+      <div class="change-item">
+        <div class="change-what">Peerage badges — tooltip positioning fixed</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">The tooltip that appears when you tap a peerage badge was sometimes showing up slightly off-center, because it was measuring its own width before the browser had finished rendering the new text. Now it waits one frame before positioning itself, so it always lands centered above the badge.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Find a teacher with peerage badges — Mistress Alienor (Illuminating a Scroll, GWW) is a good one. Tap the 🌿 badge. The tooltip should appear neatly centered above it.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Peerage badges — tooltips now work inside the bio popover</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Badges shown inside a teacher's bio popover weren't responding to taps at all — clicks were being silently blocked. The popover's pointer-events setting has been fixed so badge taps work the same way inside the popover as everywhere else.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Hover or tap the ⓘ on Mistress Alienor's class card to open her bio popover. Tap the 🌿 Laurel badge inside the popover — the tooltip should appear.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Royal Peer — emoji changed to 🌼, now independently selectable</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Royal Peer (Dukes, Counts, etc.) now shows a 🌼 daisy badge to distinguish it from the 👑 crown used for Sitting Royalty. The Royal Peer checkbox in the teacher edit modal can also now be checked or unchecked independently — previously it had no clear way to set it without also touching the Sitting Royalty field.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">In Admin → Teachers, find Alienor of Wakefield and click Edit. Check Royal Peer and save. Her class card should now show a 🌼 badge. Tap it — tooltip should read "Royal Peer."</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Sitting Royalty automatically promotes to Royal Peer on step-down</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">When a teacher's Sitting Royalty status is removed — either because their step-down date has passed, or because admin manually unchecks it — they are automatically marked as a Royal Peer. Checking Sitting Royalty in the modal also auto-checks Royal Peer, since all sitting royalty hold that rank. No manual cleanup needed.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">In Admin → Teachers, find Lord Liam Mor MacGregor. Click Edit and uncheck Sitting Royalty — Royal Peer should automatically become checked. Save, and his card should now show 🌼 instead of 👑.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Self-reported peerages now flagged for admin in the teacher modal</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">When a teacher self-reports peerages on their class submission, those are held as "pending" until admin confirms them. Previously, admin had no way to know a teacher had self-reported anything — the modal just showed all boxes unchecked. Now a gold note appears below the peerage checkboxes listing what the teacher claimed, so admin can verify and confirm with a click.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Click Teach a Class and submit a class as a new teacher with a peerage checked (e.g. Laurel). Log into admin, go to Teachers, find that teacher, and click Edit — a gold note should appear saying what they self-reported. Check the box to confirm it and save.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Duplicate Royal Peer badge removed from teacher list</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">A bug was causing the Royal Peer crown badge to appear twice on teacher cards in the Admin → Teachers tab — one with a tooltip and one without. The duplicate has been removed.</span>
+        </div>
+      </div>
 
       <div class="change-item">
         <div class="change-what">Teacher directory (Admin → Teachers tab)</div>
