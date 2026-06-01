@@ -1388,7 +1388,6 @@ let allTeachers={};
 function showBadgeTip(el,label){
   const tip=document.getElementById('badge-tip');
   if(!tip)return;
-  // Toggle: if already showing for this element, hide it
   if(tip._el===el&&tip.classList.contains('show')){tip.classList.remove('show');tip._el=null;return;}
   tip._el=el;
   tip.textContent=label;
@@ -1396,15 +1395,15 @@ function showBadgeTip(el,label){
   const r=el.getBoundingClientRect();
   tip.style.left=Math.min(r.left+r.width/2-tip.offsetWidth/2,window.innerWidth-tip.offsetWidth-8)+'px';
   tip.style.top=(r.top-tip.offsetHeight-6+window.scrollY)+'px';
-  // Auto-hide after 2.5s or on next outside click
   clearTimeout(tip._t);
   tip._t=setTimeout(()=>{tip.classList.remove('show');tip._el=null;},2500);
 }
+// Delegated click handler for data-tip badges
 document.addEventListener('click',e=>{
   const tip=document.getElementById('badge-tip');
-  if(tip&&!e.target.closest('.badge-emoji')&&!e.target.closest('#badge-tip')){
-    tip.classList.remove('show');tip._el=null;
-  }
+  const badge=e.target.closest('.badge-emoji[data-tip]');
+  if(badge){e.stopPropagation();showBadgeTip(badge,badge.dataset.tip);return;}
+  if(tip&&!e.target.closest('#badge-tip')){tip.classList.remove('show');tip._el=null;}
 });
 
 const PEERAGES=[
@@ -1707,12 +1706,13 @@ function rC(){
     const duPill=c.duration?'<span class="logistics-pill"><i class="ti ti-clock"></i> '+(c.duration<60?c.duration+'min':Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h')+'</span>':'';
     const thumb=c.imageUrl?'<img class="card-thumb" src="'+c.imageUrl+'" alt="" onerror="this.style.display=\'none\'">':'';
     const tRecord=allTeachers[(c.email||'').toLowerCase()];
-    const royaltyPrefix=(tRecord&&tRecord.sittingRoyalty?'<span class="badge-emoji" style="margin-right:3px" onclick="showBadgeTip(this,\'Sitting Royalty'+(tRecord.stepDownDate?' · steps down '+tRecord.stepDownDate:'')+'\')" >👑</span>':'');
+    const royaltyTip='Sitting Royalty'+(tRecord&&tRecord.stepDownDate?' · steps down '+tRecord.stepDownDate:'');
+    const royaltyPrefix=(tRecord&&tRecord.sittingRoyalty?'<span class="badge-emoji" data-tip="'+royaltyTip+'" style="margin-right:3px">👑</span>':'');
     const displayTeacher=(c.teacherTitle?c.teacherTitle+' ':'')+c.teacher;
     const pBadges=tRecord?[
-      ...(tRecord.peerages||[]).map(p=>{const pd=PEERAGES.find(x=>x.key===p);return pd?'<span class="badge-emoji" onclick="showBadgeTip(this,\''+pd.label+'\')">'+pd.emoji+'</span>':'';}),
-      tRecord.royalPeer?'<span class="badge-emoji" onclick="showBadgeTip(this,\'Royal Peer\')">👑</span>':'',
-      tRecord.sittingRoyalty?'<span class="badge-emoji" onclick="showBadgeTip(this,\'Sitting Royalty'+(tRecord.stepDownDate?' · steps down '+tRecord.stepDownDate:'')+'\'" >👑</span>':''
+      ...(tRecord.peerages||[]).map(p=>{const pd=PEERAGES.find(x=>x.key===p);return pd?'<span class="badge-emoji" data-tip="'+pd.label+'">'+pd.emoji+'</span>':'';}),
+      tRecord.royalPeer?'<span class="badge-emoji" data-tip="Royal Peer">👑</span>':'',
+      tRecord.sittingRoyalty?'<span class="badge-emoji" data-tip="'+royaltyTip+'">👑</span>':''
     ].filter(Boolean).join(''):'';
     const pBadgeHtml=pBadges?'<div style="display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 6px">'+pBadges+'</div>':'';
     const bioBtn=c.bio||pBadges?'<button class="bio-btn" tabindex="0" aria-label="Teacher bio"><i class="ti ti-info-circle"></i><div class="bio-popover"><div class="bio-name">'+displayTeacher+'</div>'+pBadgeHtml+(c.bio||'')+'</div></button>':'';
@@ -3183,9 +3183,10 @@ function renderTeacherList(){
   wrap.innerHTML=teachers.map(t=>{
     const displayName=(t.title?t.title+' ':'')+t.name;
     const badges=[
-      ...(t.peerages||[]).map(p=>{const pd=PEERAGES.find(x=>x.key===p);return pd?'<span class="badge-emoji" onclick="showBadgeTip(this,\''+pd.label+'\')">'+pd.emoji+'</span>':'';}),
+      ...(t.peerages||[]).map(p=>{const pd=PEERAGES.find(x=>x.key===p);return pd?'<span class="badge-emoji" data-tip="'+pd.label+'">'+pd.emoji+'</span>':'';}),
+      t.royalPeer?'<span class="badge-emoji" data-tip="Royal Peer">👑</span>':'',
       t.royalPeer?'<span class="badge-emoji" onclick="showBadgeTip(this,\'Royal Peer\')">👑</span>':'',
-      t.sittingRoyalty?'<span class="badge-emoji" onclick="showBadgeTip(this,\'Sitting Royalty'+(t.stepDownDate?' · steps down '+t.stepDownDate:'')+'\'" >👑</span>':''
+      t.sittingRoyalty?'<span class="badge-emoji" data-tip="Sitting Royalty'+(t.stepDownDate?' · steps down '+t.stepDownDate:'')+'">👑</span>':""
     ].filter(Boolean).join('');
     const meta=[t.barony,t.email,t.phone].filter(Boolean).join(' · ');
     const topicTags=(t.topics||[]).map(tp=>'<span style="background:var(--bg2);border:1px solid var(--border2);border-radius:99px;font-size:11px;font-family:sans-serif;padding:1px 8px;color:var(--text2)">'+escH(tp)+'</span>').join('');
