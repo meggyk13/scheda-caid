@@ -1333,6 +1333,66 @@ const lockedEvent=new URLSearchParams(window.location.search).get('event');
 const dC=SEED_CLASSES.map(c=>({...c}));
 let myVolShifts = {'vs6': {verified:false}, 'vs8': {verified:true}};
 // ── END SHARED VOLUNTEER DATA ────────────────────────────────────────────────
+
+let dPid=1000,allClasses=[],allAdminClasses=[],myRegs={},scheduleEmail='';
+let allTeachers={};
+
+function showBadgeTip(el,label){
+  const tip=document.getElementById('badge-tip');
+  if(!tip)return;
+  if(tip._el===el&&tip.classList.contains('show')){tip.classList.remove('show');tip._el=null;return;}
+  tip._el=el;
+  tip.textContent=label;
+  tip.classList.add('show');
+  requestAnimationFrame(()=>{
+    const r=el.getBoundingClientRect();
+    tip.style.left=Math.min(r.left+r.width/2-tip.offsetWidth/2,window.innerWidth-tip.offsetWidth-8)+'px';
+    tip.style.top=(r.top-tip.offsetHeight-6+window.scrollY)+'px';
+  });
+  clearTimeout(tip._t);
+  tip._t=setTimeout(()=>{tip.classList.remove('show');tip._el=null;},2500);
+}
+document.addEventListener('click',e=>{
+  const tip=document.getElementById('badge-tip');
+  const badge=e.target.closest('.badge-emoji[data-tip]');
+  if(badge){e.stopPropagation();showBadgeTip(badge,badge.dataset.tip);return;}
+  if(tip&&!e.target.closest('#badge-tip')){tip.classList.remove('show');tip._el=null;}
+});
+
+const PEERAGES=[
+  {key:'chivalry',label:'Chivalry',abbr:'K/MA',color:'#8B0000',emoji:'\u{1F6E1}'},
+  {key:'laurel',label:'Laurel',abbr:'Laurel',color:'#2e7d4e',emoji:'\u{1F33F}'},
+  {key:'pelican',label:'Pelican',abbr:'Pelican',color:'#1A3F7A',emoji:'\u{1F9A2}'},
+  {key:'masterofdefense',label:'Master of Defense',abbr:'MoD',color:'#4a4a4a',emoji:'\u2694\uFE0F'},
+  {key:'orderofthemark',label:'Order of the Mark',abbr:'Mark',color:'#7a5c1e',emoji:'\u{1F3AF}'},
+  {key:'royalpeer',label:'Royal Peer',abbr:'Royal Peer',color:'#5a4a9a',emoji:'\uD83C\uDF3C'}
+];
+
+function buildTeacherRecord(c){
+  return {name:c.teacher||'',title:c.teacherTitle||'',email:c.email||'',phone:c.phone||'',barony:c.barony||'',bio:c.bio||'',peerages:[],royalPeer:false,sittingRoyalty:false,topics:[],classes:[]};
+}
+function upsertTeacher(c){
+  const key=(c.email||'').toLowerCase().trim();
+  if(!key)return;
+  if(!allTeachers[key])allTeachers[key]=buildTeacherRecord(c);
+  const t=allTeachers[key];
+  if(c.teacher)t.name=c.teacher;
+  if(c.teacherTitle)t.title=c.teacherTitle;
+  if(c.phone)t.phone=c.phone;
+  if(c.barony)t.barony=c.barony;
+  if(c.bio)t.bio=c.bio;
+  if(c.peerages&&typeof c.peerages==='string'){
+    c.peerages.split(',').filter(Boolean).forEach(pk=>{
+      if(!t.peerages.includes(pk))t.peerages_pending=(t.peerages_pending||[]).concat(pk);
+    });
+  }
+  const alreadyIn=t.classes.some(x=>String(x.id)===String(c.id));
+  if(!alreadyIn)t.classes.push({id:c.id,title:c.title,event:c.event||'',date:c.date||'',topic:c.topic||''});
+  if(!t.topics)t.topics=[];
+  if(c.topic&&!t.topics.includes(c.topic))t.topics.push(c.topic);
+}
+let adminToken=sessionStorage.getItem('aT')||null,pendingClasses=[],availEvents=[];
+
 let curModalId=null,curModalWL=false,curApprovingId=null;
 
 if(lockedEvent){showFormBody(true);}
