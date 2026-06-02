@@ -3,8 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>What's New — Kingdom Class Registry</title>
+<title>What's New — Scheda</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Georgia,serif;background:#F7F9FC;color:#0D1F3C;min-height:100vh;padding:32px 16px}
@@ -12,10 +15,10 @@ a{color:#1A3F7A}
 .wrap{max-width:680px;margin:0 auto}
 
 .header{margin-bottom:32px}
-.brand{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.brand-icon{font-size:22px}
-.brand-name{font-size:20px;font-weight:700;color:#1A3F7A;letter-spacing:-.01em}
-.brand-sub{font-size:14px;color:#3A5278;margin-bottom:4px}
+.brand{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+.brand-name{font-size:28px;font-weight:700;font-family:Lora,Georgia,serif;color:#1A3F7A;letter-spacing:.04em;line-height:1}
+.brand-name .brand-caidus{font-size:12px;font-weight:400;letter-spacing:.2em;opacity:.55;font-family:sans-serif}
+.brand-tag{font-size:12px;color:#8aa5c8;margin-bottom:4px;font-family:sans-serif}
 .brand-note{font-size:12px;color:#8aa5c8;line-height:1.5}
 
 .back-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:#3D6DB5;text-decoration:none;margin-bottom:24px;font-family:sans-serif}
@@ -74,11 +77,10 @@ a{color:#1A3F7A}
 
   <div class="header">
     <div class="brand">
-      <span class="brand-icon">⚜️</span>
-      <span class="brand-name">Kingdom Class Registry</span>
+      <span class="brand-name">SCHEDA <span class="brand-caidus">· CAIDUS</span></span>
     </div>
-    <div class="brand-sub">What's New · Kingdom of Caid</div>
-    <div class="brand-note">Updated in sync with the demo · Last updated June 1, 2026 · 1:20 PM PT</div>
+    <div class="brand-tag">Class scheduler & catalog</div>
+    <div class="brand-note">Updated in sync with the demo · Last updated June 1, 2026 · 8:37 PM PT</div>
   </div>
 
   <div class="intro-box">
@@ -231,15 +233,104 @@ a{color:#1A3F7A}
     </div>
   </div>
 
-  <!-- Entry: June 1 evening -->
+  <!-- Entry: June 1 evening update -->
   <div class="entry">
     <div class="entry-header" onclick="toggle(this)">
-      <span class="version-badge">June 1</span>
+      <span class="version-badge">June 1 · Evening</span>
       <span class="entry-date">Latest update</span>
-      <span class="entry-count">9 changes</span>
+      <span class="entry-count">8 changes</span>
       <i class="ti ti-chevron-right chevron open"></i>
     </div>
     <div class="changes open">
+
+      <div class="change-item">
+        <div class="change-what">App renamed to Scheda</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">The app now has a proper name — Scheda (Latin for "schedule" or "leaf of paper"), with Caidus as the kingdom identifier. The wordmark SCHEDA · CAIDUS appears in the header using the new Lora serif font.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">New font — Lora</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Georgia has been replaced with Lora, a warm bookish serif that reads better on screen at all sizes. It's used for headings, card titles, and the brand wordmark throughout the app.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Header redesigned — single-line wordmark with tagline</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">The old header had a stacked logo that pushed the nav off-screen on mobile. The wordmark is now a single line (SCHEDA · CAIDUS) with "Class scheduler & catalog" as a quiet tagline below, leaving room for the nav buttons to sit comfortably.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Catalog card layout reworked — description first</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Cards now lead with the class description — the content that sells the class — rather than metadata. Topic pill and room removed from the default view; date moved to the footer alongside the Register button. The goal is to get people excited about the class before showing them the logistics.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Browse the catalog and see if the cards feel easier to scan. Register for a class — your room assignment should now appear in the footer date line once you're signed up.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Room now shown on registered cards</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Room is only useful information once you've registered. It now appears in the footer of cards you're enrolled in, alongside the date and time — nowhere else.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Register for any class that has a room assigned. The footer should show the date, event, and room name with a pin icon.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Format badge moved to thumbnail overlay</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">The "In person" / "Online" tag now sits as an overlay centered on the bottom edge of the class thumbnail, rather than floating in the title row. Reduces clutter in the header and gives the badge a more visual, natural home.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Thumbnail size bumped to 88×88px</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">The class thumbnail placeholder was 72px — a bit small to read as a meaningful visual element. Bumped to 88px so it has more presence on the card, especially on mobile.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Optional extras section cleaned up on Teach a Class form</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">The profile photo and class thumbnail upload controls now match in style — compact dashed-border buttons, consistent sizing, hints in the same position. The old large avatar circle has been replaced with a smaller inline preview.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Click Teach a Class, select an event, and scroll to the Optional extras section. Try uploading a profile photo — the small circular preview should appear next to the button. Then click Preview card — your photo should show next to your name in the card preview.</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Entry: June 1 earlier -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="version-badge">June 1</span>
+      <span class="entry-date">Earlier today</span>
+      <span class="entry-count">9 changes</span>
+      <i class="ti ti-chevron-right chevron"></i>
+    </div>
+    <div class="changes">
 
       <div class="change-item">
         <div class="change-what">Bio card now opens as a modal instead of a hover tooltip</div>
