@@ -197,9 +197,11 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
 .verify-btn{font-size:11px;padding:4px 10px;border-radius:var(--radius);border:1px solid var(--gold-mid);cursor:pointer;background:var(--gold-light);color:var(--accent);font-family:sans-serif;white-space:nowrap}
 .verify-btn:hover{background:var(--bg3)}
 
-/* ── My Shifts lookup ── */
-.lookup-bar{display:flex;gap:8px;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap}
-.lookup-input{flex:1;min-width:220px;max-width:360px}
+/* ── Login bar ── */
+.login-bar{display:flex;align-items:center;gap:8px}
+.user-chip{font-size:12px;color:rgba(255,255,255,.75);font-family:sans-serif;display:flex;align-items:center;gap:6px}
+.login-btn{padding:5px 13px;border-radius:var(--radius);border:1px solid rgba(255,255,255,.35);font-size:12px;cursor:pointer;background:rgba(255,255,255,.12);color:#fff;font-family:sans-serif;transition:all .15s}
+.login-btn:hover{background:rgba(255,255,255,.22)}
 
 /* ── Responsive ── */
 @media(max-width:640px){
@@ -220,7 +222,6 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
   .form-grid{grid-template-columns:1fr}
 }
 </style>
-<script src="seed.js"></script>
 </head>
 <body>
 <div class="app">
@@ -235,9 +236,13 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
     </div>
     <div class="topbar-right">
       <nav class="nav">
+        <button class="nav-btn nav-btn-dead" title="Classes — coming soon" disabled><i class="ti ti-menu-2"></i> Catalog</button>
+        <button class="nav-btn nav-btn-dead" title="My Schedule — coming soon" disabled><i class="ti ti-calendar"></i> My Schedule</button>
+        <button class="nav-btn nav-btn-dead" title="Class Requests — coming soon" disabled><i class="ti ti-heart"></i> Requests</button>
+        <button class="nav-btn nav-btn-dead" title="Teach a Class — coming soon" disabled><i class="ti ti-plus"></i> Teach</button>
+        <span class="nav-divider"></span>
         <button class="nav-btn active" onclick="showPanel('shifts',this)"><i class="ti ti-list-check"></i> Open Shifts</button>
         <button class="nav-btn" onclick="showPanel('now',this)"><i class="ti ti-clock"></i> Now</button>
-        <button class="nav-btn" onclick="showPanel('my',this)"><i class="ti ti-user-check"></i> My Shifts</button>
       </nav>
       <button class="nav-btn" id="nav-admin" onclick="handleAdminNav(this)" title="Admin" style="border-color:rgba(255,255,255,.15);opacity:.7;flex-shrink:0"><i class="ti ti-settings"></i></button>
     </div>
@@ -296,12 +301,11 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
       <div class="schedule-header">
         <div class="sched-title-h">My Volunteer Shifts</div>
       </div>
-      <div class="lookup-bar">
-        <input class="search-input lookup-input" type="email" id="my-email" placeholder="Enter your email to see your shifts…" autocomplete="email" onkeydown="if(event.key==='Enter')lookupMyShifts()">
-        <button class="submit-action" style="font-size:13px;padding:8px 16px" onclick="lookupMyShifts()"><i class="ti ti-search"></i> Look Up</button>
-      </div>
       <div id="my-shifts-list">
-        <div class="empty-sched">Enter your email above to see your claimed shifts and ticket totals.</div>
+        <div class="empty-sched">
+          You haven't claimed any shifts yet.<br>
+          Browse <a href="#" onclick="showPanel('shifts',document.querySelector('.nav-btn'));return false" style="color:var(--accent)">Open Shifts</a> to get started.
+        </div>
       </div>
     </div>
 
@@ -385,25 +389,40 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
 
 <!-- ══ MODALS ══ -->
 
+<!-- Sign-in modal -->
+<div class="modal-bg" id="modal-login">
+  <div class="modal">
+    <div class="modal-title">Sign In</div>
+    <div class="modal-sub">Enter your SCA name to track your volunteer shifts.</div>
+    <div class="modal-field">
+      <label class="modal-label">SCA Name</label>
+      <input class="modal-input" id="login-sca" placeholder="e.g. Margery Kempe" autocomplete="off">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Mundane Name <span style="font-weight:400;text-transform:none">(optional)</span></label>
+      <input class="modal-input" id="login-mundane" placeholder="Optional">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Email <span style="font-weight:400;text-transform:none">(optional, for reminders)</span></label>
+      <input class="modal-input" id="login-email" type="email" placeholder="Optional">
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('modal-login')">Cancel</button>
+      <button class="modal-confirm mc-green" onclick="doLogin()">Sign In</button>
+    </div>
+  </div>
+</div>
+
 <!-- Claim shift modal -->
 <div class="modal-bg" id="modal-claim">
   <div class="modal">
     <div class="modal-title" id="claim-title">Claim Shift</div>
     <div class="modal-sub" id="claim-sub"></div>
     <div id="claim-quals-note" class="modal-note mn-warn" style="display:none"></div>
-    <div class="modal-field">
-      <label class="modal-label">SCA Name *</label>
-      <input class="modal-input" id="claim-sca" placeholder="e.g. Margery Kempe" autocomplete="off">
-    </div>
-    <div class="modal-field">
-      <label class="modal-label">Email * <span style="font-weight:400;text-transform:none;font-size:11px">(used to look up your shifts)</span></label>
-      <input class="modal-input" id="claim-email" type="email" placeholder="your@email.com" autocomplete="email">
-    </div>
-    <div class="modal-note mn-info">By claiming this shift you're committing to show up. The volunteer coordinator will be notified.</div>
-    <div id="claim-err" style="display:none;color:var(--red-text);font-size:12px;font-family:sans-serif;margin-bottom:8px"></div>
+    <div class="modal-note mn-info" id="claim-note">By claiming this shift you're committing to show up. The volunteer coordinator will be notified.</div>
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeModal('modal-claim')">Cancel</button>
-      <button class="modal-confirm mc-green" id="claim-confirm-btn" onclick="confirmClaim()">Claim Shift</button>
+      <button class="modal-confirm mc-green" onclick="confirmClaim()">Claim Shift</button>
     </div>
   </div>
 </div>
@@ -533,171 +552,56 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
 </div>
 
 <script>
-// ── Seed aliases (seed.js exports dVolEvents; volunteer.html uses dEvents) ──
-const dEvents = typeof dVolEvents !== 'undefined' ? dVolEvents : [];
+// ── Seed data ──────────────────────────────────────────────────────────────
+const ADMIN_PIN = '1234'; // placeholder
 
-// ── Config ─────────────────────────────────────────────────────────────────
-const VOL_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
-const IS_DEMO = VOL_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE';
+const dEvents = [
+  {id:'e1', name:'Great Western War XXVII', start:'2025-10-07', end:'2025-10-12', location:'Buena Vista Aquatic Recreation Area, Taft, CA'},
+  {id:'e2', name:'Collegium Caidis 2025', start:'2025-11-15', end:'2025-11-16', location:'Los Angeles, CA'},
+];
 
-// ── Seed data (demo fallback) ───────────────────────────────────────────────
-const ADMIN_PIN = '1234';
+const dShifts = [
+  {id:'s1', eventId:'e1', title:'Gate Check-In', dept:'Gate', desc:'Welcome attendees, check memberships, collect fees. Friendly face required!', day:'2025-10-07', start:'08:00', end:'12:00', slots:4, demand:'sedentary', kids:'no', quals:'', location:'Main Gate', ticketMult:1, imageUrl:'', claimed:[]},
+  {id:'s2', eventId:'e1', title:'Gate Check-In', dept:'Gate', desc:'Afternoon gate shift — busiest period of opening day.', day:'2025-10-07', start:'12:00', end:'16:00', slots:4, demand:'sedentary', kids:'no', quals:'', location:'Main Gate', ticketMult:1, imageUrl:'', claimed:['Margery Kempe','Aldric of Shadowdale','Bronwen ferch Rhys']},
+  {id:'s3', eventId:'e1', title:'Troll Runner', dept:'Gate', desc:'Carry paperwork and cash between Gate and HQ. Involves walking the site repeatedly.', day:'2025-10-07', start:'08:00', end:'18:00', slots:2, demand:'active', kids:'no', quals:'', location:'Gate / HQ', ticketMult:1, imageUrl:'', claimed:['Caterina da Firenze']},
+  {id:'s4', eventId:'e1', title:'A&S Room Monitor', dept:'Arts & Sciences', desc:'Keep an eye on the A&S tent, help instructors get set up, answer attendee questions.', day:'2025-10-08', start:'09:00', end:'13:00', slots:3, demand:'light', kids:'yes', quals:'', location:'A&S Pavilion', ticketMult:1, imageUrl:'', claimed:[]},
+  {id:'s5', eventId:'e1', title:'Youth Activity Helper', dept:'Youth', desc:'Assist the youth coordinator with craft activities. Great for teens and young adults.', day:'2025-10-08', start:'10:00', end:'14:00', slots:5, demand:'light', kids:'yes', quals:'', location:'Youth Area', ticketMult:1, imageUrl:'', claimed:['Siobhan ni Fhaoláin']},
+  {id:'s6', eventId:'e1', title:'Water Bearer', dept:'Armored Combat', desc:'Keep fighters hydrated on the field. Active role — lots of walking in the sun.', day:'2025-10-09', start:'09:00', end:'13:00', slots:6, demand:'active', kids:'no', quals:'', location:'Main Combat Field', ticketMult:2, imageUrl:'', claimed:['Aldric of Shadowdale','Bronwen ferch Rhys']},
+  {id:'s7', eventId:'e1', title:'Chirurgeon Support', dept:'Chirurgeon', desc:'Assist the head chirurgeon with supplies and documentation. Medical background preferred but not required.', day:'2025-10-09', start:'08:00', end:'17:00', slots:2, demand:'sedentary', kids:'no', quals:'First Aid/CPR preferred', location:'Chirurgeon Point', ticketMult:2, imageUrl:'', claimed:[]},
+  {id:'s8', eventId:'e1', title:'Herald – Field', dept:'Heralds', desc:'Voice announcements on the combat field. Loud voice essential.', day:'2025-10-10', start:'09:00', end:'12:00', slots:2, demand:'active', kids:'no', quals:'Heralding experience preferred', location:'Main Combat Field', ticketMult:1, imageUrl:'', claimed:['Margery Kempe']},
+  {id:'s9', eventId:'e1', title:'Merchant Village Liaison', dept:'Merchants', desc:'Help merchants with setup questions and direct shoppers around the village.', day:'2025-10-07', start:'07:00', end:'11:00', slots:2, demand:'light', kids:'yes', quals:'', location:'Merchant Village', ticketMult:1, imageUrl:'', claimed:[]},
+  {id:'s10', eventId:'e1', title:'Closing Cleanup Crew', dept:'General', desc:'Help strike tents, collect trash, and restore the site on the final morning. Heavy lifting involved.', day:'2025-10-12', start:'08:00', end:'13:00', slots:10, demand:'active', kids:'no', quals:'', location:'Full Site', ticketMult:2, imageUrl:'', claimed:['Caterina da Firenze','Siobhan ni Fhaoláin']},
+  {id:'s11', eventId:'e2', title:'Registration Desk', dept:'Gate', desc:'Check in attendees and hand out class materials.', day:'2025-11-15', start:'08:30', end:'12:30', slots:3, demand:'sedentary', kids:'no', quals:'', location:'Main Entrance', ticketMult:1, imageUrl:'', claimed:[]},
+  {id:'s12', eventId:'e2', title:'Room Monitor', dept:'Arts & Sciences', desc:'Ensure classes start on time and rooms are set up correctly.', day:'2025-11-15', start:'09:00', end:'17:00', slots:4, demand:'light', kids:'yes', quals:'', location:'Various Classrooms', ticketMult:1, imageUrl:'', claimed:['Margery Kempe']},
+];
 
-// ── Demo API ───────────────────────────────────────────────────────────────
-function apiDemo(p) {
-  const { action } = p;
-
-  if (action === 'getEvents') {
-    return { ok: true, events: dEvents };
-  }
-
-  if (action === 'getShifts') {
-    const evShifts = dShifts.filter(s => s.eventId === p.eventId);
-    return { ok: true, shifts: evShifts.map(s => ({...s, signedUpCount: s.signUps.length})) };
-  }
-
-  if (action === 'signUp') {
-    const s = dShifts.find(x => x.id === p.shiftId);
-    if (!s) return { ok: false, error: 'Shift not found.' };
-    if (s.signUps.length >= s.slots) return { ok: false, error: 'This shift is now full.' };
-    if (s.signUps.find(u => u.email === p.email)) return { ok: false, error: 'You already claimed this shift.' };
-    s.signUps.push({ scaName: p.scaName, email: p.email });
-    return { ok: true };
-  }
-
-  if (action === 'dropShift') {
-    const s = dShifts.find(x => x.id === p.shiftId);
-    if (s) s.signUps = s.signUps.filter(u => u.email !== p.email);
-    return { ok: true };
-  }
-
-  if (action === 'getMyShifts') {
-    const email = (p.email || '').toLowerCase().trim();
-    const mine = dShifts.filter(s => s.signUps.find(u => u.email.toLowerCase() === email));
-    const verified = dVerifications;
-    return { ok: true, shifts: mine.map(s => ({
-      ...s,
-      verified: !!(verified[s.id] && verified[s.id].includes(email)),
-      signedUpCount: s.signUps.length
-    }))};
-  }
-
-  if (action === 'verifyShift') {
-    const evId = p.eventId;
-    const evVerifiers = dVerifiers.filter(v => v.eventId === evId);
-    const match = evVerifiers.find(v => v.pin === p.pin);
-    if (!match) return { ok: false, error: 'PIN not recognised. Check with your shift supervisor.' };
-    if (!dVerifications[p.shiftId]) dVerifications[p.shiftId] = [];
-    dVerifications[p.shiftId].push(p.email);
-    return { ok: true, verifierName: match.name };
-  }
-
-  if (action === 'adminGetShifts') {
-    return { ok: true, shifts: dShifts.filter(s => s.eventId === p.eventId) };
-  }
-
-  if (action === 'adminCreateShift') {
-    const newShift = {
-      id: 's' + Date.now(), eventId: p.eventId,
-      title: p.title, dept: p.dept, desc: p.desc || '',
-      day: p.day, start: p.start, end: p.end,
-      slots: parseInt(p.slots) || 1,
-      demand: p.demand || 'light', kids: p.kids || 'no',
-      quals: p.quals || '', location: p.location || '',
-      ticketMult: parseInt(p.ticketMult) || 1,
-      imageUrl: p.imageUrl || '', signUps: []
-    };
-    dShifts.push(newShift);
-    return { ok: true, shift: newShift };
-  }
-
-  if (action === 'adminDeleteShift') {
-    const i = dShifts.findIndex(s => s.id === p.shiftId);
-    if (i >= 0) dShifts.splice(i, 1);
-    return { ok: true };
-  }
-
-  if (action === 'adminGetVolunteers') {
-    const evShifts = dShifts.filter(s => s.eventId === p.eventId);
-    const volMap = {};
-    evShifts.forEach(s => s.signUps.forEach(u => {
-      if (!volMap[u.email]) volMap[u.email] = { scaName: u.scaName, email: u.email, shifts: [] };
-      volMap[u.email].shifts.push({ title: s.title, day: s.day, verified: !!(dVerifications[s.id] && dVerifications[s.id].includes(u.email)) });
-    }));
-    return { ok: true, volunteers: Object.values(volMap) };
-  }
-
-  if (action === 'adminGetVerifiers') {
-    return { ok: true, verifiers: dVerifiers.filter(v => v.eventId === p.eventId) };
-  }
-
-  if (action === 'adminAddVerifier') {
-    if (!p.name || !p.pin) return { ok: false, error: 'Name and PIN required.' };
-    if (p.pin.length !== 4) return { ok: false, error: 'PIN must be 4 digits.' };
-    if (dVerifiers.find(v => v.eventId === p.eventId && v.pin === p.pin)) return { ok: false, error: 'That PIN is already in use for this event.' };
-    const v = { id: 'v' + Date.now(), eventId: p.eventId, name: p.name, role: p.role || '', pin: p.pin };
-    dVerifiers.push(v);
-    return { ok: true, verifier: v };
-  }
-
-  if (action === 'adminDeleteVerifier') {
-    const i = dVerifiers.findIndex(v => v.id === p.verifierId);
-    if (i >= 0) dVerifiers.splice(i, 1);
-    return { ok: true };
-  }
-
-  if (action === 'adminGetStats') {
-    const evShifts = dShifts.filter(s => s.eventId === p.eventId);
-    const totalSlots = evShifts.reduce((a, s) => a + s.slots, 0);
-    const filledSlots = evShifts.reduce((a, s) => a + s.signUps.length, 0);
-    const uniqueVols = new Set(evShifts.flatMap(s => s.signUps.map(u => u.email))).size;
-    return {
-      ok: true,
-      total: evShifts.length,
-      filled: evShifts.filter(s => s.signUps.length >= s.slots).length,
-      openSlots: totalSlots - filledSlots,
-      volunteers: uniqueVols,
-      understaffed: evShifts.filter(s => s.signUps.length < s.slots)
-    };
-  }
-
-  if (action === 'adminLogin') {
-    return p.pin === ADMIN_PIN ? { ok: true } : { ok: false, error: 'Incorrect PIN.' };
-  }
-
-  return { ok: false, error: 'Unknown action: ' + action };
-}
-
-// ── Live API ───────────────────────────────────────────────────────────────
-async function api(params) {
-  if (IS_DEMO) return apiDemo(params);
-  const u = new URL(VOL_SCRIPT_URL);
-  Object.entries(params).forEach(([k, v]) => u.searchParams.set(k, String(v)));
-  try {
-    const res = await fetch(u.toString());
-    return await res.json();
-  } catch (e) {
-    return { ok: false, error: 'Network error. Please try again.' };
-  }
-}
+const dVerifiers = [
+  {id:'v1', eventId:'e1', name:'Rowan Winterbourne', role:'Volunteer Coordinator', pin:'4471'},
+  {id:'v2', eventId:'e1', name:'Aldric of Shadowdale', role:'Gate Steward', pin:'8823'},
+  {id:'v3', eventId:'e1', name:'Siobhan ni Fhaoláin', role:'A&S Steward', pin:'3156'},
+];
 
 // ── State ──────────────────────────────────────────────────────────────────
 let currentEvent = null;
-let shifts = [];          // shifts for current event
+let currentUser = null; // {scaName, mundane, email}
+let myClaims = {}; // shiftId -> true
+let myVerified = {}; // shiftId -> true
 let pendingClaimId = null;
 let pendingVerifyId = null;
+let shifts = JSON.parse(JSON.stringify(dShifts));
+let events = JSON.parse(JSON.stringify(dEvents));
+let verifiers = JSON.parse(JSON.stringify(dVerifiers));
 
 // ── Init ───────────────────────────────────────────────────────────────────
-(async function init() {
-  const res = await api({ action: 'getEvents' });
-  if (!res.ok) return;
-  populateEventSelect(res.events);
+(function init(){
+  populateEventSelect();
+  updateMyCount();
 })();
 
-function populateEventSelect(evList) {
+function populateEventSelect(){
   const sel = document.getElementById('global-event');
   sel.innerHTML = '<option value="">— select an event —</option>';
-  evList.forEach(e => {
+  events.forEach(e => {
     const o = document.createElement('option');
     o.value = e.id;
     o.textContent = e.name;
@@ -705,183 +609,181 @@ function populateEventSelect(evList) {
   });
 }
 
-async function onEventChange() {
+function onEventChange(){
   const id = document.getElementById('global-event').value;
-  currentEvent = null;
-  shifts = [];
+  currentEvent = events.find(e => e.id === id) || null;
   const datesEl = document.getElementById('event-dates');
-
-  if (!id) { datesEl.textContent = ''; renderShifts(); renderNow(); return; }
-
-  // Get event details from the options data — for demo, pull from dEvents
-  const evData = IS_DEMO ? dEvents : [];
-  currentEvent = (IS_DEMO ? dEvents : []).find(e => e.id === id) || { id };
-
-  // Load shifts
-  const res = await api({ action: 'getShifts', eventId: id });
-  if (res.ok) {
-    shifts = res.shifts;
-    // Normalize: live API returns signedUpCount, demo already has full signUps array
-    if (!IS_DEMO) shifts.forEach(s => { if (!s.signUps) s.signUps = []; });
-  }
-
-  if (currentEvent.start) {
+  if(currentEvent){
     datesEl.textContent = fD(currentEvent.start) + ' – ' + fD(currentEvent.end) + (currentEvent.location ? ' · ' + currentEvent.location : '');
+    populateDayFilter();
+    populateDeptFilter();
   } else {
     datesEl.textContent = '';
   }
-
-  populateDayFilter();
-  populateDeptFilter();
   renderShifts();
   renderNow();
+  renderMyShifts();
+  refreshAdminDashboard();
 }
 
 // ── Filters ────────────────────────────────────────────────────────────────
-function populateDayFilter() {
+function populateDayFilter(){
   const sel = document.getElementById('shift-day');
   sel.innerHTML = '<option value="">All Days</option>';
-  const days = [...new Set(shifts.map(s => s.day))].sort();
-  days.forEach(d => { const o = document.createElement('option'); o.value = d; o.textContent = fD(d); sel.appendChild(o); });
+  if(!currentEvent) return;
+  const days = [...new Set(shifts.filter(s=>s.eventId===currentEvent.id).map(s=>s.day))].sort();
+  days.forEach(d => {
+    const o = document.createElement('option');
+    o.value = d; o.textContent = fD(d);
+    sel.appendChild(o);
+  });
 }
 
-function populateDeptFilter() {
+function populateDeptFilter(){
   const sel = document.getElementById('shift-dept');
   sel.innerHTML = '<option value="">All Departments</option>';
-  const depts = [...new Set(shifts.map(s => s.dept))].sort();
-  depts.forEach(d => { const o = document.createElement('option'); o.value = d; o.textContent = d; sel.appendChild(o); });
+  if(!currentEvent) return;
+  const depts = [...new Set(shifts.filter(s=>s.eventId===currentEvent.id).map(s=>s.dept))].sort();
+  depts.forEach(d => {
+    const o = document.createElement('option');
+    o.value = d; o.textContent = d;
+    sel.appendChild(o);
+  });
 }
 
-// ── Dept color ─────────────────────────────────────────────────────────────
-function deptColor(dept) {
-  const map = {
+// ── Dept color (mirrors getTopicColor in index.html) ──────────────────────
+function deptColor(dept){
+  const map={
     'Gate':'#2A5FAD','Arts & Sciences':'#6A3D8F','Youth':'#E67E22',
     'Armored Combat':'#8B1A1A','Chirurgeon':'#1A7A4A','Heralds':'#1A5F7A',
     'Merchants':'#7A5A1A','General':'#3A5278','Rapier':'#5A1A6A',
     'Archery':'#2D6A1A','Equestrian':'#7A3A1A','Youth Combat':'#C0392B'
   };
-  if (map[dept]) return map[dept];
-  let h = 0; for (let i = 0; i < dept.length; i++) h = (h * 31 + dept.charCodeAt(i)) & 0xFFFFFF;
-  return `rgb(${60 + ((h >> 16) & 0x7F)},${60 + ((h >> 8) & 0x7F)},${60 + (h & 0x7F)})`;
+  if(map[dept])return map[dept];
+  // Hash fallback for unknown depts
+  let h=0;for(let i=0;i<dept.length;i++)h=(h*31+dept.charCodeAt(i))&0xFFFFFF;
+  const r=60+((h>>16)&0x7F),g=60+((h>>8)&0x7F),b=60+(h&0x7F);
+  return`rgb(${r},${g},${b})`;
 }
 
 // ── Render: Open Shifts ────────────────────────────────────────────────────
-function shiftCard(s, urgent = false) {
-  const signedUp = s.signUps ? s.signUps.length : (s.signedUpCount || 0);
-  const open = s.slots - signedUp;
-  const pct = signedUp / s.slots;
-  const slotsClass = open === 0 ? 'full' : (pct >= .75 ? 'low' : '');
-  const slotsText = open === 0 ? 'Full' : `${open} of ${s.slots} slot${s.slots > 1 ? 's' : ''} open`;
-  const cardClass = 'shift-card' + (urgent && open > 0 ? ' urgent' : '');
-  const demandLabel = { sedentary: 'Sedentary', light: 'Light Activity', active: 'Active' }[s.demand] || s.demand;
-  const demandClass = s.demand === 'active' ? 'active' : s.demand === 'sedentary' ? 'sedentary' : '';
+function shiftCard(s, urgent=false){
+  const open = s.slots - s.claimed.length;
+  const isClaimed = !!myClaims[s.id];
+  const pct = s.claimed.length / s.slots;
+  let slotsClass = open === 0 ? 'full' : (pct >= .75 ? 'low' : '');
+  let slotsText = open === 0 ? 'Full' : `${open} of ${s.slots} slot${s.slots>1?'s':''} open`;
+  let cardClass = 'shift-card' + (isClaimed?' claimed':'') + (urgent&&open>0?' urgent':'');
+  const demandLabel = {sedentary:'Sedentary',light:'Light Activity',active:'Active'}[s.demand]||s.demand;
+  const demandClass = s.demand==='active'?'active':s.demand==='sedentary'?'sedentary':'';
   const color = deptColor(s.dept);
   const thumb = s.imageUrl
     ? `<img class="card-thumb-sq" src="${esc(s.imageUrl)}" alt="">`
     : `<div class="card-thumb-sq-placeholder" style="background:${color}"></div>`;
   const deptBadge = `<span class="tag in-person card-thumb-badge" style="background:${color};border-color:${color};color:#fff;font-size:10px;padding:2px 7px">${esc(s.dept)}</span>`;
+  const thumbWrap = `<div class="card-thumb-wrap">${thumb}${deptBadge}</div>`;
   return `<div class="${cardClass}">
     <div class="card-top-row">
-      <div class="card-thumb-wrap">${thumb}${deptBadge}</div>
-      <div class="card-top-text"><div class="card-title">${esc(s.title)}</div></div>
+      ${thumbWrap}
+      <div class="card-top-text">
+        <div class="card-title">${esc(s.title)}</div>
+      </div>
     </div>
-    <div class="card-desc">${esc(s.desc) || '&nbsp;'}</div>
+    <div class="card-desc">${esc(s.desc)||'&nbsp;'}</div>
     <div class="card-meta">
       <span><i class="ti ti-calendar"></i> ${fD(s.day)}</span>
       <span><i class="ti ti-clock"></i> ${fT(s.start)} – ${fT(s.end)}</span>
-      ${s.location ? `<span><i class="ti ti-map-pin"></i> ${esc(s.location)}</span>` : ''}
+      ${s.location?`<span><i class="ti ti-map-pin"></i> ${esc(s.location)}</span>`:''}
     </div>
     <div class="card-tags">
-      ${demandClass ? `<span class="card-tag ${demandClass}"><i class="ti ti-${s.demand === 'active' ? 'run' : 'armchair'}"></i> ${demandLabel}</span>` : ''}
-      ${s.kids === 'yes' ? '<span class="card-tag kids"><i class="ti ti-mood-happy"></i> Kids Welcome</span>' : ''}
-      ${s.quals ? `<span class="card-tag quals"><i class="ti ti-certificate"></i> ${esc(s.quals)}</span>` : ''}
-      ${s.ticketMult === 2 ? '<span class="card-tag double"><i class="ti ti-ticket"></i> Double Tickets</span>' : ''}
-      ${urgent && open > 0 ? '<span class="card-tag nowopen">Open Now</span>' : ''}
+      ${demandClass?`<span class="card-tag ${demandClass}"><i class="ti ti-${s.demand==='active'?'run':'armchair'}"></i> ${demandLabel}</span>`:''}
+      ${s.kids==='yes'?'<span class="card-tag kids"><i class="ti ti-mood-happy"></i> Kids Welcome</span>':''}
+      ${s.quals?`<span class="card-tag quals"><i class="ti ti-certificate"></i> ${esc(s.quals)}</span>`:''}
+      ${s.ticketMult===2?'<span class="card-tag double"><i class="ti ti-ticket"></i> Double Tickets</span>':''}
+      ${urgent&&open>0?'<span class="card-tag nowopen">Open Now</span>':''}
     </div>
     <div class="card-footer">
       <span class="slots ${slotsClass}">${slotsText}</span>
-      ${open > 0
+      ${open>0&&!isClaimed
         ? `<button class="claim-btn" onclick="openClaimModal('${s.id}')">Claim Shift</button>`
-        : `<button class="claim-btn" disabled>Full</button>`
+        : isClaimed
+          ? `<button class="claim-btn claimed" disabled><i class="ti ti-check"></i> Claimed</button>`
+          : `<button class="claim-btn" disabled>Full</button>`
       }
     </div>
   </div>`;
 }
 
-function renderShifts() {
+function renderShifts(){
   const grid = document.getElementById('shift-grid');
-  if (!currentEvent) { grid.innerHTML = '<div style="font-family:sans-serif;font-size:14px;color:var(--text2);grid-column:1/-1;padding:2rem 0;text-align:center">Select an event above to see open shifts.</div>'; return; }
+  if(!currentEvent){ grid.innerHTML = '<div style="font-family:sans-serif;font-size:14px;color:var(--text2);grid-column:1/-1;padding:2rem 0;text-align:center">Select an event above to see open shifts.</div>'; return; }
   const q = document.getElementById('shift-search').value.toLowerCase();
   const day = document.getElementById('shift-day').value;
   const dept = document.getElementById('shift-dept').value;
   const demand = document.getElementById('shift-demand').value;
   const kids = document.getElementById('shift-kids').value;
-  let list = shifts.filter(s =>
-    (!q || s.title.toLowerCase().includes(q) || s.dept.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q)) &&
-    (!day || s.day === day) &&
-    (!dept || s.dept === dept) &&
-    (!demand || s.demand === demand) &&
-    (kids !== 'yes' || s.kids === 'yes')
-  );
-  list.sort((a, b) => a.day.localeCompare(b.day) || a.start.localeCompare(b.start));
-  grid.innerHTML = list.length
-    ? list.map(s => shiftCard(s)).join('')
-    : '<div style="font-family:sans-serif;font-size:14px;color:var(--text2);grid-column:1/-1;padding:2rem 0;text-align:center">No shifts match your filters.</div>';
+  let list = shifts.filter(s => s.eventId === currentEvent.id);
+  if(q) list = list.filter(s => s.title.toLowerCase().includes(q) || s.dept.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q));
+  if(day) list = list.filter(s => s.day === day);
+  if(dept) list = list.filter(s => s.dept === dept);
+  if(demand) list = list.filter(s => s.demand === demand);
+  if(kids === 'yes') list = list.filter(s => s.kids === 'yes');
+  list.sort((a,b) => a.day.localeCompare(b.day) || a.start.localeCompare(b.start));
+  if(!list.length){ grid.innerHTML = '<div style="font-family:sans-serif;font-size:14px;color:var(--text2);grid-column:1/-1;padding:2rem 0;text-align:center">No shifts match your filters.</div>'; return; }
+  grid.innerHTML = list.map(s => shiftCard(s)).join('');
 }
 
 // ── Render: Now ────────────────────────────────────────────────────────────
-function renderNow() {
+function renderNow(){
   const grid = document.getElementById('now-grid');
-  if (!currentEvent) { grid.innerHTML = '<div style="font-family:sans-serif;font-size:14px;color:var(--text2);grid-column:1/-1;padding:2rem 0;text-align:center">Select an event above.</div>'; return; }
-  const simNow = currentEvent.id === 'e1' ? new Date('2025-10-09T10:00:00') : new Date((currentEvent.start || '2025-11-15') + 'T09:00:00');
-  const simDay = simNow.toISOString().slice(0, 10);
-  const simMin = simNow.getHours() * 60 + simNow.getMinutes();
-  const sim2Min = simMin + 120;
+  if(!currentEvent){ grid.innerHTML = '<div style="font-family:sans-serif;font-size:14px;color:var(--text2);grid-column:1/-1;padding:2rem 0;text-align:center">Select an event above.</div>'; return; }
+  // For demo: use a simulated "now" time (Oct 9 10:00 AM during GWW)
+  const simNow = currentEvent.id === 'e1' ? new Date('2025-10-09T10:00:00') : new Date(currentEvent.start + 'T09:00:00');
+  const simPlus2 = new Date(simNow.getTime() + 2*60*60*1000);
+  const simDay = simNow.toISOString().slice(0,10);
+  const simMinutes = simNow.getHours()*60 + simNow.getMinutes();
+  const sim2Minutes = simPlus2.getHours()*60 + simPlus2.getMinutes();
   const list = shifts.filter(s => {
-    const signedUp = s.signUps ? s.signUps.length : (s.signedUpCount || 0);
-    if (signedUp >= s.slots) return false;
-    if (s.day !== simDay) return false;
+    if(s.eventId !== currentEvent.id) return false;
+    if(s.claimed.length >= s.slots) return false;
+    if(s.day !== simDay) return false;
     const sm = t2m(s.start);
-    return sm >= simMin && sm <= sim2Min;
+    return sm >= simMinutes && sm <= sim2Minutes;
   });
-  grid.innerHTML = list.length
-    ? list.map(s => shiftCard(s, true)).join('')
-    : '<div style="font-family:sans-serif;font-size:14px;color:var(--text2);grid-column:1/-1;padding:2rem 0;text-align:center">No open shifts starting in the next 2 hours. Check back soon, or browse <b>Open Shifts</b> for upcoming opportunities.</div>';
+  if(!list.length){
+    grid.innerHTML = '<div style="font-family:sans-serif;font-size:14px;color:var(--text2);grid-column:1/-1;padding:2rem 0;text-align:center">No open shifts starting in the next 2 hours. Check back soon, or browse <b>Open Shifts</b> for upcoming opportunities.</div>';
+    return;
+  }
+  grid.innerHTML = list.map(s => shiftCard(s, true)).join('');
 }
 
 // ── Render: My Shifts ──────────────────────────────────────────────────────
-function shiftHours(s) { return Math.round((t2m(s.end) - t2m(s.start)) / 60 * 10) / 10; }
-function shiftTickets(s) { return Math.round(shiftHours(s) * (s.ticketMult || 1)); }
-
-async function lookupMyShifts() {
-  const email = document.getElementById('my-email').value.trim().toLowerCase();
-  const list = document.getElementById('my-shifts-list');
-  if (!email) { list.innerHTML = '<div class="empty-sched">Please enter your email address.</div>'; return; }
-  if (!currentEvent) { list.innerHTML = '<div class="empty-sched">Select an event above first.</div>'; return; }
-  list.innerHTML = '<div class="empty-sched">Loading…</div>';
-  const res = await api({ action: 'getMyShifts', email, eventId: currentEvent.id });
-  if (!res.ok) { list.innerHTML = `<div class="empty-sched">${esc(res.error || 'Something went wrong.')}</div>`; return; }
-  renderMyShiftsList(res.shifts, email);
+function shiftHours(s){ return Math.round((t2m(s.end)-t2m(s.start))/60*10)/10; }
+function shiftTickets(s){ return Math.round(shiftHours(s)*(s.ticketMult||1)); }
+function calcMyTickets(){
+  return shifts.filter(s=>myClaims[s.id]&&myVerified[s.id]).reduce((a,s)=>a+shiftTickets(s),0);
 }
 
-function renderMyShiftsList(mine, email) {
+function renderMyShifts(){
   const list = document.getElementById('my-shifts-list');
-  if (!mine.length) {
-    list.innerHTML = '<div class="empty-sched">No shifts found for that email. Browse <a href="#" onclick="showPanel(\'shifts\',document.querySelector(\'.nav-btn\'));return false" style="color:var(--accent)">Open Shifts</a> to get started.</div>';
+  const mine = shifts.filter(s => myClaims[s.id]);
+  if(!mine.length){
+    list.innerHTML = '<div class="empty-sched">You haven\'t claimed any shifts yet.<br>Browse <a href="#" onclick="showPanel(\'shifts\',document.querySelector(\'.nav-btn\'));return false" style="color:var(--accent)">Open Shifts</a> to get started.</div>';
     return;
   }
-  mine.sort((a, b) => a.day.localeCompare(b.day) || a.start.localeCompare(b.start));
-  const totalTickets = mine.filter(s => s.verified).reduce((a, s) => a + shiftTickets(s), 0);
-  const verifiedCount = mine.filter(s => s.verified).length;
+  mine.sort((a,b)=>a.day.localeCompare(b.day)||a.start.localeCompare(b.start));
+  const totalTickets = calcMyTickets();
+  const verifiedCount = mine.filter(s=>myVerified[s.id]).length;
   const ticketSummary = `
     <div class="ticket-summary">
       <div><strong>${totalTickets}</strong></div>
       <div>
-        <div style="font-weight:600">Raffle Ticket${totalTickets !== 1 ? 's' : ''} Earned</div>
-        <div style="font-size:12px;opacity:.8">${verifiedCount} of ${mine.length} shift${mine.length !== 1 ? 's' : ''} verified · Unverified shifts don't count yet</div>
+        <div style="font-weight:600">Raffle Ticket${totalTickets!==1?'s':''} Earned</div>
+        <div style="font-size:12px;opacity:.8">${verifiedCount} of ${mine.length} shift${mine.length!==1?'s':''} verified · Unverified shifts don't count yet</div>
       </div>
     </div>`;
-  list.innerHTML = ticketSummary + mine.map(s => {
+  list.innerHTML = ticketSummary + mine.map(s=>{
+    const verified = myVerified[s.id];
     const hours = shiftHours(s);
     const tickets = shiftTickets(s);
     return `
@@ -889,250 +791,277 @@ function renderMyShiftsList(mine, email) {
       <div class="sched-time">${fT(s.start)}<br><span style="font-size:11px;font-weight:400">${fD(s.day)}</span></div>
       <div>
         <div class="sched-title">${esc(s.title)}</div>
-        <div class="sched-meta">${esc(s.dept)}${s.location ? ' · ' + esc(s.location) : ''}</div>
+        <div class="sched-meta">${esc(s.dept)}${s.location?' · '+esc(s.location):''}</div>
         <div class="sched-meta">${fT(s.start)} – ${fT(s.end)} · ${hours}h</div>
         <div style="display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap">
-          ${s.verified
+          ${verified
             ? `<span class="verified-badge"><i class="ti ti-circle-check"></i> Verified</span>
-               <span class="ticket-chip${s.ticketMult === 2 ? ' double' : ''}"><i class="ti ti-ticket"></i> ${tickets} ticket${tickets !== 1 ? 's' : ''}</span>`
+               <span class="ticket-chip${s.ticketMult===2?' double':''}"><i class="ti ti-ticket"></i> ${tickets} ticket${tickets!==1?'s':''}</span>`
             : `<span class="unverified-badge"><i class="ti ti-clock"></i> Awaiting verification</span>
-               <button class="verify-btn" onclick="openVerifyModal('${s.id}','${esc(email)}')">Enter PIN</button>`
+               <button class="verify-btn" onclick="openVerifyModal('${s.id}')">Enter PIN</button>`
           }
         </div>
       </div>
-      <button class="remove-btn" onclick="dropShift('${s.id}','${esc(email)}')">Drop</button>
+      <button class="remove-btn" onclick="unclaimShift('${s.id}')">Drop</button>
     </div>`;
   }).join('');
 }
 
+function updateMyCount(){
+  // My Shifts handled by My Schedule in index.html — badge removed from nav
+}
+
 // ── Claim flow ─────────────────────────────────────────────────────────────
-function openClaimModal(shiftId) {
+function openClaimModal(shiftId){
+  if(!currentUser){ openLoginFirst(shiftId); return; }
   pendingClaimId = shiftId;
-  const s = shifts.find(x => x.id === shiftId);
+  const s = shifts.find(x=>x.id===shiftId);
   document.getElementById('claim-title').textContent = 'Claim: ' + s.title;
   document.getElementById('claim-sub').textContent = fD(s.day) + ' · ' + fT(s.start) + ' – ' + fT(s.end) + ' · ' + s.dept;
   const qnote = document.getElementById('claim-quals-note');
-  if (s.quals) { qnote.style.display = 'block'; qnote.textContent = 'Note: This shift requires ' + s.quals + '. Please only claim if you meet this requirement.'; }
-  else { qnote.style.display = 'none'; }
-  document.getElementById('claim-sca').value = '';
-  document.getElementById('claim-email').value = '';
-  document.getElementById('claim-err').style.display = 'none';
-  document.getElementById('claim-confirm-btn').disabled = false;
+  if(s.quals){ qnote.style.display='block'; qnote.textContent = 'Note: This shift requires ' + s.quals + '. Please only claim if you meet this requirement.'; }
+  else { qnote.style.display='none'; }
   document.getElementById('modal-claim').classList.add('open');
 }
 
-async function confirmClaim() {
-  const scaName = document.getElementById('claim-sca').value.trim();
-  const email = document.getElementById('claim-email').value.trim().toLowerCase();
-  const errEl = document.getElementById('claim-err');
-  const btn = document.getElementById('claim-confirm-btn');
-  if (!scaName) { errEl.textContent = 'Please enter your SCA name.'; errEl.style.display = 'block'; return; }
-  if (!email || !email.includes('@')) { errEl.textContent = 'Please enter a valid email address.'; errEl.style.display = 'block'; return; }
-  btn.disabled = true; btn.textContent = 'Claiming…';
-  const res = await api({ action: 'signUp', shiftId: pendingClaimId, eventId: currentEvent.id, scaName, email });
-  btn.textContent = 'Claim Shift';
-  if (!res.ok) { errEl.textContent = res.error || 'Something went wrong.'; errEl.style.display = 'block'; btn.disabled = false; return; }
-  // Update local state
-  const s = shifts.find(x => x.id === pendingClaimId);
-  if (s) { if (!s.signUps) s.signUps = []; s.signUps.push({ scaName, email }); }
-  pendingClaimId = null;
-  closeModal('modal-claim');
-  renderShifts();
-  renderNow();
-  // Pre-fill my-email and show My Shifts
-  document.getElementById('my-email').value = email;
-  lookupMyShifts();
-  showPanel('my', document.querySelector('.nav-btn[onclick*="\'my\'"]'));
+function openLoginFirst(shiftId){
+  pendingClaimId = shiftId;
+  document.getElementById('modal-login').classList.add('open');
 }
 
-async function dropShift(shiftId, email) {
-  if (!confirm('Drop this shift?')) return;
-  const res = await api({ action: 'dropShift', shiftId, email, eventId: currentEvent.id });
-  if (!res.ok) { alert(res.error || 'Something went wrong.'); return; }
-  const s = shifts.find(x => x.id === shiftId);
-  if (s) s.signUps = (s.signUps || []).filter(u => u.email !== email);
+function confirmClaim(){
+  if(!pendingClaimId) return;
+  const s = shifts.find(x=>x.id===pendingClaimId);
+  if(!s.claimed.includes(currentUser.scaName)) s.claimed.push(currentUser.scaName);
+  myClaims[pendingClaimId] = true;
+  pendingClaimId = null;
+  closeModal('modal-claim');
+  updateMyCount();
   renderShifts();
   renderNow();
-  lookupMyShifts();
+  renderMyShifts();
+  refreshAdminDashboard();
+}
+
+function unclaimShift(shiftId){
+  const s = shifts.find(x=>x.id===shiftId);
+  if(currentUser) s.claimed = s.claimed.filter(n=>n!==currentUser.scaName);
+  delete myClaims[shiftId];
+  delete myVerified[shiftId];
+  updateMyCount();
+  renderMyShifts();
+  renderShifts();
+  renderNow();
+  refreshAdminDashboard();
 }
 
 // ── Verify flow ────────────────────────────────────────────────────────────
-function openVerifyModal(shiftId, email) {
-  pendingVerifyId = { shiftId, email };
-  const s = shifts.find(x => x.id === shiftId);
+function openVerifyModal(shiftId){
+  pendingVerifyId = shiftId;
+  const s = shifts.find(x=>x.id===shiftId);
   document.getElementById('verify-sub').textContent = s.title + ' · ' + fD(s.day) + ' · ' + fT(s.start) + '–' + fT(s.end);
   document.getElementById('verify-pin').value = '';
   document.getElementById('verify-err').style.display = 'none';
   document.getElementById('modal-verify').classList.add('open');
 }
 
-async function confirmVerify() {
+function confirmVerify(){
   const pin = document.getElementById('verify-pin').value.trim();
   const errEl = document.getElementById('verify-err');
-  if (!pin) { errEl.textContent = 'Please enter a PIN.'; errEl.style.display = 'block'; return; }
-  const { shiftId, email } = pendingVerifyId;
-  const res = await api({ action: 'verifyShift', shiftId, email, pin, eventId: currentEvent.id });
-  if (!res.ok) { errEl.textContent = res.error || 'Something went wrong.'; errEl.style.display = 'block'; return; }
+  if(!pin){ errEl.textContent='Please enter a PIN.'; errEl.style.display='block'; return; }
+  // Check against event verifiers
+  const evVerifiers = verifiers.filter(v => currentEvent && v.eventId === currentEvent.id);
+  const match = evVerifiers.find(v => v.pin === pin);
+  if(!match){ errEl.textContent='PIN not recognised. Check with your shift supervisor.'; errEl.style.display='block'; return; }
+  myVerified[pendingVerifyId] = true;
   pendingVerifyId = null;
   closeModal('modal-verify');
-  lookupMyShifts();
+  renderMyShifts();
+  updateMyCount();
+}
+
+// ── Login ──────────────────────────────────────────────────────────────────
+function toggleLogin(){
+  if(currentUser){ doLogout(); return; }
+  document.getElementById('login-sca').value='';
+  document.getElementById('login-mundane').value='';
+  document.getElementById('login-email').value='';
+  document.getElementById('modal-login').classList.add('open');
+}
+
+function doLogin(){
+  const sca = document.getElementById('login-sca').value.trim();
+  if(!sca){ document.getElementById('login-sca').classList.add('field-error'); return; }
+  currentUser = {scaName: sca, mundane: document.getElementById('login-mundane').value.trim(), email: document.getElementById('login-email').value.trim()};
+  document.getElementById('user-chip').style.display='flex';
+  document.getElementById('user-name').textContent = sca;
+  document.getElementById('login-btn').textContent = 'Sign Out';
+  closeModal('modal-login');
+  if(pendingClaimId) openClaimModal(pendingClaimId);
+}
+
+function doLogout(){
+  currentUser = null;
+  myClaims = {};
+  document.getElementById('user-chip').style.display='none';
+  document.getElementById('login-btn').textContent = 'Sign In';
+  updateMyCount();
+  renderMyShifts();
+  renderShifts();
 }
 
 // ── Admin ──────────────────────────────────────────────────────────────────
-function handleAdminNav(btn) { showPanel('admin', btn); }
+function handleAdminNav(btn){
+  showPanel('admin', btn);
+}
 
-async function checkAdmin() {
+function checkAdmin(){
   const pin = document.getElementById('admin-pin').value;
-  const res = await api({ action: 'adminLogin', pin });
-  if (res.ok) {
-    document.getElementById('admin-gate').style.display = 'none';
-    document.getElementById('admin-panel').style.display = 'block';
+  if(pin === ADMIN_PIN){
+    document.getElementById('admin-gate').style.display='none';
+    document.getElementById('admin-panel').style.display='block';
     refreshAdminDashboard();
     renderAdminShifts();
+    renderAdminEvents();
   } else {
-    document.getElementById('admin-pin-err').style.display = 'block';
-    document.getElementById('admin-pin-err').textContent = res.error || 'Incorrect PIN.';
+    document.getElementById('admin-pin-err').style.display='block';
+    document.getElementById('admin-pin-err').textContent='Incorrect PIN.';
   }
 }
 
-function showAdminTab(name, btn) {
-  document.querySelectorAll('.admin-tab-pane').forEach(p => p.style.display = 'none');
-  document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
-  document.getElementById('atab-' + name).style.display = 'block';
+function showAdminTab(name, btn){
+  document.querySelectorAll('.admin-tab-pane').forEach(p=>p.style.display='none');
+  document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('atab-'+name).style.display='block';
   btn.classList.add('active');
-  if (name === 'shifts-mgr') renderAdminShifts();
-  if (name === 'volunteers-mgr') renderAdminVolunteers();
-  if (name === 'verifiers-mgr') renderAdminVerifiers();
-  if (name === 'dashboard') refreshAdminDashboard();
+  if(name==='shifts-mgr') renderAdminShifts();
+  if(name==='volunteers-mgr') renderAdminVolunteers();
+  if(name==='verifiers-mgr') renderAdminVerifiers();
+  if(name==='dashboard') refreshAdminDashboard();
 }
 
-async function refreshAdminDashboard() {
-  if (!currentEvent) return;
-  const res = await api({ action: 'adminGetStats', eventId: currentEvent.id });
-  if (!res.ok) return;
-  document.getElementById('stat-total').textContent = res.total;
-  document.getElementById('stat-filled').textContent = res.filled;
-  document.getElementById('stat-open').textContent = res.openSlots;
-  document.getElementById('stat-vols').textContent = res.volunteers;
+function refreshAdminDashboard(){
+  if(!currentEvent) return;
+  const evShifts = shifts.filter(s=>s.eventId===currentEvent.id);
+  const totalSlots = evShifts.reduce((a,s)=>a+s.slots,0);
+  const filledSlots = evShifts.reduce((a,s)=>a+s.claimed.length,0);
+  const fullShifts = evShifts.filter(s=>s.claimed.length>=s.slots).length;
+  const uniqueVols = new Set(evShifts.flatMap(s=>s.claimed)).size;
+  document.getElementById('stat-total').textContent = evShifts.length;
+  document.getElementById('stat-filled').textContent = fullShifts;
+  document.getElementById('stat-open').textContent = totalSlots - filledSlots;
+  document.getElementById('stat-vols').textContent = uniqueVols;
+  const under = evShifts.filter(s=>s.claimed.length<s.slots);
   const ul = document.getElementById('understaffed-list');
-  if (!res.understaffed.length) {
-    ul.innerHTML = '<div style="font-family:sans-serif;font-size:13px;color:var(--green-text);display:flex;align-items:center;gap:6px"><i class="ti ti-circle-check"></i> All shifts fully staffed!</div>';
-    return;
-  }
-  ul.innerHTML = res.understaffed.map(s => {
-    const signedUp = s.signUps ? s.signUps.length : (s.signedUpCount || 0);
-    return `<div class="shift-row">
+  if(!under.length){ ul.innerHTML='<div style="font-family:sans-serif;font-size:13px;color:var(--green-text);display:flex;align-items:center;gap:6px"><i class="ti ti-circle-check"></i> All shifts fully staffed!</div>'; return; }
+  ul.innerHTML = under.map(s=>`
+    <div class="shift-row">
       <div class="shift-row-top">
         <div><div class="shift-row-name">${esc(s.title)}</div><div class="shift-row-sub">${esc(s.dept)} · ${fD(s.day)} · ${fT(s.start)}–${fT(s.end)}</div></div>
-        <div class="slot-count" style="color:var(--red-text);font-weight:600">${signedUp}/${s.slots} filled</div>
+        <div class="slot-count" style="color:var(--red-text);font-weight:600">${s.claimed.length}/${s.slots} filled</div>
       </div>
-    </div>`;
-  }).join('');
+    </div>
+  `).join('');
 }
 
-async function renderAdminShifts() {
-  if (!currentEvent) return;
-  const res = await api({ action: 'adminGetShifts', eventId: currentEvent.id });
+function renderAdminShifts(){
+  if(!currentEvent) return;
+  const evShifts = shifts.filter(s=>s.eventId===currentEvent.id);
   const list = document.getElementById('admin-shift-list');
-  if (!res.ok) { list.innerHTML = `<div style="font-family:sans-serif;font-size:13px;color:var(--red-text)">${esc(res.error)}</div>`; return; }
-  if (!res.shifts.length) { list.innerHTML = '<div style="font-family:sans-serif;font-size:13px;color:var(--text2)">No shifts yet. Create one above.</div>'; return; }
-  list.innerHTML = res.shifts.map(s => {
-    const signedUp = s.signUps ? s.signUps.length : (s.signedUpCount || 0);
-    return `<div class="shift-row">
+  if(!evShifts.length){ list.innerHTML='<div style="font-family:sans-serif;font-size:13px;color:var(--text2)">No shifts yet.</div>'; return; }
+  list.innerHTML = evShifts.map(s=>`
+    <div class="shift-row">
       <div class="shift-row-top">
         <div>
           <div class="shift-row-name">${esc(s.title)}</div>
-          <div class="shift-row-sub">${esc(s.dept)} · ${fD(s.day)} · ${fT(s.start)}–${fT(s.end)} · ${s.location || 'No location'}</div>
+          <div class="shift-row-sub">${esc(s.dept)} · ${fD(s.day)} · ${fT(s.start)}–${fT(s.end)} · ${s.location||'No location'}</div>
         </div>
-        <div class="slot-count">${signedUp}/${s.slots}</div>
+        <div class="slot-count">${s.claimed.length}/${s.slots}</div>
       </div>
       <div class="shift-row-btns">
-        <button class="a-labeled-btn" onclick="viewShiftVolunteers('${s.id}')"><i class="ti ti-users"></i> Volunteers (${signedUp})</button>
+        <button class="a-labeled-btn" onclick="viewVolunteers('${s.id}')"><i class="ti ti-users"></i> Volunteers (${s.claimed.length})</button>
         <button class="reject-btn" onclick="deleteShift('${s.id}')"><i class="ti ti-trash"></i> Delete</button>
       </div>
-    </div>`;
-  }).join('');
+    </div>
+  `).join('');
 }
 
-async function renderAdminVolunteers() {
-  if (!currentEvent) return;
-  const res = await api({ action: 'adminGetVolunteers', eventId: currentEvent.id });
+function renderAdminVolunteers(){
+  if(!currentEvent) return;
+  const evShifts = shifts.filter(s=>s.eventId===currentEvent.id);
+  const volMap = {};
+  evShifts.forEach(s=>s.claimed.forEach(n=>{ if(!volMap[n]) volMap[n]=[]; volMap[n].push(s.title); }));
   const list = document.getElementById('admin-vol-list');
-  if (!res.ok) { list.innerHTML = `<div style="font-family:sans-serif;font-size:13px;color:var(--red-text)">${esc(res.error)}</div>`; return; }
-  if (!res.volunteers.length) { list.innerHTML = '<div style="font-family:sans-serif;font-size:13px;color:var(--text2)">No volunteers signed up yet.</div>'; return; }
-  const sorted = res.volunteers.sort((a, b) => a.scaName.localeCompare(b.scaName));
-  list.innerHTML = sorted.map(v => {
-    const verifiedCount = v.shifts.filter(s => s.verified).length;
-    return `<div class="shift-row">
+  const vols = Object.entries(volMap).sort((a,b)=>a[0].localeCompare(b[0]));
+  if(!vols.length){ list.innerHTML='<div style="font-family:sans-serif;font-size:13px;color:var(--text2)">No volunteers signed up yet.</div>'; return; }
+  list.innerHTML = vols.map(([name, titles])=>`
+    <div class="shift-row">
       <div class="shift-row-top">
         <div>
-          <div class="shift-row-name">${esc(v.scaName)}</div>
-          <div class="shift-row-sub">${esc(v.email)} · ${v.shifts.map(s => esc(s.title)).join(' · ')}</div>
+          <div class="shift-row-name">${esc(name)}</div>
+          <div class="shift-row-sub">${titles.map(esc).join(' · ')}</div>
         </div>
-        <div class="slot-count">${v.shifts.length} shift${v.shifts.length !== 1 ? 's' : ''} · ${verifiedCount} verified</div>
+        <div class="slot-count">${titles.length} shift${titles.length>1?'s':''}</div>
       </div>
-    </div>`;
-  }).join('');
+    </div>
+  `).join('');
 }
 
-async function renderAdminVerifiers() {
-  const res = await api({ action: 'adminGetVerifiers', eventId: currentEvent ? currentEvent.id : '' });
+function renderAdminVerifiers(){
+  const evId = currentEvent ? currentEvent.id : null;
+  const evVerifiers = verifiers.filter(v => v.eventId === evId);
   const list = document.getElementById('admin-verifier-list');
-  if (!res.ok) { list.innerHTML = `<div style="font-family:sans-serif;font-size:13px;color:var(--red-text)">${esc(res.error)}</div>`; return; }
-  if (!res.verifiers.length) { list.innerHTML = '<div style="font-family:sans-serif;font-size:13px;color:var(--text2)">No verifiers added yet.</div>'; return; }
-  list.innerHTML = res.verifiers.map(v => `
+  if(!evVerifiers.length){ list.innerHTML='<div style="font-family:sans-serif;font-size:13px;color:var(--text2)">No verifiers added yet.</div>'; return; }
+  list.innerHTML = evVerifiers.map(v=>`
     <div class="shift-row">
       <div class="shift-row-top">
         <div>
           <div class="shift-row-name">${esc(v.name)}</div>
-          <div class="shift-row-sub">${esc(v.role || '—')}</div>
+          <div class="shift-row-sub">${esc(v.role||'—')}</div>
         </div>
         <div style="display:flex;align-items:center;gap:10px">
           <div class="slot-count" style="font-family:monospace;font-size:15px;letter-spacing:.15em;font-weight:700;color:var(--accent)">${esc(v.pin)}</div>
           <button class="reject-btn" onclick="deleteVerifier('${v.id}')"><i class="ti ti-trash"></i></button>
         </div>
       </div>
-    </div>`).join('');
+    </div>
+  `).join('');
 }
 
-function openNewVerifierModal() {
-  if (!currentEvent) { alert('Select an event first.'); return; }
-  document.getElementById('nv-name').value = '';
-  document.getElementById('nv-role').value = '';
-  document.getElementById('nv-pin').value = '';
+function openNewVerifierModal(){
+  if(!currentEvent){ alert('Select an event first.'); return; }
+  document.getElementById('nv-name').value='';
+  document.getElementById('nv-role').value='';
+  document.getElementById('nv-pin').value='';
   document.getElementById('modal-new-verifier').classList.add('open');
 }
 
-async function saveNewVerifier() {
+function saveNewVerifier(){
   const name = document.getElementById('nv-name').value.trim();
   const pin = document.getElementById('nv-pin').value.trim();
-  if (!name || !pin) { alert('Name and PIN are required.'); return; }
-  if (pin.length !== 4) { alert('PIN must be exactly 4 digits.'); return; }
-  const res = await api({ action: 'adminAddVerifier', eventId: currentEvent.id, name, role: document.getElementById('nv-role').value.trim(), pin });
-  if (!res.ok) { alert(res.error || 'Something went wrong.'); return; }
+  if(!name||!pin){ alert('Name and PIN are required.'); return; }
+  if(pin.length!==4){ alert('PIN must be exactly 4 digits.'); return; }
+  // Check for PIN collision within event
+  if(verifiers.find(v=>v.eventId===currentEvent.id&&v.pin===pin)){ alert('That PIN is already in use for this event. Please choose a different one.'); return; }
+  verifiers.push({id:'v'+Date.now(), eventId:currentEvent.id, name, role:document.getElementById('nv-role').value.trim(), pin});
   closeModal('modal-new-verifier');
   renderAdminVerifiers();
 }
 
-async function deleteVerifier(id) {
-  if (!confirm('Remove this verifier?')) return;
-  const res = await api({ action: 'adminDeleteVerifier', verifierId: id, eventId: currentEvent.id });
-  if (!res.ok) { alert(res.error || 'Something went wrong.'); return; }
+function deleteVerifier(id){
+  if(!confirm('Remove this verifier?')) return;
+  verifiers = verifiers.filter(v=>v.id!==id);
   renderAdminVerifiers();
 }
 
-function viewShiftVolunteers(shiftId) {
-  const s = IS_DEMO ? shifts.find(x => x.id === shiftId) : null;
-  if (s && s.signUps) {
-    alert(s.signUps.length ? s.signUps.map(u => u.scaName + ' <' + u.email + '>').join('\n') : 'No volunteers claimed this shift yet.');
-  }
+function viewVolunteers(shiftId){
+  const s = shifts.find(x=>x.id===shiftId);
+  alert(s.claimed.length ? s.claimed.join('\n') : 'No volunteers claimed this shift yet.');
 }
 
-async function deleteShift(shiftId) {
-  if (!confirm('Delete this shift? This cannot be undone.')) return;
-  const res = await api({ action: 'adminDeleteShift', shiftId, eventId: currentEvent.id });
-  if (!res.ok) { alert(res.error || 'Something went wrong.'); return; }
-  shifts = shifts.filter(s => s.id !== shiftId);
+function deleteShift(shiftId){
+  if(!confirm('Delete this shift? This cannot be undone.')) return;
+  shifts = shifts.filter(s=>s.id!==shiftId);
   renderAdminShifts();
   refreshAdminDashboard();
   renderShifts();
@@ -1140,43 +1069,46 @@ async function deleteShift(shiftId) {
 }
 
 // ── New shift modal ────────────────────────────────────────────────────────
-function openNewShiftModal() {
-  if (!currentEvent) { alert('Select an event first.'); return; }
+function openNewShiftModal(){
+  if(!currentEvent){ alert('Select an event first.'); return; }
+  // Populate day dropdown
   const daysSel = document.getElementById('ns-day');
   daysSel.innerHTML = '';
-  let d = new Date((currentEvent.start || '2025-10-07') + 'T12:00:00');
-  const end = new Date((currentEvent.end || currentEvent.start || '2025-10-07') + 'T12:00:00');
-  while (d <= end) {
-    const val = d.toISOString().slice(0, 10);
+  let d = new Date(currentEvent.start + 'T12:00:00');
+  const end = new Date(currentEvent.end + 'T12:00:00');
+  while(d <= end){
+    const val = d.toISOString().slice(0,10);
     const o = document.createElement('option');
     o.value = val; o.textContent = fD(val);
     daysSel.appendChild(o);
-    d.setDate(d.getDate() + 1);
+    d.setDate(d.getDate()+1);
   }
   document.getElementById('modal-new-shift').classList.add('open');
 }
 
-async function saveNewShift() {
+function saveNewShift(){
   const title = document.getElementById('ns-title').value.trim();
   const dept = document.getElementById('ns-dept').value.trim();
-  const slots = parseInt(document.getElementById('ns-slots').value) || 1;
+  const slots = parseInt(document.getElementById('ns-slots').value)||1;
   const day = document.getElementById('ns-day').value;
   const start = document.getElementById('ns-start').value;
   const end = document.getElementById('ns-end').value;
-  if (!title || !dept || !day || !start || !end) { alert('Please fill in all required fields.'); return; }
-  const res = await api({
-    action: 'adminCreateShift', eventId: currentEvent.id,
-    title, dept, slots, day, start, end,
+  if(!title||!dept||!day||!start||!end){ alert('Please fill in all required fields.'); return; }
+  const newShift = {
+    id:'s'+(Date.now()),
+    eventId: currentEvent.id,
+    title, dept,
     desc: document.getElementById('ns-desc').value.trim(),
+    day, start, end, slots,
     demand: document.getElementById('ns-demand').value,
     kids: document.getElementById('ns-kids').value,
     quals: document.getElementById('ns-quals').value.trim(),
     location: document.getElementById('ns-location').value.trim(),
-    ticketMult: document.getElementById('ns-tickets').value,
+    ticketMult: parseInt(document.getElementById('ns-tickets').value)||1,
     imageUrl: document.getElementById('ns-image').value.trim(),
-  });
-  if (!res.ok) { alert(res.error || 'Something went wrong.'); return; }
-  if (res.shift) shifts.push(res.shift);
+    claimed:[]
+  };
+  shifts.push(newShift);
   closeModal('modal-new-shift');
   renderAdminShifts();
   refreshAdminDashboard();
@@ -1186,21 +1118,22 @@ async function saveNewShift() {
 }
 
 // ── Nav / panels ───────────────────────────────────────────────────────────
-function showPanel(name, btn) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('panel-' + name).classList.add('active');
-  if (btn) btn.classList.add('active');
-  if (name === 'now') renderNow();
+function showPanel(name, btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(name==='now') renderNow();
+  if(name==='my') renderMyShifts();
 }
 
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 
 // ── Helpers ────────────────────────────────────────────────────────────────
-function esc(s) { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
-function t2m(t) { if (!t) return 0; const p = String(t).split(':'); return parseInt(p[0]) * 60 + parseInt(p[1] || 0); }
-function fD(d) { if (!d) return ''; const [y, m, dy] = String(d).split('-'); return new Date(y, m - 1, dy).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); }
-function fT(t) { if (!t) return ''; const p = String(t).split(':'); const h = parseInt(p[0]); return (h > 12 ? h - 12 : h || 12) + ':' + (p[1] || '00') + '\u202f' + (h >= 12 ? 'PM' : 'AM'); }
+function esc(s){ const d=document.createElement('div');d.textContent=s||'';return d.innerHTML; }
+function t2m(t){ if(!t)return 0;const p=String(t).split(':');return parseInt(p[0])*60+parseInt(p[1]||0); }
+function fD(d){ if(!d)return'';const[y,m,dy]=String(d).split('-');return new Date(y,m-1,dy).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+function fT(t){ if(!t)return'';const p=String(t).split(':');const h=parseInt(p[0]);return(h>12?h-12:h||12)+':'+(p[1]||'00')+'\u202f'+(h>=12?'PM':'AM'); }
 </script>
 </body>
 </html>
