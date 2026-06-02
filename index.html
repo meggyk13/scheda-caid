@@ -284,16 +284,30 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
 .teacher-history-title-text{font-weight:600;color:var(--text);font-size:12px}
 .teacher-history-meta{font-size:11px;color:var(--text2);text-align:right;white-space:nowrap}
 /* ── Teacher bio popover ── */
-.bio-btn{background:none;border:none;padding:0;cursor:pointer;color:var(--accent-mid);font-size:13px;line-height:1;vertical-align:middle;margin-left:4px;position:relative;display:inline-flex;align-items:center}
+.bio-btn{background:none;border:none;padding:0;cursor:pointer;color:var(--accent-mid);font-size:13px;line-height:1;vertical-align:middle;margin-left:4px;display:inline-flex;align-items:center}
 .bio-btn:hover{color:var(--accent)}
-.bio-popover{display:none;position:absolute;z-index:50;left:50%;transform:translateX(-50%);bottom:calc(100% + 6px);width:220px;background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:10px 12px;box-shadow:var(--shadow-lg);font-size:12.5px;font-family:sans-serif;color:var(--text2);line-height:1.55;text-align:left}
-.bio-popover::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--border2)}
-.bio-popover::before{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--bg);z-index:1;margin-top:-1px}
-.bio-btn:hover .bio-popover,.bio-btn:focus .bio-popover{display:block}
-.bio-name{font-weight:700;color:var(--text);margin-bottom:4px;font-size:13px}
+/* ── Bio modal ── */
+#bio-modal .modal{max-width:380px}
+.bio-modal-header{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.bio-modal-avatar{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--border2);flex-shrink:0;background:var(--bg2)}
+.bio-modal-avatar-placeholder{width:64px;height:64px;border-radius:50%;background:var(--accent-light);border:2px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--accent-mid)}
+.bio-modal-meta{flex:1;min-width:0}
+.bio-modal-name{font-size:16px;font-weight:700;font-family:Georgia,serif;color:var(--text);margin-bottom:5px;line-height:1.25}
+.bio-modal-badges{display:flex;flex-wrap:wrap;gap:5px}
+.bio-modal-badge{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-family:sans-serif;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--bg2);border:1px solid var(--border2);color:var(--text2)}
+.bio-modal-divider{border:none;border-top:1px solid var(--border);margin:10px 0}
+.bio-modal-body{font-size:13.5px;font-family:sans-serif;color:var(--text2);line-height:1.7}
 
 /* ── Card thumbnail ── */
-.card-thumb{width:100%;height:130px;object-fit:cover;border-radius:var(--radius) var(--radius) 0 0;display:block;margin:-1.2rem -1.3rem 1rem;width:calc(100% + 2.6rem)}
+.card-thumb-sq{width:72px;height:72px;border-radius:var(--radius);object-fit:cover;flex-shrink:0;cursor:zoom-in;border:1px solid var(--border2)}
+.card-thumb-sq-placeholder{width:72px;height:72px;border-radius:var(--radius);flex-shrink:0;cursor:zoom-in;border:1px solid rgba(255,255,255,.15)}
+.card-top-row{display:flex;align-items:flex-start;gap:12px}
+.card-top-text{flex:1;min-width:0}
+/* ── Photo lightbox ── */
+#thumb-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center;cursor:zoom-out}
+#thumb-lightbox.open{display:flex}
+#thumb-lightbox img{max-width:90vw;max-height:80vh;border-radius:var(--radius-lg);box-shadow:0 8px 40px rgba(0,0,0,.5)}
+#thumb-lightbox-placeholder{width:260px;height:260px;border-radius:var(--radius-lg)}
 
 
 .req-intro{font-size:13.5px;color:var(--text2);font-family:sans-serif;margin-bottom:1.25rem;line-height:1.6}
@@ -557,6 +571,25 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
         </div>
         <div class="form-full"><label class="form-label">Anything else the stewards should know?</label><textarea class="form-textarea" id="fc-no" style="min-height:60px" placeholder="Special requirements, equipment, scheduling notes, etc."></textarea></div>
         <div class="form-divider">Optional extras</div>
+        <div class="form-full">
+          <label class="form-label">Your profile photo <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional, demo only)</span></label>
+          <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+            <div id="fc-profile-preview-wrap" style="flex-shrink:0">
+              <div id="fc-profile-placeholder" style="width:72px;height:72px;border-radius:50%;background:var(--accent-light);border:2px dashed var(--border2);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--accent-mid)"><i class="ti ti-user"></i></div>
+              <img id="fc-profile-img" src="" alt="" style="display:none;width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid var(--border2)">
+            </div>
+            <div style="flex:1;min-width:160px">
+              <label id="fc-profile-label" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;padding:8px 14px;border:1px dashed var(--border2);border-radius:var(--radius);background:var(--bg2);font-family:sans-serif;font-size:13px;color:var(--text2)" onmouseenter="this.style.borderColor='var(--accent-mid)'" onmouseleave="this.style.borderColor='var(--border2)'">
+                <i class="ti ti-camera" style="font-size:16px;color:var(--accent-mid)"></i>
+                <span id="fc-profile-label-txt">Choose photo…</span>
+                <input type="file" accept="image/*" style="display:none" onchange="handleProfileUpload(this)">
+              </label>
+              <button type="button" id="fc-profile-clear" onclick="clearProfileUpload()" style="display:none;margin-left:8px;background:none;border:none;cursor:pointer;font-size:12px;color:var(--text2);font-family:sans-serif;text-decoration:underline">Remove</button>
+              <div class="form-hint" style="margin-top:5px">Shown in your bio card. Not saved after refresh.</div>
+            </div>
+          </div>
+          <input type="hidden" id="fc-profile">
+        </div>
         <div class="form-full">
           <label class="form-label">Class thumbnail photo <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional, demo only)</span></label>
           <input type="hidden" id="fc-img">
@@ -1154,6 +1187,31 @@ body{font-family:Georgia,serif;background:var(--bg2);color:var(--text);min-heigh
   </div>
 </div>
 
+<!-- Photo lightbox -->
+<div id="thumb-lightbox" onclick="closeThumbLightbox()">
+  <img id="thumb-lightbox-img" src="" alt="" style="display:none">
+  <div id="thumb-lightbox-placeholder" style="display:none"></div>
+</div>
+
+<!-- Bio modal -->
+<div class="modal-bg" id="bio-modal" onclick="if(event.target===this)closeModal('bio-modal')">
+  <div class="modal" style="max-width:360px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text2);font-family:sans-serif">About the teacher</span>
+      <button class="modal-cancel" style="padding:4px 10px;font-size:12px" onclick="closeModal('bio-modal')">Close</button>
+    </div>
+    <div class="bio-modal-header">
+      <div id="bio-modal-avatar-wrap"></div>
+      <div class="bio-modal-meta">
+        <div class="bio-modal-name" id="bio-modal-name"></div>
+        <div class="bio-modal-badges" id="bio-modal-badges"></div>
+      </div>
+    </div>
+    <hr class="bio-modal-divider">
+    <div class="bio-modal-body" id="bio-modal-body"></div>
+  </div>
+</div>
+
 <!-- Dedicated print-only layer for My Schedule -->
 <div id="print-layer" style="display:none"></div>
 
@@ -1211,7 +1269,7 @@ const SEED_CLASSES=[
   {id:'16',title:`Armored Combat for Newcomers`,teacher:`Baldwin of Ashford`,email:'baldwin@example.com',date:'2026-11-07',time:'14:00',duration:90,format:'in-person',topic:'Combat',event:'Great Western War 2026',room:`List Field`,level:'Beginner',audience:'newcomer-friendly,adults-only',desc:`Never held a sword? This class covers SCA heavy combat basics: rules, safety, how to get authorized, and what loaner gear is available. Includes time in armor with experienced fighters.`,bring:`Comfortable clothes you can move in.`,fee:'',zoomLink:'',max:16,prereqs:'',bio:`Sir Baldwin is a knight in the West/Caid chivalry and has been fighting and teaching heavy combat for over twenty years. He runs newcomer fighter practices in the greater Los Angeles area.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'17',title:`Blackwork Embroidery Fundamentals`,teacherTitle:'',teacher:`Rayhana bint Estafanos al-Ábbas`,email:'rayhana@example.com',date:'2026-11-08',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`Blackwork is the elegant counted embroidery seen on Tudor portraits — geometric, reversible, and endlessly adaptable. This class teaches the basic double-running stitch and three starter patterns.`,bring:`Nothing — needles, fabric, and thread provided.`,fee:'$2 materials',zoomLink:'',max:12,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   {id:'18',title:`Heraldry Office Hours`,teacher:`Seamus mac Neill`,email:'seamus@example.com',date:'2026-11-08',time:'13:00',duration:60,format:'in-person',topic:'Heraldry',event:'Great Western War 2026',room:`A&S Tent`,desc:`Bring your device ideas, name questions, or just your curiosity. This is an open consulting session — Lord Seamus will work through submissions and questions one-on-one with anyone who stops by.`,bring:`Any sketches or notes you have on your device or name.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Lord Seamus is a pursuivant with Caid's College of Heralds and has been consulting on device submissions for eight years. He enjoys the obscure corners of the heraldic menagerie.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'19',title:`Building Your SCA Group Website`,teacherTitle:'Lord',teacher:`Liam Mor MacGregor`,email:'liam@example.com',date:'2026-08-16',time:'13:00',duration:60,format:'in-person',topic:'Arts & Administration',event:'Collegium 2026',room:`Grab Bag Rm 3`,level:'Beginner',audience:'newcomer-friendly',desc:`A practical walkthrough of setting up and maintaining a group website on the Caid web network. Covers the official WordPress framework, required pages, officer contacts, and keeping your site current. Great for new seneschals, webwrights, and officers.`,bring:`Laptop if you have one — not required.`,fee:'',zoomLink:'',max:20,prereqs:'',bio:`Lord Liam Mor MacGregor is the current Kingdom Webwright for Caid and has been building and maintaining SCA websites for over twelve years.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]}
+  {id:'19',title:`Building Your SCA Group Website`,teacherTitle:'Sir',teacher:`Liam Mor MacGregor`,email:'liam@example.com',date:'2026-08-16',time:'13:00',duration:60,format:'in-person',topic:'Arts & Administration',event:'Collegium 2026',room:`Grab Bag Rm 3`,level:'Beginner',audience:'newcomer-friendly',desc:`A practical walkthrough of setting up and maintaining a group website on the Caid web network. Covers the official WordPress framework, required pages, officer contacts, and keeping your site current. Great for new seneschals, webwrights, and officers.`,bring:`Laptop if you have one — not required.`,fee:'',zoomLink:'',max:20,prereqs:'',bio:`Sir Liam Mor MacGregor is a knight in Caid's chivalry and the current Kingdom Webwright. He has been building and maintaining SCA websites for over twelve years.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]}
 ];
 const APPS_SCRIPT_URL='YOUR_APPS_SCRIPT_URL_HERE';
 const IS_DEMO=APPS_SCRIPT_URL==='YOUR_APPS_SCRIPT_URL_HERE';
@@ -1232,7 +1290,7 @@ const dTeachers=[
   {email:'margery@example.com',name:'Fiachra an Doire',title:'',barony:'Dreiburgen',phone:'',bio:'Fiachra is a scribe and calligrapher with a particular interest in medieval ink recipes and writing materials.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
   {email:'gideon@example.com',name:'Gideon the Genuine',title:'',barony:'Dun Or',phone:'',bio:'Gideon has been shooting in the SCA for eighteen years and holds multiple Royal Round records.',peerages:['orderofthemark'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
   {email:'isabeau@example.com',name:'Isabeau de Bretagne',title:'Lady',barony:'Lyondemere',phone:'',bio:'Lady Isabeau has been dancing and teaching period dance in the SCA for seven years, with a focus on 15th and 16th century French and Italian forms.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
-  {email:'liam@example.com',name:'Liam Mor MacGregor',title:'Lord',barony:'Dreiburgen',phone:'',bio:'Lord Liam Mor MacGregor is the current Kingdom Webwright for Caid and has been building and maintaining SCA websites for over twelve years. He teaches web tools and digital skills for SCA groups.',peerages:[],royalPeer:false,sittingRoyalty:true,stepDownDate:'2027-05-01'}
+  {email:'liam@example.com',name:'Liam Mor MacGregor',title:'Sir',barony:'Dreiburgen',phone:'',bio:'Sir Liam Mor MacGregor is a knight in Caid\'s chivalry and the current Kingdom Webwright. He has been building and maintaining SCA websites for over twelve years.',peerages:['chivalry'],royalPeer:false,sittingRoyalty:true,stepDownDate:'2027-05-01'}
 ];
 const dRegs={
   '1':[
@@ -1625,10 +1683,45 @@ function showPanel(name,btn){
   if(name==='requests')initRequests();
 }
 function closeModal(id){document.getElementById(id).classList.remove('open');}
+function openThumbLightbox(el){
+  const type=el.dataset.lbType;
+  const val=el.dataset.lbVal;
+  const img=document.getElementById('thumb-lightbox-img');
+  const ph=document.getElementById('thumb-lightbox-placeholder');
+  if(type==='img'){
+    img.src=val;img.style.display='block';ph.style.display='none';
+  } else {
+    ph.style.background=val;ph.style.display='block';img.style.display='none';
+  }
+  document.getElementById('thumb-lightbox').classList.add('open');
+}
+function closeThumbLightbox(){document.getElementById('thumb-lightbox').classList.remove('open');}
+function openBioModal(btn){
+  const name=btn.dataset.bioName||'';
+  const badgeKeys=(btn.dataset.bioBadges||'').split('|').filter(Boolean);
+  const text=btn.dataset.bioText||'';
+  const imgSrc=btn.dataset.bioImg||'';
+  document.getElementById('bio-modal-name').textContent=name;
+  const avatarWrap=document.getElementById('bio-modal-avatar-wrap');
+  if(imgSrc){
+    avatarWrap.innerHTML='<img class="bio-modal-avatar" src="'+escH(imgSrc)+'" alt="">';
+  } else {
+    const initials=name.split(' ').map(w=>w[0]||'').filter(Boolean).slice(0,2).join('').toUpperCase();
+    avatarWrap.innerHTML='<div class="bio-modal-avatar-placeholder">'+escH(initials)+'</div>';
+  }
+  const badgeEl=document.getElementById('bio-modal-badges');
+  badgeEl.innerHTML=badgeKeys.map(k=>{
+    if(k==='royalty')return '<span class="bio-modal-badge">\u{1F451} Royalty</span>';
+    const pd=PEERAGES.find(x=>x.key===k);
+    return pd?'<span class="bio-modal-badge">'+pd.emoji+' '+escH(pd.label)+'</span>':'';
+  }).filter(Boolean).join('');
+  document.getElementById('bio-modal-body').textContent=text;
+  document.getElementById('bio-modal').classList.add('open');
+}
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 1, 2026 · 1:20 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:6px"><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:4px 12px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 1, 2026 · 7:36 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:6px"><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:4px 12px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){
@@ -1739,16 +1832,21 @@ function rC(){
     const ro=c.roster&&c.roster.length?'<button class="roster-toggle" onclick="toggleR(&apos;'+roId+'&apos;)"><i class="ti ti-users" style="font-size:12px"></i> See who\'s registered ('+c.registrationCount+')</button><div class="roster-list" id="'+roId+'"><ul>'+c.roster.map(n=>'<li>'+n+'</li>').join('')+'</ul>'+(c.waitlistRoster&&c.waitlistRoster.length?'<div class="roster-wl-title">Waitlist</div><ul>'+c.waitlistRoster.map(w=>'<li>#'+w.pos+' '+w.name+'</li>').join('')+'</ul>':'')+'</div>':'';
     const du='';
     const duPill=c.duration?'<span class="logistics-pill"><i class="ti ti-clock"></i> '+(c.duration<60?c.duration+'min':Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h')+'</span>':'';
-    const thumb=c.imageUrl?'<img class="card-thumb" src="'+c.imageUrl+'" alt="" onerror="this.style.display=\'none\'">':'';
+    const thumbColor=getTopicColor(c.topic);
+    const thumb=c.imageUrl
+      ?'<img class="card-thumb-sq" src="'+c.imageUrl+'" alt="" data-lb-type="img" data-lb-val="'+escH(c.imageUrl)+'" onclick="openThumbLightbox(this)">'
+      :'<div class="card-thumb-sq-placeholder" style="background:'+thumbColor+'" data-lb-type="color" data-lb-val="'+thumbColor+'" onclick="openThumbLightbox(this)" title="'+escH(c.topic||'')+'"></div>';
     const tRecord=allTeachers[(c.email||'').toLowerCase()];
     const royaltyTip='Sitting Royalty'+(tRecord&&tRecord.stepDownDate?' · steps down '+tRecord.stepDownDate:'');
     const displayTeacher=(c.teacherTitle?c.teacherTitle+' ':'')+c.teacher;
-    const pBadges=tRecord?[
-      ...(tRecord.peerages||[]).map(p=>{const pd=PEERAGES.find(x=>x.key===p);return pd?'<span class="badge-emoji" data-tip="'+pd.label+'">'+pd.emoji+'</span>':'';}),
-      tRecord.sittingRoyalty?'<span class="badge-emoji" data-tip="'+royaltyTip+'">👑</span>':''
-    ].filter(Boolean).join(''):'';
+    const pBadgeKeys=tRecord?[
+      ...(tRecord.peerages||[]),
+      tRecord.sittingRoyalty?'royalty':''
+    ].filter(Boolean):[];
+    const pBadges=tRecord?pBadgeKeys.map(k=>{if(k==='royalty')return '<span class="badge-emoji" data-tip="'+royaltyTip+'">\u{1F451}</span>';const pd=PEERAGES.find(x=>x.key===k);return pd?'<span class="badge-emoji" data-tip="'+pd.label+'">'+pd.emoji+'</span>':'';}).filter(Boolean).join(''):'';
     const pBadgeHtml=pBadges?'<div style="display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 6px">'+pBadges+'</div>':'';
-    const bioBtn=c.bio||pBadges?'<button class="bio-btn" tabindex="0" aria-label="Teacher bio"><i class="ti ti-info-circle"></i><div class="bio-popover"><div class="bio-name">'+displayTeacher+'</div>'+pBadgeHtml+(c.bio||'')+'</div></button>':'';
+    const teacherImg=tRecord&&tRecord.imageUrl?tRecord.imageUrl:'';
+    const bioBtn=c.bio||pBadges?'<button class="bio-btn" tabindex="0" aria-label="Teacher bio" data-bio-name="'+escH(displayTeacher)+'" data-bio-badges="'+escH(pBadgeKeys.join('|'))+'" data-bio-text="'+escH(c.bio||'')+'" data-bio-img="'+escH(teacherImg)+'" onclick="openBioModal(this)"><i class="ti ti-info-circle"></i></button>':'';
     // Consolidated tag row
     const allTags=[];
     if(c.level)c.level.split(',').forEach(l=>allTags.push('<span class="card-tag level">'+l+'</span>'));
@@ -1766,8 +1864,8 @@ function rC(){
     const evCancelledC=evObjC&&evObjC.cancelled;
     const evDisplayC=evCancelledC?'<s>'+escH(c.event)+'</s> <span style="color:var(--red-text);font-size:10px;font-weight:600">Cancelled</span>':escH(c.event||'');
     const locationStr=cancelled?(c.event?evDisplayC:escH(c.room)):(c.event?evDisplayC:'')+(c.event&&c.room?' · ':'')+escH(c.room||'');
-    return '<div class="class-card'+(reg?' registered':'')+(cancelled?' cancelled-card':'')+'">'  +thumb
-      +'<div class="card-top"><div class="card-title">'+c.title+'</div><span class="tag '+c.format+'">'+(c.format==='zoom'?'Online':'In person')+'</span></div>'
+    return '<div class="class-card'+(reg?' registered':'')+(cancelled?' cancelled-card':'')+'">'  
+      +'<div class="card-top-row">'+thumb+'<div class="card-top-text"><div class="card-top"><div class="card-title">'+c.title+'</div><span class="tag '+c.format+'">'+(c.format==='zoom'?'Online':'In person')+'</span></div></div></div>'
       +'<div class="card-meta">'
       +'<span class="meta-teacher">'+(tRecord&&tRecord.sittingRoyalty?'<span class="badge-emoji" data-tip="'+royaltyTip+'" style="margin-right:3px">👑</span>':'<i class="ti ti-user" style="color:var(--accent-mid)"></i> ')+displayTeacher+bioBtn+'</span>'
       +(c.date?'<span><i class="ti ti-calendar"></i> '+fD(c.date)+' · '+fT(c.time)+'</span>':'')
@@ -2497,7 +2595,8 @@ function previewCard(){
   const kids=document.getElementById('fc-aud-kids')?.checked;
   const adults=document.getElementById('fc-aud-adults')?.checked;
 
-  const thumb=imageUrl?'<img style="width:100%;height:130px;object-fit:cover;display:block" src="'+imageUrl+'" alt="">':'';
+  const thumbColor2=getTopicColor(topic);
+  const thumb=imageUrl?'<img style="width:100%;height:130px;object-fit:cover;display:block" src="'+imageUrl+'" alt="">':'<div style="width:100%;height:130px;background:'+thumbColor2+';display:block"></div>';
   const formatTag=format==='zoom'?'<span class="tag zoom">Online</span>':'<span class="tag in-person">In person</span>';
   const fp=fee?'<span class="logistics-pill fee"><i class="ti ti-coin"></i> '+escH(fee)+'</span>':'<span class="logistics-pill free"><i class="ti ti-check"></i> Free</span>';
   const bp=bring?'<span class="logistics-pill"><i class="ti ti-backpack"></i> Bring: '+escH(bring)+'</span>':'';
@@ -2505,7 +2604,7 @@ function previewCard(){
   const duPill='<span class="logistics-pill"><i class="ti ti-clock"></i> '+(duNum<60?duNum+'min':Math.floor(duNum/60)+(duNum%60?'.5':'')+'h')+'</span>';
   const spotsPill=max?'<span class="logistics-pill"><i class="ti ti-users"></i> Max '+max+'</span>':'<span class="logistics-pill"><i class="ti ti-users"></i> Open enrollment</span>';
   const topicPill=topic?'<span class="card-meta-topic" style="font-size:11px;font-family:sans-serif;padding:1px 8px;border-radius:10px;background:var(--bg2);border:1px solid var(--border2);color:var(--text2);width:fit-content">'+escH(topic)+'</span>':'';
-  const bioBtn=bio?'<button class="bio-btn" tabindex="0" aria-label="Teacher bio"><i class="ti ti-info-circle"></i><div class="bio-popover"><div class="bio-name">'+escH(displayTeacher)+'</div>'+escH(bio)+'</div></button>':'';
+  const bioBtn=bio?'<button class="bio-btn" tabindex="0" aria-label="Teacher bio" data-bio-name="'+escH(displayTeacher)+'" data-bio-badges="" data-bio-text="'+escH(bio)+'" onclick="openBioModal(this)"><i class="ti ti-info-circle"></i></button>':'';
   const tags=[];
   levels.forEach(l=>tags.push('<span class="card-tag level">'+escH(l)+'</span>'));
   if(newcomer)tags.push('<span class="card-tag newcomer"><i class="ti ti-star" style="font-size:10px"></i> Newcomers</span>');
@@ -2542,6 +2641,32 @@ function clearThumbUpload(){
   if(fileInput)fileInput.value='';
 }
 
+function handleProfileUpload(input){
+  const file=input.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const dataUrl=e.target.result;
+    document.getElementById('fc-profile').value=dataUrl;
+    document.getElementById('fc-profile-img').src=dataUrl;
+    document.getElementById('fc-profile-img').style.display='block';
+    document.getElementById('fc-profile-placeholder').style.display='none';
+    document.getElementById('fc-profile-label-txt').textContent=file.name;
+    document.getElementById('fc-profile-clear').style.display='inline';
+  };
+  reader.readAsDataURL(file);
+}
+function clearProfileUpload(){
+  document.getElementById('fc-profile').value='';
+  document.getElementById('fc-profile-img').src='';
+  document.getElementById('fc-profile-img').style.display='none';
+  document.getElementById('fc-profile-placeholder').style.display='flex';
+  document.getElementById('fc-profile-label-txt').textContent='Choose photo…';
+  document.getElementById('fc-profile-clear').style.display='none';
+  const fi=document.querySelector('#fc-profile-label input[type=file]');
+  if(fi)fi.value='';
+}
+
 function lookupTeacher(){
   const email=(document.getElementById('fc-lookup-email')?.value||'').toLowerCase().trim();
   const result=document.getElementById('fc-lookup-result');
@@ -2560,6 +2685,15 @@ function lookupTeacher(){
     if(t.phone)document.getElementById('fc-ph').value=t.phone;
     if(t.bio)document.getElementById('fc-bio').value=t.bio;
     PEERAGES.forEach(p=>{const cb=document.getElementById('fc-p-'+p.key);if(cb)cb.checked=(t.peerages||[]).includes(p.key);});
+    // Pre-fill profile photo if teacher has one
+    if(t.imageUrl){
+      document.getElementById('fc-profile').value=t.imageUrl;
+      document.getElementById('fc-profile-img').src=t.imageUrl;
+      document.getElementById('fc-profile-img').style.display='block';
+      document.getElementById('fc-profile-placeholder').style.display='none';
+      document.getElementById('fc-profile-label-txt').textContent='Photo loaded';
+      document.getElementById('fc-profile-clear').style.display='inline';
+    }
 
     const displayName=(t.title?t.title+' ':'')+t.name;
     result.innerHTML='<div class="lookup-welcome"><div class="lookup-welcome-icon">🎉</div><div><div class="lookup-welcome-name">'+escH(displayName)+'</div><div class="lookup-welcome-msg">Great to have you back! Profile loaded — past classes are below. Hit &quot;Teach again&quot; to pre-fill the form.</div></div></div>';
@@ -3767,21 +3901,25 @@ let dReqPid = 2000;
 
 // ── Managed topics ──
 let managedTopics = [
-  {name:'Fiber Arts',hidden:false},
-  {name:'Costuming',hidden:false},
-  {name:'Dance',hidden:false},
-  {name:'History',hidden:false},
-  {name:'Society Skills',hidden:false},
-  {name:'Bardic Arts',hidden:false},
-  {name:'Scribal Arts',hidden:false},
-  {name:'Cooking & Brewing',hidden:false},
-  {name:'Combat',hidden:false},
-  {name:'Archery',hidden:false},
-  {name:'Heraldry',hidden:false},
-  {name:'Crafts',hidden:false},
-  {name:'Arts & Administration',hidden:false},
-  {name:'Other',hidden:false},
+  {name:'Fiber Arts',hidden:false,color:'#7a5c8a'},
+  {name:'Costuming',hidden:false,color:'#8a6040'},
+  {name:'Dance',hidden:false,color:'#7a3d6b'},
+  {name:'History',hidden:false,color:'#5a6b3a'},
+  {name:'Society Skills',hidden:false,color:'#3a6b6b'},
+  {name:'Bardic Arts',hidden:false,color:'#6b4a7a'},
+  {name:'Scribal Arts',hidden:false,color:'#4a6741'},
+  {name:'Cooking & Brewing',hidden:false,color:'#7a5a2a'},
+  {name:'Combat',hidden:false,color:'#6b3030'},
+  {name:'Archery',hidden:false,color:'#3d6b5a'},
+  {name:'Heraldry',hidden:false,color:'#2a4a7a'},
+  {name:'Crafts',hidden:false,color:'#4a6b7a'},
+  {name:'Arts & Administration',hidden:false,color:'#5a4a6b'},
+  {name:'Other',hidden:false,color:'#3a5278'},
 ];
+function getTopicColor(topicName){
+  const t=managedTopics.find(x=>x.name===topicName);
+  return (t&&t.color)||'#3a5278';
+}
 function getVisibleTopics(){return managedTopics.filter(t=>!t.hidden).map(t=>t.name);}
 function populateTopicSelect(selId, includeBlank, includeOther, currentVal){
   const sel=document.getElementById(selId);if(!sel)return;
@@ -3830,6 +3968,7 @@ function renderTopicsList(){
   if(!managedTopics.length){el.innerHTML='<div class="no-items">No topics yet.</div>';return;}
   el.innerHTML=managedTopics.map((t,i)=>'<div style="display:flex;gap:8px;align-items:center;padding:6px 10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius)">'
     +(t.hidden?'<span style="font-size:11px;font-family:sans-serif;color:var(--text2);font-style:italic;min-width:50px">(hidden)</span>':'<span style="min-width:50px"></span>')
+    +'<input type="color" value="'+(t.color||'#3a5278')+'" title="Card color" style="width:32px;height:32px;border:1px solid var(--border2);border-radius:var(--radius);padding:2px;cursor:pointer;flex-shrink:0;background:none" onchange="setTopicColor('+i+',this.value)">'
     +'<input class="modal-input" style="flex:1" value="'+escH(t.name)+'" onchange="renameTopic('+i+',this.value)">'
     +'<button class="print-btn" style="font-size:11px;padding:4px 10px;white-space:nowrap" onclick="toggleTopicHidden('+i+')">'+(t.hidden?'<i class="ti ti-eye"></i> Show':'<i class="ti ti-eye-off"></i> Hide')+'</button>'
     +'<button class="reject-btn" style="padding:4px 10px;font-size:11px;white-space:nowrap" onclick="deleteTopic('+i+')"><i class="ti ti-trash"></i></button>'
@@ -3840,7 +3979,7 @@ function addTopic(){
   const inp=document.getElementById('new-topic-input');
   const name=inp.value.trim();if(!name)return;
   if(managedTopics.some(t=>t.name.toLowerCase()===name.toLowerCase())){alert('That topic already exists.');return;}
-  managedTopics.push({name,hidden:false});
+  managedTopics.push({name,hidden:false,color:'#3a5278'});
   inp.value='';
   renderTopicsList();populateAllTopicSelects();
 }
@@ -3848,6 +3987,10 @@ function renameTopic(i,name){
   name=name.trim();if(!name)return;
   managedTopics[i].name=name;
   populateAllTopicSelects();
+}
+function setTopicColor(i,color){
+  managedTopics[i].color=color;
+  rC(); // re-render cards so placeholders update live
 }
 function toggleTopicHidden(i){
   managedTopics[i].hidden=!managedTopics[i].hidden;

@@ -231,15 +231,100 @@ a{color:#1A3F7A}
     </div>
   </div>
 
-  <!-- Entry: June 1 -->
+  <!-- Entry: June 1 evening -->
   <div class="entry">
     <div class="entry-header" onclick="toggle(this)">
       <span class="version-badge">June 1</span>
       <span class="entry-date">Latest update</span>
-      <span class="entry-count">35 changes</span>
+      <span class="entry-count">9 changes</span>
       <i class="ti ti-chevron-right chevron open"></i>
     </div>
     <div class="changes open">
+
+      <div class="change-item">
+        <div class="change-what">Bio card now opens as a modal instead of a hover tooltip</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">The old hover popover didn't work on touch devices — iOS has no hover state, so it would fire once on tap or not at all. The ℹ button now opens a proper modal that works reliably on phones and tablets.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Tap the ℹ icon next to any teacher name in the catalog. The modal shows their name, peerage badges with emoji, and bio. Tap outside or hit Close to dismiss.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Bio modal shows initials avatar and peerage emoji badges</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">The modal now has a round avatar placeholder showing the teacher's initials (or their photo if one is uploaded), with peerage badges showing the actual emoji — 🌿 Laurel, 🦢 Pelican, 🛡️ Chivalry, etc. — instead of plain text labels.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Teacher profile photo uploader added to Teach a Class form</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Teachers can now upload a round profile photo when submitting a class. The photo appears in the bio modal when someone taps their ℹ button. For demo purposes, the photo is stored in memory and resets on refresh.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Go to Teach a Class, scroll to Optional extras, and upload a photo under Your profile photo. A round preview appears immediately.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Class cards now show a topic-colored square thumbnail</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Each card now has a 72×72 colored square on the left sized for a portrait photo. The color is determined by the class topic and is consistent across all cards with the same topic. Real uploaded photos take priority when present.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Tap any colored square on a class card to expand it in a lightbox overlay. Tap anywhere to dismiss.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Topic color selector added in Admin → Topics</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Each topic in the admin Topics tab now has a color swatch you can click to change. The catalog card placeholders update live as you pick colors — no save required.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Go to Admin → Topics and click any colored square. Change the color and switch back to the Catalog tab to see the cards update.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Sir Liam Mor MacGregor updated to knight</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Liam's title has been corrected to Sir and his peerage updated to Chivalry. His bio now reflects his knighthood alongside his role as Kingdom Webwright.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">iOS zoom bug addressed</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">iOS Safari auto-zooms on any input field with a font size below 16px. Input and select elements now use 16px on mobile to prevent this.</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Entry: June 1 morning -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="version-badge">June 1</span>
+      <span class="entry-date">Earlier today</span>
+      <span class="entry-count">35 changes</span>
+      <i class="ti ti-chevron-right chevron open"></i>
+    </div>
+    <div class="changes">
 
       <div class="change-item">
         <div class="change-what">Sitting Royalty and Royal Peer are now fully independent</div>
