@@ -19,6 +19,7 @@
   --radius:6px;--radius-lg:10px;
   --green-bg:#E0F0F0;--green-text:#1A5F5F;--green-border:#6ABABA;
   --red-bg:#F5E8E4;--red-text:#8B2E18;--red-border:#D9917A;
+  --amber-bg:#FFF8E1;--amber-text:#7A5000;--amber-border:#FFD54F;
   --shadow:0 2px 8px rgba(10,30,80,.10);
   --shadow-lg:0 6px 24px rgba(10,30,80,.14);
 }
@@ -27,6 +28,9 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
 
 /* ── Topbar ── */
 .topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:1rem 1.5rem;background:var(--accent);border-bottom:3px solid #fff}
+.topbar-right{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.nav-divider{width:1px;height:20px;background:rgba(255,255,255,.2);align-self:center;flex-shrink:0;margin:0 2px}
+@media(max-width:700px){.topbar{flex-direction:column;align-items:flex-start}.topbar-right{width:100%}.nav{flex-wrap:wrap;width:100%}}
 .brand{display:flex;flex-direction:column;gap:0}
 .brand-name{font-size:30px;font-weight:700;font-family:Lora,Georgia,serif;color:#fff;letter-spacing:.04em;line-height:1;display:flex;align-items:baseline;gap:10px}
 .brand-name .brand-caidus{font-size:12px;font-weight:400;letter-spacing:.22em;opacity:.55;font-family:sans-serif}
@@ -116,6 +120,11 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
 .empty-sched{text-align:center;padding:3rem 1rem;color:var(--text2);font-family:sans-serif;font-size:14px;line-height:1.8}
 .sched-item{display:grid;grid-template-columns:90px 1fr auto;gap:12px;align-items:start;padding:1rem 1.1rem;border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:10px;background:var(--bg);box-shadow:var(--shadow)}
 .sched-item-zoom{border-left:4px solid var(--accent-mid);background:var(--accent-light)}.sched-item-past{opacity:.45;filter:grayscale(.4)}
+.sched-item-vol{border-left:4px solid var(--green-text);background:var(--green-bg)}
+.vol-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-family:sans-serif;padding:2px 8px;border-radius:10px;background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);font-weight:600;margin-bottom:4px}
+.vol-unverified{background:var(--amber-bg);color:var(--amber-text);border-color:var(--amber-border)}
+.ticket-chip-sm{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-family:sans-serif;padding:2px 7px;border-radius:10px;background:var(--gold-light);color:var(--accent);border:1px solid var(--gold-mid);font-weight:700}
+.ticket-chip-sm.double{background:#FFF3E0;color:#BF360C;border-color:#FFCC80}
 .sched-zoom-btn{display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 16px;border-radius:var(--radius);background:var(--bg2);color:var(--text2);font-size:13px;font-family:sans-serif;font-weight:500;text-decoration:none;border:1px solid var(--border2);cursor:pointer;transition:all .15s}
 .sched-zoom-btn:hover{background:var(--bg3);color:var(--text);border-color:var(--border2)}
 .sched-time{font-size:13px;color:var(--accent-mid);font-family:sans-serif;font-weight:600;padding-top:2px}
@@ -215,11 +224,17 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
 .lg-result{margin-top:8px;font-size:12px;font-family:sans-serif;color:var(--text2);word-break:break-all}
 .lg-result a{color:var(--accent)}
 .copy-btn{font-size:11px;padding:2px 8px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg);cursor:pointer;font-family:sans-serif;margin-left:6px}
-.grid-wrap{overflow-x:auto;margin-top:1rem}
-.sg{border-collapse:collapse;font-family:sans-serif;font-size:12px;min-width:700px;width:100%}
-.sg th{background:var(--bg2);padding:6px 8px;border:1px solid var(--border2);text-align:left;font-weight:600;color:var(--text2);white-space:nowrap}
-.sg td{padding:4px 6px;border:1px solid var(--border);vertical-align:top;min-width:120px}
-.sg .sgtime{font-weight:600;color:var(--text2);white-space:nowrap;background:var(--bg2)}
+.grid-wrap{overflow-x:auto;margin-top:1rem;-webkit-overflow-scrolling:touch}
+.sg{border-collapse:collapse;font-family:sans-serif;font-size:12px;width:auto;min-width:100%}
+.sg th{background:var(--bg2);padding:6px 8px;border:1px solid var(--border2);text-align:left;font-weight:600;color:var(--text2);white-space:nowrap;min-width:130px}
+.sg th:first-child{position:sticky;left:0;z-index:2;min-width:60px}
+.sg td{padding:4px 6px;border:1px solid var(--border);vertical-align:top;min-width:130px}
+.sg .sgtime{font-weight:600;color:var(--text2);white-space:nowrap;background:var(--bg2);position:sticky;left:0;z-index:1}
+.ev-img-drop{border:2px dashed var(--border2);border-radius:var(--radius);padding:14px;text-align:center;cursor:pointer;font-family:sans-serif;font-size:12px;color:var(--text2);transition:border-color .15s,background .15s;background:var(--bg)}
+.ev-img-drop:hover,.ev-img-drop.dragover{border-color:var(--accent-mid);background:var(--accent-light);color:var(--accent)}
+.ev-img-preview{display:none;position:relative;width:120px}
+.ev-img-preview img{width:120px;height:120px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--border2);display:block}
+.ev-img-clear{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
 .gc{border-radius:4px;padding:4px 7px;font-size:11px;margin-bottom:3px;line-height:1.4;background:var(--accent-light);color:var(--accent)}
 .gc.ct{border-left:3px solid #C8820A}.gc.ch{border-left:3px solid var(--red-text)}.gc.cb{border-left:3px solid var(--red-text);background:var(--red-bg);color:var(--red-text)}
 .grid-legend{display:flex;gap:12px;font-size:11px;font-family:sans-serif;color:var(--text2);margin-bottom:8px;flex-wrap:wrap}
@@ -396,15 +411,18 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
   <div class="topbar">
     <div class="brand">
       <div class="brand-name">SCHEDA <span class="brand-caidus">· CAIDUS</span></div>
-      <div class="brand-tag">Class scheduler & catalog</div>
+      <div class="brand-tag">Kingdom of Caid &mdash; Event Scheduling</div>
     </div>
-    <nav class="nav">
-      <button class="nav-btn active" onclick="showPanel('catalog',this)"><i class="ti ti-menu-2"></i> Catalog</button>
-      <button class="nav-btn" onclick="showPanel('schedule',this)"><i class="ti ti-calendar"></i> My Schedule <span class="badge" id="sched-count">0</span></button>
-      <button class="nav-btn" id="nav-requests" onclick="showPanel('requests',this)"><i class="ti ti-heart"></i> Class Requests</button>
-      <button class="nav-btn" id="nav-submit" onclick="showPanel('submit',this)"><i class="ti ti-plus"></i> Teach a Class</button>
-      <button class="nav-btn" id="nav-admin" onclick="handleAdminNav(this)" title="Admin"><i class="ti ti-settings"></i></button>
-    </nav>
+    <div class="topbar-right">
+      <nav class="nav">
+        <button class="nav-btn active" onclick="showPanel('catalog',this)"><i class="ti ti-menu-2"></i> Catalog</button>
+        <button class="nav-btn" onclick="showPanel('schedule',this)"><i class="ti ti-calendar"></i> My Schedule <span class="badge" id="sched-count">0</span></button>
+        <button class="nav-btn" id="nav-requests" onclick="showPanel('requests',this)"><i class="ti ti-heart"></i> Class Requests</button>
+        <button class="nav-btn" id="nav-submit" onclick="showPanel('submit',this)"><i class="ti ti-plus"></i> Teach a Class</button>
+        <button class="nav-btn" onclick="showPanel('volunteers',this)"><i class="ti ti-list-check"></i> Volunteers</button>
+      </nav>
+      <button class="nav-btn" id="nav-admin" onclick="handleAdminNav(this)" title="Admin" style="border-color:rgba(255,255,255,.15);opacity:.7;flex-shrink:0"><i class="ti ti-settings"></i></button>
+    </div>
   </div>
   <div class="main">
     <div id="panel-catalog" class="panel active">
@@ -429,20 +447,29 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
       </div>
       <div id="cat-see-all-btn" style="display:none;margin-bottom:0.75rem"><button onclick="catClearEvent()" style="padding:7px 14px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap"><i class="ti ti-x"></i> Clear all filters</button></div>
       <div id="cat-event-banner" style="display:none;margin-bottom:1.25rem;padding:13px 16px;background:var(--accent-light);border:1px solid var(--border2);border-radius:var(--radius-lg)">
-        <div id="cat-ev-name" style="font-size:20px;font-weight:700;font-family:Lora,Georgia,serif;color:var(--accent);line-height:1.2;margin-bottom:6px"></div>
-        <div style="display:flex;flex-direction:column;gap:3px;margin-bottom:10px">
-          <div id="cat-ev-date" style="font-size:13px;font-family:sans-serif;color:var(--text2);display:none;align-items:center;gap:5px"><i class="ti ti-calendar" style="font-size:13px"></i> <span></span></div>
-          <div id="cat-ev-time" style="font-size:13px;font-family:sans-serif;color:var(--text2);display:none;align-items:center;gap:5px"><i class="ti ti-clock" style="font-size:13px"></i> <span></span></div>
-          <div id="cat-ev-addr" style="font-size:13px;font-family:sans-serif;color:var(--text2);display:none;align-items:center;gap:5px"><i class="ti ti-map-pin" style="font-size:13px"></i> <span></span></div>
-        </div>
-        <div style="display:flex;gap:7px;flex-wrap:wrap">
-          <a id="cat-ev-link" href="#" target="_blank" style="display:none;align-items:center;gap:5px;padding:6px 13px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg);font-size:13px;font-family:sans-serif;color:var(--accent);text-decoration:none;white-space:nowrap;font-weight:500"><i class="ti ti-info-circle"></i> Event info</a>
-          <a id="cat-ev-dir" href="#" target="_blank" style="display:none;align-items:center;gap:5px;padding:6px 13px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg);font-size:13px;font-family:sans-serif;color:var(--accent);text-decoration:none;white-space:nowrap;font-weight:500"><i class="ti ti-map"></i> Directions</a>
+        <div style="display:flex;gap:14px;align-items:flex-start">
+          <div id="cat-ev-thumb-wrap" style="display:none;flex-shrink:0">
+            <img id="cat-ev-thumb" src="" alt="" style="width:120px;height:120px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--border2);display:none">
+            <div id="cat-ev-thumb-ph" style="display:none;width:120px;height:120px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg3);color:var(--accent);font-size:40px;font-weight:700;font-family:Lora,Georgia,serif;align-items:center;justify-content:center"></div>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div id="cat-ev-name" style="font-size:20px;font-weight:700;font-family:Lora,Georgia,serif;color:var(--accent);line-height:1.2;margin-bottom:6px"></div>
+            <div style="display:flex;flex-direction:column;gap:3px;margin-bottom:10px">
+              <div id="cat-ev-date" style="font-size:13px;font-family:sans-serif;color:var(--text2);display:none;align-items:center;gap:5px"><i class="ti ti-calendar" style="font-size:13px"></i> <span></span></div>
+              <div id="cat-ev-time" style="font-size:13px;font-family:sans-serif;color:var(--text2);display:none;align-items:center;gap:5px"><i class="ti ti-clock" style="font-size:13px"></i> <span></span></div>
+              <div id="cat-ev-addr" style="font-size:13px;font-family:sans-serif;color:var(--text2);display:none;align-items:center;gap:5px"><i class="ti ti-map-pin" style="font-size:13px"></i> <span></span></div>
+            </div>
+            <div style="display:flex;gap:7px;flex-wrap:wrap">
+              <a id="cat-ev-link" href="#" target="_blank" style="display:none;align-items:center;gap:5px;padding:6px 13px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg);font-size:13px;font-family:sans-serif;color:var(--accent);text-decoration:none;white-space:nowrap;font-weight:500"><i class="ti ti-info-circle"></i> Event info</a>
+              <a id="cat-ev-dir" href="#" target="_blank" style="display:none;align-items:center;gap:5px;padding:6px 13px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg);font-size:13px;font-family:sans-serif;color:var(--accent);text-decoration:none;white-space:nowrap;font-weight:500"><i class="ti ti-map"></i> Directions</a>
+            </div>
+          </div>
         </div>
       </div>
       <div id="cat-grid-wrap" style="display:none;margin-bottom:1.5rem">
         <div class="grid-wrap"><table class="sg" id="cat-grid-table"></table></div>
       </div>
+      <div id="cat-cards-label" style="display:none;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text2);font-family:sans-serif;margin-bottom:10px">All classes</div>
       <div class="class-grid" id="cg"></div>
     </div>
     <div id="panel-schedule" class="panel">
@@ -698,6 +725,14 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
 
       <div class="req-grid" id="req-grid"></div>
     </div>
+    <div id="panel-volunteers" class="panel">
+      <div style="text-align:center;padding:4rem 1.5rem;max-width:480px;margin:0 auto">
+        <div style="font-size:48px;margin-bottom:1rem">🛡️</div>
+        <div style="font-size:22px;font-weight:600;font-family:Lora,Georgia,serif;color:var(--accent);margin-bottom:10px">Volunteer Scheduling — Coming Soon</div>
+        <div style="font-size:14px;font-family:sans-serif;color:var(--text2);line-height:1.7">Shift sign-ups, day-of coordination, and raffle ticket tracking — fully integrated into Scheda. Volunteers will be able to browse open shifts, claim them from their phone, and verify completion with a simple PIN. Coordinators get a live dashboard showing fill rates across every department.</div>
+      </div>
+    </div>
+
     <div id="panel-admin" class="panel">
       <div id="admin-lock-wrap">
         <div class="admin-lock">
@@ -769,7 +804,7 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
                   <input class="lg-input" id="lg-rooms" type="number" min="1" max="50" placeholder="e.g. 4">
                   <span style="font-size:11px;font-family:sans-serif;color:var(--text2);font-style:italic">Generates Room 1, Room 2… You can rename them after.</span>
                 </div>
-                <!-- Row 4: Address and URL -->
+                <!-- Row 4: Address, URL, and Image -->
                 <div style="display:flex;gap:10px;flex-wrap:wrap">
                   <div style="display:flex;flex-direction:column;gap:4px;flex:2;min-width:200px">
                     <label class="form-label" style="font-size:11px">Venue address (optional)</label>
@@ -778,6 +813,19 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
                   <div style="display:flex;flex-direction:column;gap:4px;flex:2;min-width:200px">
                     <label class="form-label" style="font-size:11px">Event info link (optional)</label>
                     <input class="lg-input" id="lg-url" type="url" placeholder="https://… link to full event page">
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:4px;flex:2;min-width:200px">
+                    <label class="form-label" style="font-size:11px">Cover photo (optional)</label>
+                    <div class="ev-img-preview" id="lg-img-preview">
+                      <img id="lg-img-preview-img" src="" alt="">
+                      <button class="ev-img-clear" onclick="clearEvImg('lg')" title="Remove image">✕</button>
+                    </div>
+                    <div class="ev-img-drop" id="lg-img-drop" onclick="document.getElementById('lg-img-file').click()" ondragover="evImgDragOver(event,'lg')" ondragleave="evImgDragLeave('lg')" ondrop="evImgDrop(event,'lg')">
+                      <i class="ti ti-photo" style="font-size:20px;display:block;margin:0 auto 5px;opacity:.4"></i>
+                      Click or drag
+                    </div>
+                    <input type="file" id="lg-img-file" accept="image/*" style="display:none" onchange="evImgFileChange(event,'lg')">
+                    <input type="hidden" id="lg-image-url">
                   </div>
                 </div>
                 <div style="display:flex;gap:8px;align-items:center">
@@ -831,6 +879,19 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
                   <div style="display:flex;flex-direction:column;gap:4px">
                     <label class="form-label" style="font-size:11px">Event info link</label>
                     <input class="lg-input" id="ev-url" type="url" placeholder="http://places.sca-caid.org/caid/" style="width:100%">
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:4px">
+                    <label class="form-label" style="font-size:11px">Event cover photo <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+                    <div class="ev-img-preview" id="ev-img-preview">
+                      <img id="ev-img-preview-img" src="" alt="">
+                      <button class="ev-img-clear" onclick="clearEvImg('ev')" title="Remove image">✕</button>
+                    </div>
+                    <div class="ev-img-drop" id="ev-img-drop" onclick="document.getElementById('ev-img-file').click()" ondragover="evImgDragOver(event,'ev')" ondragleave="evImgDragLeave('ev')" ondrop="evImgDrop(event,'ev')">
+                      <i class="ti ti-photo" style="font-size:20px;display:block;margin:0 auto 5px;opacity:.4"></i>
+                      Click or drag an image here
+                    </div>
+                    <input type="file" id="ev-img-file" accept="image/*" style="display:none" onchange="evImgFileChange(event,'ev')">
+                    <input type="hidden" id="ev-image-url">
                   </div>
                 </div>
                 <div style="display:flex;flex-direction:column;gap:4px">
@@ -1199,7 +1260,7 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
       <div style="font-size:13px;font-weight:700;font-family:sans-serif;color:var(--accent);display:flex;align-items:center;gap:6px"><i class="ti ti-eye"></i> Card preview</div>
       <button class="modal-cancel" style="padding:4px 10px;font-size:12px" onclick="closeModal('preview-modal')">Close</button>
     </div>
-    <div id="preview-card-wrap" style="padding:0"></div>
+    <div id="preview-card-wrap" style="padding:12px"></div>
     <div style="padding:8px 14px;border-top:1px solid var(--border);background:var(--bg2);font-size:11px;font-family:sans-serif;color:var(--text2);font-style:italic">Preview only — Register button is disabled</div>
   </div>
 </div>
@@ -1266,146 +1327,259 @@ function setTimeSelectValue(id, val){
 }
 
 const SEED_CLASSES=[
-  {id:'1',title:`The Art of the Illuminated Initial`,teacherTitle:'Mistress',teacher:`Alienor of Wakefield`,email:'alienor@example.com',date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Arts/History Rm 1`,level:'Beginner',audience:'newcomer-friendly',desc:`Learn the basics of painting illuminated initials in the style of 12th-century English manuscripts. We'll cover gilding, pigment mixing, and letterform. Beginners welcome.`,bring:`Small brush if you have one; supplies provided.`,fee:'',zoomLink:'',max:12,prereqs:'',bio:`Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'2',title:`Introduction to Tablet Weaving`,teacherTitle:'Lady',teacher:`Aelswith of Mercia`,email:'aelswith@example.com',date:'2026-08-16',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,level:'Beginner',audience:'newcomer-friendly,kids-welcome',sessionNum:1,sessionTotal:2,desc:`An entry-level class covering warping, turning sequences, and reading simple patterns. You'll leave with a small band in progress.`,bring:`Nothing — cards, warp, and loom provided.`,fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'2b',title:`Introduction to Tablet Weaving`,teacherTitle:'Lady',teacher:`Aelswith of Mercia`,email:'aelswith@example.com',date:'2026-08-16',time:'14:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,level:'Beginner',audience:'newcomer-friendly,kids-welcome',sessionNum:2,sessionTotal:2,desc:`An entry-level class covering warping, turning sequences, and reading simple patterns. You'll leave with a small band in progress.`,bring:`Nothing — cards, warp, and loom provided.`,fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'3',title:`Ottoman Garb Basics`,teacher:`Rayhana bint Estafanos al-Ábbas`,email:'rayhana@example.com',date:'2026-08-16',time:'09:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Cooking/Costuming`,desc:`This class walks through the basics of period-appropriate mid-16th century Ottoman clothing, with practical guidance on layers, silhouettes, and accessible starting points for creating garb.`,bring:`N/a`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'4',title:`Heraldic Charges: A Visual Survey`,cancelled:true,teacher:`Seamus mac Neill`,email:'seamus@example.com',date:'2026-08-16',time:'11:00',duration:60,format:'in-person',topic:'Heraldry',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`A fast-paced tour through common and uncommon charges in period heraldry, with examples from the Rolls of Arms. Great for new heralds or anyone designing devices.`,bring:`Ideas for your own device if you have them.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Lord Seamus is a pursuivant with Caid's College of Heralds and has been consulting on device submissions for eight years. He enjoys the obscure corners of the heraldic menagerie.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'5',title:`Simple Iron Gall Ink`,teacher:`Fiachra an Doire`,email:'margery@example.com',date:'2026-08-16',time:'12:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Grab bag rm 2`,desc:`Learn to make an easy, effective iron gall ink based on a late 14th or early 15th century English recipe. Students take home a small vial.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Fiachra is a scribe and calligrapher with a particular interest in medieval ink recipes and writing materials. He has been recreating period inks for over eight years.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'6',title:`Intro to SCA Rapier`,teacher:`Rodrigo de Castilla`,email:'rodrigo@example.com',date:'2026-08-16',time:'14:00',duration:90,format:'in-person',topic:'Combat',event:'Collegium 2026',room:`Field - Martial Class, all types`,level:'Beginner',audience:'newcomer-friendly,adults-only',desc:`An overview of rapier combat in the SCA: rules, equipment, and basic footwork and guards. Loaner gear available for new fighters to try.`,bring:`Comfortable clothes you can move in.`,fee:'',zoomLink:'',max:20,prereqs:'',bio:`Don Rodrigo holds the rank of Don in Caid's rapier community and has been teaching introductory fencing for over a decade. He specializes in Italian rapier styles of the late 16th century.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'7',title:`Cooking from the Forme of Cury`,teacher:`Gwenllian ferch Caradog`,email:'gwenllian@example.com',date:'2026-08-16',time:'10:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Collegium 2026',room:`Grab Bag Rm 3`,level:'Beginner',audience:'newcomer-friendly,kids-welcome',desc:`We'll work through two recipes from the 14th-century English cookbook, adapting them for modern kitchens. Tasting included.`,bring:`Any food allergies to share.`,fee:'',zoomLink:'',max:16,prereqs:'',bio:`Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery. She has cooked multiple SCA feasts from period sources and written extensively on redaction methodology.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'8',title:`Arrow Dynamics`,teacher:`Gideon the Genuine`,email:'gideon@example.com',date:'2026-08-16',time:'15:00',duration:60,format:'in-person',topic:'Archery',event:'Collegium 2026',room:`Archery`,desc:`This class covers the dynamics of what happens when an arrow is shot from a bow: release, flex, and flight. Physics made accessible.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Gideon has been shooting in the SCA for eighteen years and holds multiple Royal Round records. He brings a background in physics to his teaching of archery mechanics.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'9',title:`Weeknight Zoom: Period Dance Q&A`,teacher:`Isabeau de Bretagne`,email:'isabeau@example.com',date:'2026-09-10',time:'19:00',duration:60,format:'zoom',topic:'Dance',event:'',room:``,desc:`An informal Zoom session to answer questions about period dance, recommend resources, and maybe walk through a basse danse or two together.`,bring:``,fee:'',zoomLink:'https://zoom.us/j/example',max:null,prereqs:'',bio:`Lady Isabeau has been dancing and teaching period dance in the SCA for seven years, with a focus on 15th and 16th century French and Italian forms.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'10',title:`Thread Woven Buttons`,teacher:`Rayhana bint Estafanos al-Ábbas`,email:'rayhana@example.com',date:'2026-08-16',time:'16:00',duration:60,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:`Fiber Arts`,desc:`Learn to create thread-covered wooden buttons common in 16th-century tailoring. Students practice wrapping and stitching on wooden bead cores. Kit included.`,bring:``,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  // ── Collegium 2026 — March 14, 2026 ──
+  {id:'1',title:`Ottoman Garb Basics`,teacher:`Rayhana bint Estafanos al-Ábbas`,email:'rayhana@example.com',date:'2026-03-14',time:'09:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Cooking/Costuming`,level:'Beginner',audience:'newcomer-friendly',desc:`This class walks through the basics of period-appropriate mid-16th century Ottoman clothing, with practical guidance on layers, silhouettes, and accessible starting points for creating garb suitable for the Perfectly Period Ottoman Feast in August.`,bring:`N/A`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'2',title:`Bransles: Easy 16th Century French Dance`,teacherTitle:'Baroness',teacher:`Delphine de Montallieu`,email:'delphine@example.com',date:'2026-03-14',time:'09:00',duration:60,format:'in-person',topic:'Dance',event:'Collegium 2026',room:`Dance (Gym)`,level:'Beginner',audience:'newcomer-friendly',desc:`Can you step back and forth? You can do a Bransle! This class will cover the four Bransles that will be on the dance set for the ball at Muse's Masque. Come with comfortable shoes and water to drink.`,bring:`Comfortable shoes and water to drink`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Baroness Delphine has been dancing and teaching period dance in the SCA for over twelve years, specializing in 15th and 16th century French and Italian forms.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'3',title:`Block Printed Napkins: Experimenting with Different Materials`,teacherTitle:'THLady',teacher:`Rosie Black Rune`,email:'rosie@example.com',date:'2026-03-14',time:'09:00',duration:60,format:'in-person',topic:'Fiber Arts & Needlework',event:'Collegium 2026',room:`Fiber Arts`,desc:`We will be block printing on linen napkins with three different types of blocks — wooden, linoleum, and 3D printed — to explore how different composite blocks affect the print on linen. Bring any item you'd like to experiment on!`,bring:`Any item you wish to experiment on (optional)`,fee:'',zoomLink:'',max:null,prereqs:'None needed',bio:`THLady Rosie Black Rune is an experienced fiber arts and textile printing instructor with a focus on pre-modern printing techniques.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'4',title:`Persona Development for the Beginner`,teacherTitle:'Kyr',teacher:`Yaroslav the Persistent`,email:'yaroslav@example.com',date:'2026-03-14',time:'09:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 2`,level:'Beginner',audience:'newcomer-friendly',desc:`How to take the first steps in developing your SCA persona. Whether you have no idea where to start or just want to refine what you have, this class will help you build a persona that feels real and inspires your SCA journey.`,bring:`Nothing — handouts provided`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Kyr Yaroslav the Persistent has been active in the SCA for many years and enjoys helping newcomers find their footing in the Society.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'5',title:`Big Project Management`,teacherTitle:'Dame',teacher:`Richenda Elizabeth Coffin`,email:'richenda@example.com',date:'2026-03-14',time:'09:00',duration:60,format:'in-person',topic:'Arts & Sciences Competition Preparation',event:'Collegium 2026',room:`Arts/History Rm 1`,desc:`Ever wonder why your huge projects never actually get done? Come discuss strategies and tips for actually getting that dream across the finish line. Bring your ideas for big projects.`,bring:`Note-taking materials, ideas for big projects`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Dame Richenda Elizabeth Coffin is a Pentathlon and inter-kingdom competition winner with extensive experience coaching SCA artisans through large, complex projects.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'6',title:`Musicology of Western Chant`,teacher:`Frida Hrosskætilsdottir`,email:'frida@example.com',date:'2026-03-14',time:'09:00',duration:60,format:'in-person',topic:'Bardic Arts',event:'Collegium 2026',room:`History Rm 2`,desc:`Recent studies of medieval music treatises have found new information on how chant was sung. This class will introduce relevant topics in music theory, explore what the treatises say about style and ornaments, and discuss the history of how our modern view of medieval chant evolved.`,bring:`Note-taking materials`,fee:'',zoomLink:'',max:null,prereqs:'No prerequisite',bio:`Frida Hrosskætilsdottir is a musician and researcher specializing in medieval vocal music and the history of chant performance practice.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'7',title:`History and Making of a Rope Sling`,teacher:`Gideon the Genuine`,email:'gideon@example.com',date:'2026-03-14',time:'09:00',duration:60,format:'in-person',topic:'Archery',event:'Collegium 2026',room:`Archery`,desc:`Learn about the history of rope slings, their development, and their impact on medieval warfare — then make one to take home. All materials provided.`,bring:`Nothing — handouts, rope, and tennis balls provided`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Gideon the Genuine has been shooting and teaching archery in the SCA for eighteen years. He brings a background in physics to his teaching and holds multiple Royal Round records.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'8',title:`Learn Beginning Leather Tooling`,teacherTitle:'Baroness',teacher:`Amabel Radleigh`,email:'amabel@example.com',date:'2026-03-14',time:'09:00',duration:60,format:'in-person',topic:'Metal / Wood / Leather / Glass',event:'Collegium 2026',room:`Metal/Leather Rm`,level:'Beginner',audience:'newcomer-friendly',desc:`Students will transfer and tool a Celtic knot onto a piece of leather, finish the edges, and sew the corners up to create a usable take-home valet/catch-all tray. $10 class material fee covers all supplies including leather, thread, and tools.`,bring:`Nothing — all tools and materials provided`,fee:'$10 materials',zoomLink:'',max:null,prereqs:'None',bio:`Baroness Amabel Radleigh is an experienced leatherworker who teaches traditional tooling and stitching techniques at events throughout Caid.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'9',title:`Field Heraldry for Demos`,teacherTitle:'Maistreas',teacher:`Brig inghean Uatéìr`,email:'brig@example.com',date:'2026-03-14',time:'09:00',duration:60,format:'in-person',topic:'Heraldry',event:'Collegium 2026',room:`Grab Bag Rm 1`,audience:'newcomer-friendly',desc:`In addition to basic field heraldry, this class will focus on tips for heralding at a demo. Heralds make great chatelaines. Bring your voice and a curious mind!`,bring:`A voice and a curious mind`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Maistreas Brig inghean Uatéìr is an experienced herald who has called at demos, tournaments, and courts across the kingdom.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'10',title:`Exchequer — How to Prepare for and Run Gate`,teacherTitle:'Mistress',teacher:`Cara Michelle DuValier`,email:'cara@example.com',date:'2026-03-14',time:'09:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Grab Bag Rm 3`,desc:`This class covers all the steps to prepare to manage the gate table at events. Mainly geared for existing branch Exchequers, but volunteers who want to help are welcome. No prerequisites — all volunteers are appreciated.`,bring:`Note-taking materials`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Mistress Cara Michelle DuValier is a long-serving exchequer in Caid with extensive experience managing event finances and training gate volunteers.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'11',title:`Tips and Tricks for Doing Well in Competitions`,teacherTitle:'Dame',teacher:`Richenda Elizabeth Coffin`,email:'richenda@example.com',date:'2026-03-14',time:'10:00',duration:60,format:'in-person',topic:'Arts & Sciences Competition Preparation',event:'Collegium 2026',room:`Arts/History Rm 1`,desc:`Come learn from a Pentathlon and inter-kingdom competition winner how to make the rules and rubrics work for you, not against you. Practical strategies for documentation, presentation, and judging.`,bring:`Nothing — handouts provided`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Dame Richenda Elizabeth Coffin is a Pentathlon and inter-kingdom competition winner with extensive experience coaching SCA artisans.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'12',title:`A Medieval Broderer in London`,teacherTitle:'HL',teacher:`Jerusha a'Laon`,email:'jerusha@example.com',date:'2026-03-14',time:'10:00',duration:60,format:'in-person',topic:'History',event:'Collegium 2026',room:`History Rm 2`,desc:`Embroidery was not just an idle pastime for noble ladies — it was an industry with rules and regulations. This lecture-style class covers the known information about the profession of Embroiderer, focusing on London.`,bring:`Paper and pencil for notes`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`HL Jerusha a'Laon is a scholar of medieval textile history with a particular focus on embroidery as a commercial trade in medieval English cities.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'13',title:`How Manuscripts Were Made`,teacherTitle:'',teacher:`Bruce Draconarius of Mistholme`,email:'bruce@example.com',date:'2026-03-14',time:'10:00',duration:60,format:'in-person',topic:'History',event:'Collegium 2026',room:`Grab Bag Rm 1`,audience:'newcomer-friendly',desc:`What were the steps medieval scribes took to turn parchment into a book? A brief overview of the history of manuscripts, how the process changed to suit its customer base, and why most modern books are taller than they are wide.`,bring:`Note-taking materials as desired`,fee:'',zoomLink:'',max:null,prereqs:'No experience needed',bio:`Bruce Draconarius of Mistholme is a long-time scribe and calligrapher who teaches manuscript history and calligraphy across the SCA.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'14',title:`How to Survive a CoH Garden Meeting`,teacherTitle:'Lord',teacher:`Séamus mac Néill Uí Chonchobhair`,email:'seamus@example.com',date:'2026-03-14',time:'10:00',duration:60,format:'in-person',topic:'Heraldry',event:'Collegium 2026',room:`Grab Bag Rm 2`,audience:'newcomer-friendly',desc:`Introduces new heralds to what happens at Garden meetings and how they fit into the submissions process. Practical guidance on how to follow discussions, participate with confidence, and contribute meaningfully — even without deep technical knowledge.`,bring:`Pencil and paper for notes`,fee:'',zoomLink:'',max:null,prereqs:'A willingness to learn',bio:`Lord Séamus mac Néill Uí Chonchobhair is a consulting herald in Caid who enjoys making the College of Heralds accessible to newcomers.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'15',title:`Italian Dance for Beginners`,teacherTitle:'Baroness',teacher:`Delphine de Montallieu`,email:'delphine@example.com',date:'2026-03-14',time:'10:00',duration:60,format:'in-person',topic:'Dance',event:'Collegium 2026',room:`Dance (Gym)`,level:'Beginner',audience:'newcomer-friendly',desc:`Come learn some 15th and 16th century Italian dances — either in preparation for the ball at Muse's Masque, or just to have fun! No experience required.`,bring:`Comfortable shoes, water to drink`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Baroness Delphine de Montallieu has been dancing and teaching period dance in the SCA for over twelve years.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'16',title:`Weave a Napkin (or Towel)`,teacherTitle:'Magistra',teacher:`Astra Christiana Benedict`,email:'astra@example.com',date:'2026-03-14',time:'09:00',duration:60,format:'in-person',topic:'Fiber Arts & Needlework',event:'Collegium 2026',room:`Outdoor Shade`,desc:`Experience the joy of creating fabric by weaving your own napkin or towel in this one-on-one class. One-hour slots are available throughout the day. Pre-warped loom and all yarn provided. Sign up for your time slot in advance.`,bring:`Nothing — pre-warped loom and yarn provided`,fee:'',zoomLink:'',max:1,prereqs:'None',bio:`Magistra Astra Christiana Benedict and Duchess Bridget Lucia MacKenzie offer this ongoing one-on-one weaving class throughout the day at Collegium.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'17',title:`Exchequer 101`,teacherTitle:'Baron',teacher:`Tomaso da Barbiano`,email:'tomaso@example.com',date:'2026-03-14',time:'11:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 1`,level:'Beginner',audience:'newcomer-friendly',desc:`An introduction to the exchequer's office. This class is for those looking to assume the office or anyone wanting to know more about how SCA branch finances work. No prerequisites required.`,bring:`Nothing — handouts provided`,fee:'',zoomLink:'',max:null,prereqs:'No prerequisites',bio:`Baron Tomaso da Barbiano has served as an exchequer at multiple levels of Caid's organization and enjoys teaching financial administration to new officers.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'18',title:`History of Textile Printing Across the World`,teacherTitle:'THLady',teacher:`Rosie Black Rune`,email:'rosie@example.com',date:'2026-03-14',time:'11:00',duration:60,format:'in-person',topic:'History',event:'Collegium 2026',room:`Arts/History Rm 1`,desc:`A journey across the world to explore the different types of textile printing that existed before 1650, with examples of how certain places are still printing fabrics in these traditional methods today.`,bring:`Your favorite notebook`,fee:'',zoomLink:'',max:null,prereqs:'N/A',bio:`THLady Rosie Black Rune teaches both the history and practice of textile printing, drawing on a wide range of global traditions.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'19',title:`Calligraphy 101`,teacher:`Bruce Draconarius of Mistholme`,email:'bruce@example.com',date:'2026-03-14',time:'11:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Grab Bag Rm 1`,level:'Beginner',audience:'newcomer-friendly',desc:`An introduction to basic medieval calligraphy. Students will learn pen strokes and the ductus for two of the more popular medieval hands (possibly more as time permits). Loaner pens and ink available.`,bring:`Paper; pencil; see-through ruler. Students encouraged to bring their own calligraphic pen/ink.`,fee:'',zoomLink:'',max:null,prereqs:'No experience needed',bio:`Bruce Draconarius of Mistholme is a long-time scribe and calligrapher who teaches manuscript history and calligraphy across the SCA.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'20',title:`Armory 101: How to Create Armory for the SCA`,teacherTitle:'Lord',teacher:`Séamus mac Néill Uí Chonchobhair`,email:'seamus@example.com',date:'2026-03-14',time:'11:00',duration:60,format:'in-person',topic:'Heraldry',event:'Collegium 2026',room:`Grab Bag Rm 2`,audience:'newcomer-friendly',desc:`Have Their Majesties commanded you to consult with their heralds to determine suitable arms, but the process sounds daunting? Learn the basic rules for SCA armory (and how to break them if you want), and where to find period examples for comparison.`,bring:`Ideas!`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Lord Séamus mac Néill Uí Chonchobhair is a consulting herald in Caid with a love of the more unusual corners of the heraldic tradition.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'21',title:`Arrow Making Workshop`,teacherTitle:'THLord',teacher:`Merlin Wynn`,email:'merlin@example.com',date:'2026-03-14',time:'11:00',duration:60,format:'in-person',topic:'Archery',event:'Collegium 2026',room:`Archery`,desc:`In this workshop you will learn to prepare shafts and fully assemble arrows for use in the Target Archery Open Handbow Division within the SCA. All materials provided.`,bring:`Nothing — all materials provided`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`THLord Merlin Wynn is an experienced SCA archer and arrowsmith who has been teaching arrow-making at events for many years.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'22',title:`Beginning Metal Thread Embroidery / Making a Change Purse`,teacherTitle:'Comptesse',teacher:`Albra Katrine Marie Isabel Bautiste`,email:'albra@example.com',date:'2026-03-14',time:'11:00',duration:90,format:'in-person',topic:'Fiber Arts & Needlework',event:'Collegium 2026',room:`Fiber Arts`,desc:`Students will learn 3 basic metal thread embroidery stitches, the difference between laid and passing metal threads, and general tips for handling metal threads — all while creating a little change purse to take home.`,bring:`A 6" round embroidery hoop; small scissors for clipping metal threads only; needle threader`,fee:'',zoomLink:'',max:null,prereqs:'Some embroidery skills helpful but not required',bio:`Comptesse Albra Katrine Marie Isabel Bautiste is an accomplished embroiderer who specializes in metal thread work and period textile arts.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'23',title:`The Care and Maintenance of Blades/Swords`,teacherTitle:'THL',teacher:`Paul Stoddard`,email:'paul@example.com',date:'2026-03-14',time:'11:00',duration:60,format:'in-person',topic:'Metal / Wood / Leather / Glass',event:'Collegium 2026',room:`Metal/Leather Rm`,desc:`An introductory course on how to maintain and clean swords and blades — a hybrid of lecture and hands-on learning. So you've hit vendor's row and purchased a sword. How do you keep it looking good over time?`,bring:`The sword and/or blade you wish to have cleaned`,fee:'',zoomLink:'',max:null,prereqs:'A desire to learn',bio:`THL Paul Stoddard is a martial artist and weapons enthusiast who teaches blade care and maintenance at SCA events throughout Caid.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'24',title:`English Country Dance for the Masque`,teacherTitle:'Coune',teacher:`Brocc of Alderden`,email:'brocc@example.com',date:'2026-03-14',time:'11:00',duration:60,format:'in-person',topic:'Dance',event:'Collegium 2026',room:`Dance (Gym)`,desc:`Beginning and intermediate English Country dances that will be done at the Masque on August 29 will be taught. The class will be tailored to the skill level of the attendees.`,bring:`N/A`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Coune Brocc of Alderden is an experienced dance teacher and caller who specializes in English Country Dance and its use in SCA ball settings.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'25',title:`Beginning Using a Sewing Machine You Can't Break`,teacher:`Alia la rousse`,email:'alia@example.com',date:'2026-03-14',time:'11:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Grab Bag Rm 3`,level:'Beginner',audience:'newcomer-friendly',desc:`This class is for people who know nothing about how to work a sewing machine. Instruction will be very basic, and everyone will get to try using the unbreakable sewing machine. You'll leave with a small drawstring bag you made yourself.`,bring:`Clean hands; no food or beverages`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Alia la rousse teaches introductory sewing and period fabric arts, making textile skills accessible to complete beginners.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'26',title:`Curing Bacon 101`,teacherTitle:'Master',teacher:`Guy Rand Gallandon`,email:'guy@example.com',date:'2026-03-14',time:'11:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Collegium 2026',room:`Cooking/Costuming`,desc:`Learn how to cure, flavor, and make your own bacon. Handouts will be provided.`,bring:`Nothing — handouts provided`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Master Guy Rand Gallandon has been experimenting with period and period-inspired food preservation for many years, with a particular love of cured meats.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'27',title:`Winter Weekend 101`,teacherTitle:'Sir',teacher:`Robear Du Bois`,email:'robear@example.com',date:'2026-03-14',time:'12:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 1`,audience:'newcomer-friendly',desc:`A brief history of Winter Weekend: how it began and how it has evolved. Where and when it takes place, what facilities the camp provides, what activities are available, what to bring, how the cooking and kitchen-sharing work, and how to make reservations. Robear was the original event steward and has attended since it began.`,bring:`Nothing`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Sir Robear Du Bois was the original event steward for Winter Weekend and has attended the event since its founding.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'28',title:`When Good Gentles Falter: Practicing Grace in Our Society`,teacherTitle:'Lady',teacher:`Ren Shu`,email:'ren@example.com',date:'2026-03-14',time:'12:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 2`,desc:`This roundtable invites participants to reflect on how offering grace to ourselves and others can help sustain strong relationships when emotions run high or mistakes occur. We'll explore ways to respond to conflict and miscommunication with patience and empathy.`,bring:`Nothing`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Lady Ren Shu is a thoughtful community member who facilitates discussions on interpersonal dynamics and conflict resolution within the SCA.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'29',title:`The Beauty of Parsi: A Brief Introduction to the Persian Language`,teacherTitle:'Noble',teacher:`Azar Parsa`,email:'azar@example.com',date:'2026-03-14',time:'12:00',duration:60,format:'in-person',topic:'History',event:'Collegium 2026',room:`History Rm 2`,desc:`A brief introduction to Parsi through poetry. Handouts and materials included.`,bring:`Nothing`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Noble Azar Parsa is a scholar of Persian language and culture whose persona is rooted in the medieval Iranian world.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'30',title:`Simple Iron Gall Ink`,teacher:`Fiachra an Doire`,email:'fiachra@example.com',date:'2026-03-14',time:'12:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:`Grab Bag Rm 2`,audience:'newcomer-friendly',desc:`Learn to make an easy, simple, and effective iron gall ink based on a late 14th or early 15th century English recipe. A handout and ink sample will be provided to take home.`,bring:`Nothing — handout and ink sample provided`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Fiachra an Doire is a scribe and calligrapher with a particular interest in medieval ink recipes and writing materials. He has been recreating period inks for over eight years.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'31',title:`Brewers' Exploration of Microbes`,teacherTitle:'Duena',teacher:`Tsura Romani`,email:'tsura@example.com',date:'2026-03-14',time:'12:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Collegium 2026',room:`Metal/Leather Rm`,desc:`Explore the differences in safely fermentable microbiomes in a tasty adventure. Handouts and samples will be available. If you have fermented items to share, please bring them along with a list of ingredients.`,bring:`Appropriate fermented items to share (optional); list of ingredients for any shareable items`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Duena Tsura Romani is a brewer and fermentation enthusiast who teaches the science and history of fermented beverages in the SCA.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'32',title:`SCA Photography Basics`,teacherTitle:'THLord',teacher:`Suleiman ibn Rawh`,email:'suleiman@example.com',date:'2026-03-14',time:'14:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 1`,audience:'newcomer-friendly',desc:`Basic concepts and tips for capturing moments in a historical reenactment group, and how to use your camera (or phone) effectively. Bring your camera or phone if you can.`,bring:`Your camera or phone (whichever type)`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`THLord Suleiman ibn Rawh is an SCA photographer who specializes in documenting events in ways that highlight the historical authenticity and community spirit of the Society.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'33',title:`1500s Printing`,teacher:`Fadi AlQahiri`,email:'fadi@example.com',date:'2026-03-14',time:'14:00',duration:60,format:'in-person',topic:'History',event:'Collegium 2026',room:`Arts/History Rm 1`,audience:'newcomer-friendly',desc:`Learn how to print a picture using 16th-century techniques from a metal plate using ink and a rolling press. Each student will leave with a print they made themselves.`,bring:`Interest in learning`,fee:'',zoomLink:'',max:null,prereqs:'None needed',bio:`Fadi AlQahiri is a printmaker and historical arts enthusiast who specializes in early print culture and the history of image reproduction.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'34',title:`Bardic 101`,teacherTitle:'Master',teacher:`True Thomas Whitehart`,email:'truethomas@example.com',date:'2026-03-14',time:'14:00',duration:60,format:'in-person',topic:'Bardic Arts',event:'Collegium 2026',room:`Grab Bag Rm 2`,audience:'newcomer-friendly',desc:`An overview of the various types of bardic and performance arts in the SCA, including major performance opportunities, basic etiquette for both performers and audience, and resources for newer performers.`,bring:`Notebook and writing implement; ears to listen and mouths to speak, sing, and laugh`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Master True Thomas Whitehart is a seasoned SCA bard with decades of experience performing and teaching at events throughout the known world.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'35',title:`Late Period Welted Shoes — Design`,teacher:`Todde mac Donnell`,email:'todde@example.com',date:'2026-03-14',time:'14:00',duration:60,format:'in-person',topic:'Metal / Wood / Leather / Glass',event:'Collegium 2026',room:`Metal/Leather Rm`,desc:`A demonstration of patterning and last-making for welted latchet shoes common from 1570 to 1620. Welted shoes are double-soled, double-seamed shoes built right-side out on the last. Students may have time to work on foot tracings.`,bring:`Measuring tape (helpful)`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Todde mac Donnell is a cobbler specializing in late-period shoe construction who teaches both design and construction of historical footwear.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'36',title:`How to Wrap Your Head`,teacherTitle:'HL',teacher:`Jerusha a'Laon`,email:'jerusha@example.com',date:'2026-03-14',time:'14:00',duration:60,format:'in-person',topic:'Costuming',event:'Collegium 2026',room:`Cooking/Costuming`,audience:'newcomer-friendly',desc:`This class goes over different methods of wrapping your head using scarves and kerchiefs. The instructor will demonstrate various techniques and will have additional supplies for students to practice with.`,bring:`Paper and pencil for notes`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`HL Jerusha a'Laon teaches both the history and practical skills of period headwear construction and draping techniques.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'37',title:`Processional Dance: Pavane and Almaine`,teacherTitle:'Magistra',teacher:`Adelaide de Beaumont`,email:'adelaide@example.com',date:'2026-03-14',time:'14:00',duration:60,format:'in-person',topic:'Dance',event:'Collegium 2026',room:`Dance (Gym)`,audience:'newcomer-friendly',desc:`Let's walk with attitude! Some dances were all about looking and being looked at — and these dances are simple, mostly low-impact and sweat-free. Perfect for those new to period dance.`,bring:`Comfy shoes`,fee:'',zoomLink:'',max:null,prereqs:'None!',bio:`Magistra Adelaide de Beaumont is a dance teacher who specializes in processional and ceremonial dances of the 16th century.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'38',title:`Creating Cross Stitch Patterns`,teacherTitle:'THL',teacher:`Tracy the Gray`,email:'tracy@example.com',date:'2026-03-14',time:'14:00',duration:60,format:'in-person',topic:'Fiber Arts & Needlework',event:'Collegium 2026',room:`Fiber Arts`,audience:'newcomer-friendly',desc:`Learn to turn SCA devices and other simple designs into cross stitch patterns using nothing but a pencil and graph paper. Examples and instructions will be given.`,bring:`Nothing — handouts and graph paper provided`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`THL Tracy the Gray and Baroness Lynnette de Sandoval del Valle de los Unicornios teach needlework and pattern-making together at SCA events.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'39',title:`Serving on Court 101`,teacherTitle:'THL',teacher:`Kutaiba al-Azrak`,email:'kutaiba@example.com',date:'2026-03-14',time:'14:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 2`,audience:'newcomer-friendly',desc:`An introduction to duties and expectations once you've joined a court. What does a court herald do? A chamberlain? This class walks through the roles and how to perform them with grace.`,bring:`Note-taking supplies`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`THL Kutaiba al-Azrak has served in and around royal and baronial courts in Caid for many years and enjoys teaching the protocols of court service.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'40',title:`How to Run Lists for Tournaments`,teacherTitle:'Mestresse',teacher:`Tezar of Aeolis`,email:'tezar@example.com',date:'2026-03-14',time:'15:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 1`,desc:`A discussion of what it means to be a list person, your contribution to the martial forms, and how to run different types of tournaments. No previous experience required.`,bring:`Notetaking materials`,fee:'',zoomLink:'',max:null,prereqs:'No previous experience required',bio:`Mestresse Tezar of Aeolis is an experienced list mistress who has run tournaments at events throughout Caid and the West Kingdom.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'41',title:`Caid Choir Rehearsal`,teacher:`Lady Sadhbh inghean Duinn`,email:'sadhbh@example.com',date:'2026-03-14',time:'15:00',duration:60,format:'in-person',topic:'Bardic Arts',event:'Collegium 2026',room:`Grab Bag Rm 2`,desc:`Come sing with us! We'll look through a few potential pieces for future performances. Sheet music will be provided.`,bring:`Nothing — sheet music provided`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Lady Sadhbh inghean Duinn directs the Caid Choir and teaches vocal performance in SCA contexts.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'42',title:`12th Century Herbal Hair Powder`,teacher:`Alienor Strongbow de Clare`,email:'alienorsc@example.com',date:'2026-03-14',time:'15:00',duration:60,format:'in-person',topic:'History',event:'Collegium 2026',room:`History Rm 2`,desc:`This class explores the recipe for making a powder to perfume the hair from the 12th century, found in the Trotula manuscript. Handouts provided.`,bring:`Notebook`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Alienor Strongbow de Clare is a researcher of medieval medical and cosmetic texts, with a focus on the Trotula and related sources.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'43',title:`Hand Finishing Hems`,teacher:`Mary Dedwydd verch Gwallter`,email:'mary@example.com',date:'2026-03-14',time:'15:00',duration:60,format:'in-person',topic:'Fiber Arts & Needlework',event:'Collegium 2026',room:`Fiber Arts`,audience:'newcomer-friendly',desc:`Learn two simple hand hem stitches for finishing napkins for PPF (or any other hem, honestly). Supplies will be provided. Great for beginners who want clean, professional-looking finishes.`,bring:`Nothing — needles and thread provided`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Mary Dedwydd verch Gwallter teaches both needlework and bardic arts. She is also known for her work in persona-based performance.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'44',title:`Arrow Dynamics: How Does an Arrow Shot Work?`,teacher:`Gideon the Genuine`,email:'gideon@example.com',date:'2026-03-14',time:'15:00',duration:60,format:'in-person',topic:'Archery',event:'Collegium 2026',room:`Archery`,desc:`This class covers the dynamics of what happens when an arrow is shot from a bow — how it is released, how it bends, and how it flies. Physics made accessible and engaging.`,bring:`Nothing`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Gideon the Genuine has been shooting in the SCA for eighteen years and holds multiple Royal Round records. He brings a background in physics to his archery teaching.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'45',title:`Persian Court Dance`,teacher:`Faizeh al Zarqa`,email:'faizeh@example.com',date:'2026-03-14',time:'15:00',duration:60,format:'in-person',topic:'Dance',event:'Collegium 2026',room:`Dance (Gym)`,desc:`In this class we will explore how to perform period Persian court dance. Water and note-taking implements recommended.`,bring:`Water, note-taking implements`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Faizeh al Zarqa is a dancer and researcher specializing in medieval Persian dance forms and their cultural context.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'46',title:`The World of the Scythians`,teacherTitle:'Mistress',teacher:`Sibylla de Haze`,email:'sibylla@example.com',date:'2026-03-14',time:'16:00',duration:60,format:'in-person',topic:'History',event:'Collegium 2026',room:`Arts/History Rm 1`,desc:`A deep dive into the material world of the Scythians — their lives, culture, and stunning material culture. Lecture-based with handouts.`,bring:`Nothing`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Mistress Sibylla de Haze is a scholar of ancient and early medieval steppe cultures, with a focus on Scythian and related peoples.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'47',title:`Electronic Payment (PayPal) Authorized User Training`,teacherTitle:'Mistress',teacher:`Cara Michelle DuValier`,email:'cara@example.com',date:'2026-03-14',time:'16:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Grab Bag Rm 1`,desc:`This training will allow students to volunteer to accept electronic payments at Caidan SCA events. Students must be SCA members in good standing and over 18 years old.`,bring:`Note-taking materials`,fee:'',zoomLink:'',max:null,prereqs:'SCA membership in good standing; must be 18+',audience:'adults-only',bio:`Mistress Cara Michelle DuValier is a long-serving exchequer who has trained many Caidan event volunteers in electronic payment processing.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'48',title:`Late Period Welted Shoes — Construction`,teacher:`Todde mac Donnell`,email:'todde@example.com',date:'2026-03-14',time:'16:00',duration:120,format:'in-person',topic:'Metal / Wood / Leather / Glass',event:'Collegium 2026',room:`Metal/Leather Rm`,desc:`A demonstration of building the upper, lasting, and seaming a double-soled latchet shoe, done "cooking show" style to demonstrate key steps. Students will practice sewing seams but not build their own shoes. Please take the Design class first.`,bring:`Nothing — handout provided`,fee:'',zoomLink:'',max:null,prereqs:'Please take the Design class first',bio:`Todde mac Donnell is a cobbler specializing in late-period shoe construction who teaches both design and construction of historical footwear.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'49',title:`Dining Etiquette in the Ottoman Empire`,teacherTitle:'Maestra',teacher:`Elisheva bat Yisrael`,email:'elisheva@example.com',date:'2026-03-14',time:'16:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Collegium 2026',room:`Cooking/Costuming`,desc:`In preparation for PPF: Ottoman, we are reviewing expected dining etiquette generally in the Muslim world in our period, and specifically in the Ottoman Empire, with particular attention to in-period commentary on the Turks.`,bring:`Personal note-taking materials if desired`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Maestra Elisheva bat Yisrael is a scholar of Ottoman and Islamic material culture who teaches both dining history and period dance.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'50',title:`Dances of the Medieval Ottomans`,teacherTitle:'Maestra',teacher:`Elisheva bat Yisrael`,email:'elisheva@example.com',date:'2026-03-14',time:'16:00',duration:60,format:'in-person',topic:'Dance',event:'Collegium 2026',room:`Dance (Gym)`,desc:`An overview lecture of various dances from religious to entertainment used during the medieval Ottoman era, with opportunities to try some of the basic forms.`,bring:`Nothing`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Maestra Elisheva bat Yisrael is a scholar of Ottoman and Islamic material culture who teaches both dining history and period dance.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'51',title:`Thread Woven Buttons`,teacher:`Rayhana bint Estafanos al-Ábbas`,email:'rayhana@example.com',date:'2026-03-14',time:'16:00',duration:60,format:'in-person',topic:'Fiber Arts & Needlework',event:'Collegium 2026',room:`Fiber Arts`,desc:`Learn to create thread-covered wooden buttons common in 16th-century tailoring. Students practice wrapping and stitching techniques on wooden bead cores. Includes a kit to complete a full set.`,bring:`Nothing — practice buttons for class and a kit to make 12 provided, plus handout`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'52',title:`Developing a Persona-Based Performance`,teacher:`Mary Dedwydd verch Gwallter`,email:'mary@example.com',date:'2026-03-14',time:'16:00',duration:60,format:'in-person',topic:'Bardic Arts',event:'Collegium 2026',room:`Field - Martial Class`,desc:`A seldom-explored option for a bardic performance set is to perform as your period self. This class introduces persona-based performance, covering useful approaches to creating a unique historically informed performance.`,bring:`Ideas and a willingness to play a bit`,fee:'',zoomLink:'',max:null,prereqs:'Some idea of your SCA persona and their where, when, and what',bio:`Mary Dedwydd verch Gwallter teaches both needlework and bardic arts, with a particular love of persona-driven performance.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'53',title:`Movement for Hip & Lower Body Flexibility`,teacherTitle:'Maestra',teacher:`Elisheva bat Yisrael`,email:'elisheva@example.com',date:'2026-03-14',time:'10:00',duration:60,format:'in-person',topic:'Dance',event:'Collegium 2026',room:`Field - Martial Class`,desc:`A yoga-like routine focusing on flexibility for the hip and lower body, enabling easier sitting on the floor, getting up and down, supporting lunge movements, and preventing injury. Easily modifiable for all levels, though some familiarity with yoga poses will help.`,bring:`Yoga mat or towel/blanket large enough to lay on`,fee:'',zoomLink:'',max:null,prereqs:'None — some yoga familiarity helpful',bio:`Maestra Elisheva bat Yisrael brings her knowledge of period movement and body mechanics to this practical flexibility class.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'54',title:`Closing the Distance`,teacher:`Galien Crow`,email:'galien@example.com',date:'2026-03-14',time:'11:00',duration:60,format:'in-person',topic:'Combat - Rapier',event:'Collegium 2026',room:`Field - Martial Class`,audience:'adults-only',desc:`A hands-on, practical lesson on ways to enter your opponent's range and strike them without dying, while getting the most out of your lunges. Strong physical component — be prepared to practice movements that may be taxing on unused muscles.`,bring:`Rapier gear: swords, masks, armor, and gorget`,fee:'',zoomLink:'',max:null,prereqs:'Rapier gear required',bio:`Galien Crow is an experienced rapier fighter who focuses on practical footwork and distance management in SCA rapier combat.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'55',title:`Female-Identifying Fighters Forum`,teacherTitle:'THL',teacher:`Livith filia Organae`,email:'livith@example.com',date:'2026-03-14',time:'15:00',duration:60,format:'in-person',topic:'Combat - Rapier',event:'Collegium 2026',room:`Society Skills Rm 2`,audience:'adults-only',desc:`A safe space for female-identifying fighters to discuss common challenges and brainstorm potential solutions to benefit our community. Bring a willingness to discuss difficult or taboo topics with a resolution-oriented mindset.`,bring:`A willingness to discuss difficult and/or taboo topics`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`THL Livith filia Organae is a fighter and community advocate who creates space for underrepresented voices in the SCA martial community.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'56',title:`Massage Technique`,teacherTitle:'Duena',teacher:`Tsura Romani`,email:'tsura@example.com',date:'2026-03-14',time:'16:00',duration:60,format:'in-person',topic:'Society Skills',event:'Collegium 2026',room:`Society Skills Rm 2`,audience:'adults-only',desc:`A beginner's introduction to western massage. An additional waiver is required. Guardian presence required for minors.`,bring:`Nothing`,fee:'',zoomLink:'',max:null,prereqs:'Additional waiver required',bio:`Duena Tsura Romani teaches massage technique alongside her work in brewing and fermentation.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
   // ── Great Western War 2026 ──
-  {id:'11',title:`Dyeing with Natural Pigments`,teacher:`Sorcha inghean Uí Fhaoláin`,email:'sorcha@example.com',date:'2026-11-05',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`An introduction to natural dyeing using madder, weld, and woad. We'll discuss mordanting, color modifiers, and period dye recipes. Hands-on dyeing of small wool samples included.`,bring:`Old clothes you don't mind staining.`,fee:'$4 materials',zoomLink:'',max:14,prereqs:'',bio:`Mistress Sorcha is a Pelican with twenty years of experience in natural dyeing and fiber arts. She has taught at events across the Known World and maintains a dye garden at home.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'12',title:`Reading a Medieval Recipe`,teacher:`Gwenllian ferch Caradog`,email:'gwenllian@example.com',date:'2026-11-05',time:'13:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Great Western War 2026',room:`A&S Tent`,level:'Beginner',audience:'newcomer-friendly',desc:`How do you turn a cryptic 14th-century recipe into something you can actually cook? This class walks through the redaction process step by step, with examples from multiple sources.`,bring:`Nothing needed.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery. She has cooked multiple SCA feasts from period sources and written extensively on redaction methodology.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'13',title:`Sprang: The Lost Textile Art`,teacher:`Aelswith of Mercia`,email:'aelswith@example.com',date:'2026-11-06',time:'10:00',duration:120,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`Sprang is an ancient textile technique that predates knitting by millennia — elastic, strong, and used across medieval Europe. This class introduces the basic structure and gets students started on a small piece.`,bring:`Nothing — frames and thread provided.`,fee:'$5 materials',zoomLink:'',max:10,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns. She teaches at Collegium and GWW regularly.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'14',title:`Illuminating a Scroll: Full Workflow`,teacherTitle:'Mistress',teacher:`Alienor of Wakefield`,email:'alienor@example.com',date:'2026-11-06',time:'14:00',duration:90,format:'in-person',topic:'Scribal Arts',event:'Great Western War 2026',room:`A&S Tent`,level:'Intermediate',audience:'',desc:`From blank vellum to finished scroll — this class covers layout, ruling, calligraphy placement, and illumination in sequence. We'll use a 13th-century English charter as our model.`,bring:`Small brush if you have one; all other supplies provided.`,fee:'$3 materials',zoomLink:'',max:10,prereqs:'',bio:`Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'15',title:`Period Perfume and Scent`,teacher:`Tariq ibn Mahmoud`,email:'tariq@example.com',date:'2026-11-07',time:'10:00',duration:60,format:'in-person',topic:'Crafts',event:'Great Western War 2026',room:`A&S Tent`,desc:`An exploration of medieval and Renaissance perfumery: the ingredients, blending methods, and social context of scent in period Europe and the Islamic world. Students blend a small take-home mixture.`,bring:`Nothing needed.`,fee:'$3 materials',zoomLink:'',max:20,prereqs:'',bio:`Lord Tariq has been researching medieval Islamic material culture for eight years, with a particular interest in al-Andalus. He is currently working toward a Laurel in historical craft research.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'16',title:`Armored Combat for Newcomers`,teacher:`Baldwin of Ashford`,email:'baldwin@example.com',date:'2026-11-07',time:'14:00',duration:90,format:'in-person',topic:'Combat',event:'Great Western War 2026',room:`List Field`,level:'Beginner',audience:'newcomer-friendly,adults-only',desc:`Never held a sword? This class covers SCA heavy combat basics: rules, safety, how to get authorized, and what loaner gear is available. Includes time in armor with experienced fighters.`,bring:`Comfortable clothes you can move in.`,fee:'',zoomLink:'',max:16,prereqs:'',bio:`Sir Baldwin is a knight in the West/Caid chivalry and has been fighting and teaching heavy combat for over twenty years. He runs newcomer fighter practices in the greater Los Angeles area.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'17',title:`Blackwork Embroidery Fundamentals`,teacherTitle:'',teacher:`Rayhana bint Estafanos al-Ábbas`,email:'rayhana@example.com',date:'2026-11-08',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:`A&S Tent`,desc:`Blackwork is the elegant counted embroidery seen on Tudor portraits — geometric, reversible, and endlessly adaptable. This class teaches the basic double-running stitch and three starter patterns.`,bring:`Nothing — needles, fabric, and thread provided.`,fee:'$2 materials',zoomLink:'',max:12,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul and she documents her work extensively.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'18',title:`Heraldry Office Hours`,teacher:`Seamus mac Neill`,email:'seamus@example.com',date:'2026-11-08',time:'13:00',duration:60,format:'in-person',topic:'Heraldry',event:'Great Western War 2026',room:`A&S Tent`,desc:`Bring your device ideas, name questions, or just your curiosity. This is an open consulting session — Lord Seamus will work through submissions and questions one-on-one with anyone who stops by.`,bring:`Any sketches or notes you have on your device or name.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Lord Seamus is a pursuivant with Caid's College of Heralds and has been consulting on device submissions for eight years. He enjoys the obscure corners of the heraldic menagerie.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
-  {id:'19',title:`Building Your SCA Group Website`,teacherTitle:'Sir',teacher:`Liam Mor MacGregor`,email:'liam@example.com',date:'2026-08-16',time:'13:00',duration:60,format:'in-person',topic:'Arts & Administration',event:'Collegium 2026',room:`Grab Bag Rm 3`,level:'Beginner',audience:'newcomer-friendly',desc:`A practical walkthrough of setting up and maintaining a group website on the Caid web network. Covers the official WordPress framework, required pages, officer contacts, and keeping your site current. Great for new seneschals, webwrights, and officers.`,bring:`Laptop if you have one — not required.`,fee:'',zoomLink:'',max:20,prereqs:'',bio:`Sir Liam Mor MacGregor is a knight in Caid's chivalry and the current Kingdom Webwright. He has been building and maintaining SCA websites for over twelve years.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]}
+  {id:'60',title:`Dyeing with Natural Pigments`,teacher:`Sorcha inghean Uí Fhaoláin`,email:'sorcha@example.com',date:'2026-11-05',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts & Needlework',event:'Great Western War 2026',room:`A&S Tent`,desc:`An introduction to natural dyeing using madder, weld, and woad. We'll discuss mordanting, color modifiers, and period dye recipes. Hands-on dyeing of small wool samples included.`,bring:`Old clothes you don't mind staining.`,fee:'$4 materials',zoomLink:'',max:14,prereqs:'',bio:`Mistress Sorcha is a Pelican with twenty years of experience in natural dyeing and fiber arts.`,imageUrl:'',registrationCount:6,waitlistCount:0,roster:['Margery la Rousse','Finn Eriksson','Aelric of Thornwood','Ingrid Halfdansdottir','Rosamund of the Dales','Wulfric the Wanderer'],waitlistRoster:[]},
+  {id:'60b',title:`History and Making of a Rope Sling`,teacher:`Gideon the Genuine`,email:'gideon@example.com',date:'2026-11-05',time:'10:00',duration:60,format:'in-person',topic:'Archery',event:'Great Western War 2026',room:`Archery Range`,desc:`Learn about the history of rope slings, their development and impact, and make one to take home. Handouts, rope, and tennis balls provided.`,bring:`Nothing`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Gideon the Genuine has been shooting and teaching archery in the SCA for eighteen years.`,imageUrl:'',registrationCount:4,waitlistCount:0,roster:['Thomas of Ely','Dmitri Volkonsky','Leofric the Just','Yusuf al-Rashid'],waitlistRoster:[]},
+  {id:'60c',title:`Bardic 101`,teacherTitle:'Master',teacher:`True Thomas Whitehart`,email:'truethomas@example.com',date:'2026-11-05',time:'10:00',duration:60,format:'in-person',topic:'Bardic Arts',event:'Great Western War 2026',room:`Bardic Circle`,audience:'newcomer-friendly',desc:`An overview of the various types of bardic and performance arts in the SCA, including major performance opportunities, basic etiquette for performers and audience, and resources for newer performers.`,bring:`Notebook and writing implement`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Master True Thomas Whitehart is a seasoned SCA bard with decades of experience performing and teaching.`,imageUrl:'',registrationCount:5,waitlistCount:0,roster:['Cecilia de Montfort','Elspeth of Dunbar','Sigrid Bjornsdottir','Constance of Hartwood','Isabeau de Montpellier'],waitlistRoster:[]},
+  {id:'61',title:`Reading a Medieval Recipe`,teacher:`Gwenllian ferch Caradog`,email:'gwenllian@example.com',date:'2026-11-05',time:'13:00',duration:60,format:'in-person',topic:'Cooking & Brewing',event:'Great Western War 2026',room:`A&S Tent`,level:'Beginner',audience:'newcomer-friendly',desc:`How do you turn a cryptic 14th-century recipe into something you can actually cook? This class walks through the redaction process step by step, with examples from multiple sources.`,bring:`Nothing needed.`,fee:'',zoomLink:'',max:null,prereqs:'',bio:`Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery.`,imageUrl:'',registrationCount:6,waitlistCount:0,roster:['Margery la Rousse','Finn Eriksson','Aelric of Thornwood','Ingrid Halfdansdottir','Rosamund of the Dales','Wulfric the Wanderer'],waitlistRoster:[]},
+  {id:'61b',title:`Arrow Making Workshop`,teacherTitle:'THLord',teacher:`Merlin Wynn`,email:'merlin@example.com',date:'2026-11-05',time:'13:00',duration:60,format:'in-person',topic:'Archery',event:'Great Western War 2026',room:`Archery Range`,desc:`Learn to prepare shafts and fully assemble arrows for use in the SCA Target Archery Open Handbow Division. All materials provided.`,bring:`Nothing`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`THLord Merlin Wynn is an experienced SCA archer and arrowsmith.`,imageUrl:'',registrationCount:3,waitlistCount:0,roster:['Leofric the Just','Dmitri Volkonsky','Yusuf al-Rashid'],waitlistRoster:[]},
+  {id:'61c',title:`Musicology of Western Chant`,teacher:`Frida Hrosskætilsdottir`,email:'frida@example.com',date:'2026-11-05',time:'13:00',duration:60,format:'in-person',topic:'Bardic Arts',event:'Great Western War 2026',room:`Bardic Circle`,desc:`Recent studies of medieval music treatises have found new information on how chant was sung. Covers music theory, treatise commentary on style and ornaments, and how our modern view of medieval chant evolved.`,bring:`Note-taking materials`,fee:'',zoomLink:'',max:null,prereqs:'No prerequisite',bio:`Frida Hrosskætilsdottir is a musician and researcher specializing in medieval vocal music.`,imageUrl:'',registrationCount:4,waitlistCount:0,roster:['Cecilia de Montfort','Elspeth of Dunbar','Thomas of Ely','Constance of Hartwood'],waitlistRoster:[]},
+  {id:'62',title:`Sprang: The Lost Textile Art`,teacher:`Aelswith of Mercia`,email:'aelswith@example.com',date:'2026-11-06',time:'10:00',duration:120,format:'in-person',topic:'Fiber Arts & Needlework',event:'Great Western War 2026',room:`A&S Tent`,desc:`Sprang is an ancient textile technique that predates knitting by millennia — elastic, strong, and used across medieval Europe. This class introduces the basic structure and gets students started on a small piece.`,bring:`Nothing — frames and thread provided.`,fee:'$5 materials',zoomLink:'',max:10,prereqs:'',bio:`Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns.`,imageUrl:'',registrationCount:10,waitlistCount:2,roster:['Sigrid Bjornsdottir','Cecilia de Montfort','Elspeth of Dunbar','Leofric the Just','Constance of Hartwood','Yusuf al-Rashid','Thomas of Ely','Dmitri Volkonsky','Isabeau de Montpellier','Margery la Rousse'],waitlistRoster:[{pos:1,name:'Finn Eriksson'},{pos:2,name:'Wulfric the Wanderer'}]},
+  {id:'62b',title:`Arrow Dynamics: How Does an Arrow Shot Work?`,teacher:`Gideon the Genuine`,email:'gideon@example.com',date:'2026-11-06',time:'10:00',duration:60,format:'in-person',topic:'Archery',event:'Great Western War 2026',room:`Archery Range`,desc:`This class covers the dynamics of what happens when an arrow is shot from a bow — release, flex, and flight. Physics made accessible and engaging.`,bring:`Nothing`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Gideon the Genuine has been shooting in the SCA for eighteen years and holds multiple Royal Round records.`,imageUrl:'',registrationCount:5,waitlistCount:0,roster:['Aelric of Thornwood','Rosamund of the Dales','Ingrid Halfdansdottir','Wulfric the Wanderer','Finn Eriksson'],waitlistRoster:[]},
+  {id:'62c',title:`Havamal: Introduction and Discussion`,teacher:`Hallr brjost Starsson`,email:'hallr@example.com',date:'2026-11-06',time:'10:00',duration:60,format:'in-person',topic:'Bardic Arts',event:'Great Western War 2026',room:`Bardic Circle`,desc:`A discussion of the collection of Old Norse maxims and words of advice. We'll discuss the poems' content, context, and what they tell us about Norse values and worldview.`,bring:`A willingness to participate in discussion`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Hallr brjost Starsson is a researcher and enthusiast of Norse language, literature, and games.`,imageUrl:'',registrationCount:6,waitlistCount:0,roster:['Cecilia de Montfort','Elspeth of Dunbar','Leofric the Just','Dmitri Volkonsky','Yusuf al-Rashid','Constance of Hartwood'],waitlistRoster:[]},
+  {id:'63',title:`Illuminating a Scroll: Full Workflow`,teacherTitle:'Mistress',teacher:`Alienor of Wakefield`,email:'alienor@example.com',date:'2026-11-06',time:'14:00',duration:90,format:'in-person',topic:'Scribal Arts',event:'Great Western War 2026',room:`A&S Tent`,level:'Intermediate',desc:`From blank vellum to finished scroll — this class covers layout, ruling, calligraphy placement, and illumination in sequence. We'll use a 13th-century English charter as our model.`,bring:`Small brush if you have one; all other supplies provided.`,fee:'$3 materials',zoomLink:'',max:10,prereqs:'',bio:`Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years.`,imageUrl:'',registrationCount:6,waitlistCount:0,roster:['Aelric of Thornwood','Rosamund of the Dales','Ingrid Halfdansdottir','Wulfric the Wanderer','Elspeth of Dunbar','Finn Eriksson'],waitlistRoster:[]},
+  {id:'63b',title:`Persona Development for the Beginner`,teacherTitle:'Kyr',teacher:`Yaroslav the Persistent`,email:'yaroslav@example.com',date:'2026-11-06',time:'14:00',duration:60,format:'in-person',topic:'Society Skills',event:'Great Western War 2026',room:`Bardic Circle`,audience:'newcomer-friendly',desc:`How to take the first steps in developing your SCA persona. Whether you have no idea where to start or just want to refine what you have, this class will help.`,bring:`Nothing — handouts provided`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Kyr Yaroslav the Persistent has been active in the SCA for many years and enjoys helping newcomers find their footing.`,imageUrl:'',registrationCount:7,waitlistCount:0,roster:['Sigrid Bjornsdottir','Cecilia de Montfort','Thomas of Ely','Dmitri Volkonsky','Yusuf al-Rashid','Constance of Hartwood','Isabeau de Montpellier'],waitlistRoster:[]},
+  {id:'64',title:`Army of Caid Structure and Use`,teacher:`Methius le Vaux`,email:'methius@example.com',date:'2026-11-07',time:'14:00',duration:60,format:'in-person',topic:'Combat - Armored',event:'Great Western War 2026',room:`List Field`,desc:`Designed for members of the Caid Armored Melee community to learn the structure and use of commands and the abilities of the Army of Caid. Open to the general populace who wants to learn.`,bring:`Armor if wanting to participate in fighting.`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Methius le Vaux is an experienced melee fighter in Caid who teaches armored combat tactics and army structure.`,imageUrl:'',registrationCount:8,waitlistCount:0,roster:['Leofric the Just','Finn Eriksson','Dmitri Volkonsky','Wulfric the Wanderer','Thomas of Ely','Aelric of Thornwood','Sigrid Bjornsdottir','Yusuf al-Rashid'],waitlistRoster:[]},
+  {id:'64b',title:`Simple Iron Gall Ink`,teacher:`Fiachra an Doire`,email:'fiachra@example.com',date:'2026-11-07',time:'10:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Great Western War 2026',room:`A&S Tent`,audience:'newcomer-friendly',desc:`Learn to make an easy, effective iron gall ink based on a late 14th or early 15th century English recipe. A handout and ink sample will be provided.`,bring:`Nothing`,fee:'',zoomLink:'',max:null,prereqs:'None',bio:`Fiachra an Doire is a scribe and calligrapher with a particular interest in medieval ink recipes.`,imageUrl:'',registrationCount:5,waitlistCount:0,roster:['Rosamund of the Dales','Ingrid Halfdansdottir','Elspeth of Dunbar','Constance of Hartwood','Isabeau de Montpellier'],waitlistRoster:[]},
+  {id:'64c',title:`Developing a Persona-Based Performance`,teacher:`Mary Dedwydd verch Gwallter`,email:'mary@example.com',date:'2026-11-07',time:'10:00',duration:60,format:'in-person',topic:'Bardic Arts',event:'Great Western War 2026',room:`Bardic Circle`,desc:`A seldom-explored option for a bardic performance set is to perform as your period self. Covers useful approaches to creating a unique, historically informed performance.`,bring:`Ideas and a willingness to play a bit`,fee:'',zoomLink:'',max:null,prereqs:'Some idea of your SCA persona',bio:`Mary Dedwydd verch Gwallter teaches both needlework and bardic arts, with a particular love of persona-driven performance.`,imageUrl:'',registrationCount:4,waitlistCount:0,roster:['Cecilia de Montfort','Elspeth of Dunbar','Thomas of Ely','Dmitri Volkonsky'],waitlistRoster:[]},
+  {id:'65',title:`Blackwork Embroidery Fundamentals`,teacher:`Rayhana bint Estafanos al-Ábbas`,email:'rayhana@example.com',date:'2026-11-08',time:'10:00',duration:90,format:'in-person',topic:'Fiber Arts & Needlework',event:'Great Western War 2026',room:`A&S Tent`,level:'Beginner',desc:`Blackwork is the elegant counted embroidery seen on Tudor portraits — geometric, reversible, and endlessly adaptable. This class teaches the basic double-running stitch and three starter patterns.`,bring:`Nothing — needles, fabric, and thread provided.`,fee:'$2 materials',zoomLink:'',max:12,prereqs:'',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade.`,imageUrl:'',registrationCount:5,waitlistCount:0,roster:['Aelric of Thornwood','Rosamund of the Dales','Ingrid Halfdansdottir','Wulfric the Wanderer','Finn Eriksson'],waitlistRoster:[]},
+  {id:'65b',title:`Calligraphy 101`,teacher:`Bruce Draconarius of Mistholme`,email:'bruce@example.com',date:'2026-11-08',time:'10:00',duration:60,format:'in-person',topic:'Scribal Arts',event:'Great Western War 2026',room:`Bardic Circle`,level:'Beginner',audience:'newcomer-friendly',desc:`An introduction to basic medieval calligraphy. Students will learn pen strokes and the ductus for two popular medieval hands. Loaner pens and ink available.`,bring:`Paper; pencil; see-through ruler`,fee:'',zoomLink:'',max:null,prereqs:'No experience needed',bio:`Bruce Draconarius of Mistholme is a long-time scribe and calligrapher who teaches across the SCA.`,imageUrl:'',registrationCount:6,waitlistCount:0,roster:['Cecilia de Montfort','Thomas of Ely','Dmitri Volkonsky','Leofric the Just','Yusuf al-Rashid','Constance of Hartwood'],waitlistRoster:[]},
+  // ── Crescent Artisan 2026 — June 6, 2026 ──
+  {id:'70',title:`Fabris Fundamentals`,teacher:`Rodrigo de Castilla`,email:'rodrigo@example.com',date:'2026-06-06',time:'10:00',duration:120,format:'in-person',topic:'Combat - Rapier',event:'Crescent Artisan 2026',room:`Great Hall`,level:'Beginner',audience:'adults-only',desc:`An introduction to the rapier system of Salvator Fabris, one of the most influential fencing masters of the early 17th century. Students will learn the foundational postures, guards, and measure concepts from his 1606 treatise. Loaner gear available.`,bring:`Rapier gear if you have it; some loaner gear available`,fee:'',zoomLink:'',max:7,prereqs:'None',bio:`Don Rodrigo holds the rank of Don in Caid's rapier community and has been teaching historical fencing for over a decade, with a focus on Italian masters of the late 16th and early 17th century.`,imageUrl:'',registrationCount:6,waitlistCount:0,roster:['Wulfric the Wanderer','Finn Eriksson','Leofric the Just','Thomas of Ely','Dmitri Volkonsky','Cecilia de Montfort'],waitlistRoster:[]},
+  {id:'71',title:`Beginning Lapidary`,teacher:`Torsten Bjørnsen`,email:'torsten@example.com',date:'2026-06-06',time:'10:00',duration:120,format:'in-person',topic:'Metal / Wood / Leather / Glass',event:'Crescent Artisan 2026',room:`Craft Room`,level:'Beginner',audience:'newcomer-friendly',desc:`An introduction to lapidary arts — the cutting, grinding, and polishing of stones. Students will work with soft stones to learn basic shaping and polishing techniques, and leave with a small cabochon they made themselves.`,bring:`Nothing — all tools and materials provided`,fee:'$5 materials',zoomLink:'',max:null,prereqs:'None',bio:`Lord Torsten Bjørnsen has been working with stone and metal for over ten years, with a particular interest in Norse and early medieval jewelry traditions.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'72',title:`Introductory Bobbin Lace`,teacher:`Isadora di Venezia`,email:'isadora@example.com',date:'2026-06-06',time:'10:00',duration:120,format:'in-person',topic:'Fiber Arts & Needlework',event:'Crescent Artisan 2026',room:`Fiber Room`,level:'Beginner',audience:'newcomer-friendly',desc:`Learn the basics of bobbin lace — setting up your pillow, winding bobbins, and working a simple torchon ground. Students will leave with a small lace sample in progress and a pattern to continue at home.`,bring:`Nothing — pillow, bobbins, and thread provided`,fee:'$3 materials',zoomLink:'',max:5,prereqs:'None',bio:`Lady Isadora di Venezia has been making bobbin lace for eight years with a focus on 16th-century Italian and Flemish patterns.`,imageUrl:'',registrationCount:4,waitlistCount:0,roster:['Ingrid Halfdansdottir','Rosamund of the Dales','Elspeth of Dunbar','Sigrid Bjornsdottir'],waitlistRoster:[]},
+  {id:'73',title:`Italian Dance`,teacherTitle:'Baroness',teacher:`Delphine de Montallieu`,email:'delphine@example.com',date:'2026-06-06',time:'10:00',duration:120,format:'in-person',topic:'Dance',event:'Crescent Artisan 2026',room:`Great Hall`,audience:'newcomer-friendly',desc:`Come learn a selection of dances from the 15th and 16th centuries. All of these dances will be on the set list for Muse's Masque in August, so if you're planning on attending, now is a great time to learn! Dances include: Amoroso, Petit Rose, Petit Vriens, Rostiboli Gioiosa, Ballo del Fiore, Saltarello, Gelosia.`,bring:`Comfortable shoes, water`,fee:'',zoomLink:'',max:18,prereqs:'None',bio:`Baroness Delphine de Montallieu has been dancing and teaching period dance in the SCA for over twelve years, specializing in 15th and 16th century French and Italian forms.`,imageUrl:'',registrationCount:12,waitlistCount:0,roster:['Margery la Rousse','Aelric of Thornwood','Constance of Hartwood','Isabeau de Montpellier','Yusuf al-Rashid','Wulfric the Wanderer','Cecilia de Montfort','Thomas of Ely','Elspeth of Dunbar','Rosamund of the Dales','Ingrid Halfdansdottir','Sigrid Bjornsdottir'],waitlistRoster:[]},
+  {id:'74',title:`Bara Tape Patterning for Late 16th Century Clothing`,teacher:`Sigrún Hrafnsdóttir`,email:'sigrun@example.com',date:'2026-06-06',time:'10:00',duration:120,format:'in-person',topic:'Costuming',event:'Crescent Artisan 2026',room:`Craft Room`,level:'Intermediate',desc:`Learn to use bara tape — a period patterning tool — to draft accurate patterns for late 16th century garments directly from the body. We'll work through the method for a fitted bodice or doublet. Some sewing experience helpful.`,bring:`Measuring tape, notepad; wear fitted underlayers you can measure over`,fee:'',zoomLink:'',max:3,prereqs:'Some sewing experience helpful',bio:`Lady Sigrún Hrafnsdóttir is a costumer and pattern drafter specializing in late-period fitted garments from Norse and continental European traditions.`,imageUrl:'',registrationCount:2,waitlistCount:0,roster:['Philippa of Rouen','Constance of Hartwood'],waitlistRoster:[]},
+  {id:'75',title:`Introduction to Medieval Calligraphy`,teacher:`Bruce Draconarius of Mistholme`,email:'bruce@example.com',date:'2026-06-06',time:'13:00',duration:120,format:'in-person',topic:'Scribal Arts',event:'Crescent Artisan 2026',room:`Library`,level:'Beginner',audience:'newcomer-friendly',desc:`An introduction to two foundational medieval scripts — Caroline minuscule and Gothic textura — with guided pen practice on each. Students leave with a reference sheet and a starter exemplar.`,bring:`Paper; pencil; see-through ruler. Students encouraged to bring their own pen/ink.`,fee:'',zoomLink:'',max:10,prereqs:'No experience needed',bio:`Bruce Draconarius of Mistholme is a long-time scribe and calligrapher who teaches manuscript history and calligraphy across the SCA.`,imageUrl:'',registrationCount:8,waitlistCount:0,roster:['Aelric of Thornwood','Ingrid Halfdansdottir','Thomas of Ely','Dmitri Volkonsky','Leofric the Just','Finn Eriksson','Sigrid Bjornsdottir','Rosamund of the Dales'],waitlistRoster:[]},
+  {id:'76',title:`Sinister Calligraphy Workshop`,teacher:`Ramvoldus Kröll`,email:'ramvoldus@example.com',date:'2026-06-06',time:'13:00',duration:120,format:'in-person',topic:'Scribal Arts',event:'Crescent Artisan 2026',room:`Library`,level:'Beginner',desc:`This hands-on workshop is specifically tailored for left-handed individuals with little to no experience. Leave your doubts at the door — forget the smudged pencil lead and smeared ink nightmares from your childhood. You will be creating beautiful hand-drawn letters in an hour or less. Materials provided; bring your own nib holder or slant board if you have one.`,bring:`Your own nib holder or slant board if you have one`,fee:'',zoomLink:'',max:8,prereqs:'None',bio:`Ramvoldus Kröll is a calligrapher and left-handed writing advocate who has developed a specialized method for teaching medieval scripts to left-handed students.`,imageUrl:'',registrationCount:4,waitlistCount:0,roster:['Cecilia de Montfort','Elspeth of Dunbar','Wulfric the Wanderer','Yusuf al-Rashid'],waitlistRoster:[]},
+  {id:'77',title:`Absolute Beginner's Pewter Casting`,teacher:`Aldric von Köln`,email:'aldric@example.com',date:'2026-06-06',time:'13:00',duration:120,format:'in-person',topic:'Metal / Wood / Leather / Glass',event:'Crescent Artisan 2026',room:`Craft Room`,level:'Beginner',audience:'newcomer-friendly',desc:`Learn to cast simple period objects in pewter using soapstone molds. We'll cover mold carving, alloy safety, melting, and finishing. Students leave with a pendant or button they cast themselves. All materials and safety equipment provided.`,bring:`Nothing — all materials and safety equipment provided`,fee:'$5 materials',zoomLink:'',max:null,prereqs:'None',bio:`Lord Aldric von Köln is a metalsmith and medieval craft researcher who teaches pewter casting and related metalworking skills at events throughout Caid.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'78',title:`Royal Armouries MS I.33: Sword and Buckler`,teacher:`Galien Crow`,email:'galien@example.com',date:'2026-06-06',time:'13:00',duration:120,format:'in-person',topic:'Combat - Rapier',event:'Crescent Artisan 2026',room:`Great Hall`,audience:'adults-only',desc:`An introduction to the guards, wards, and plays of MS I.33, the oldest known European fencing manual (c. 1300). Students will work through basic binds and counter-binds with a partner. Loaner bucklers available; bring your own sword if you have one.`,bring:`Rapier gear; loaner bucklers available`,fee:'',zoomLink:'',max:6,prereqs:'Some rapier experience preferred',bio:`Galien Crow is an experienced rapier fighter and historical fencing researcher with a focus on early medieval fighting manuals.`,imageUrl:'',registrationCount:4,waitlistCount:0,roster:['Finn Eriksson','Leofric the Just','Dmitri Volkonsky','Thomas of Ely'],waitlistRoster:[]},
+  {id:'79',title:`Advanced Embroidery: Or Nué`,teacherTitle:'Dame',teacher:`Richenda Elizabeth Coffin`,email:'richenda@example.com',date:'2026-06-06',time:'13:00',duration:240,format:'in-person',topic:'Fiber Arts & Needlework',event:'Crescent Artisan 2026',room:`Fiber Room`,level:'Advanced',sessionNum:1,sessionTotal:2,desc:`A 4-hour hands-on class on the stitch patterns and shading techniques for Or Nué — the prestige goldwork technique seen in the finest medieval embroideries. This class continues in the 3–5pm period. Prerequisite: some embroidery experience required.`,bring:`Your own 6" hoop; small sharp scissors`,fee:'$8 materials',zoomLink:'',max:3,prereqs:'Some embroidery experience required',bio:`Dame Richenda Elizabeth Coffin OL OP is a Pentathlon and inter-kingdom competition winner with deep expertise in historical embroidery techniques.`,imageUrl:'',registrationCount:2,waitlistCount:1,roster:['Constance of Hartwood','Philippa of Rouen'],waitlistRoster:[{pos:1,name:'Margery la Rousse'}]},
+  {id:'80',title:`Illuminated Letters`,teacherTitle:'Mistress',teacher:`Alienor of Wakefield`,email:'alienor@example.com',date:'2026-06-06',time:'15:00',duration:120,format:'in-person',topic:'Scribal Arts',event:'Crescent Artisan 2026',room:`Library`,level:'Beginner',audience:'newcomer-friendly',desc:`Learn to paint illuminated decorative letters in the style of 13th-century English manuscripts. We'll cover basic gilding, pigment mixing, and letterform. All supplies provided — beginners very welcome.`,bring:`Small brush if you have one`,fee:'',zoomLink:'',max:10,prereqs:'None',bio:`Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years.`,imageUrl:'',registrationCount:6,waitlistCount:0,roster:['Aelric of Thornwood','Ingrid Halfdansdottir','Rosamund of the Dales','Elspeth of Dunbar','Sigrid Bjornsdottir','Finn Eriksson'],waitlistRoster:[]},
+  {id:'81',title:`Beginning Embroidery`,teacher:`Isadora di Venezia`,email:'isadora@example.com',date:'2026-06-06',time:'15:00',duration:120,format:'in-person',topic:'Fiber Arts & Needlework',event:'Crescent Artisan 2026',room:`Fiber Room`,level:'Beginner',audience:'newcomer-friendly',desc:`A gentle introduction to hand embroidery for complete beginners. Students will learn running stitch, back stitch, satin stitch, and chain stitch while working a small sampler to take home. All materials provided.`,bring:`Nothing — all materials provided`,fee:'',zoomLink:'',max:7,prereqs:'None',bio:`Lady Isadora di Venezia teaches embroidery and needlework at all skill levels across Caid events.`,imageUrl:'',registrationCount:5,waitlistCount:0,roster:['Cecilia de Montfort','Thomas of Ely','Dmitri Volkonsky','Leofric the Just','Wulfric the Wanderer'],waitlistRoster:[]},
+  {id:'82',title:`Introduction to Historical Games`,teacher:`Hallr brjost Starsson`,email:'hallr@example.com',date:'2026-06-06',time:'15:00',duration:240,format:'in-person',topic:'History',event:'Crescent Artisan 2026',room:`Great Hall`,audience:'newcomer-friendly',desc:`A survey and play session covering period games from across medieval Europe and the Islamic world — including tables (backgammon), merels, chess variants, and dice games. Drop in and out as you like. Games and period rules provided.`,bring:`Nothing`,fee:'',zoomLink:'',max:20,prereqs:'None',bio:`Hallr brjost Starsson is a researcher and enthusiast of medieval games and recreation who brings period game sets and reconstructed rules to events across Caid.`,imageUrl:'',registrationCount:5,waitlistCount:0,roster:['Yusuf al-Rashid','Finn Eriksson','Rosamund of the Dales','Wulfric the Wanderer','Leofric the Just'],waitlistRoster:[]},
+  {id:'83',title:`Headwear / Sorguç Aigrette`,teacher:`Rayhana bint Estafanos al-Ábbas`,email:'rayhana@example.com',date:'2026-06-06',time:'15:00',duration:120,format:'in-person',topic:'Costuming',event:'Crescent Artisan 2026',room:`Craft Room`,desc:`A survey of common men's and women's headwear in 16th-century Ottoman culture — turbans, hats, veils, and the styles that distinguished rank, region, and occasion. We'll then focus on the sorguç, the jeweled aigrette used to ornament headwear across genders, including its signature plume. Participants will shape and decorate their own brass aigrette with feathers included to take home.`,bring:`Nothing — all materials provided`,fee:'$5 materials',zoomLink:'',max:5,prereqs:'None',bio:`Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul.`,imageUrl:'',registrationCount:3,waitlistCount:0,roster:['Margery la Rousse','Ingrid Halfdansdottir','Cecilia de Montfort'],waitlistRoster:[]},
+  {id:'84',title:`Period Martial Arts Demystified`,teacher:`Diago de las Casas`,email:'diago@example.com',date:'2026-06-06',time:'15:00',duration:120,format:'in-person',topic:'Combat - Rapier',event:'Crescent Artisan 2026',room:`Great Hall`,audience:'adults-only',desc:`This course examines how to utilize period texts on fighting and swordsmanship — how to contextually examine examples, plays, and the methodology of period masters, then think critically about the ideas presented and apply them practically. Drills and breakout exercises will be performed. Gear must meet SCA rapier requirements; some loaner gear available.`,bring:`Rapier gear meeting SCA requirements; some loaner gear available`,fee:'',zoomLink:'',max:7,prereqs:'Some rapier experience helpful',bio:`Diago de las Casas is a historical fencer and researcher who studies period martial arts manuals and their practical application in SCA rapier combat.`,imageUrl:'',registrationCount:5,waitlistCount:0,roster:['Dmitri Volkonsky','Aelric of Thornwood','Thomas of Ely','Leofric the Just','Finn Eriksson'],waitlistRoster:[]},
+  {id:'85',title:`Advanced Woodworking: Working with Difficult Grain`,teacherTitle:'',teacher:`Rycharde the Bowemon`,email:'rycharde@example.com',date:'2026-06-06',time:'15:00',duration:120,format:'in-person',topic:'Metal / Wood / Leather / Glass',event:'Crescent Artisan 2026',room:`Craft Room`,level:'Advanced',desc:`A hands-on class using hand planes and scrapers to reduce and eliminate tear-out in changing grains and crotch woods. Students will practice on prepared blanks and leave with a better understanding of grain direction and tool selection.`,bring:`Your own hand plane or card scraper if you have one`,fee:'',zoomLink:'',max:null,prereqs:'Some woodworking experience recommended',bio:`Rycharde the Bowemon OL is a woodworker, bowyer, and Laurel who has been working wood in period styles for over twenty years.`,imageUrl:'',registrationCount:0,waitlistCount:0,roster:[],waitlistRoster:[]},
+  {id:'86',title:`Vocal Coaching: How to Be LOUD`,teacher:`Frida Hrosskætilsdottir`,email:'frida@example.com',date:'2026-06-06',time:'15:00',duration:120,format:'in-person',topic:'Bardic Arts',event:'Crescent Artisan 2026',room:`Library`,desc:`Practical vocal techniques for heralds, bards, and anyone who needs to project their voice in outdoor or large indoor settings — without straining or shouting. We'll cover breath support, resonance, and clear diction. Bring a willingness to make noise.`,bring:`Water; comfortable clothing`,fee:'',zoomLink:'',max:3,prereqs:'None',bio:`Frida Hrosskætilsdottir is a musician and vocalist who teaches both period music and practical voice technique in the SCA.`,imageUrl:'',registrationCount:2,waitlistCount:0,roster:['Elspeth of Dunbar','Sigrid Bjornsdottir'],waitlistRoster:[]},
+  {id:'87',title:`Advanced Embroidery: Or Nué`,teacherTitle:'Dame',teacher:`Richenda Elizabeth Coffin`,email:'richenda@example.com',date:'2026-06-06',time:'15:00',duration:120,format:'in-person',topic:'Fiber Arts & Needlework',event:'Crescent Artisan 2026',room:`Fiber Room`,level:'Advanced',sessionNum:2,sessionTotal:2,desc:`Continuation of the Or Nué class from Period 2. Students work through shading and more complex couching patterns on their in-progress piece. Enrollment by completing the Period 2 session only.`,bring:`Your in-progress piece from Period 2`,fee:'',zoomLink:'',max:3,prereqs:'Must have attended the Period 2 session',bio:`Dame Richenda Elizabeth Coffin OL OP is a Pentathlon and inter-kingdom competition winner with deep expertise in historical embroidery techniques.`,imageUrl:'',registrationCount:2,waitlistCount:1,roster:['Constance of Hartwood','Philippa of Rouen'],waitlistRoster:[{pos:1,name:'Margery la Rousse'}]}
 ];
 const APPS_SCRIPT_URL='YOUR_APPS_SCRIPT_URL_HERE';
 const IS_DEMO=APPS_SCRIPT_URL==='YOUR_APPS_SCRIPT_URL_HERE';
 const lockedEvent=new URLSearchParams(window.location.search).get('event');
 const dC=SEED_CLASSES.map(c=>({...c}));
 const dP=[{id:'p1',title:'Introduction to Heraldic Embroidery',teacher:'Brigid ingen Faeláin',email:'brigid@example.com',date:'',time:'',duration:90,format:'in-person',topic:'Fiber Arts',event:'Collegium 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'A hands-on introduction to embroidering heraldic devices onto fabric — perfect for decorating a banner, pouch, or garment. We will cover basic satin stitch and couching techniques using your own device or a provided sample design.',bring:'Nothing — needles, fabric, and thread provided. Bring your device blazon if you have one.',fee:'$2 materials',zoomLink:'',max:10,prereqs:'',bio:'Brigid has been doing needlework in the SCA for eight years, with a focus on Irish and early medieval embroidery traditions. This is her first time teaching at Collegium.',imageUrl:'',timepref:'Morning preferred — I am also helping with feast setup in the afternoon.',status:'pending',sessionNum:1,sessionTotal:1},{id:'p2',title:'Nalbinding for Beginners',teacherTitle:'Lord',teacher:'Gunnar Ivarsson',email:'gunnar@example.com',date:'',time:'',duration:120,format:'in-person',topic:'Fiber Arts',event:'Great Western War 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'Nalbinding is a pre-knitting textile technique used across the Norse and Byzantine world. Students will learn the Oslo stitch and start a small swatch to take home. No prior fiber arts experience needed.',bring:'Nothing — needles and wool provided.',fee:'$3 materials',zoomLink:'',max:8,prereqs:'',bio:'Lord Gunnar has been practicing nalbinding for six years and researches Viking Age textile finds. He teaches regularly at West Kingdom events.',imageUrl:'',timepref:'Thu, Nov 5: 9:00 AM–12:00 PM · Fri, Nov 6: 9:00 AM–1:00 PM',status:'pending',sessionNum:1,sessionTotal:1},
-  {id:'p3',title:'Period Calligraphy Hands: Foundational Strokes',teacherTitle:'Duke',teacher:'Cormac mac Aoidh',email:'cormac@example.com',date:'',time:'',duration:90,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'An introduction to three foundational period scripts — Caroline minuscule, Gothic textura, and Italic — with guided practice on each. Students leave with a reference sheet and a starter exemplar.',bring:'Nothing — all materials provided.',fee:'$3 materials',zoomLink:'',max:14,prereqs:'',bio:'Duke Cormac has been studying and teaching period scripts for over twenty years. He holds a Laurel for his work in calligraphy and manuscript studies and has served as Kingdom Signet.',imageUrl:'',peerages:'laurel,royalpeer',timepref:'Morning preferred.',status:'pending',sessionNum:1,sessionTotal:1}],dEv=[{name:'Collegium 2026',startDate:'2026-08-16',endDate:'2026-08-16',rooms:['Arts/History Rm 1','Fiber Arts','Cooking/Costuming','Grab Bag Rm 2','Grab Bag Rm 3','Field','Archery'],address:'Los Angeles County Fairplex, 1101 W McKinley Ave, Pomona CA 91768',url:'http://places.sca-caid.org/caid/',active:true,published:true},{name:'Great Western War 2026',startDate:'2026-11-05',endDate:'2026-11-08',rooms:['A&S Tent','List Field','Archery Range','Bardic Circle'],address:'Kern County Fairgrounds, 1142 South P St, Bakersfield CA 93307',url:'https://places.sca-caid.org/gww/',active:true,published:true,daySchedule:[{date:'2026-11-05',start:'09:00',end:'18:00'},{date:'2026-11-06',start:'09:00',end:'18:00'},{date:'2026-11-07',start:'09:00',end:'18:00'},{date:'2026-11-08',start:'09:00',end:'14:00'}],teacherMsg:'Thank you for volunteering to teach at Great Western War 2026! 🎉\n\nSubmissions are due by October 1st. If you need to cancel or make changes after submitting, please contact the A\u0026S officer directly.\n\nQuestions? Reach out to the class coordinator at as@sca-caid.org.'}];
+  {id:'p3',title:'Period Calligraphy Hands: Foundational Strokes',teacherTitle:'Duke',teacher:'Cormac mac Aoidh',email:'cormac@example.com',date:'',time:'',duration:90,format:'in-person',topic:'Scribal Arts',event:'Collegium 2026',room:'',level:'Beginner',audience:'newcomer-friendly',desc:'An introduction to three foundational period scripts — Caroline minuscule, Gothic textura, and Italic — with guided practice on each. Students leave with a reference sheet and a starter exemplar.',bring:'Nothing — all materials provided.',fee:'$3 materials',zoomLink:'',max:14,prereqs:'',bio:'Duke Cormac has been studying and teaching period scripts for over twenty years. He holds a Laurel for his work in calligraphy and manuscript studies and has served as Kingdom Signet.',imageUrl:'',peerages:'laurel,royalpeer',timepref:'Morning preferred.',status:'pending',sessionNum:1,sessionTotal:1}],dEv=[{name:'Collegium 2026',startDate:'2026-03-14',endDate:'2026-03-14',rooms:['Society Skills Rm 1','Society Skills Rm 2','Arts/History Rm 1','History Rm 2','Archery','Grab Bag Rm 1','Grab Bag Rm 2','Metal/Leather Rm','Grab Bag Rm 3','Cooking/Costuming','Dance (Gym)','Fiber Arts','Outdoor Shade','Field - Martial Class'],address:'',url:'',active:true,published:true},{name:'Crescent Artisan 2026',startDate:'2026-06-06',endDate:'2026-06-06',rooms:['Great Hall','Craft Room','Fiber Room','Library'],address:'El Camino Real Charter High School North Campus, 7401 Shoup Ave, West Hills, CA 91307',url:'http://places.sca-caid.org/caid/',active:true,published:true},{name:'Great Western War 2026',startDate:'2026-11-05',endDate:'2026-11-08',rooms:['A&S Tent','List Field','Archery Range','Bardic Circle'],address:'13601 Ironbark Rd, Taft, CA 93268',directionsUrl:'https://maps.app.goo.gl/q5vkkRntXNkHh5Jr8',url:'https://places.sca-caid.org/gww/',active:true,published:true,daySchedule:[{date:'2026-11-05',start:'09:00',end:'18:00'},{date:'2026-11-06',start:'09:00',end:'18:00'},{date:'2026-11-07',start:'09:00',end:'18:00'},{date:'2026-11-08',start:'09:00',end:'14:00'}],teacherMsg:'Thank you for volunteering to teach at Great Western War 2026! 🎉\n\nSubmissions are due by October 1st. If you need to cancel or make changes after submitting, please contact the A\u0026S officer directly.\n\nQuestions? Reach out to the class coordinator at as@sca-caid.org.'}];
 const dTeachers=[
-  {email:'alienor@example.com',name:'Alienor of Wakefield',title:'Mistress',barony:'Calafia',phone:'',bio:'Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.',peerages:['laurel','royalpeer'],royalPeer:true,sittingRoyalty:false,stepDownDate:''},
-  {email:'aelswith@example.com',name:'Aelswith of Mercia',title:'Lady',barony:'Dreiburgen',phone:'',bio:'Lady Aelswith has been tablet weaving for twelve years and particularly enjoys early medieval Scandinavian and Anglo-Saxon patterns.',peerages:['laurel'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
-  {email:'rayhana@example.com',name:'Rayhana bint Estafanos al-Ábbas',title:'',barony:'Gyldenholt',phone:'',bio:'Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
-  {email:'seamus@example.com',name:'Seamus mac Neill',title:'Lord',barony:'Lyondemere',phone:'',bio:'Lord Seamus is a pursuivant with Caid’s College of Heralds and has been consulting on device submissions for eight years.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
-  {email:'gwenllian@example.com',name:'Gwenllian ferch Caradog',title:'Mistress',barony:'Calafia',phone:'',bio:'Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery.',peerages:['pelican'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
-  {email:'sorcha@example.com',name:'Sorcha inghean Uí Fhaoláin',title:'Mistress',barony:'Dun Or',phone:'',bio:'Mistress Sorcha is a Pelican with twenty years of experience in natural dyeing and fiber arts.',peerages:['pelican'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
-  {email:'baldwin@example.com',name:'Baldwin of Ashford',title:'Sir',barony:'Angels',phone:'',bio:'Sir Baldwin is a knight in the West/Caid chivalry and has been fighting and teaching heavy combat for over twenty years.',peerages:['chivalry','royalpeer'],royalPeer:true,sittingRoyalty:false,stepDownDate:''},
-  {email:'rodrigo@example.com',name:'Rodrigo de Castilla',title:'Don',barony:'Calafia',phone:'',bio:'Don Rodrigo holds the rank of Don in Caid’s rapier community and has been teaching introductory fencing for over a decade.',peerages:['masterofdefense'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
-  {email:'tariq@example.com',name:'Tariq ibn Mahmoud',title:'Lord',barony:'Lyondemere',phone:'',bio:'Lord Tariq has been researching medieval Islamic material culture for eight years, with a particular interest in al-Andalus.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
-  {email:'margery@example.com',name:'Fiachra an Doire',title:'',barony:'Dreiburgen',phone:'',bio:'Fiachra is a scribe and calligrapher with a particular interest in medieval ink recipes and writing materials.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'alienor@example.com',name:'Alienor of Wakefield',title:'Mistress',barony:'Calafia',phone:'',bio:'Mistress Alienor has been studying and teaching medieval manuscript illumination in the SCA for over fifteen years, with a focus on 12th–14th century English and French styles.',peerages:['laurel'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'rayhana@example.com',name:'Rayhana bint Estafanos al-Ábbas',title:'',barony:'Gyldenholt',phone:'',bio:'Rayhana has been researching and recreating Ottoman and Eastern Mediterranean garb for a decade. Her persona is set in 16th-century Istanbul.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'delphine@example.com',name:'Delphine de Montallieu',title:'Baroness',barony:'Dreiburgen',phone:'',bio:'Baroness Delphine de Montallieu has been dancing and teaching period dance in the SCA for over twelve years, specializing in 15th and 16th century French and Italian forms.',peerages:['pelican'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'richenda@example.com',name:'Richenda Elizabeth Coffin',title:'Dame',barony:'Calafia',phone:'',bio:'Dame Richenda Elizabeth Coffin is a Pentathlon and inter-kingdom competition winner with deep expertise in historical embroidery and A&S competition strategy.',peerages:['laurel','pelican'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'bruce@example.com',name:'Bruce Draconarius of Mistholme',title:'',barony:'Lyondemere',phone:'',bio:'Bruce Draconarius of Mistholme is a long-time scribe and calligrapher who teaches manuscript history and calligraphy across the SCA.',peerages:['laurel'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
   {email:'gideon@example.com',name:'Gideon the Genuine',title:'',barony:'Dun Or',phone:'',bio:'Gideon has been shooting in the SCA for eighteen years and holds multiple Royal Round records.',peerages:['orderofthemark'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
-  {email:'isabeau@example.com',name:'Isabeau de Bretagne',title:'Lady',barony:'Lyondemere',phone:'',bio:'Lady Isabeau has been dancing and teaching period dance in the SCA for seven years, with a focus on 15th and 16th century French and Italian forms.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
-  {email:'liam@example.com',name:'Liam Mor MacGregor',title:'Sir',barony:'Dreiburgen',phone:'',bio:'Sir Liam Mor MacGregor is a knight in Caid\'s chivalry and the current Kingdom Webwright. He has been building and maintaining SCA websites for over twelve years.',peerages:['chivalry'],royalPeer:false,sittingRoyalty:true,stepDownDate:'2027-05-01'}
+  {email:'rodrigo@example.com',name:'Rodrigo de Castilla',title:'Don',barony:'Calafia',phone:'',bio:"Don Rodrigo holds the rank of Don in Caid's rapier community and has been teaching historical fencing for over a decade.",peerages:['masterofdefense'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'sorcha@example.com',name:'Sorcha inghean Uí Fhaoláin',title:'Mistress',barony:'Dun Or',phone:'',bio:'Mistress Sorcha is a Pelican with twenty years of experience in natural dyeing and fiber arts.',peerages:['pelican'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'gwenllian@example.com',name:'Gwenllian ferch Caradog',title:'Mistress',barony:'Calafia',phone:'',bio:'Mistress Gwenllian is a Pelican whose passion is 14th-century English cookery.',peerages:['pelican'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'seamus@example.com',name:'Séamus mac Néill Uí Chonchobhair',title:'Lord',barony:'Lyondemere',phone:'',bio:'Lord Séamus is a consulting herald in Caid with a love of the more unusual corners of the heraldic tradition.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'fiachra@example.com',name:'Fiachra an Doire',title:'',barony:'Dreiburgen',phone:'',bio:'Fiachra is a scribe and calligrapher with a particular interest in medieval ink recipes and writing materials.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'frida@example.com',name:'Frida Hrosskaetilsdottir',title:'',barony:'Calafia',phone:'',bio:'Frida Hrosskaetilsdottir is a musician and vocalist who teaches both period music and practical voice technique in the SCA.',peerages:[],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'galien@example.com',name:'Galien Crow',title:'',barony:'Angels',phone:'',bio:'Galien Crow is an experienced rapier fighter who focuses on practical footwork, distance management, and historical fighting manuals.',peerages:['masterofdefense'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'elisheva@example.com',name:'Elisheva bat Yisrael',title:'Maestra',barony:'Gyldenholt',phone:'',bio:'Maestra Elisheva bat Yisrael is a scholar of Ottoman and Islamic material culture who teaches both dining history and period dance.',peerages:['laurel'],royalPeer:false,sittingRoyalty:false,stepDownDate:''},
+  {email:'rycharde@example.com',name:'Rycharde the Bowemon',title:'',barony:'Dreiburgen',phone:'',bio:'Rycharde the Bowemon OL is a woodworker, bowyer, and Laurel who has been working wood in period styles for over twenty years.',peerages:['laurel'],royalPeer:false,sittingRoyalty:false,stepDownDate:''}
 ];
 const dRegs={
-  '1':[
-    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
+  // Collegium 2026
+  '30':[
     {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
     {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
     {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
-    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
-    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
-    {scaName:'Philippa of Rouen',email:'anon1@example.com',hidden:true},
-    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
     {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
-    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
-    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
-    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
   ],
-  '2':[
-    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
-    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
-    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',hidden:false},
-    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
-    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
-    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
-    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
-    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
-  ],
-  '3':[
+  '19':[
     {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
-    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
-    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
     {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
-    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
-    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
-    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
-    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
-    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
-    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
-    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
-  ],
-  '4':[
-    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
-    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
-  ],
-  '6':[
-    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
-    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
-    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
-    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
-    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
-    {scaName:'Haakon Sigurdsson',email:'anon2@example.com',hidden:true},
-    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
     {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
-    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
-    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
-    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',hidden:false},
-    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
     {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
-    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
-  ],
-  '7':[
-    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
-    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
-    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
-    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
-    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
-    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
-    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',hidden:false},
-    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
-    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
-    {scaName:'Alienor de Vaux',email:'anon3@example.com',hidden:true},
-    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
-    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
-  ],
-  '11':[
-    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
-    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
-    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
-    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
-    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
-    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
-    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
-    {scaName:'Thorvald Eiriksson',email:'anon4@example.com',hidden:true},
-    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
-    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
-    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
-    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',hidden:false},
     {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
-    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
   ],
   '12':[
-    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
+    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
     {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
+  ],
+  '22':[
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
+    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
+  ],
+  '24':[
+    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
+  ],
+  // Crescent Artisan 2026
+  '73':[
+    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
+    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
+    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
+  ],
+  '83':[
+    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
+  ],
+  '79':[
+    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
+    {scaName:'Philippa of Rouen',email:'anon1@example.com',hidden:true},
+  ],
+  '87':[
+    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
+    {scaName:'Philippa of Rouen',email:'anon1@example.com',hidden:true},
+  ],
+  '70':[
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
+    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
+  ],
+  '72':[
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
+  ],
+  '75':[
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
+    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
+  ],
+  '76':[
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
+  ],
+  '78':[
+    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
+    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
+  ],
+  '80':[
     {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
     {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
     {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
+  ],
+  '81':[
+    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
+    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
     {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
   ],
-  '13':[
+  '82':[
+    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
+    {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
+    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
+  ],
+  '84':[
+    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
+    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
+    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
+  ],
+  '86':[
+    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
+    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
+  ],
+  // GWW
+  '62':[
     {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
     {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
     {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
@@ -1417,7 +1591,7 @@ const dRegs={
     {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',hidden:false},
     {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
   ],
-  '14':[
+  '63':[
     {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
     {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
     {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
@@ -1425,59 +1599,36 @@ const dRegs={
     {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
     {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
   ],
-  '15':[
+  '60':[
     {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
-    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
-    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
-    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
-    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
-    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
-    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
-    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
-    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
     {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
-    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
+    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
     {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
     {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
   ],
-  '16':[
-    {scaName:'Leofric the Just',email:'leofric@example.com',hidden:false},
-    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
-    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
-    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
-    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
-    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
-    {scaName:'Haakon Sigurdsson',email:'anon2@example.com',hidden:true},
-    {scaName:'Sigrid Bjornsdottir',email:'sigrid@example.com',hidden:false},
-    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
-  ],
-  '17':[
+  '61':[
     {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
-    {scaName:'Cecilia de Montfort',email:'cecilia@example.com',hidden:false},
-    {scaName:'Elspeth of Dunbar',email:'elspeth@example.com',hidden:false},
+    {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
+    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
     {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
     {scaName:'Rosamund of the Dales',email:'rosamund@example.com',hidden:false},
-    {scaName:'Constance of Hartwood',email:'constance@example.com',hidden:false},
-    {scaName:'Isabeau de Montpellier',email:'isabeau2@example.com',hidden:false},
-    {scaName:'Thorvald Eiriksson',email:'anon4@example.com',hidden:true},
-    {scaName:'Thomas of Ely',email:'bthomas@example.com',hidden:false},
-    {scaName:'Dmitri Volkonsky',email:'dmitri@example.com',hidden:false},
-    {scaName:'Aelric of Thornwood',email:'aelric@example.com',hidden:false},
-    {scaName:'Yusuf al-Rashid',email:'yusuf@example.com',hidden:false},
+    {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
   ],
 },
 dWL={
-  '2':[
-    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
-  ],
-  '11':[
+  '62':[
     {scaName:'Finn Eriksson',email:'finn@example.com',hidden:false},
-  ],
-  '13':[
-    {scaName:'Ingrid Halfdansdottir',email:'ingrid@example.com',hidden:false},
     {scaName:'Wulfric the Wanderer',email:'wulfric@example.com',hidden:false},
   ],
+  '79':[
+    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
+  ],
+  '87':[
+    {scaName:'Margery la Rousse',email:'margery@example.com',hidden:false},
+  ],
 };
+
 let dPid=1000,allClasses=[],allAdminClasses=[],myRegs={},scheduleEmail='';
 let allTeachers={};
 
@@ -1539,6 +1690,24 @@ function upsertTeacher(c){
   if(c.topic&&!t.topics.includes(c.topic))t.topics.push(c.topic);
 }
 let adminToken=sessionStorage.getItem('aT')||null,pendingClasses=[],availEvents=[];
+
+// ── SHARED VOLUNTEER DATA (demo seed — replace with API calls in live env) ──
+const dVolShifts = [
+  {id:'vs1', eventName:'Great Western War XXVII', title:'Gate Check-In', dept:'Gate', day:'2025-10-07', start:'08:00', end:'12:00', demand:'sedentary', ticketMult:1, location:'Main Gate'},
+  {id:'vs2', eventName:'Great Western War XXVII', title:'Gate Check-In', dept:'Gate', day:'2025-10-07', start:'12:00', end:'16:00', demand:'sedentary', ticketMult:1, location:'Main Gate'},
+  {id:'vs3', eventName:'Great Western War XXVII', title:'Troll Runner', dept:'Gate', day:'2025-10-07', start:'08:00', end:'18:00', demand:'active', ticketMult:1, location:'Gate / HQ'},
+  {id:'vs4', eventName:'Great Western War XXVII', title:'A&S Room Monitor', dept:'Arts & Sciences', day:'2025-10-08', start:'09:00', end:'13:00', demand:'light', ticketMult:1, location:'A&S Pavilion'},
+  {id:'vs5', eventName:'Great Western War XXVII', title:'Youth Activity Helper', dept:'Youth', day:'2025-10-08', start:'10:00', end:'14:00', demand:'light', ticketMult:1, location:'Youth Area'},
+  {id:'vs6', eventName:'Great Western War XXVII', title:'Water Bearer', dept:'Armored Combat', day:'2025-10-09', start:'09:00', end:'13:00', demand:'active', ticketMult:2, location:'Main Combat Field'},
+  {id:'vs7', eventName:'Great Western War XXVII', title:'Chirurgeon Support', dept:'Chirurgeon', day:'2025-10-09', start:'08:00', end:'17:00', demand:'sedentary', ticketMult:2, location:'Chirurgeon Point'},
+  {id:'vs8', eventName:'Great Western War XXVII', title:'Herald – Field', dept:'Heralds', day:'2025-10-10', start:'09:00', end:'12:00', demand:'active', ticketMult:1, location:'Main Combat Field'},
+  {id:'vs9', eventName:'Great Western War XXVII', title:'Closing Cleanup Crew', dept:'General', day:'2025-10-12', start:'08:00', end:'13:00', demand:'active', ticketMult:2, location:'Full Site'},
+  {id:'vs10', eventName:'Collegium Caidis 2025', title:'Registration Desk', dept:'Gate', day:'2025-11-15', start:'08:30', end:'12:30', demand:'sedentary', ticketMult:1, location:'Main Entrance'},
+  {id:'vs11', eventName:'Collegium Caidis 2025', title:'Room Monitor', dept:'Arts & Sciences', day:'2025-11-15', start:'09:00', end:'17:00', demand:'light', ticketMult:1, location:'Various Classrooms'},
+];
+// Demo: Margery is claimed on a couple of shifts
+let myVolShifts = {'vs6': {verified:false}, 'vs8': {verified:true}};
+// ── END SHARED VOLUNTEER DATA ────────────────────────────────────────────────
 let curModalId=null,curModalWL=false,curApprovingId=null;
 
 if(lockedEvent){showFormBody(true);}
@@ -1665,7 +1834,7 @@ function apiD(p){
     if(!c)return{ok:false,error:'Not found'};
     c.cancelled=true;return{ok:true};
   }
-  if(action==='adminCreateEvent'){if(!p.name)return{ok:false,error:'Name required'};const rooms=p.rooms?p.rooms.split(',').map(r=>r.trim()).filter(Boolean):[];dEv.push({name:p.name,startDate:p.startDate||'',startTime:p.startTime||'',endDate:p.endDate||p.startDate||'',endTime:p.endTime||'',rooms,address:p.address||'',url:p.url||'',active:true,published:false});return{ok:true};}
+  if(action==='adminCreateEvent'){if(!p.name)return{ok:false,error:'Name required'};const rooms=p.rooms?p.rooms.split(',').map(r=>r.trim()).filter(Boolean):[];dEv.push({name:p.name,startDate:p.startDate||'',startTime:p.startTime||'',endDate:p.endDate||p.startDate||'',endTime:p.endTime||'',rooms,address:p.address||'',url:p.url||'',imageUrl:p.imageUrl||'',active:true,published:false});return{ok:true};}
   if(action==='adminGetRoster'){
     const r=(dRegs[p.classId]||[]).map(x=>({scaName:x.scaName,email:x.email,barony:x.barony||'',hidden:x.hidden}));
     const w=(dWL[p.classId]||[]).map((x,i)=>({pos:i+1,scaName:x.scaName,email:x.email,barony:x.barony||'',hidden:x.hidden}));
@@ -1738,7 +1907,7 @@ function openBioModal(btn){
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 1, 2026 · 8:55 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:8px;display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-family:sans-serif;color:rgba(26,63,122,.7);font-style:italic">Start here</span><span style="font-size:16px;line-height:1">→</span><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:5px 14px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 2, 2026 · 11:33 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:8px;display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-family:sans-serif;color:rgba(26,63,122,.7);font-style:italic">Start here</span><span style="font-size:16px;line-height:1">→</span><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:5px 14px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){
@@ -1794,9 +1963,20 @@ function rC(){
   const catGridWrap=document.getElementById('cat-grid-wrap');
   const catSeeAll=document.getElementById('cat-see-all-btn');
   const evSelected=!!(document.getElementById('fe').value);
-  if(catGridBtn) catGridBtn.style.display=evSelected?'':'none';
+  if(catGridBtn) catGridBtn.style.display=evSelected?'flex':'none';
   const anyFilter=!!(evSelected||q||(document.getElementById('ff')||{}).value||(document.getElementById('ft')||{}).value||document.getElementById('fl-level')?.value||document.getElementById('fl-aud')?.value||document.getElementById('fhc')?.checked||document.getElementById('fhw')?.checked);
   if(catSeeAll) catSeeAll.style.display=anyFilter?'':'none';
+  // Hide grid when event is deselected; re-render if already open
+  if(catGridWrap){
+    if(!evSelected){
+      catGridWrap.style.display='none';
+      if(catGridBtn)catGridBtn.innerHTML='<i class="ti ti-layout-grid"></i> Grid view';
+    } else if(catGridWrap.style.display!=='none'){
+      renderCatalogGrid();
+    }
+  }
+  const cardsLabel=document.getElementById('cat-cards-label');
+  if(cardsLabel) cardsLabel.style.display=(evSelected&&catGridWrap&&catGridWrap.style.display!=='none')?'block':'none';
   // Event info banner
   const catEvBanner=document.getElementById('cat-event-banner');
   if(catEvBanner){
@@ -1820,18 +2000,25 @@ function rC(){
       if(evObj&&evObj.url){linkEl.href=evObj.url;linkEl.style.display='inline-flex';}
       else linkEl.style.display='none';
       const dirEl=document.getElementById('cat-ev-dir');
-      if(evObj&&evObj.address){dirEl.href='https://maps.google.com/?q='+encodeURIComponent(evObj.address);dirEl.style.display='inline-flex';}
+      if(evObj&&(evObj.directionsUrl||evObj.address)){dirEl.href=evObj.directionsUrl||('https://maps.google.com/?q='+encodeURIComponent(evObj.address));dirEl.style.display='inline-flex';}
       else dirEl.style.display='none';
+      const thumbWrap=document.getElementById('cat-ev-thumb-wrap');
+      const thumbImg=document.getElementById('cat-ev-thumb');
+      const thumbPh=document.getElementById('cat-ev-thumb-ph');
+      if(evObj&&evObj.imageUrl){
+        thumbImg.src=evObj.imageUrl;thumbImg.style.display='block';
+        if(thumbPh)thumbPh.style.display='none';
+        thumbWrap.style.display='block';
+      } else {
+        thumbImg.style.display='none';
+        if(thumbPh){thumbPh.textContent=(ev||'?')[0].toUpperCase();thumbPh.style.display='flex';}
+        thumbWrap.style.display='block';
+      }
       catEvBanner.style.display='block';
     } else {
       catEvBanner.style.display='none';
     }
   }
-  if(!evSelected&&catGridWrap&&catGridWrap.style.display!=='none'){
-    catGridWrap.style.display='none';g.style.display='';
-    if(catGridBtn)catGridBtn.innerHTML='<i class="ti ti-layout-grid"></i> Grid view';
-  }
-  if(evSelected&&catGridWrap&&catGridWrap.style.display!=='none')renderCatalogGrid();
   if(!fl.length){g.innerHTML='<div style="grid-column:1/-1;padding:2rem;text-align:center;color:var(--text2);font-size:14px;font-family:sans-serif;">No classes match your filters.</div>';return;}
   g.innerHTML=fl.map(c=>{
     const reg=isReg(c),wl=isWL(c),full=isFull(c),cancelled=!!c.cancelled;
@@ -1997,15 +2184,17 @@ function catClearEvent(){
 
 function toggleCatalogGrid(){
   const wrap=document.getElementById('cat-grid-wrap');
-  const cg=document.getElementById('cg');
   const btn=document.getElementById('cat-grid-btn');
+  const cardsLabel=document.getElementById('cat-cards-label');
   const showing=wrap.style.display!=='none';
   if(showing){
-    wrap.style.display='none';cg.style.display='';
-    btn.innerHTML='<i class="ti ti-layout-grid"></i> Grid view';
+    wrap.style.display='none';
+    if(btn)btn.innerHTML='<i class="ti ti-layout-grid"></i> Grid view';
+    if(cardsLabel)cardsLabel.style.display='none';
   } else {
-    wrap.style.display='block';cg.style.display='none';
-    btn.innerHTML='<i class="ti ti-menu-2"></i> Card view';
+    wrap.style.display='block';
+    if(btn)btn.innerHTML='<i class="ti ti-layout-grid"></i> Grid view';
+    if(cardsLabel)cardsLabel.style.display='block';
     renderCatalogGrid();
   }
 }
@@ -2220,7 +2409,6 @@ async function lookupSchedule(){
 function renderSchedule(){
   const mc=allClasses.filter(c=>myRegs[c.id]);
   const l=document.getElementById('sl');
-  // Build event info block
   const evDiv=document.getElementById('sched-events');
   const myEvents=[...new Set(mc.map(c=>c.event).filter(Boolean))];
   if(myEvents.length){
@@ -2231,28 +2419,52 @@ function renderSchedule(){
       if(!evObj)return'';
       const evEnd=evObj.endDate||evObj.startDate||'';
       if(evEnd&&evEnd<todayStr)return'';
-      const dateStr=evObj.startDate?(evObj.endDate&&evObj.endDate!==evObj.startDate?fD(evObj.startDate)+' – '+fD(evObj.endDate):fD(evObj.startDate)):'';
+      const dateStr=evObj.startDate?(evObj.endDate&&evObj.endDate!==evObj.startDate?fD(evObj.startDate)+' \u2013 '+fD(evObj.endDate):fD(evObj.startDate)):'';
       return'<div class="modal-note mn-info" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:8px">'
-        +'<div><strong>'+escH(evName)+'</strong>'+(dateStr?' · <span style="font-weight:400">'+dateStr+'</span>':'')
-        +(evObj.address?' <span style="font-size:12px;opacity:.8">· '+escH(evObj.address)+'</span>':'')+'</div>'
+        +'<div><strong>'+escH(evName)+'</strong>'+(dateStr?' \u00b7 <span style="font-weight:400">'+dateStr+'</span>':'')
+        +(evObj.address?' <span style="font-size:12px;opacity:.8">\u00b7 '+escH(evObj.address)+'</span>':'')+'</div>'
         +'<div style="display:flex;gap:8px;flex-wrap:wrap">'
-        +(evObj.address?'<a class="sched-zoom-btn" href="https://maps.google.com/?q='+encodeURIComponent(evObj.address)+'" target="_blank" style="font-size:12px;padding:5px 12px"><i class="ti ti-map-pin"></i> Directions</a>':'')
+        +(evObj.address||evObj.directionsUrl?'<a class="sched-zoom-btn" href="'+(evObj.directionsUrl||'https://maps.google.com/?q='+encodeURIComponent(evObj.address))+'" target="_blank" style="font-size:12px;padding:5px 12px"><i class="ti ti-map-pin"></i> Directions</a>':'')
         +(evObj.url?'<a class="sched-zoom-btn" href="'+escH(evObj.url)+'" target="_blank" style="font-size:12px;padding:5px 12px"><i class="ti ti-info-circle"></i> Event details</a>':'')
         +'</div></div>';
     }).join('');
-    // Show "my events" filter in catalog and populate it
     const fmy=document.getElementById('fmy');
     if(fmy){fmy.style.display='block';}
   } else {
     evDiv.style.display='none';
   }
-  if(!mc.length){
+
+  // ── Volunteer shifts ──────────────────────────────────────────────────────
+  const myVS=dVolShifts.filter(s=>myVolShifts[s.id]);
+  function vsHours(s){return Math.round((t2m(s.end)-t2m(s.start))/60*10)/10;}
+  function vsTickets(s){return Math.round(vsHours(s)*(s.ticketMult||1));}
+  function buildVolCard(s){
+    const verified=myVolShifts[s.id]&&myVolShifts[s.id].verified;
+    const hours=vsHours(s);const tickets=vsTickets(s);
+    const badge=verified
+      ?'<span class="vol-badge"><i class="ti ti-shield-check"></i> Volunteer \u00b7 Verified</span>'
+      :'<span class="vol-badge vol-unverified"><i class="ti ti-clock"></i> Volunteer \u00b7 Awaiting PIN</span>';
+    const ticketEl=verified
+      ?'<span class="ticket-chip-sm'+(s.ticketMult===2?' double':'')+'"><i class="ti ti-ticket"></i> '+tickets+' ticket'+(tickets!==1?'s':'')+'</span>'
+      :'';
+    return '<div class="sched-item sched-item-vol">'
+      +'<div class="sched-time">'+fD(s.day)+'<br>'+fT(s.start)+'</div>'
+      +'<div style="min-width:0">'+badge
+      +'<div class="sched-title">'+escH(s.title)+'</div>'
+      +'<div class="sched-meta">'+escH(s.dept)+' \u00b7 '+escH(s.location)+' \u00b7 '+fT(s.start)+'\u2013'+fT(s.end)+' ('+hours+'h)</div>'
+      +(ticketEl?'<div style="margin-top:5px">'+ticketEl+'</div>':'')
+      +'</div>'
+      +'<a href="volunteer.html" style="font-size:11px;padding:4px 10px;border-radius:var(--radius);border:1px solid var(--border);text-decoration:none;color:var(--text2);font-family:sans-serif;white-space:nowrap;background:var(--bg)">Manage</a>'
+      +'</div>';
+  }
+
+  if(!mc.length&&!myVS.length){
     if(!scheduleEmail)l.innerHTML='<div class="empty-sched"><i class="ti ti-mail" style="font-size:36px;display:block;margin:0 auto 10px;opacity:.25"></i>Enter your email address above to view your schedule.</div>';
+    else l.innerHTML='<div class="empty-sched">No classes or shifts found for that email.</div>';
     return;
   }
-  // Show filters and populate event dropdown
   const filtersDiv=document.getElementById('sched-filters');
-  if(filtersDiv){
+  if(filtersDiv&&mc.length){
     filtersDiv.style.display='block';
     const fevSel=document.getElementById('sched-fev');
     if(fevSel){
@@ -2264,7 +2476,6 @@ function renderSchedule(){
       fevSel.value=currentFev;
     }
   }
-  // Apply filters
   const fq=(document.getElementById('sched-q')||{}).value||'';
   const fev=(document.getElementById('sched-fev')||{}).value||'';
   const ftype=(document.getElementById('sched-ftype')||{}).value||'';
@@ -2280,27 +2491,35 @@ function renderSchedule(){
     if(fq){const q=fq.toLowerCase();if(!c.title.toLowerCase().includes(q)&&!c.teacher.toLowerCase().includes(q))return false;}
     return true;
   });
-  const today=new Date(); today.setHours(0,0,0,0);
+  const today=new Date();today.setHours(0,0,0,0);
   function isPast(c){
     if(!c.date)return false;
     const d=new Date(c.date+'T'+(c.time||'00:00'));
     if(c.duration){d.setMinutes(d.getMinutes()+Number(c.duration));}
     return d<today;
   }
+  function isVolPast(s){return new Date(s.day+'T'+(s.end||'23:59'))<today;}
   const so=(document.getElementById('sched-sort')||{}).value||'date';
   const sortFn=(a,b)=>{
     if(so==='title')return a.title.localeCompare(b.title);
-    if(so==='event')return(a.event||'').localeCompare(b.event||'')||(String(a.date)+String(a.time)).localeCompare(String(b.date)+String(b.time));
+    if(so==='event')return(a.event||a.eventName||'').localeCompare(b.event||b.eventName||'')||(String(a.date||a.day)+String(a.time||a.start)).localeCompare(String(b.date||b.day)+String(b.time||b.start));
     if(so==='type'){
       const ta=!!(myRegs[a.id]&&myRegs[a.id].teaching),tb=!!(myRegs[b.id]&&myRegs[b.id].teaching);
       if(ta!==tb)return ta?-1:1;
-      return(String(a.date)+String(a.time)).localeCompare(String(b.date)+String(b.time));
+      return(String(a.date||a.day)+String(a.time||a.start)).localeCompare(String(b.date||b.day)+String(b.time||b.start));
     }
-    return(String(a.date)+String(a.time)).localeCompare(String(b.date)+String(b.time));
+    return(String(a.date||a.day)+String(a.time||a.start)).localeCompare(String(b.date||b.day)+String(b.time||b.start));
   };
-  const upcoming=[...filtered].filter(c=>!isPast(c)).sort(sortFn);
-  const past=[...filtered].filter(c=>isPast(c)).sort(sortFn);
+  const allUpcoming=[
+    ...filtered.filter(c=>!isPast(c)).map(c=>({...c,_type:'class'})),
+    ...myVS.filter(s=>!isVolPast(s)).map(s=>({...s,_type:'vol',date:s.day,time:s.start}))
+  ].sort(sortFn);
+  const allPast=[
+    ...filtered.filter(c=>isPast(c)).map(c=>({...c,_type:'class'})),
+    ...myVS.filter(s=>isVolPast(s)).map(s=>({...s,_type:'vol',date:s.day,time:s.start}))
+  ].sort(sortFn);
   function buildCard(c){
+    if(c._type==='vol')return buildVolCard(c);
     const du=c.duration?' \u00b7 '+(c.duration>=60?Math.floor(c.duration/60)+(c.duration%60?'.5':'')+'h':c.duration+'min'):'';
     const isZoom=c.format==='zoom';
     const teaching=!!(myRegs[c.id]&&myRegs[c.id].teaching);
@@ -2308,8 +2527,8 @@ function renderSchedule(){
     const teachBanner=teaching?'<div style="display:flex;align-items:center;gap:8px;background:var(--accent-light);color:var(--accent);border:1px solid var(--accent-mid);border-radius:var(--radius);padding:7px 11px;margin-bottom:8px;font-size:13px;font-family:sans-serif;font-weight:600"><i class="ti ti-chalkboard" style="font-size:16px;flex-shrink:0"></i><span>You are teaching this class</span></div>':'';
     const wlBanner=wl?'<div style="display:flex;align-items:center;gap:8px;background:var(--gold-light);color:var(--accent);border:1px solid var(--gold-mid);border-radius:var(--radius);padding:7px 11px;margin-bottom:8px;font-size:13px;font-family:sans-serif;font-weight:600"><i class="ti ti-clock" style="font-size:16px;flex-shrink:0"></i><span>Waitlist position #'+pos+' \u2014 you\u2019ll be notified if a spot opens</span></div>':'';
     const borderStyle=teaching?'border-left:4px solid var(--accent-mid);background:var(--accent-light);':wl?'border-left:4px solid var(--gold-mid);':'';
-    const removeBtn=teaching?'':'<button class="remove-btn" onclick="'+(wl?'doLeaveWL':'doUnreg')+'(\''+c.id+'\')" style="'+(wl?'color:var(--accent-mid);border-color:var(--gold-mid)':'')+'">'+'<i class="ti ti-x"></i> '+(wl?'Leave waitlist':'Cancel')+'</button>';
-    return '<div class="sched-item'+(isZoom&&!wl&&!teaching?' sched-item-zoom':'')+'" style="'+borderStyle+'">'
+    const removeBtn=teaching?'':'<button class="remove-btn" onclick="'+(wl?'doLeaveWL':'doUnreg')+'(\''+c.id+'\')" style="'+(wl?'color:var(--accent-mid);border-color:var(--gold-mid)':'')+'"><i class="ti ti-x"></i> '+(wl?'Leave waitlist':'Cancel')+'</button>';
+    return '<div class="sched-item'+(isZoom&&!wl&&!teaching?' sched-item-zoom':'')+(c.cancelled?' sched-item-cancelled':'')+'" style="'+borderStyle+'">'
       +'<div class="sched-time">'+(c.date?fD(c.date)+'<br>':'')+(c.time?fT(c.time):'TBD')+'</div>'
       +'<div style="min-width:0">'+teachBanner+wlBanner+'<div class="sched-title">'+c.title+'</div>'
       +'<div class="sched-meta">'+(teaching?'Your class':'By: '+(c.teacherTitle?c.teacherTitle+' ':'')+c.teacher)+(c.event?' \u00b7 '+c.event:'')+(c.room?' \u00b7 '+c.room:'')+du+'</div>'
@@ -2321,18 +2540,27 @@ function renderSchedule(){
       +removeBtn
       +'</div>';
   }
-  const upcomingHtml=upcoming.map(buildCard).join('');
-  const pastHtml=past.map(c=>{
+  const earnedTickets=myVS.filter(s=>myVolShifts[s.id]&&myVolShifts[s.id].verified).reduce((a,s)=>a+vsTickets(s),0);
+  const volSummary=myVS.length
+    ?'<div style="display:flex;align-items:center;gap:10px;padding:9px 13px;background:var(--gold-light);border:1px solid var(--gold-mid);border-radius:var(--radius);margin-bottom:1rem;font-family:sans-serif;font-size:13px;color:var(--accent);flex-wrap:wrap">'
+      +'<i class="ti ti-ticket" style="font-size:18px;flex-shrink:0"></i>'
+      +'<span><strong style="font-size:18px;font-family:Lora,Georgia,serif">'+earnedTickets+'</strong> raffle ticket'+(earnedTickets!==1?'s':'')+' earned \u00b7 '
+      +myVS.filter(s=>myVolShifts[s.id]&&myVolShifts[s.id].verified).length+' of '+myVS.length+' volunteer shift'+(myVS.length!==1?'s':'')+' verified'
+      +' \u00b7 <a href="volunteer.html" style="color:var(--accent);font-weight:600">Manage shifts \u2192</a></span>'
+      +'</div>'
+    :'';
+  const upcomingHtml=allUpcoming.map(buildCard).join('');
+  const pastHtml=allPast.map(c=>{
     const card=buildCard(c);
     return card.replace('class="sched-item','class="sched-item sched-item-past');
   }).join('');
-  const pastToggle=past.length
+  const pastToggle=allPast.length
     ?'<button class="roster-toggle" id="past-toggle" onclick="togglePast()" style="margin-bottom:10px">'
-     +'<i class="ti ti-clock" style="font-size:12px"></i> Show '+past.length+' past class'+(past.length===1?'':'es')
+     +'<i class="ti ti-clock" style="font-size:12px"></i> Show '+allPast.length+' past item'+(allPast.length===1?'':'s')
      +'</button>'
      +'<div id="past-list" style="display:none">'+pastHtml+'</div>'
     :'';
-  l.innerHTML=(upcomingHtml||'<div class="empty-sched" style="padding:1.5rem 0">No upcoming classes.</div>')+pastToggle;
+  l.innerHTML=volSummary+(upcomingHtml||'<div class="empty-sched" style="padding:1.5rem 0">No upcoming classes or shifts.</div>')+pastToggle;
 }
 function togglePast(){
   const list=document.getElementById('past-list');
@@ -2596,7 +2824,7 @@ function previewCard(){
   const ttl=document.getElementById('fc-ttl')?.value.trim()||'';
   const displayTeacher=(ttl?ttl+' ':'')+teacherRaw;
   const descRaw=document.getElementById('fc-d').value.trim();
-  const desc=descRaw?escH(descRaw):'<em style="opacity:.5">No description yet.</em>';
+  const desc=descRaw?escH(descRaw):'<em style="color:var(--text2);opacity:.6">No description yet.</em>';
   const topic=document.getElementById('fc-tp')?.value||'';
   const fee=document.getElementById('fc-fe').value.trim();
   const bring=document.getElementById('fc-br').value.trim();
@@ -2612,45 +2840,43 @@ function previewCard(){
   const kids=document.getElementById('fc-aud-kids')?.checked;
   const adults=document.getElementById('fc-aud-adults')?.checked;
 
-  const thumbColor2=getTopicColor(topic);
+  // Square thumbnail — matches real card exactly
+  const thumbColor=getTopicColor(topic);
   const thumb=imageUrl
-    ?'<img style="width:100%;height:120px;object-fit:cover;display:block" src="'+imageUrl+'" alt="">'
-    :'<div style="width:100%;height:120px;background:linear-gradient(135deg,'+thumbColor2+'dd,'+thumbColor2+'88);display:flex;align-items:center;justify-content:center;opacity:.85"><span style="font-size:11px;font-family:sans-serif;color:#fff;opacity:.7;letter-spacing:.08em;text-transform:uppercase">'+escH(topic||'Class preview')+'</span></div>';
-  const formatTag=format==='zoom'?'<span class="tag zoom">Online</span>':'<span class="tag in-person">In person</span>';
+    ?'<img class="card-thumb-sq" src="'+imageUrl+'" alt="">'
+    :'<div class="card-thumb-sq-placeholder" style="background:'+thumbColor+'" title="'+escH(topic||'')+'"></div>';
+  const formatBadge='<span class="tag '+(format==='zoom'?'zoom':'in-person')+' card-thumb-badge">'+(format==='zoom'?'Online':'In person')+'</span>';
+  const thumbWrap='<div class="card-thumb-wrap">'+thumb+formatBadge+'</div>';
+
+  // Pills
   const fp=fee?'<span class="logistics-pill fee"><i class="ti ti-coin"></i> '+escH(fee)+'</span>':'<span class="logistics-pill free"><i class="ti ti-check"></i> Free</span>';
   const bp=bring?'<span class="logistics-pill"><i class="ti ti-backpack"></i> Bring: '+escH(bring)+'</span>':'';
   const duNum=parseInt(duration)||60;
   const duPill='<span class="logistics-pill"><i class="ti ti-clock"></i> '+(duNum<60?duNum+'min':Math.floor(duNum/60)+(duNum%60?'.5':'')+'h')+'</span>';
-  const spotsPill=max?'<span class="logistics-pill"><i class="ti ti-users"></i> Max '+max+'</span>':'<span class="logistics-pill"><i class="ti ti-users"></i> Open enrollment</span>';
-  const topicPill=topic?'<span class="card-meta-topic" style="font-size:11px;font-family:sans-serif;padding:1px 8px;border-radius:10px;background:var(--bg2);border:1px solid var(--border2);color:var(--text2);width:fit-content">'+escH(topic)+'</span>':'';
-  // Show profile photo thumbnail if uploaded
-  const teacherIcon=profileDataUrl
-    ?'<img src="'+profileDataUrl+'" style="width:18px;height:18px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:3px" alt="">'
-    :'<i class="ti ti-user"></i>';
-  const bioBtn=bio?'<button class="bio-btn" tabindex="0" aria-label="Teacher bio" data-bio-name="'+escH(displayTeacher)+'" data-bio-badges="" data-bio-img="'+escH(profileDataUrl)+'" data-bio-text="'+escH(bio)+'" onclick="openBioModal(this)"><i class="ti ti-info-circle"></i></button>':'';
-  const tags=[];
-  levels.forEach(l=>tags.push('<span class="card-tag level">'+escH(l)+'</span>'));
-  if(newcomer)tags.push('<span class="card-tag newcomer"><i class="ti ti-star" style="font-size:10px"></i> Newcomers</span>');
-  if(kids)tags.push('<span class="card-tag kids">Kids welcome</span>');
-  if(adults)tags.push('<span class="card-tag adults">Adults only</span>');
 
-  const html=`<div class="class-card" style="border-radius:0;box-shadow:none;border:none;padding:0">
-    ${thumb}
-    <div style="padding:1.2rem 1.3rem">
-      <div class="card-top"><span class="card-title">${escH(title)}</span>${formatTag}</div>
-      <div class="card-meta">
-        <span class="meta-teacher">${teacherIcon} ${escH(displayTeacher)}${bioBtn}</span>
-        ${topicPill}
-      </div>
-      <div class="card-desc">${desc}</div>
-      ${tags.length?'<div class="card-tags">'+tags.join('')+'</div>':''}
-      <div class="card-logistics">${fp}${duPill}${spotsPill}${bp}</div>
-      <div class="card-footer">
-        <span class="spots">Preview only</span>
-        <button class="enroll-btn" disabled>Register</button>
-      </div>
-    </div>
-  </div>`;
+  // Teacher meta
+  const bioBtn=bio?'<button class="bio-btn" tabindex="0" aria-label="Teacher bio" data-bio-name="'+escH(displayTeacher)+'" data-bio-badges="" data-bio-img="'+escH(profileDataUrl)+'" data-bio-text="'+escH(bio)+'" onclick="openBioModal(this)"><i class="ti ti-info-circle"></i></button>':'';
+  const teacherLine='<i class="ti ti-user" style="color:var(--accent-mid)"></i> '+escH(displayTeacher)+bioBtn;
+
+  // Tags
+  const allTags=[];
+  levels.forEach(l=>allTags.push('<span class="card-tag level">'+escH(l)+'</span>'));
+  if(newcomer)allTags.push('<span class="card-tag newcomer">★ Newcomers</span>');
+  if(kids)allTags.push('<span class="card-tag kids">Kids welcome</span>');
+  if(adults)allTags.push('<span class="card-tag adults">18+ only</span>');
+  const tagRow=allTags.length?'<div class="card-tags">'+allTags.join('')+'</div>':'';
+
+  // Spots line
+  const sp=max?'<span class="spots">0 / '+max+'</span>':'<span class="spots">Open enrollment</span>';
+
+  const html='<div class="class-card">'
+    +'<div class="card-top-row" style="margin-bottom:14px">'+thumbWrap+'<div class="card-top-text"><div class="card-title" style="margin-bottom:0">'+escH(title)+'</div></div></div>'
+    +'<div class="card-desc" style="margin-bottom:8px">'+desc+'</div>'
+    +'<div class="card-meta" style="margin-bottom:8px"><span class="meta-teacher">'+teacherLine+'</span></div>'
+    +tagRow
+    +'<div class="card-logistics">'+duPill+fp+bp+'</div>'
+    +'<div class="card-footer">'+sp+'<button class="enroll-btn" disabled>Register</button></div>'
+    +'</div>';
 
   document.getElementById('preview-card-wrap').innerHTML=html;
   document.getElementById('preview-modal').classList.add('open');
@@ -4391,6 +4617,16 @@ function loadEventPanel(){
   renderDaySchedule(evObj);
   document.getElementById('ev-address').value = evObj&&evObj.address ? evObj.address : '';
   document.getElementById('ev-url').value = evObj&&evObj.url ? evObj.url : '';
+  document.getElementById('ev-image-url').value = evObj&&evObj.imageUrl ? evObj.imageUrl : '';
+  // Populate image preview
+  const evPrev=document.getElementById('ev-img-preview');
+  const evDrop=document.getElementById('ev-img-drop');
+  if(evObj&&evObj.imageUrl&&evPrev){
+    document.getElementById('ev-img-preview-img').src=evObj.imageUrl;
+    evPrev.style.display='block';if(evDrop)evDrop.style.display='none';
+  } else if(evPrev){
+    evPrev.style.display='none';if(evDrop)evDrop.style.display='block';
+  }
   document.getElementById('ev-teacher-msg').value = evObj&&evObj.teacherMsg ? evObj.teacherMsg : '';
   updateCharCount('ev-teacher-msg',600);
   document.getElementById('ev-date-saved').style.display='none';
@@ -4458,6 +4694,7 @@ function saveEventDates(){
   const devEv2=dEv.find(e=>e.name===evName);if(devEv2){devEv2.startDate=start;devEv2.endDate=end;devEv2.daySchedule=schedule;}
   evObj.address = document.getElementById('ev-address').value.trim();
   evObj.url = document.getElementById('ev-url').value.trim();
+  evObj.imageUrl = document.getElementById('ev-image-url').value.trim();
   evObj.teacherMsg = document.getElementById('ev-teacher-msg').value.trim();
   const devEv3=dEv.find(e=>e.name===evName);if(devEv3)devEv3.teacherMsg=evObj.teacherMsg;
   const saved = document.getElementById('ev-date-saved');
@@ -4501,10 +4738,11 @@ async function createEvent(){
   const rooms=roomCount>0?Array.from({length:roomCount},(_,i)=>'Room '+(i+1)):[];
   const address=document.getElementById('lg-address').value.trim();
   const url=document.getElementById('lg-url').value.trim();
-  const res=await api({action:'adminCreateEvent',token:adminToken,name,startDate,startTime,endDate,endTime,rooms:rooms.join(','),address,url});
+  const imageUrl=document.getElementById('lg-image-url').value.trim();
+  const res=await api({action:'adminCreateEvent',token:adminToken,name,startDate,startTime,endDate,endTime,rooms:rooms.join(','),address,url,imageUrl});
   if(!res.ok){alert(res.error||'Failed to create event.');return;}
   // Clear and close create form
-  document.getElementById('lg-name').value='';document.getElementById('lg-start').value='';populateTimeSelect('lg-start-time','09:00');document.getElementById('lg-end').value='';populateTimeSelect('lg-end-time','17:00');document.getElementById('lg-rooms').value='';document.getElementById('lg-address').value='';document.getElementById('lg-url').value='';
+  document.getElementById('lg-name').value='';document.getElementById('lg-start').value='';populateTimeSelect('lg-start-time','09:00');document.getElementById('lg-end').value='';populateTimeSelect('lg-end-time','17:00');document.getElementById('lg-rooms').value='';document.getElementById('lg-address').value='';document.getElementById('lg-url').value='';document.getElementById('lg-image-url').value='';clearEvImg('lg');
   document.getElementById('lg-result').style.display='none';
   toggleCreateEvent();
   // Add to all dropdowns
@@ -4512,7 +4750,7 @@ async function createEvent(){
     const s=document.getElementById(sid);if(!s)return;
     const o=document.createElement('option');o.value=name;o.textContent=name;s.appendChild(o);
   });
-  availEvents.push({name,startDate,startTime,endDate,endTime,rooms,active:true,published:false});
+  availEvents.push({name,startDate,startTime,endDate,endTime,rooms,address,url,imageUrl,active:true,published:false});
   // Auto-select the new event in the picker
   document.getElementById('ev-picker').value=name;
   loadEventPanel();
@@ -4642,6 +4880,39 @@ function getEmRoom(){
   const sel=document.getElementById('em-room-sel');
   return sel.value==='__other__'?document.getElementById('em-room').value.trim():sel.value;
 }
+function evImgLoad(prefix, dataUrl){
+  document.getElementById(prefix+'-image-url').value=dataUrl;
+  const prev=document.getElementById(prefix+'-img-preview');
+  const drop=document.getElementById(prefix+'-img-drop');
+  document.getElementById(prefix+'-img-preview-img').src=dataUrl;
+  prev.style.display='block';
+  drop.style.display='none';
+}
+function clearEvImg(prefix){
+  document.getElementById(prefix+'-image-url').value='';
+  const prev=document.getElementById(prefix+'-img-preview');
+  const drop=document.getElementById(prefix+'-img-drop');
+  document.getElementById(prefix+'-img-preview-img').src='';
+  prev.style.display='none';
+  drop.style.display='block';
+}
+function evImgFileChange(e,prefix){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>evImgLoad(prefix,ev.target.result);
+  reader.readAsDataURL(file);
+  e.target.value='';
+}
+function evImgDragOver(e,prefix){e.preventDefault();document.getElementById(prefix+'-img-drop').classList.add('dragover');}
+function evImgDragLeave(prefix){document.getElementById(prefix+'-img-drop').classList.remove('dragover');}
+function evImgDrop(e,prefix){
+  e.preventDefault();evImgDragLeave(prefix);
+  const file=e.dataTransfer.files[0];if(!file||!file.type.startsWith('image/'))return;
+  const reader=new FileReader();
+  reader.onload=ev=>evImgLoad(prefix,ev.target.result);
+  reader.readAsDataURL(file);
+}
+
 function printRoomSchedules(){
   const evName=document.getElementById('ev-picker').value;
   const ev=availEvents.find(e=>e.name===evName);
