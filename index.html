@@ -952,9 +952,13 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
           <div id="topics-list" style="display:flex;flex-direction:column;gap:6px"></div>
         </div>
         <div id="admin-tab-teachers" style="display:none">
-          <div style="display:flex;gap:10px;align-items:center;margin-bottom:1.2rem;flex-wrap:wrap">
+          <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
             <input class="search-input" type="text" id="teacher-search" placeholder="Search by name, email, or barony…" style="flex:1;min-width:200px" oninput="renderTeacherList()">
-            <select class="form-select" id="teacher-filter-peerage" onchange="renderTeacherList()" style="font-size:13px;padding:7px 10px;min-width:160px">
+            <button id="teacher-filter-toggle" onclick="toggleTeacherFilters()" style="padding:7px 12px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap;display:flex;align-items:center;gap:5px"><i class="ti ti-adjustments-horizontal"></i> Filters <span id="teacher-filter-badge" style="display:none;background:var(--accent);color:#fff;border-radius:8px;font-size:11px;padding:0 5px;font-weight:700"></span></button>
+            <button id="teacher-copy-emails" onclick="copyTeacherEmails()" style="padding:7px 12px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg2);font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2);white-space:nowrap;display:flex;align-items:center;gap:5px" title="Copy filtered teacher emails to clipboard"><i class="ti ti-copy"></i> Copy emails</button>
+          </div>
+          <div class="filters" id="teacher-secondary-filters" style="display:none;margin-bottom:1rem">
+            <select class="filter-select" id="teacher-filter-peerage" onchange="renderTeacherList()">
               <option value="">All peerages</option>
               <option value="chivalry">Chivalry</option>
               <option value="laurel">Laurel</option>
@@ -964,6 +968,13 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
               <option value="royalpeer">Royal Peer</option>
               <option value="sittingroyalty">Sitting Royalty</option>
             </select>
+            <select class="filter-select" id="teacher-filter-event" onchange="renderTeacherList()">
+              <option value="">All events</option>
+            </select>
+            <select class="filter-select" id="teacher-filter-topic" onchange="renderTeacherList()">
+              <option value="">All topics</option>
+            </select>
+            <label class="cb-row" style="margin-bottom:0;font-size:13px;white-space:nowrap"><input type="checkbox" id="teacher-filter-hasclass" onchange="renderTeacherList()"> Has classes</label>
           </div>
           <div id="teacher-list" style="display:flex;flex-direction:column;gap:10px"></div>
         </div>
@@ -1727,7 +1738,7 @@ function openBioModal(btn){
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 1, 2026 · 8:37 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:8px;display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-family:sans-serif;color:rgba(26,63,122,.7);font-style:italic">Start here</span><span style="font-size:16px;line-height:1">→</span><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:5px 14px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 1, 2026 · 8:55 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:8px;display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-family:sans-serif;color:rgba(26,63,122,.7);font-style:italic">Start here</span><span style="font-size:16px;line-height:1">→</span><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:5px 14px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){
@@ -3391,9 +3402,47 @@ function showAdminTab(tab){
   if(tab==='reports')renderReports();
 }
 
+function populateTeacherFilterDropdowns(){
+  // Event dropdown
+  const evSel=document.getElementById('teacher-filter-event');
+  if(evSel&&evSel.options.length<=1){
+    (typeof dEv!=='undefined'?dEv:[]).forEach(ev=>{
+      const o=document.createElement('option');o.value=ev.name;o.textContent=ev.name;evSel.appendChild(o);
+    });
+  }
+  // Topic dropdown — built from all teacher topics
+  const tpSel=document.getElementById('teacher-filter-topic');
+  if(tpSel&&tpSel.options.length<=1){
+    const topics=[...new Set(Object.values(allTeachers).flatMap(t=>t.topics||[]))].sort();
+    topics.forEach(tp=>{const o=document.createElement('option');o.value=tp;o.textContent=tp;tpSel.appendChild(o);});
+  }
+}
+
+function toggleTeacherFilters(){
+  const panel=document.getElementById('teacher-secondary-filters');
+  const btn=document.getElementById('teacher-filter-toggle');
+  if(!panel)return;
+  const open=panel.style.display!=='none';
+  panel.style.display=open?'none':'flex';
+  if(btn){btn.style.background=open?'var(--bg2)':'var(--accent-light)';btn.style.borderColor=open?'var(--border2)':'var(--accent)';btn.style.color=open?'var(--text2)':'var(--accent)';}
+  if(!open)populateTeacherFilterDropdowns();
+}
+
+function copyTeacherEmails(){
+  const emails=window._lastTeacherEmails||[];
+  if(!emails.length){alert('No teacher emails to copy.');return;}
+  navigator.clipboard.writeText(emails.join(', ')).then(()=>{
+    const btn=document.getElementById('teacher-copy-emails');
+    if(btn){const orig=btn.innerHTML;btn.innerHTML='<i class="ti ti-check"></i> Copied!';btn.style.color='var(--green-text)';setTimeout(()=>{btn.innerHTML=orig;btn.style.color='';},2000);}
+  }).catch(()=>prompt('Copy these emails:',emails.join(', ')));
+}
+
 function renderTeacherList(){
   const q=(document.getElementById('teacher-search')?.value||'').toLowerCase();
   const pf=document.getElementById('teacher-filter-peerage')?.value||'';
+  const ef=document.getElementById('teacher-filter-event')?.value||'';
+  const tf=document.getElementById('teacher-filter-topic')?.value||'';
+  const hc=document.getElementById('teacher-filter-hasclass')?.checked||false;
   const wrap=document.getElementById('teacher-list');
   if(!wrap)return;
   let teachers=Object.values(allTeachers);
@@ -3401,6 +3450,15 @@ function renderTeacherList(){
   if(pf==='royalpeer')teachers=teachers.filter(t=>(t.peerages||[]).includes('royalpeer')||t.royalPeer);
   else if(pf==='sittingroyalty')teachers=teachers.filter(t=>t.sittingRoyalty);
   else if(pf)teachers=teachers.filter(t=>(t.peerages||[]).includes(pf));
+  if(ef)teachers=teachers.filter(t=>t.classes.some(c=>c.event===ef));
+  if(tf)teachers=teachers.filter(t=>(t.topics||[]).includes(tf));
+  if(hc)teachers=teachers.filter(t=>t.classes.length>0);
+  // Update badge count
+  const activeFilters=[pf,ef,tf,hc].filter(Boolean).length;
+  const badge=document.getElementById('teacher-filter-badge');
+  if(badge){badge.style.display=activeFilters?'inline':'none';badge.textContent=activeFilters;}
+  // Store filtered emails for copy button
+  window._lastTeacherEmails=teachers.filter(t=>t.email).map(t=>t.email);
   teachers.sort((a,b)=>a.name.localeCompare(b.name));
   if(!teachers.length){wrap.innerHTML='<div style="color:var(--text2);font-family:sans-serif;font-size:13px;padding:.5rem 0">No teachers found.</div>';return;}
   wrap.innerHTML=teachers.map(t=>{
@@ -3437,7 +3495,7 @@ function renderTeacherList(){
         +pendingNote
         +'<div class="teacher-contact">'
           +(t.barony?'<div class="teacher-contact-row"><i class="ti ti-map-pin" style="font-size:11px;color:var(--accent-mid)"></i>'+escH(t.barony)+'</div>':'')
-          +(t.email?'<div class="teacher-contact-row"><i class="ti ti-mail" style="font-size:11px;color:var(--accent-mid)"></i>'+escH(t.email)+'</div>':'')
+          +(t.email?'<div class="teacher-contact-row"><a href="mailto:'+escH(t.email)+'" title="'+escH(t.email)+'" style="color:var(--accent-mid);display:inline-flex;align-items:center;gap:5px;text-decoration:none;font-size:12.5px" onmouseover="this.style.textDecoration=\'underline\'" onmouseout="this.style.textDecoration=\'none\'"><i class="ti ti-mail" style="font-size:13px"></i>'+escH(t.email)+'</a></div>':'')
           +(t.phone?'<div class="teacher-contact-row"><i class="ti ti-phone" style="font-size:11px;color:var(--accent-mid)"></i>'+escH(t.phone)+'</div>':'')
         +'</div>'
         +(topicTags?'<div class="teacher-topics">'+topicTags+'</div>':'')
