@@ -80,7 +80,7 @@ a{color:#1A3F7A}
       <span class="brand-name">SCHEDA <span class="brand-caidus">· CAIDUS</span></span>
     </div>
     <div class="brand-tag">Kingdom of Caid &mdash; Event Scheduling</div>
-    <div class="brand-note">Updated in sync with the demo · Last updated June 5, 2026 · 1:00 PM PT</div>
+    <div class="brand-note">Updated in sync with the demo · Last updated June 5, 2026 · 3:20 PM PT</div>
   </div>
 
   <div class="intro-box">
@@ -238,6 +238,43 @@ a{color:#1A3F7A}
   </div>
 
 
+
+  <!-- Entry: June 5 (3:20 PM) -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="version-badge">June 5</span>
+      <span class="entry-date">Today · 3:20 PM</span>
+      <span class="entry-count">Cancel + reject modals · past events filter · admin panel fix</span>
+      <i class="ti ti-chevron-right chevron open"></i>
+    </div>
+    <div class="changes open">
+
+      <div class="change-item">
+        <div class="change-what">Cancel class and reject proposal now open modals instead of browser dialogs</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Previously, cancelling a class or rejecting a proposal used plain browser confirm() dialogs — blunt, unbranded, and with no way to add context. Both actions now open proper modals consistent with the rest of the app. Cancelling a class shows a red warning that registrants will be emailed, with an optional Cancellation note field that gets included in the email. Rejecting a proposal shows a note that the instructor will be notified, with an optional Reason field. In demo mode, both show a preview of exactly what the email would say.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Log into admin (password: admin123). Go to the Classes tab and click Cancel on any approved class — the new modal should open with the class name shown and a note field. Type a reason and confirm. Then go to the Pending tab and click Reject on a submission — enter an optional reason and confirm. A demo email preview should appear for both.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Also in this update</div>
+        <div class="change-row">
+          <span class="change-label" style="color:#5a6a7e;font-weight:700;min-width:120px;flex-shrink:0">Smaller changes</span>
+          <span class="change-body">
+            Past events no longer appear in the Teach a Class event dropdown — only upcoming events are shown. ·
+            Bug fix: admin panel was rendering inside the hidden volunteers panel due to a missing closing tag, causing a blank page when clicking the gear icon. ·
+            Bug fix: catalog/admin crash on load caused by a scoped variable (todayStrG) being referenced outside its function.
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <!-- Entry: June 5 -->
   <div class="entry">

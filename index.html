@@ -768,6 +768,7 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
     </div>
     <div id="panel-volunteers" class="panel" style="display:none">
 
+    </div>
     <div id="panel-admin" class="panel">
       <div id="admin-lock-wrap">
         <div class="admin-lock">
@@ -1933,7 +1934,6 @@ function isFull(c){return c.max&&c.registrationCount>=c.max;}
 function wlPos(c){if(!isWL(c))return 0;const w=c.waitlistRoster||[];const n=myRegs[c.id]?.scaName;return(w.find(x=>x.name===n)||{pos:w.length}).pos;}
 
 function showPanel(name,btn){
-  try{
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('panel-'+name).classList.add('active');
@@ -1943,7 +1943,6 @@ function showPanel(name,btn){
   if(name==='admin')initAdmin();
   if(name==='submit')initSubmit();
   if(name==='requests')initRequests();
-  }catch(e){console.error('showPanel crash:',e);alert('Navigation error: '+e.message);}
 }
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 function openThumbLightbox(el){
@@ -1984,7 +1983,7 @@ function openBioModal(btn){
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 5, 2026 · 1:00 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:8px;display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-family:sans-serif;color:rgba(26,63,122,.7);font-style:italic">Start here</span><span style="font-size:16px;line-height:1">→</span><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:5px 14px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 5, 2026 · 3:20 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:8px;display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-family:sans-serif;color:rgba(26,63,122,.7);font-style:italic">Start here</span><span style="font-size:16px;line-height:1">→</span><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:5px 14px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){
@@ -3455,7 +3454,6 @@ async function doLogin(){
   loadAdmin();
 }
 async function loadAdmin(){
-  try{
   const res=await api({action:'adminGetPending',token:adminToken});
   if(!res.ok)return;
   pendingClasses=res.pending||[];
@@ -3479,7 +3477,6 @@ async function loadAdmin(){
     raf.innerHTML='<option value="">All events</option><option value="__general__">General only</option>';
     availEvents.forEach(ev=>{const o=document.createElement('option');o.value=ev.name;o.textContent=ev.name;raf.appendChild(o);});
   }
-  }catch(e){console.error('loadAdmin crash:',e);alert('Admin failed to load: '+e.message);}
 }
 function getAdminClassFilters(){
   const q=(document.getElementById('acf-q')?.value||'').toLowerCase();
