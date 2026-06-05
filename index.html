@@ -1933,6 +1933,7 @@ function isFull(c){return c.max&&c.registrationCount>=c.max;}
 function wlPos(c){if(!isWL(c))return 0;const w=c.waitlistRoster||[];const n=myRegs[c.id]?.scaName;return(w.find(x=>x.name===n)||{pos:w.length}).pos;}
 
 function showPanel(name,btn){
+  try{
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('panel-'+name).classList.add('active');
@@ -1942,6 +1943,7 @@ function showPanel(name,btn){
   if(name==='admin')initAdmin();
   if(name==='submit')initSubmit();
   if(name==='requests')initRequests();
+  }catch(e){console.error('showPanel crash:',e);alert('Navigation error: '+e.message);}
 }
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 function openThumbLightbox(el){
