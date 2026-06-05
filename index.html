@@ -116,7 +116,7 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
 .modal-input,.modal-select{padding:8px 11px;border:1px solid var(--border2);border-radius:var(--radius);font-size:13px;font-family:sans-serif;background:var(--bg);color:var(--text);width:100%}
 .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px}
 .modal-note{font-size:12px;font-family:sans-serif;margin-bottom:1rem;padding:9px 11px;border-radius:var(--radius)}
-.mn-wl,.mn-fee{background:var(--gold-light);color:var(--accent)}.mn-ov{background:var(--red-bg);color:var(--red-text)}.mn-info{background:var(--accent-light);color:var(--accent)}
+.mn-wl,.mn-fee{background:var(--gold-light);color:var(--accent)}.mn-ov{background:var(--red-bg);color:var(--red-text)}.mn-info{background:var(--accent-light);color:var(--accent)}.mn-warn{background:var(--red-bg);color:var(--red-text);border:1px solid var(--red-border)}
 .modal-section{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);font-family:sans-serif;margin:1rem 0 8px;border-top:1px solid var(--border);padding-top:10px}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:6px;flex-wrap:wrap}
 .modal-cancel{padding:7px 16px;border-radius:var(--radius);border:1px solid var(--border2);background:transparent;font-size:13px;cursor:pointer;font-family:sans-serif;color:var(--text2)}
@@ -1285,6 +1285,40 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
     <div class="modal-title" id="roM-title">Roster</div>
     <div id="roM-body"></div>
     <div class="modal-actions"><button class="modal-cancel" onclick="closeModal('roster-modal')">Close</button><button class="modal-confirm" id="roM-print-btn" onclick="printRoster(roM_currentId)"><i class="ti ti-printer"></i> Print Roster</button></div>
+  </div>
+</div>
+
+<!-- Cancel class modal -->
+<div class="modal-bg" id="cancel-class-modal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-title"><i class="ti ti-ban" style="color:var(--red-text)"></i> Cancel class</div>
+    <div class="modal-sub" id="ccm-sub"></div>
+    <div class="modal-note mn-warn" style="margin-bottom:12px"><i class="ti ti-alert-triangle"></i> Registrants on the roster will receive a cancellation email. This cannot be undone.</div>
+    <div class="modal-field">
+      <label class="modal-label">Cancellation note <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional — included in the email to registrants)</span></label>
+      <textarea class="modal-input" id="ccm-note" placeholder="e.g. Instructor unable to attend. We hope to reschedule at a future event." style="min-height:80px;resize:vertical;font-family:sans-serif"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('cancel-class-modal')">Keep class</button>
+      <button class="modal-confirm" style="background:var(--red-text);border-color:var(--red-text)" id="ccm-confirm" onclick="confirmCancelClass()"><i class="ti ti-ban"></i> Cancel class</button>
+    </div>
+  </div>
+</div>
+
+<!-- Reject proposal modal -->
+<div class="modal-bg" id="reject-modal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-title"><i class="ti ti-x" style="color:var(--red-text)"></i> Reject proposal</div>
+    <div class="modal-sub" id="rjm-sub"></div>
+    <div class="modal-note mn-info" style="margin-bottom:12px"><i class="ti ti-info"></i> The instructor will receive an email letting them know their proposal wasn't accepted this time.</div>
+    <div class="modal-field">
+      <label class="modal-label">Reason <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional — included in the email to the instructor)</span></label>
+      <textarea class="modal-input" id="rjm-reason" placeholder="e.g. We've reached capacity for this topic at this event. Please consider submitting again for a future event!" style="min-height:80px;resize:vertical;font-family:sans-serif"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('reject-modal')">Cancel</button>
+      <button class="modal-confirm" style="background:var(--red-text);border-color:var(--red-text)" id="rjm-confirm" onclick="confirmReject()"><i class="ti ti-x"></i> Reject proposal</button>
+    </div>
   </div>
 </div>
 
@@ -2783,7 +2817,7 @@ function initSubmit(){
   const pillTxt=document.getElementById('ev-lock-pill-txt');
   const evSel=document.getElementById('fc-ev');
   evSel.innerHTML='<option value="">— Choose an event or format —</option><option value="__inperson__">In person / standalone (not at an event)</option><option value="__online__">Online / Zoom</option>';
-  availEvents.forEach(ev=>{const o=document.createElement('option');o.value=ev.name;o.textContent=ev.name;evSel.appendChild(o);});
+  const _today=new Date().toISOString().slice(0,10);availEvents.filter(ev=>!ev.endDate||ev.endDate>=_today).forEach(ev=>{const o=document.createElement('option');o.value=ev.name;o.textContent=ev.name;evSel.appendChild(o);});
   if(lock){
     if(pill)pill.style.display='none';
     evSel.value=lock;evSel.disabled=true;
@@ -3419,6 +3453,7 @@ async function doLogin(){
   loadAdmin();
 }
 async function loadAdmin(){
+  try{
   const res=await api({action:'adminGetPending',token:adminToken});
   if(!res.ok)return;
   pendingClasses=res.pending||[];
@@ -3442,6 +3477,7 @@ async function loadAdmin(){
     raf.innerHTML='<option value="">All events</option><option value="__general__">General only</option>';
     availEvents.forEach(ev=>{const o=document.createElement('option');o.value=ev.name;o.textContent=ev.name;raf.appendChild(o);});
   }
+  }catch(e){console.error('loadAdmin crash:',e);alert('Admin failed to load: '+e.message);}
 }
 function getAdminClassFilters(){
   const q=(document.getElementById('acf-q')?.value||'').toLowerCase();
@@ -3700,9 +3736,30 @@ async function confirmApprove(){
   if(!res.ok){alert(res.error||'Failed.');return;}
   closeModal('approve-modal');await loadClasses();loadAdmin();
 }
-async function doReject(id){
-  if(!confirm('Reject and delete this submission?'))return;
-  await api({action:'adminReject',token:adminToken,id:String(id)});loadAdmin();
+let curRejectId=null;
+function doReject(id){
+  const c=IS_DEMO?dP.find(x=>String(x.id)===String(id)):pendingClasses.find(x=>String(x.id)===String(id));
+  if(!c)return;
+  curRejectId=id;
+  document.getElementById('rjm-sub').textContent=c.title;
+  document.getElementById('rjm-reason').value='';
+  document.getElementById('reject-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('rjm-reason').focus(),50);
+}
+async function confirmReject(){
+  const id=curRejectId;
+  const c=IS_DEMO?dP.find(x=>String(x.id)===String(id)):pendingClasses.find(x=>String(x.id)===String(id));
+  if(!c)return;
+  const reason=document.getElementById('rjm-reason').value.trim();
+  const btn=document.getElementById('rjm-confirm');btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
+  await api({action:'adminReject',token:adminToken,id:String(id),rejectReason:reason});
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-x"></i> Reject proposal';
+  closeModal('reject-modal');
+  if(IS_DEMO&&c.email){
+    const reasonBlock=reason?'\n\nA note from the class steward:\n'+reason:'';
+    alert('📧 [Demo — email would be sent]\nTo: '+c.email+'\nSubject: Update on your class proposal — '+c.title+'\n\nThank you for submitting a class proposal. Unfortunately, we aren\'t able to include this class in the schedule at this time.'+reasonBlock+'\n\nWe hope you\'ll consider submitting again for a future event!');
+  }
+  loadAdmin();
 }
 async function doRemove(id){
   if(!confirm('Remove this class from the catalog?'))return;
@@ -4319,7 +4376,7 @@ function renderGrid(cls,filterDate){
   });
   tbl.innerHTML=h;
 }
-['reg-modal','approve-modal','roster-modal','edit-modal','voter-modal'].forEach(id=>document.getElementById(id).addEventListener('click',function(e){if(e.target===this)closeModal(id);}));
+['reg-modal','approve-modal','roster-modal','edit-modal','voter-modal','cancel-class-modal','reject-modal'].forEach(id=>document.getElementById(id).addEventListener('click',function(e){if(e.target===this)closeModal(id);}));
 
 let curEditId=null;
 function openEditClass(id){
@@ -4382,17 +4439,31 @@ async function confirmEditClass(){
   if(!res.ok){alert(res.error||'Save failed.');return;}
   closeModal('edit-modal');await loadClasses();loadAdmin();
 }
-async function doCancelClass(id){
+let curCancelClassId=null;
+function doCancelClass(id){
   const c=IS_DEMO?dC.find(x=>String(x.id)===String(id)):allClasses.find(x=>String(x.id)===String(id));
   if(!c)return;
-  if(!confirm('Cancel "'+c.title+'"?\n\nThis will mark it cancelled on the schedule. Registrants will see a cancellation notice (in a live deployment this triggers an email).'))return;
-  const res=await api({action:'adminCancelClass',token:adminToken,id:String(id)});
+  curCancelClassId=id;
+  document.getElementById('ccm-sub').textContent=c.title;
+  document.getElementById('ccm-note').value='';
+  document.getElementById('cancel-class-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('ccm-note').focus(),50);
+}
+async function confirmCancelClass(){
+  const id=curCancelClassId;
+  const c=IS_DEMO?dC.find(x=>String(x.id)===String(id)):allClasses.find(x=>String(x.id)===String(id));
+  if(!c)return;
+  const note=document.getElementById('ccm-note').value.trim();
+  const btn=document.getElementById('ccm-confirm');btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
+  const res=await api({action:'adminCancelClass',token:adminToken,id:String(id),cancelNote:note});
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-ban"></i> Cancel class';
   if(!res.ok){alert(res.error||'Could not cancel.');return;}
+  closeModal('cancel-class-modal');
   await loadClasses();loadAdmin();
-  // In demo mode, show what the email would say
   if(IS_DEMO&&(dRegs[id]||[]).length){
     const names=(dRegs[id]||[]).map(r=>r.email).join(', ');
-    alert('📧 [Demo — email would be sent]\nTo: '+names+'\nSubject: Class cancelled — '+c.title+'\n\nWe\'re sorry to let you know that "'+c.title+" ("+fD(c.date)+" at "+fT(c.time)+')" has been cancelled. No action is needed on your part. We hope to see you at another class soon!');
+    const noteBlock=note?'\n\nNote from the class steward:\n'+note:'';
+    alert('📧 [Demo — email would be sent]\nTo: '+names+'\nSubject: Class cancelled: '+c.title+'\n\nUnfortunately, the following class has been cancelled:\n\n  '+c.title+'\n  '+fD(c.date)+' · '+fT(c.time)+'\n  Taught by '+c.teacher+noteBlock+'\n\nWe\'re sorry for the inconvenience.');
   }
 }
 
