@@ -864,6 +864,19 @@ body{font-family:Lora,Georgia,serif;background:var(--bg2);color:var(--text);min-
                     <input type="hidden" id="lg-image-url">
                   </div>
                 </div>
+                <!-- Row 5: Steward access -->
+                <div style="display:flex;gap:10px;flex-wrap:wrap">
+                  <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:200px">
+                    <label class="form-label" style="font-size:11px">Steward email <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+                    <input class="lg-input" id="lg-steward-email" type="email" placeholder="steward@example.com">
+                    <span style="font-size:11px;font-family:sans-serif;color:var(--text2);font-style:italic">Gets editor access to the event sheet in Google Drive.</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:200px">
+                    <label class="form-label" style="font-size:11px">Steward password <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+                    <input class="lg-input" id="lg-steward-pw" type="password" placeholder="For scoped admin login">
+                    <span style="font-size:11px;font-family:sans-serif;color:var(--text2);font-style:italic">Share with the event steward. Can be set or changed later.</span>
+                  </div>
+                </div>
                 <div style="display:flex;gap:8px;align-items:center">
                   <button class="lg-btn" onclick="createEvent()"><i class="ti ti-plus"></i> Create event</button>
                   <button class="modal-cancel" onclick="toggleCreateEvent()" style="font-size:13px">Cancel</button>
@@ -1802,9 +1815,15 @@ populateTimeSelect('em-time','09:00');
 
 async function api(p){
   if(IS_DEMO)return apiD(p);
-  const u=new URL(APPS_SCRIPT_URL);
-  Object.entries(p).forEach(([k,v])=>u.searchParams.set(k,v));
-  return(await fetch(u.toString())).json();
+  // POST with no Content-Type header → browser sends text/plain,
+  // a "simple request" that skips CORS preflight (which Apps Script
+  // can't answer). Keeps emails/passwords/images out of URL logs
+  // and avoids URL length limits on large payloads.
+  const res=await fetch(APPS_SCRIPT_URL,{
+    method:'POST',
+    body:JSON.stringify(p)
+  });
+  return res.json();
 }
 function apiD(p){
   const{action}=p;
@@ -1983,7 +2002,7 @@ function openBioModal(btn){
 
 async function loadClasses(){
   const b=document.getElementById('api-banner');
-  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 5, 2026 · 3:20 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:8px;display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-family:sans-serif;color:rgba(26,63,122,.7);font-style:italic">Start here</span><span style="font-size:16px;line-height:1">→</span><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:5px 14px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
+  if(IS_DEMO){b.style.display='flex';b.style.flexDirection='column';b.style.alignItems='flex-start';b.style.gap='4px';b.innerHTML='<div style="display:flex;align-items:center;gap:7px;font-weight:600"><i class="ti ti-flask"></i> Demo Mode <span style="font-size:11px;font-weight:400;opacity:.75;margin-left:4px">· Last updated June 9, 2026 · 8:17 PM PT</span></div><div style="font-size:12px;line-height:1.6">Feel free to explore — register for classes, submit a class proposal, or browse the wishlist. <strong>Any changes reset when you refresh.</strong> To try admin tools, click the ⚙️ icon in the top right and enter password <code style="background:rgba(26,63,122,.12);padding:1px 5px;border-radius:3px;font-size:11px">admin123</code>.</div><div style="margin-top:8px;display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-family:sans-serif;color:rgba(26,63,122,.7);font-style:italic">Start here</span><span style="font-size:16px;line-height:1">→</span><a href="./changelog.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:#fff;background:#1A3F7A;border:1px solid #1A3F7A;padding:5px 14px;border-radius:99px;text-decoration:none;white-space:nowrap"><i class="ti ti-clipboard-list"></i> Testing Guide</a></div><div style="font-size:12px;line-height:1.6;margin-top:4px;border-top:1px solid rgba(26,63,122,.15);padding-top:6px">Thanks for checking out this project! If you have feedback, please PM me. — Rayhana</div>';}
   try{
     const res=await api({action:'getClasses'});
     if(res.ok){
@@ -2607,17 +2626,31 @@ async function lookupSchedule(){
   // Build myRegs from all classes matching this email
   myRegs={};
   scheduleEmail=email;
-  // In demo mode, scan dRegs, dWL, and teaching assignments
-  allClasses.forEach(c=>{
-    if(c.email&&c.email.toLowerCase()===email.toLowerCase()){
-      myRegs[c.id]={scaName:c.teacher,email,waitlisted:false,teaching:true};
-      return;
+  if(IS_DEMO){
+    // Demo: scan local dRegs/dWL; teaching detected via email on class object
+    allClasses.forEach(c=>{
+      if(c.email&&c.email.toLowerCase()===email.toLowerCase()){
+        myRegs[c.id]={scaName:c.teacher,email,waitlisted:false,teaching:true};
+        return;
+      }
+      const reg=(dRegs[c.id]||[]).find(r=>r.email===email);
+      const wl=(dWL[c.id]||[]).find(r=>r.email===email);
+      if(reg)myRegs[c.id]={scaName:reg.scaName,email,waitlisted:false};
+      else if(wl)myRegs[c.id]={scaName:wl.scaName,email,waitlisted:true};
+    });
+  }else{
+    // Real mode: ask the API to scan all event sheets for this email
+    const res=await api({action:'getSchedule',email});
+    if(res.ok){
+      (res.teaching||[]).forEach(classId=>{
+        const c=allClasses.find(x=>String(x.id)===String(classId));
+        if(c)myRegs[classId]={scaName:c.teacher,email,waitlisted:false,teaching:true};
+      });
+      (res.registrations||[]).forEach(r=>{
+        myRegs[r.classId]={scaName:r.scaName,email,waitlisted:r.waitlisted,position:r.position||0};
+      });
     }
-    const reg=(IS_DEMO?(dRegs[c.id]||[]):[]).find(r=>r.email===email);
-    const wl=(IS_DEMO?(dWL[c.id]||[]):[]).find(r=>r.email===email);
-    if(reg)myRegs[c.id]={scaName:reg.scaName,email,waitlisted:false};
-    else if(wl)myRegs[c.id]={scaName:wl.scaName,email,waitlisted:true};
-  });
+  }
   const teachingCount=Object.values(myRegs).filter(r=>r.teaching).length;
   const attendingCount=Object.values(myRegs).filter(r=>!r.teaching&&!r.waitlisted).length;
   const waitlistCount=Object.values(myRegs).filter(r=>r.waitlisted).length;
@@ -3435,10 +3468,11 @@ function doLogout(){
   document.getElementById('admin-panel').style.display='none';
   document.getElementById('lock-pw').value='';
   document.getElementById('lock-err').style.display='none';
-  // Deactivate the admin nav button
+  // Deactivate the admin nav button and re-activate the catalog button
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelector('.nav-btn:first-child').classList.add('active');
-  showPanel('catalog',document.querySelector('.nav-btn:first-child'));
+  const catalogBtn=document.querySelector('.nav-btn[onclick*="showPanel(\'catalog\'"]')||document.querySelector('.nav-btn');
+  if(catalogBtn)catalogBtn.classList.add('active');
+  showPanel('catalog',catalogBtn);
   updateAdminNavBtn();
 }
 async function doLogin(){
@@ -3500,32 +3534,32 @@ function renderPending(){
   l.innerHTML=filtered.map(c=>{
     const hasDatetime=c.date&&c.time;
     return '<div class="pending-card">'
-      +(c.event?'<div style="font-size:11px;font-family:sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent-mid);margin-bottom:4px"><i class="ti ti-calendar-event"></i> '+c.event+'</div>':'')
-      +'<div class="pending-header"><div class="pending-title">'+c.title+'</div>'
+      +(c.event?'<div style="font-size:11px;font-family:sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent-mid);margin-bottom:4px"><i class="ti ti-calendar-event"></i> '+escH(c.event)+'</div>':'')
+      +'<div class="pending-header"><div class="pending-title">'+escH(c.title)+'</div>'
       +(c.sessionTotal>1?'<span style="font-size:11px;font-family:sans-serif;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--gold-light);color:var(--gold);border:1px solid var(--gold-mid);white-space:nowrap">Session '+c.sessionNum+' of '+c.sessionTotal+'</span>':'')
       +'</div>'
-      +'<div class="pending-teacher">'+c.teacher+(c.email?' \u00b7 '+c.email:'')+(c.phone?' \u00b7 <i class="ti ti-phone" style="font-size:11px"></i> '+c.phone:'')+'</div>'
-      +(c.desc?'<div class="pending-desc">'+c.desc+'</div>':'')
+      +'<div class="pending-teacher">'+escH(c.teacher)+(c.email?' \u00b7 '+escH(c.email):'')+(c.phone?' \u00b7 <i class="ti ti-phone" style="font-size:11px"></i> '+escH(c.phone):'')+'</div>'
+      +(c.desc?'<div class="pending-desc">'+escH(c.desc)+'</div>':'')
       +'<div class="pending-meta">'
-      +(c.topic?'<span><i class="ti ti-tag"></i>'+c.topic+'</span>':'')
-      +(c.format?'<span><i class="ti ti-'+(c.format==='zoom'?'video':'map-pin')+'"></i>'+c.format+'</span>':'')
-      +(c.duration?'<span><i class="ti ti-clock"></i>'+c.duration+' min</span>':'')
-      +(c.max?'<span><i class="ti ti-users"></i>Max '+c.max+'</span>':'')
-      +(c.fee?'<span><i class="ti ti-coin"></i>'+c.fee+'</span>':'')
+      +(c.topic?'<span><i class="ti ti-tag"></i>'+escH(c.topic)+'</span>':'')
+      +(c.format?'<span><i class="ti ti-'+(c.format==='zoom'?'video':'map-pin')+'"></i>'+escH(c.format)+'</span>':'')
+      +(c.duration?'<span><i class="ti ti-clock"></i>'+escH(c.duration)+' min</span>':'')
+      +(c.max?'<span><i class="ti ti-users"></i>Max '+escH(c.max)+'</span>':'')
+      +(c.fee?'<span><i class="ti ti-coin"></i>'+escH(c.fee)+'</span>':'')
       +(hasDatetime?'<span><i class="ti ti-calendar"></i>'+fD(c.date)+' '+fT(c.time)+'</span>':'')
 
       +'</div>'
       +(c.level||c.audience||c.electricity?'<div class="card-tags">'
-        +(c.level?c.level.split(',').map(l=>'<span class="card-tag level">'+l+'</span>').join(''):'')
+        +(c.level?c.level.split(',').map(l=>'<span class="card-tag level">'+escH(l)+'</span>').join(''):'')
         +(c.audience&&c.audience.includes('newcomer-friendly')?'<span class="card-tag newcomer">★ Newcomers</span>':'')
         +(c.audience&&c.audience.includes('kids-welcome')?'<span class="card-tag kids">Kids welcome</span>':'')
         +(c.audience&&c.audience.includes('adults-only')?'<span class="card-tag adults">18+ only</span>':'')
         +(c.electricity?'<span class="card-tag" style="background:#FFF3E0;color:#E65100;border-color:#FFCC80"><i class="ti ti-bolt"></i> Electricity</span>':'')
         +'</div>':'')
-      +(c.repeat&&c.repeat!=='once'?'<div style="font-size:12px;color:var(--text2);margin-bottom:6px;font-family:sans-serif"><i class="ti ti-repeat"></i> Wants to teach '+c.repeat+'</div>':'')
-      +(c.timepref?'<div class="pending-pref"><i class="ti ti-clock"></i> Scheduling preference: '+c.timepref+'</div>':'')
-      +(c.bring?'<div style="font-size:12px;color:var(--text2);margin-bottom:8px;font-family:sans-serif"><i class="ti ti-backpack"></i> Bring: '+c.bring+'</div>':'')
-      +(c.notes?'<div style="font-size:12px;color:var(--text2);margin-bottom:8px;font-family:sans-serif"><i class="ti ti-note"></i> '+c.notes+'</div>':'')
+      +(c.repeat&&c.repeat!=='once'?'<div style="font-size:12px;color:var(--text2);margin-bottom:6px;font-family:sans-serif"><i class="ti ti-repeat"></i> Wants to teach '+escH(c.repeat)+'</div>':'')
+      +(c.timepref?'<div class="pending-pref"><i class="ti ti-clock"></i> Scheduling preference: '+escH(c.timepref)+'</div>':'')
+      +(c.bring?'<div style="font-size:12px;color:var(--text2);margin-bottom:8px;font-family:sans-serif"><i class="ti ti-backpack"></i> Bring: '+escH(c.bring)+'</div>':'')
+      +(c.notes?'<div style="font-size:12px;color:var(--text2);margin-bottom:8px;font-family:sans-serif"><i class="ti ti-note"></i> '+escH(c.notes)+'</div>':'')
       +'<div class="admin-actions">'
       +'<button class="approve-btn" onclick="openApprove(\''+c.id+'\')"><i class="ti ti-check"></i> Approve</button>'
       +'<button class="reject-btn" onclick="doReject(\''+c.id+'\')"><i class="ti ti-x"></i> Reject</button>'
@@ -3555,14 +3589,14 @@ function renderApproved(){
       return '<div class="approved-row"'+(unpub?' style="border-left:4px solid var(--gold-mid)"':'')+'>'
     +'<div class="approved-row-top"><div>'
     +(unpub?'<div style="font-size:11px;font-family:sans-serif;font-weight:700;color:var(--accent-mid);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px"><i class="ti ti-eye-off"></i> Unpublished event</div>':'')
-    +'<div class="approved-name">'+c.title+(c.sessionTotal>1?' <span class="card-tag session" style="font-size:10px;vertical-align:middle">'+c.sessionNum+'/'+c.sessionTotal+'</span>':'')+'</div>'
+    +'<div class="approved-name">'+escH(c.title)+(c.sessionTotal>1?' <span class="card-tag session" style="font-size:10px;vertical-align:middle">'+c.sessionNum+'/'+c.sessionTotal+'</span>':'')+'</div>'
     +'<div class="approved-sub" style="display:flex;flex-direction:column;gap:2px">'
-    +'<span style="font-weight:600;color:var(--text)">'+c.teacher+(c.email?' <span style="font-weight:400;color:var(--text2)">· '+c.email+'</span>':'')+(c.phone?' <span style="font-weight:400;color:var(--text2)">· '+c.phone+'</span>':'')+'</span>'
+    +'<span style="font-weight:600;color:var(--text)">'+escH(c.teacher)+(c.email?' <span style="font-weight:400;color:var(--text2)">· '+escH(c.email)+'</span>':'')+(c.phone?' <span style="font-weight:400;color:var(--text2)">· '+escH(c.phone)+'</span>':'')+'</span>'
     +(c.date?'<span><i class="ti ti-calendar" style="font-size:11px"></i> '+fD(c.date)+' · '+fT(c.time)+'</span>':'')
-    +((c.event||c.room)?'<span><i class="ti ti-map-pin" style="font-size:11px"></i> '+(c.event||'')+(c.event&&c.room?' · ':'')+( c.room||'')+'</span>':'')
-    +(c.topic?'<span><span class="card-tag" style="font-size:10px;padding:1px 6px">'+c.topic+'</span></span>':'')
+    +((c.event||c.room)?'<span><i class="ti ti-map-pin" style="font-size:11px"></i> '+escH(c.event||'')+(c.event&&c.room?' · ':'')+escH(c.room||'')+'</span>':'')
+    +(c.topic?'<span><span class="card-tag" style="font-size:10px;padding:1px 6px">'+escH(c.topic)+'</span></span>':'')
     +(c.level||c.audience?'<div class="card-tags" style="margin-top:2px;margin-bottom:0">'
-      +(c.level?c.level.split(',').map(l=>'<span class="card-tag level">'+l+'</span>').join(''):'')
+      +(c.level?c.level.split(',').map(l=>'<span class="card-tag level">'+escH(l)+'</span>').join(''):'')
       +(c.audience&&c.audience.includes('newcomer-friendly')?'<span class="card-tag newcomer">★ Newcomers</span>':'')
       +(c.audience&&c.audience.includes('kids-welcome')?'<span class="card-tag kids">Kids welcome</span>':'')
       +(c.audience&&c.audience.includes('adults-only')?'<span class="card-tag adults">18+ only</span>':'')
@@ -3630,7 +3664,7 @@ function openApprove(id){
   const c=IS_DEMO?dP.find(x=>String(x.id)===String(id)):pendingClasses.find(x=>String(x.id)===String(id));
   document.getElementById('am-sub').textContent=(c||{title:id}).title;
   const pn=document.getElementById('am-pref');
-  if(c&&c.timepref){pn.style.display='block';pn.innerHTML='<i class="ti ti-clock"></i> Teacher preference: '+c.timepref;}
+  if(c&&c.timepref){pn.style.display='block';pn.innerHTML='<i class="ti ti-clock"></i> Teacher preference: '+escH(c.timepref);}
   const sessionNote=document.getElementById('am-session-note');
   if(sessionNote){
     if(c&&c.sessionTotal>1){sessionNote.style.display='block';sessionNote.textContent='Session '+c.sessionNum+' of '+c.sessionTotal;}
@@ -3776,10 +3810,10 @@ async function showRoster(classId){
   let h='';
   if(!rg.length)h+='<p style="color:var(--text2);margin-bottom:8px">No registrations yet.</p>';
   else h+='<table style="width:100%;border-collapse:collapse;margin-bottom:12px"><tr style="background:var(--bg2)"><th style="text-align:left;padding:5px 8px;font-size:12px;border-bottom:1px solid var(--border2)">SCA Name</th><th style="text-align:left;padding:5px 8px;font-size:12px;border-bottom:1px solid var(--border2)">Email</th><th style="padding:5px 8px;font-size:12px;border-bottom:1px solid var(--border2)">Hidden</th><th style="padding:5px 8px;border-bottom:1px solid var(--border2)"></th></tr>'
-    +rg.map(x=>'<tr><td style="padding:5px 8px;font-size:13px;border-bottom:1px solid var(--border)">'+x.scaName+'</td><td style="padding:5px 8px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border)">'+x.email+'</td><td style="text-align:center;padding:5px 8px;border-bottom:1px solid var(--border)">'+(x.hidden?'(hidden)':'')+'</td><td style="padding:3px 6px;border-bottom:1px solid var(--border)"><button class="reject-btn" style="padding:3px 8px;font-size:11px" onclick="adminRemoveStudent(\''+classId+'\',\''+x.email+'\',false)"><i class="ti ti-x"></i> Remove</button></td></tr>').join('')+'</table>';
+    +rg.map(x=>'<tr><td style="padding:5px 8px;font-size:13px;border-bottom:1px solid var(--border)">'+escH(x.scaName)+'</td><td style="padding:5px 8px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border)">'+escH(x.email)+'</td><td style="text-align:center;padding:5px 8px;border-bottom:1px solid var(--border)">'+(x.hidden?'(hidden)':'')+'</td><td style="padding:3px 6px;border-bottom:1px solid var(--border)"><button class="reject-btn" style="padding:3px 8px;font-size:11px" onclick="adminRemoveStudent(\''+classId+'\',\''+x.email+'\',false)"><i class="ti ti-x"></i> Remove</button></td></tr>').join('')+'</table>';
   if(wl.length)h+='<div style="font-weight:700;font-size:11px;text-transform:uppercase;color:var(--accent-mid);margin-bottom:6px">Waitlist</div>'
     +'<table style="width:100%;border-collapse:collapse"><tr style="background:var(--bg2)"><th style="text-align:left;padding:5px 8px;font-size:12px">#</th><th style="text-align:left;padding:5px 8px;font-size:12px">SCA Name</th><th style="text-align:left;padding:5px 8px;font-size:12px">Email</th></tr>'
-    +wl.map(x=>'<tr><td style="padding:5px 8px;font-size:12px;color:var(--accent-mid)">#'+x.pos+'</td><td style="padding:5px 8px;font-size:13px">'+x.scaName+'</td><td style="padding:5px 8px;font-size:12px;color:var(--text2)">'+x.email+'</td><td style="padding:3px 6px"><button class="reject-btn" style="padding:3px 8px;font-size:11px" onclick="adminRemoveStudent(\''+classId+'\',\''+x.email+'\',true)"><i class="ti ti-x"></i> Remove</button></td></tr>').join('')+'</table>';
+    +wl.map(x=>'<tr><td style="padding:5px 8px;font-size:12px;color:var(--accent-mid)">#'+x.pos+'</td><td style="padding:5px 8px;font-size:13px">'+escH(x.scaName)+'</td><td style="padding:5px 8px;font-size:12px;color:var(--text2)">'+escH(x.email)+'</td><td style="padding:3px 6px"><button class="reject-btn" style="padding:3px 8px;font-size:11px" onclick="adminRemoveStudent(\''+classId+'\',\''+x.email+'\',true)"><i class="ti ti-x"></i> Remove</button></td></tr>').join('')+'</table>';
   document.getElementById('roM-body').innerHTML=h;
   document.getElementById('roM-print-btn').style.display='';
   document.getElementById('roster-modal').classList.add('open');
@@ -4366,9 +4400,9 @@ function renderGrid(cls,filterDate){
         let extraStyle=k===''?'':'';  // conflict styles handled by class k
         if(cancelled)extraStyle='background:var(--red-bg);color:var(--red-text);border-left:3px solid var(--red-border);';
         else if(full&&!k)extraStyle='background:#f0f0f0;color:#888;';
-        h+='<div class="gc '+k+'" style="cursor:pointer;'+extraStyle+'" onclick="focusAdminClass(\''+c.id+'\')" title="'+c.title+' \u2014 '+c.teacher+' ('+du+'min)'+(cancelled?' \u2014 CANCELLED':full?' \u2014 Full':'')+(tc?' topic overlap':'')+(th?' double-booked':'')+'">'
-          +'<strong style="'+(cancelled?'text-decoration:line-through;':'')+'">'+(c.title.slice(0,26))+(c.title.length>26?'\u2026':'')+'</strong><br>'
-          +(cancelled?'<span style="font-size:10px;font-weight:700;text-transform:uppercase">Cancelled</span>':c.teacher+(du!==60?' ('+du+'m)':'')+(full?'<br><span style="font-size:10px;font-style:italic">Full</span>':''))+'</div>';});
+        h+='<div class="gc '+k+'" style="cursor:pointer;'+extraStyle+'" onclick="focusAdminClass(\''+c.id+'\')" title="'+escH(c.title)+' \u2014 '+escH(c.teacher)+' ('+du+'min)'+(cancelled?' \u2014 CANCELLED':full?' \u2014 Full':'')+(tc?' topic overlap':'')+(th?' double-booked':'')+'">'
+          +'<strong style="'+(cancelled?'text-decoration:line-through;':'')+'">'+escH(c.title.slice(0,26))+(c.title.length>26?'\u2026':'')+'</strong><br>'
+          +(cancelled?'<span style="font-size:10px;font-weight:700;text-transform:uppercase">Cancelled</span>':escH(c.teacher)+(du!==60?' ('+du+'m)':'')+(full?'<br><span style="font-size:10px;font-style:italic">Full</span>':''))+'</div>';});
       h+='</td>';
     });
     h+='</tr>';
@@ -5021,10 +5055,12 @@ async function createEvent(){
   const address=document.getElementById('lg-address').value.trim();
   const url=document.getElementById('lg-url').value.trim();
   const imageUrl=document.getElementById('lg-image-url').value.trim();
-  const res=await api({action:'adminCreateEvent',token:adminToken,name,startDate,startTime,endDate,endTime,rooms:rooms.join(','),address,url,imageUrl});
+  const stewardEmail=document.getElementById('lg-steward-email').value.trim();
+  const stewardPassword=document.getElementById('lg-steward-pw').value;
+  const res=await api({action:'adminCreateEvent',token:adminToken,name,startDate,startTime,endDate,endTime,rooms:rooms.join(','),address,url,imageUrl,stewardEmail,stewardPassword});
   if(!res.ok){alert(res.error||'Failed to create event.');return;}
   // Clear and close create form
-  document.getElementById('lg-name').value='';document.getElementById('lg-start').value='';populateTimeSelect('lg-start-time','09:00');document.getElementById('lg-end').value='';populateTimeSelect('lg-end-time','17:00');document.getElementById('lg-rooms').value='';document.getElementById('lg-address').value='';document.getElementById('lg-url').value='';document.getElementById('lg-image-url').value='';clearEvImg('lg');
+  document.getElementById('lg-name').value='';document.getElementById('lg-start').value='';populateTimeSelect('lg-start-time','09:00');document.getElementById('lg-end').value='';populateTimeSelect('lg-end-time','17:00');document.getElementById('lg-rooms').value='';document.getElementById('lg-address').value='';document.getElementById('lg-url').value='';document.getElementById('lg-image-url').value='';document.getElementById('lg-steward-email').value='';document.getElementById('lg-steward-pw').value='';clearEvImg('lg');
   document.getElementById('lg-result').style.display='none';
   toggleCreateEvent();
   // Add to all dropdowns

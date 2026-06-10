@@ -80,7 +80,7 @@ a{color:#1A3F7A}
       <span class="brand-name">SCHEDA <span class="brand-caidus">· CAIDUS</span></span>
     </div>
     <div class="brand-tag">Kingdom of Caid &mdash; Event Scheduling</div>
-    <div class="brand-note">Updated in sync with the demo · Last updated June 5, 2026 · 3:20 PM PT</div>
+    <div class="brand-note">Updated in sync with the demo · Last updated June 9, 2026 · 8:17 PM PT</div>
   </div>
 
   <div class="intro-box">
@@ -239,15 +239,65 @@ a{color:#1A3F7A}
 
 
 
+  <!-- Entry: June 9 (8:17 PM) -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="version-badge">June 9</span>
+      <span class="entry-date">Today · 8:17 PM</span>
+      <span class="entry-count">Steward access fields · real backend build-out · security hardening</span>
+      <i class="ti ti-chevron-right chevron open"></i>
+    </div>
+    <div class="changes open">
+
+      <div class="change-item">
+        <div class="change-what">Event stewards get their own access — new fields on Create Event</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Each event will soon have its own steward login, so the person running classes for (say) Collegium can approve proposals and build the schedule for their event without needing full kingdom-wide admin access. The Create Event form now collects the steward's email and a password for them. Behind the scenes, each event will also get its own Google Sheet that the steward can view directly — so the data for your event is genuinely yours to see. The scoped steward login itself is coming in an upcoming update; this lays the groundwork.</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Log into admin (password: admin123), go to the <strong>Events</strong> tab, and click <strong>Create new event</strong>. You'll see the two new optional fields — Steward email and Steward password — just above the Create button. In demo mode they're accepted but don't do anything yet.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">The real backend is under construction</div>
+        <div class="change-row">
+          <span class="change-label label-why">Why it matters</span>
+          <span class="change-body">Until now, everything in this demo has run on simulated data that resets when you refresh. The real storage layer — Google Sheets behind the scenes, run from the new scheda.project@sca-caid.org account — is now built and ready for testing. Each event gets its own spreadsheet, created automatically when an admin creates the event, with safeguards so two people registering for the last seat at the same moment can't both squeak in. Nothing changes in the demo yet, but this is the bridge between "nice demo" and "real tool you can register through."</span>
+        </div>
+        <div class="change-row">
+          <span class="change-label label-try">Give it a try</span>
+          <span class="change-body">Nothing to click yet — this work is all behind the curtain. The demo behaves exactly as before.</span>
+        </div>
+      </div>
+
+      <div class="change-item">
+        <div class="change-what">Also in this update</div>
+        <div class="change-row">
+          <span class="change-label" style="color:#5a6a7e;font-weight:700;min-width:120px;flex-shrink:0">Smaller changes</span>
+          <span class="change-body">
+            Security hardening: text submitted through public forms (class proposals, registrations) is now properly sanitized everywhere it appears in the admin panel. ·
+            My Schedule lookup is now wired to work against the real backend, not just demo data. ·
+            Bug fix: logging out of admin could fail partway through if the page layout changed — it's now robust. ·
+            The app now sends data to the backend more securely (request details like emails no longer appear in server logs).
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Entry: June 5 (3:20 PM) -->
   <div class="entry">
     <div class="entry-header" onclick="toggle(this)">
       <span class="version-badge">June 5</span>
-      <span class="entry-date">Today · 3:20 PM</span>
+      <span class="entry-date">Previous update</span>
       <span class="entry-count">Cancel + reject modals · past events filter · admin panel fix</span>
-      <i class="ti ti-chevron-right chevron open"></i>
+      <i class="ti ti-chevron-right chevron"></i>
     </div>
-    <div class="changes open">
+    <div class="changes">
 
       <div class="change-item">
         <div class="change-what">Cancel class and reject proposal now open modals instead of browser dialogs</div>
@@ -280,11 +330,11 @@ a{color:#1A3F7A}
   <div class="entry">
     <div class="entry-header" onclick="toggle(this)">
       <span class="version-badge">June 5</span>
-      <span class="entry-date">Today</span>
+      <span class="entry-date">Previous update</span>
       <span class="entry-count">Calendar view + redesigned class cards</span>
-      <i class="ti ti-chevron-right chevron open"></i>
+      <i class="ti ti-chevron-right chevron"></i>
     </div>
-    <div class="changes open">
+    <div class="changes">
 
       <div class="change-item">
         <div class="change-what">Monthly calendar view for the catalog</div>
